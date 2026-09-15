@@ -405,19 +405,34 @@ function ReproductorActivo({ sesionInicial, restaurar, navigation }: {
   function hablar(fuente: { tipo: TipoVoz; id: string; texto: string }, alTerminar?: () => void) {
     if (!vozOn) { alTerminar?.(); return; }
     const id = ++hablaIdRef.current;
-    const terminar = () => { if (hablaIdRef.current === id) { setHablando(false); alTerminar?.(); } };
+    // Idempotente: ademas del guard de id, protege contra un doble disparo
+    // (el listener y el catch de mas abajo podrian, en teoria, llamarlo los dos).
+    let terminado = false;
+    const terminar = () => {
+      if (terminado || hablaIdRef.current !== id) return;
+      terminado = true;
+      setHablando(false);
+      alTerminar?.();
+    };
 
     const audio = fuenteVoz(fuente.tipo, fuente.id);
     if (audio != null) {
-      setHablando(true);
-      const player = obtenerReproductorVoz();
-      suscripcionVozRef.current?.remove();
-      suscripcionVozRef.current = player.addListener('playbackStatusUpdate', status => {
-        if (status.didJustFinish) { suscripcionVozRef.current?.remove(); terminar(); }
-      });
-      player.replace(audio);
-      player.play();
-      return;
+      try {
+        setHablando(true);
+        const player = obtenerReproductorVoz();
+        suscripcionVozRef.current?.remove();
+        suscripcionVozRef.current = player.addListener('playbackStatusUpdate', status => {
+          if (status.didJustFinish) { suscripcionVozRef.current?.remove(); terminar(); }
+        });
+        player.replace(audio);
+        player.play();
+        return;
+      } catch {
+        // el archivo fallo al cargar o reproducir: no dejar la sesion
+        // colgada esperando un "termino" que ya nunca va a llegar.
+        terminar();
+        return;
+      }
     }
 
     // Respaldo: el mp3 todavia no existe en el registro (ver src/media/voz.ts).

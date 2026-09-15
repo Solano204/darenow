@@ -7,7 +7,6 @@
     "orientation": "portrait",
     "userInterfaceStyle": "dark",
     "backgroundColor": "#100D0C",
-    "newArchEnabled": true,
     "assetBundlePatterns": [
       "**/*"
     ],
@@ -18,7 +17,6 @@
     },
     "android": {
       "package": "app.forja.fitness",
-      "edgeToEdgeEnabled": true,
       "backgroundColor": "#100D0C",
       "permissions": [
         "android.permission.RECORD_AUDIO",
@@ -39,7 +37,8 @@
       ],
       "expo-font",
       "expo-splash-screen",
-      "expo-web-browser"
+      "expo-web-browser",
+      "expo-asset"
     ],
     "extra": {
       "eas": {

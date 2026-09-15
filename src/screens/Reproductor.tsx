@@ -7,6 +7,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useKeepAwake } from 'expo-keep-awake';
 import * as Haptics from 'expo-haptics';
 import * as Speech from 'expo-speech';
+import { createAudioPlayer, type AudioPlayer } from 'expo-audio';
 import { color, tipo, esp, radio, TOQUE, anim, sombra } from '../theme';
 import {
   useSessionPlayer, leerSesionGuardada, borrarSesionGuardada, type SesionEnCurso,
@@ -17,6 +18,7 @@ import { useVozActiva } from '../store/voz';
 import { useAjustesMaquina } from '../store/maquina';
 import { sustituir, aItem, duracion, type Sesion, type ItemSesion } from '../engine/session';
 import { reproducir, prepararSonido, soltarSonido } from '../media/sonido';
+import { fuenteVoz, type TipoVoz } from '../media/voz';
 import { Boton, Toque, Chip, Tarjeta, Aparece, useMovimientoReducido } from '../components/ui';
 import { useSinAnuncios } from '../components/RelojAnuncios';
 import Clip from '../components/Clip';
@@ -381,43 +383,49 @@ function ReproductorActivo({ sesionInicial, restaurar, navigation }: {
   const [vozOn] = useVozActiva();
   const [hablando, setHablando] = useState(false);
 
-  // expo-speech no expone genero, solo nombre e identificador, y varian
-  // por telefono. Busca una voz en español cuyo nombre suene a hombre
-  // (funciona sobre todo en iOS, donde los nombres son legibles); el
-  // tono mas grave de abajo es el respaldo que sí funciona en cualquier
-  // telefono, tenga o no una voz masculina instalada.
-  const vozMasculinaRef = useRef<string | undefined>(undefined);
-  useEffect(() => {
-    let vivo = true;
-    const NOMBRES_MASCULINOS = ['jorge', 'diego', 'juan', 'carlos', 'pablo', 'miguel', 'fernando', 'male', 'hombre'];
-    Speech.getAvailableVoicesAsync()
-      .then(voces => {
-        if (!vivo) return;
-        const match = voces.find(v =>
-          v.language?.toLowerCase().startsWith('es') &&
-          NOMBRES_MASCULINOS.some(n => v.name?.toLowerCase().includes(n) || v.identifier?.toLowerCase().includes(n)),
-        );
-        vozMasculinaRef.current = match?.identifier;
-      })
-      .catch(() => {});
-    return () => { vivo = false; };
-  }, []);
+  // Un solo player reutilizable para los 198 audios de voz: crearlo al
+  // momento de hablar (no 198 de golpe al montar) cuesta 50-200ms una vez,
+  // y de ahi en adelante cada frase solo hace replace()+play() sobre el
+  // mismo player. Perezoso: si la voz esta apagada nunca se crea.
+  const reproductorVozRef = useRef<AudioPlayer | null>(null);
+  const suscripcionVozRef = useRef<ReturnType<AudioPlayer['addListener']> | null>(null);
 
-  // Cada llamada corta la anterior (Speech.stop) y arranca una nueva. El
-  // "onStopped" de la que se corta llega async, a veces DESPUES de que la
-  // nueva ya arranco: sin este id, ese aviso tardio apaga `hablando` con
-  // la voz nueva todavia sonando, y ahi "Seguir" se puede tocar a mitad de
-  // frase. Solo el aviso de la llamada mas reciente cuenta.
+  function obtenerReproductorVoz(): AudioPlayer {
+    if (!reproductorVozRef.current) reproductorVozRef.current = createAudioPlayer(null);
+    return reproductorVozRef.current;
+  }
+
+  // Cada llamada corta la anterior y arranca una nueva. Con expo-speech el
+  // aviso tardio de la que se corta ("onStopped") podia llegar DESPUES de
+  // que la nueva ya arranco; con el player de archivos el equivalente es
+  // un "playbackStatusUpdate" viejo llegando tarde. Por eso cada llamada
+  // vuelve a registrar su propio listener (quitando el anterior) con su
+  // propio id: solo el aviso de la llamada mas reciente apaga `hablando`.
   const hablaIdRef = useRef(0);
-  function hablar(texto: string, alTerminar?: () => void) {
-    if (!vozOn || !texto) { alTerminar?.(); return; }
-    Speech.stop();
+  function hablar(fuente: { tipo: TipoVoz; id: string; texto: string }, alTerminar?: () => void) {
+    if (!vozOn) { alTerminar?.(); return; }
     const id = ++hablaIdRef.current;
-    setHablando(true);
     const terminar = () => { if (hablaIdRef.current === id) { setHablando(false); alTerminar?.(); } };
-    Speech.speak(texto, {
+
+    const audio = fuenteVoz(fuente.tipo, fuente.id);
+    if (audio != null) {
+      setHablando(true);
+      const player = obtenerReproductorVoz();
+      suscripcionVozRef.current?.remove();
+      suscripcionVozRef.current = player.addListener('playbackStatusUpdate', status => {
+        if (status.didJustFinish) { suscripcionVozRef.current?.remove(); terminar(); }
+      });
+      player.replace(audio);
+      player.play();
+      return;
+    }
+
+    // Respaldo: el mp3 todavia no existe en el registro (ver src/media/voz.ts).
+    if (!fuente.texto) { alTerminar?.(); return; }
+    Speech.stop();
+    setHablando(true);
+    Speech.speak(fuente.texto, {
       language: 'es-MX',
-      voice: vozMasculinaRef.current,
       pitch: 0.85,
       onDone: terminar,
       onStopped: terminar,
@@ -444,10 +452,10 @@ function ReproductorActivo({ sesionInicial, restaurar, navigation }: {
     if (estado.fase === 'preparado') {
       const claves = ejercicio.cues?.length ? ` ${ejercicio.cues.join('. ')}` : '';
       p.pausar();
-      hablar(`${ejercicio.name}.${claves}`, () => p.reanudar());
+      hablar({ tipo: 'ejercicio', id: ejercicio.id, texto: `${ejercicio.name}.${claves}` }, () => p.reanudar());
       return;
     }
-    hablar(ETIQUETA[estado.fase]);
+    hablar({ tipo: 'fase', id: estado.fase, texto: ETIQUETA[estado.fase] });
   }, [estado.fase, vozOn]);
 
   // Cuenta final hablada: la pulsada (preparate/cambio de lado/trabajo por
@@ -456,7 +464,8 @@ function ReproductorActivo({ sesionInicial, restaurar, navigation }: {
     (estado.fase === 'descanso' && estado.restanteS >= 1 && estado.restanteS <= 3);
   useEffect(() => {
     if (!cuentaHablada) return;
-    hablar(String(estado.restanteS));
+    const n = String(estado.restanteS);
+    hablar({ tipo: 'numero', id: n, texto: n });
   }, [estado.restanteS, estado.fase, vozOn]);
 
   // Tic por segundo durante la espera: preparate, cambio de lado,
@@ -472,7 +481,12 @@ function ReproductorActivo({ sesionInicial, restaurar, navigation }: {
 
   // Si se sale de la pantalla con la voz a mitad de frase, se corta:
   // nadie quiere seguir oyendo instrucciones de un ejercicio que ya dejo.
-  useEffect(() => () => { Speech.stop(); }, []);
+  // Libera tambien el player de voz (si llego a crearse) y su listener.
+  useEffect(() => () => {
+    Speech.stop();
+    suscripcionVozRef.current?.remove();
+    try { reproductorVozRef.current?.remove(); } catch { /* ya liberado */ }
+  }, []);
 
   // El clip se ve mientras hay un ejercicio delante del usuario, y sigue
   // visible congelado si pausa desde ahi. En descanso no: ahi la pantalla

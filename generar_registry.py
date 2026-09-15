@@ -2,18 +2,20 @@
 """
 FORJA · generador de los registros de src/media/
 
-Escanea assets/img/, assets/video/ y assets/snd/ y reescribe los bloques de require().
-Resuelve el paso manual de "descomenta cada linea": corres esto y todo lo
-que exista queda registrado.
+Escanea assets/img/, assets/video/, assets/snd/ y assets/voz/ y reescribe
+los bloques de require(). Resuelve el paso manual de "descomenta cada
+linea": corres esto y todo lo que exista queda registrado.
 
 Uso, desde la carpeta app/:
 
-    python3 generar_registry.py            # escribe los tres registros
+    python3 generar_registry.py            # escribe los cuatro registros
     python3 generar_registry.py --dry      # solo imprime lo que haria
 
 Imagenes: .jpg, .jpeg, .webp, .png     -> assets/img/<carpeta>/<id>.<ext>
 Clips:    .mp4, .m4v, .mov             -> assets/video/ejercicios/<id>.mp4
 Sonidos:  .mp3, .m4a, .wav             -> assets/snd/<nombre>.mp3
+Voz:      .mp3                         -> assets/voz/{ejercicios,fases,num}/<id>.mp3
+          (generada por generar_voz.py, no a mano)
 
 Dos archivos por ejercicio: la imagen y el clip. No hay carpeta de thumbs, el
 poster del video es la misma imagen. Al terminar, el script avisa de los
@@ -244,6 +246,44 @@ SONIDOS_ESPERADOS = [
 
 EXTS_SND = [".mp3", ".m4a", ".wav"]
 
+# Fases y numeros que la voz anuncia. Mismas claves que ETIQUETA/estado.fase
+# en Reproductor.tsx ('pausa' nunca se habla, no va aqui).
+FASES_ESPERADAS = ["preparado", "trabajo", "cambio_lado", "descanso", "fin"]
+NUMEROS_ESPERADOS = ["3", "2", "1"]
+
+EXTS_VOZ = [".mp3"]
+
+CABECERA_VOZ = """/**
+ * FORJA · registro de voz
+ *
+ * ARCHIVO GENERADO por generar_registry.py. No lo edites a mano: corre
+ * generar_voz.py para sintetizar audio con AWS Polly (voz Andres,
+ * generative, es-MX) y despues este script para volver a escribir el
+ * registro.
+ *
+ * Si un mp3 todavia no existe, la linea queda comentada en vez de un
+ * require() roto: Reproductor.tsx cae al respaldo de expo-speech para
+ * ese audio.
+ */
+
+type Registro = Partial<Record<string, number>>;
+"""
+
+PIE_VOZ = """
+export type TipoVoz = 'ejercicio' | 'fase' | 'numero';
+
+const MAPAS_VOZ: Record<TipoVoz, Registro> = {
+  ejercicio: VOZ_EJERCICIOS,
+  fase: VOZ_FASES,
+  numero: VOZ_NUM,
+};
+
+/** Fuente del audio de voz, o null si el archivo todavia no esta (respaldo: expo-speech). */
+export function fuenteVoz(tipo: TipoVoz, id: string): number | null {
+  return MAPAS_VOZ[tipo][id] ?? null;
+}
+"""
+
 
 def generar_sonidos(seco):
     """Reescribe el bloque de requires de src/media/sonido.ts.
@@ -288,6 +328,78 @@ def generar_sonidos(seco):
     return destino, len(encontrados)
 
 
+def ids_catalogo():
+    """ids de ejercicios del catalogo real, en el orden de los archivos de datos."""
+    import json
+    ids = []
+    datos = os.path.join("assets", "data")
+    if not os.path.isdir(datos):
+        return ids
+    for archivo in sorted(os.listdir(datos)):
+        if not archivo[:2].isdigit() or "exercises" not in archivo:
+            continue
+        with open(os.path.join(datos, archivo), encoding="utf-8") as fh:
+            for e in json.load(fh)["items"]:
+                ids.append(e["id"])
+    return ids
+
+
+def generar_voz(seco):
+    """Escribe src/media/voz.ts a partir de lo que haya en assets/voz/.
+
+    Ejercicios: uno por cada id del catalogo real (assets/data/1*_exercises*.json).
+    Fases y numeros: listas fijas, iguales a lo que anuncia Reproductor.tsx.
+    Lo que falte queda comentado, igual que hace generar_sonidos().
+    """
+    destino = os.path.join("src", "media", "voz.ts")
+
+    hallados_ej = dict(escanear("voz", "ejercicios", EXTS_VOZ))
+    hallados_fase = dict(escanear("voz", "fases", EXTS_VOZ))
+    hallados_num = dict(escanear("voz", "num", EXTS_VOZ))
+    ids_ejercicios = ids_catalogo()
+
+    partes = [CABECERA_VOZ]
+
+    puestos_ej = sum(1 for i in ids_ejercicios if i in hallados_ej)
+    partes.append(f"\n/* ejercicios · {puestos_ej} de {len(ids_ejercicios)} */")
+    partes.append("export const VOZ_EJERCICIOS: Registro = {")
+    for eid in ids_ejercicios:
+        if eid in hallados_ej:
+            partes.append(f"  '{eid}': require('../../assets/voz/ejercicios/{eid}{hallados_ej[eid]}'),")
+        else:
+            partes.append(f"  // '{eid}': falta assets/voz/ejercicios/{eid}.mp3")
+    partes.append("};")
+
+    puestos_fase = sum(1 for f in FASES_ESPERADAS if f in hallados_fase)
+    partes.append(f"\n/* fases · {puestos_fase} de {len(FASES_ESPERADAS)} */")
+    partes.append("export const VOZ_FASES: Registro = {")
+    for fase in FASES_ESPERADAS:
+        if fase in hallados_fase:
+            partes.append(f"  '{fase}': require('../../assets/voz/fases/{fase}{hallados_fase[fase]}'),")
+        else:
+            partes.append(f"  // '{fase}': falta assets/voz/fases/{fase}.mp3")
+    partes.append("};")
+
+    puestos_num = sum(1 for n in NUMEROS_ESPERADOS if n in hallados_num)
+    partes.append(f"\n/* numeros · {puestos_num} de {len(NUMEROS_ESPERADOS)} */")
+    partes.append("export const VOZ_NUM: Registro = {")
+    for n in NUMEROS_ESPERADOS:
+        if n in hallados_num:
+            partes.append(f"  '{n}': require('../../assets/voz/num/{n}{hallados_num[n]}'),")
+        else:
+            partes.append(f"  // '{n}': falta assets/voz/num/{n}.mp3")
+    partes.append("};")
+
+    salida = "\n".join(partes) + "\n" + PIE_VOZ
+    print(f"  voz/ejercicios    {puestos_ej:4} de {len(ids_ejercicios)}")
+    print(f"  voz/fases         {puestos_fase:4} de {len(FASES_ESPERADAS)}")
+    print(f"  voz/num           {puestos_num:4} de {len(NUMEROS_ESPERADOS)}")
+    if not seco:
+        with open(destino, "w", encoding="utf-8") as fh:
+            fh.write(salida)
+    return destino, puestos_ej + puestos_fase + puestos_num
+
+
 def main():
     if not os.path.isdir("assets/img"):
         sys.exit("Corre esto desde la carpeta app/ (no encuentro assets/img).")
@@ -297,15 +409,17 @@ def main():
     destino_img, total_img = generar_imagenes(seco)
     destino_vid, total_vid = generar_videos(seco)
     destino_snd, total_snd = generar_sonidos(seco)
+    destino_voz, total_voz = generar_voz(seco)
 
     if seco:
-        print(f"\n[dry] {total_img} imagenes, {total_vid} clips y {total_snd} "
-              f"sonidos. No se escribio nada.")
+        print(f"\n[dry] {total_img} imagenes, {total_vid} clips, {total_snd} "
+              f"sonidos y {total_voz} audios de voz. No se escribio nada.")
         return
 
     print(f"\n{destino_img} escrito con {total_img} imagenes.")
     print(f"{destino_vid} escrito con {total_vid} clips.")
     print(f"{destino_snd} escrito con {total_snd} sonidos.")
+    print(f"{destino_voz} escrito con {total_voz} audios de voz.")
     faltan = revisar_faltantes()
     if faltan:
         print(f"\nIncompletos: {len(faltan)} ejercicios. Los primeros:")

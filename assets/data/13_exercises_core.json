@@ -1,0 +1,1676 @@
+{
+  "coleccion": "ejercicios",
+  "bloque": "core_abdomen",
+  "version": "2.0.0",
+  "items": [
+    {
+      "id": "ex_4001",
+      "slug": "plancha-frontal",
+      "name": "Plancha frontal",
+      "name_en": "Front plank",
+      "aliases": [
+        "plancha",
+        "plank",
+        "tabla"
+      ],
+      "family": "fam_antiextension",
+      "category": "fuerza",
+      "goals": [
+        "musculo",
+        "postura",
+        "bajar_peso",
+        "calistenia"
+      ],
+      "level": 1,
+      "equipment": [
+        "colchoneta"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "colchoneta",
+      "unilateral": false,
+      "measure": "tiempo",
+      "default": {
+        "series": 3,
+        "seg": 30,
+        "rest_s": 45
+      },
+      "met": 3.5,
+      "primary": [
+        "transverso_abdominal",
+        "recto_abdominal"
+      ],
+      "secondary": [
+        "gluteo_mayor",
+        "serrato_anterior",
+        "multifidos"
+      ],
+      "risk_zones": [
+        "lumbar",
+        "hombro"
+      ],
+      "contra": [],
+      "desc": "Isometrico de core en apoyo sobre antebrazos. Entrena al abdomen en su funcion real: impedir que la lumbar se arquee.",
+      "steps": [
+        "Antebrazos en el suelo, codos bajo los hombros.",
+        "Cuerpo recto de talones a cabeza.",
+        "Aprieta gluteo y mete un poco la pelvis.",
+        "Aguanta respirando con normalidad."
+      ],
+      "cues": [
+        "Costillas abajo",
+        "Aprieta el gluteo",
+        "Respira"
+      ],
+      "errors": [
+        "Dejar caer la cadera y arquear la lumbar",
+        "Subir la cadera para descansar",
+        "Aguantar la respiracion"
+      ],
+      "breathing": "Respiracion continua, nunca bloqueada.",
+      "progressions": [
+        "ex_4002",
+        "ex_4004",
+        "ex_4011"
+      ],
+      "regressions": [
+        "ex_4003"
+      ],
+      "substitutes": [
+        "ex_4005"
+      ],
+      "asset": {
+        "clip": "ex_4001.mp4",
+        "imagen": "ex_4001.jpg",
+        "recorrido": "sostenido"
+      }
+    },
+    {
+      "id": "ex_4002",
+      "slug": "plancha-toque-hombro",
+      "name": "Plancha con toque de hombro",
+      "name_en": "Shoulder tap plank",
+      "aliases": [
+        "plancha con toques"
+      ],
+      "family": "fam_antirotacion",
+      "category": "fuerza",
+      "goals": [
+        "musculo",
+        "postura",
+        "calistenia"
+      ],
+      "level": 2,
+      "equipment": [
+        "colchoneta"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "colchoneta",
+      "unilateral": false,
+      "measure": "reps",
+      "default": {
+        "series": 3,
+        "reps": 16,
+        "rest_s": 45
+      },
+      "met": 4.0,
+      "primary": [
+        "oblicuo_externo",
+        "transverso_abdominal"
+      ],
+      "secondary": [
+        "deltoide_anterior",
+        "gluteo_mayor",
+        "serrato_anterior"
+      ],
+      "risk_zones": [
+        "lumbar",
+        "muneca"
+      ],
+      "contra": [
+        "lesion_muneca"
+      ],
+      "desc": "Plancha alta tocando el hombro contrario. El core tiene que impedir que la cadera rote, que es antirotacion pura.",
+      "steps": [
+        "Plancha alta con las manos bajo los hombros.",
+        "Pies un poco mas anchos para mas estabilidad.",
+        "Toca el hombro contrario con una mano sin mover la cadera.",
+        "Alterna."
+      ],
+      "cues": [
+        "Cadera quieta",
+        "Pies anchos",
+        "Lento"
+      ],
+      "errors": [
+        "Balancear la cadera al levantar la mano",
+        "Ir demasiado rapido",
+        "Juntar mucho los pies"
+      ],
+      "breathing": "Exhala al tocar, respiracion continua.",
+      "progressions": [
+        "ex_4011"
+      ],
+      "regressions": [
+        "ex_4001"
+      ],
+      "substitutes": [
+        "ex_4012"
+      ],
+      "asset": {
+        "clip": "ex_4002.mp4",
+        "imagen": "ex_4002.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_4003",
+      "slug": "plancha-rodillas",
+      "name": "Plancha con rodillas apoyadas",
+      "name_en": "Knee plank",
+      "aliases": [
+        "plancha facil"
+      ],
+      "family": "fam_antiextension",
+      "category": "fuerza",
+      "goals": [
+        "postura",
+        "musculo"
+      ],
+      "level": 1,
+      "equipment": [
+        "colchoneta"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "colchoneta",
+      "unilateral": false,
+      "measure": "tiempo",
+      "default": {
+        "series": 3,
+        "seg": 30,
+        "rest_s": 40
+      },
+      "met": 3.0,
+      "primary": [
+        "transverso_abdominal"
+      ],
+      "secondary": [
+        "recto_abdominal",
+        "serrato_anterior"
+      ],
+      "risk_zones": [],
+      "contra": [],
+      "desc": "Version con rodillas apoyadas. Permite aprender la posicion sin que la lumbar se hunda.",
+      "steps": [
+        "Antebrazos y rodillas en el suelo.",
+        "Cuerpo recto de rodillas a cabeza.",
+        "Aprieta gluteo y abdomen.",
+        "Aguanta."
+      ],
+      "cues": [
+        "Linea recta",
+        "Costillas abajo",
+        "Respira"
+      ],
+      "errors": [
+        "Cadera muy alta",
+        "Lumbar hundida",
+        "Hombros encogidos"
+      ],
+      "breathing": "Respiracion continua.",
+      "progressions": [
+        "ex_4001"
+      ],
+      "regressions": [],
+      "substitutes": [
+        "ex_4006"
+      ],
+      "asset": {
+        "clip": "ex_4003.mp4",
+        "imagen": "ex_4003.jpg",
+        "recorrido": "sostenido"
+      }
+    },
+    {
+      "id": "ex_4004",
+      "slug": "plancha-lateral",
+      "name": "Plancha lateral",
+      "name_en": "Side plank",
+      "aliases": [
+        "tabla lateral",
+        "side plank"
+      ],
+      "family": "fam_antiflexion_lateral",
+      "category": "fuerza",
+      "goals": [
+        "musculo",
+        "postura",
+        "calistenia"
+      ],
+      "level": 2,
+      "equipment": [
+        "colchoneta"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "colchoneta",
+      "unilateral": true,
+      "measure": "tiempo",
+      "default": {
+        "series": 3,
+        "seg": 25,
+        "rest_s": 40
+      },
+      "met": 3.5,
+      "primary": [
+        "oblicuo_externo",
+        "oblicuo_interno"
+      ],
+      "secondary": [
+        "gluteo_medio",
+        "transverso_abdominal"
+      ],
+      "risk_zones": [
+        "hombro",
+        "lumbar"
+      ],
+      "contra": [
+        "lesion_hombro"
+      ],
+      "desc": "Isometrico lateral apoyado en un antebrazo. Trabaja oblicuos y gluteo medio a la vez.",
+      "steps": [
+        "Tumbado de lado, codo bajo el hombro.",
+        "Sube la cadera hasta formar una linea recta.",
+        "Aprieta el costado de abajo.",
+        "Aguanta y cambia de lado."
+      ],
+      "cues": [
+        "Cadera arriba",
+        "Linea recta",
+        "Codo bajo el hombro"
+      ],
+      "errors": [
+        "Dejar caer la cadera",
+        "Rotar el torso hacia el suelo",
+        "Apoyar el codo por delante del hombro"
+      ],
+      "breathing": "Respiracion continua.",
+      "progressions": [
+        "ex_4013"
+      ],
+      "regressions": [
+        "ex_4005"
+      ],
+      "substitutes": [
+        "ex_3019"
+      ],
+      "asset": {
+        "clip": "ex_4004.mp4",
+        "imagen": "ex_4004.jpg",
+        "recorrido": "sostenido"
+      }
+    },
+    {
+      "id": "ex_4005",
+      "slug": "plancha-lateral-rodilla",
+      "name": "Plancha lateral con rodilla apoyada",
+      "name_en": "Modified side plank",
+      "aliases": [],
+      "family": "fam_antiflexion_lateral",
+      "category": "fuerza",
+      "goals": [
+        "postura",
+        "musculo"
+      ],
+      "level": 1,
+      "equipment": [
+        "colchoneta"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "colchoneta",
+      "unilateral": true,
+      "measure": "tiempo",
+      "default": {
+        "series": 3,
+        "seg": 25,
+        "rest_s": 40
+      },
+      "met": 3.0,
+      "primary": [
+        "oblicuo_externo"
+      ],
+      "secondary": [
+        "gluteo_medio"
+      ],
+      "risk_zones": [],
+      "contra": [],
+      "desc": "Plancha lateral con la rodilla de abajo apoyada. Reduce la palanca y hace accesible el patron.",
+      "steps": [
+        "De lado, codo bajo el hombro, rodillas dobladas.",
+        "Sube la cadera apoyando la rodilla de abajo.",
+        "Linea recta de rodilla a cabeza."
+      ],
+      "cues": [
+        "Cadera arriba",
+        "Costado apretado",
+        "Respira"
+      ],
+      "errors": [
+        "Rotar el torso",
+        "Cadera baja",
+        "Cuello tenso"
+      ],
+      "breathing": "Respiracion continua.",
+      "progressions": [
+        "ex_4004"
+      ],
+      "regressions": [],
+      "substitutes": [
+        "ex_4003"
+      ],
+      "asset": {
+        "clip": "ex_4005.mp4",
+        "imagen": "ex_4005.jpg",
+        "recorrido": "sostenido"
+      }
+    },
+    {
+      "id": "ex_4006",
+      "slug": "dead-bug",
+      "name": "Dead bug",
+      "name_en": "Dead bug",
+      "aliases": [
+        "bicho muerto",
+        "insecto muerto"
+      ],
+      "family": "fam_antiextension",
+      "category": "fuerza",
+      "goals": [
+        "postura",
+        "musculo",
+        "calistenia"
+      ],
+      "level": 1,
+      "equipment": [
+        "colchoneta"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "colchoneta",
+      "unilateral": false,
+      "measure": "reps",
+      "default": {
+        "series": 3,
+        "reps": 12,
+        "rest_s": 40
+      },
+      "met": 3.0,
+      "primary": [
+        "transverso_abdominal"
+      ],
+      "secondary": [
+        "recto_abdominal",
+        "multifidos",
+        "flexor_cadera"
+      ],
+      "risk_zones": [
+        "lumbar"
+      ],
+      "contra": [],
+      "desc": "El ejercicio de core mas seguro y mas util del catalogo para quien tiene molestia lumbar. Enseña a mover las extremidades sin mover la columna.",
+      "steps": [
+        "Boca arriba, brazos al techo y rodillas a 90 grados.",
+        "Pega la espalda baja al suelo y mantenla ahi todo el ejercicio.",
+        "Baja un brazo y la pierna contraria sin que la lumbar se despegue.",
+        "Vuelve y alterna."
+      ],
+      "cues": [
+        "Lumbar pegada",
+        "Baja despacio",
+        "Exhala al bajar"
+      ],
+      "errors": [
+        "Dejar que la lumbar se arquee al bajar la pierna",
+        "Ir demasiado rapido",
+        "Contener la respiracion"
+      ],
+      "breathing": "Exhala al extender, inhala al volver.",
+      "progressions": [
+        "ex_4007"
+      ],
+      "regressions": [],
+      "substitutes": [
+        "ex_4008"
+      ],
+      "asset": {
+        "clip": "ex_4006.mp4",
+        "imagen": "ex_4006.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_4007",
+      "slug": "hollow-hold",
+      "name": "Hollow hold",
+      "name_en": "Hollow body hold",
+      "aliases": [
+        "hollow",
+        "barquita"
+      ],
+      "family": "fam_antiextension",
+      "category": "fuerza",
+      "goals": [
+        "calistenia",
+        "musculo"
+      ],
+      "level": 3,
+      "equipment": [
+        "colchoneta"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "colchoneta",
+      "unilateral": false,
+      "measure": "tiempo",
+      "default": {
+        "series": 3,
+        "seg": 25,
+        "rest_s": 60
+      },
+      "met": 4.0,
+      "primary": [
+        "recto_abdominal",
+        "transverso_abdominal"
+      ],
+      "secondary": [
+        "flexor_cadera",
+        "oblicuo_externo"
+      ],
+      "risk_zones": [
+        "lumbar",
+        "cuello"
+      ],
+      "contra": [
+        "lesion_lumbar"
+      ],
+      "desc": "Posicion base de la gimnasia. Brutal para el core anterior y prerrequisito de casi todo en calistenia.",
+      "steps": [
+        "Boca arriba, lumbar pegada al suelo.",
+        "Levanta piernas y hombros formando una banana.",
+        "Brazos extendidos junto a las orejas.",
+        "Aguanta sin que la lumbar se despegue."
+      ],
+      "cues": [
+        "Lumbar pegada",
+        "Menton al pecho",
+        "Baja las piernas si se arquea"
+      ],
+      "errors": [
+        "Despegar la lumbar y compensar",
+        "Tirar del cuello",
+        "Aguantar la respiracion"
+      ],
+      "breathing": "Respiracion corta y continua.",
+      "progressions": [],
+      "regressions": [
+        "ex_4006"
+      ],
+      "substitutes": [
+        "ex_4001"
+      ],
+      "asset": {
+        "clip": "ex_4007.mp4",
+        "imagen": "ex_4007.jpg",
+        "recorrido": "sostenido"
+      }
+    },
+    {
+      "id": "ex_4008",
+      "slug": "crunch-clasico",
+      "name": "Crunch clasico",
+      "name_en": "Crunch",
+      "aliases": [
+        "abdominal",
+        "encogimiento"
+      ],
+      "family": "fam_flexion_espinal",
+      "category": "fuerza",
+      "goals": [
+        "musculo",
+        "bajar_peso"
+      ],
+      "level": 1,
+      "equipment": [
+        "colchoneta"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "colchoneta",
+      "unilateral": false,
+      "measure": "reps",
+      "default": {
+        "series": 3,
+        "reps": 15,
+        "rest_s": 40
+      },
+      "met": 3.5,
+      "primary": [
+        "recto_abdominal"
+      ],
+      "secondary": [
+        "oblicuo_externo"
+      ],
+      "risk_zones": [
+        "cuello",
+        "lumbar"
+      ],
+      "contra": [
+        "hernia_discal",
+        "lesion_lumbar"
+      ],
+      "desc": "Flexion corta de columna. Desarrolla el recto abdominal. Que se marque depende del porcentaje de grasa, no del numero de repeticiones.",
+      "steps": [
+        "Boca arriba, rodillas dobladas, pies apoyados.",
+        "Manos cruzadas al pecho o apoyadas en las sienes sin tirar.",
+        "Despega solo los omoplatos exhalando.",
+        "Baja controlado sin apoyar del todo la cabeza."
+      ],
+      "cues": [
+        "Manos sin tirar del cuello",
+        "Exhala al subir",
+        "Movimiento corto"
+      ],
+      "errors": [
+        "Tirar de la nuca con las manos",
+        "Subir todo el torso y convertirlo en flexor de cadera",
+        "Ir con impulso"
+      ],
+      "breathing": "Exhala al subir, inhala al bajar.",
+      "progressions": [
+        "ex_4009",
+        "ex_4010"
+      ],
+      "regressions": [
+        "ex_4006"
+      ],
+      "substitutes": [
+        "ex_4009"
+      ],
+      "asset": {
+        "clip": "ex_4008.mp4",
+        "imagen": "ex_4008.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_4009",
+      "slug": "crunch-inverso",
+      "name": "Crunch inverso",
+      "name_en": "Reverse crunch",
+      "aliases": [
+        "abdominal inverso"
+      ],
+      "family": "fam_flexion_espinal",
+      "category": "fuerza",
+      "goals": [
+        "musculo",
+        "bajar_peso"
+      ],
+      "level": 2,
+      "equipment": [
+        "colchoneta"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "colchoneta",
+      "unilateral": false,
+      "measure": "reps",
+      "default": {
+        "series": 3,
+        "reps": 12,
+        "rest_s": 45
+      },
+      "met": 3.5,
+      "primary": [
+        "recto_abdominal"
+      ],
+      "secondary": [
+        "oblicuo_interno",
+        "transverso_abdominal"
+      ],
+      "risk_zones": [
+        "lumbar",
+        "cuello"
+      ],
+      "contra": [
+        "hernia_discal"
+      ],
+      "desc": "Llevar la pelvis hacia las costillas en vez de las costillas hacia la pelvis. Carga mas la porcion baja del recto abdominal y respeta mas el cuello.",
+      "steps": [
+        "Boca arriba, manos a los lados, rodillas a 90 grados.",
+        "Lleva las rodillas al pecho despegando la cadera.",
+        "No uses impulso: sube por contraccion.",
+        "Baja lento sin tocar el suelo con los pies."
+      ],
+      "cues": [
+        "Despega la cadera",
+        "Sin impulso",
+        "Baja lento"
+      ],
+      "errors": [
+        "Balancear las piernas",
+        "No despegar la cadera",
+        "Bajar de golpe"
+      ],
+      "breathing": "Exhala al subir, inhala al bajar.",
+      "progressions": [
+        "ex_4010"
+      ],
+      "regressions": [
+        "ex_4008"
+      ],
+      "substitutes": [
+        "ex_4010"
+      ],
+      "asset": {
+        "clip": "ex_4009.mp4",
+        "imagen": "ex_4009.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_4010",
+      "slug": "elevacion-piernas-suelo",
+      "name": "Elevacion de piernas en el suelo",
+      "name_en": "Lying leg raise",
+      "aliases": [
+        "elevacion de piernas"
+      ],
+      "family": "fam_flexion_espinal",
+      "category": "fuerza",
+      "goals": [
+        "musculo",
+        "calistenia"
+      ],
+      "level": 2,
+      "equipment": [
+        "colchoneta"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "colchoneta",
+      "unilateral": false,
+      "measure": "reps",
+      "default": {
+        "series": 3,
+        "reps": 12,
+        "rest_s": 45
+      },
+      "met": 4.0,
+      "primary": [
+        "recto_abdominal",
+        "flexor_cadera"
+      ],
+      "secondary": [
+        "transverso_abdominal"
+      ],
+      "risk_zones": [
+        "lumbar"
+      ],
+      "contra": [
+        "lesion_lumbar",
+        "hernia_discal"
+      ],
+      "desc": "Bajar y subir las piernas extendidas manteniendo la lumbar pegada. Si la lumbar se despega, el ejercicio pasa a cargar la columna en vez del abdomen.",
+      "steps": [
+        "Boca arriba, manos bajo el gluteo si hace falta.",
+        "Piernas extendidas al techo.",
+        "Baja lento hasta donde la lumbar siga pegada al suelo.",
+        "Sube controlado."
+      ],
+      "cues": [
+        "Lumbar pegada",
+        "Baja solo lo que controles",
+        "Sin impulso"
+      ],
+      "errors": [
+        "Despegar la lumbar al bajar",
+        "Dejar caer las piernas",
+        "Bajar demasiado sin control"
+      ],
+      "breathing": "Inhala al bajar, exhala al subir.",
+      "progressions": [
+        "ex_4014"
+      ],
+      "regressions": [
+        "ex_4009"
+      ],
+      "substitutes": [
+        "ex_4009"
+      ],
+      "asset": {
+        "clip": "ex_4010.mp4",
+        "imagen": "ex_4010.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_4011",
+      "slug": "escalador",
+      "name": "Escalador (mountain climber)",
+      "name_en": "Mountain climber",
+      "aliases": [
+        "mountain climber",
+        "escalada de montaña"
+      ],
+      "family": "fam_locomocion",
+      "category": "cardio",
+      "goals": [
+        "bajar_peso",
+        "cardio",
+        "calistenia"
+      ],
+      "level": 2,
+      "equipment": [
+        "colchoneta"
+      ],
+      "impact": 1,
+      "noise": 1,
+      "space": "colchoneta",
+      "unilateral": false,
+      "measure": "tiempo",
+      "default": {
+        "series": 4,
+        "seg": 30,
+        "rest_s": 30
+      },
+      "met": 8.0,
+      "primary": [
+        "core",
+        "flexor_cadera"
+      ],
+      "secondary": [
+        "deltoide_anterior",
+        "cuadriceps",
+        "recto_abdominal"
+      ],
+      "risk_zones": [
+        "muneca",
+        "lumbar"
+      ],
+      "contra": [
+        "lesion_muneca"
+      ],
+      "desc": "Desde plancha alta, llevar rodillas al pecho de forma alterna y rapida. Core y cardio en el mismo bloque.",
+      "steps": [
+        "Plancha alta con las manos bajo los hombros.",
+        "Lleva una rodilla al pecho y cambia rapido.",
+        "Manten la cadera baja y quieta.",
+        "Ritmo constante."
+      ],
+      "cues": [
+        "Cadera baja",
+        "Rodilla al pecho",
+        "Ritmo constante"
+      ],
+      "errors": [
+        "Subir la cadera como si fuera pica",
+        "Apoyar mal la muneca",
+        "Ir tan rapido que se pierde la posicion"
+      ],
+      "breathing": "Respiracion ritmica y continua.",
+      "progressions": [
+        "ex_4012"
+      ],
+      "regressions": [
+        "ex_4001"
+      ],
+      "substitutes": [
+        "ex_5104"
+      ],
+      "asset": {
+        "clip": "ex_4011.mp4",
+        "imagen": "ex_4011.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_4012",
+      "slug": "escalador-cruzado",
+      "name": "Escalador cruzado",
+      "name_en": "Cross-body mountain climber",
+      "aliases": [
+        "escalador oblicuo"
+      ],
+      "family": "fam_antirotacion",
+      "category": "cardio",
+      "goals": [
+        "bajar_peso",
+        "cardio",
+        "calistenia"
+      ],
+      "level": 2,
+      "equipment": [
+        "colchoneta"
+      ],
+      "impact": 1,
+      "noise": 1,
+      "space": "colchoneta",
+      "unilateral": false,
+      "measure": "tiempo",
+      "default": {
+        "series": 3,
+        "seg": 30,
+        "rest_s": 30
+      },
+      "met": 8.0,
+      "primary": [
+        "oblicuo_externo",
+        "core"
+      ],
+      "secondary": [
+        "flexor_cadera",
+        "deltoide_anterior"
+      ],
+      "risk_zones": [
+        "muneca",
+        "lumbar"
+      ],
+      "contra": [
+        "lesion_muneca"
+      ],
+      "desc": "Escalador llevando la rodilla al codo contrario. Suma rotacion y carga mas los oblicuos.",
+      "steps": [
+        "Plancha alta.",
+        "Lleva la rodilla derecha hacia el codo izquierdo.",
+        "Vuelve y alterna.",
+        "Manten la cadera baja."
+      ],
+      "cues": [
+        "Rodilla al codo contrario",
+        "Cadera baja",
+        "Controlado"
+      ],
+      "errors": [
+        "Rotar demasiado y perder la plancha",
+        "Subir la cadera",
+        "Ir a velocidad sin control"
+      ],
+      "breathing": "Respiracion continua.",
+      "progressions": [],
+      "regressions": [
+        "ex_4011"
+      ],
+      "substitutes": [
+        "ex_4002"
+      ],
+      "asset": {
+        "clip": "ex_4012.mp4",
+        "imagen": "ex_4012.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_4013",
+      "slug": "plancha-lateral-elevacion-cadera",
+      "name": "Plancha lateral con elevacion de cadera",
+      "name_en": "Side plank hip dip",
+      "aliases": [
+        "side dips"
+      ],
+      "family": "fam_antiflexion_lateral",
+      "category": "fuerza",
+      "goals": [
+        "musculo",
+        "calistenia"
+      ],
+      "level": 3,
+      "equipment": [
+        "colchoneta"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "colchoneta",
+      "unilateral": true,
+      "measure": "reps_por_lado",
+      "default": {
+        "series": 3,
+        "reps": 12,
+        "rest_s": 45
+      },
+      "met": 4.0,
+      "primary": [
+        "oblicuo_externo",
+        "oblicuo_interno"
+      ],
+      "secondary": [
+        "gluteo_medio",
+        "transverso_abdominal"
+      ],
+      "risk_zones": [
+        "hombro",
+        "lumbar"
+      ],
+      "contra": [
+        "lesion_hombro"
+      ],
+      "evidence": {
+        "fuerza_oblicuos": "ok",
+        "reducir_cintura": "mito"
+      },
+      "evidence_note": "Fortalece oblicuos. No reduce la cintura; el trabajo pesado de oblicuos puede incluso engrosarla ligeramente.",
+      "desc": "Desde plancha lateral, bajar y subir la cadera. Version dinamica del isometrico lateral.",
+      "steps": [
+        "Plancha lateral estable.",
+        "Baja la cadera casi hasta tocar el suelo.",
+        "Sube apretando el costado.",
+        "Manten el cuerpo en un solo plano."
+      ],
+      "cues": [
+        "Un solo plano",
+        "Aprieta al subir",
+        "Controlado"
+      ],
+      "errors": [
+        "Rotar el torso",
+        "Apoyar la cadera de golpe",
+        "Perder la alineacion de codo y hombro"
+      ],
+      "breathing": "Exhala al subir, inhala al bajar.",
+      "progressions": [],
+      "regressions": [
+        "ex_4004"
+      ],
+      "substitutes": [
+        "ex_4004"
+      ],
+      "asset": {
+        "clip": "ex_4013.mp4",
+        "imagen": "ex_4013.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_4014",
+      "slug": "elevacion-piernas-colgado",
+      "name": "Elevacion de piernas colgado",
+      "name_en": "Hanging leg raise",
+      "aliases": [
+        "hanging leg raise"
+      ],
+      "family": "fam_flexion_espinal",
+      "category": "fuerza",
+      "goals": [
+        "calistenia",
+        "musculo",
+        "gym"
+      ],
+      "level": 3,
+      "equipment": [
+        "barra_dominadas"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "minimo",
+      "unilateral": false,
+      "measure": "reps",
+      "default": {
+        "series": 3,
+        "reps": 8,
+        "rest_s": 75
+      },
+      "met": 5.0,
+      "primary": [
+        "recto_abdominal",
+        "flexor_cadera"
+      ],
+      "secondary": [
+        "antebrazo",
+        "dorsal_ancho",
+        "oblicuo_externo"
+      ],
+      "risk_zones": [
+        "lumbar",
+        "hombro"
+      ],
+      "contra": [
+        "lesion_hombro",
+        "lesion_lumbar"
+      ],
+      "desc": "Colgado de la barra, subir las piernas. Uno de los ejercicios de abdomen mas exigentes que existen.",
+      "steps": [
+        "Cuelgate con los hombros activos.",
+        "Sube las piernas rectas o con rodillas dobladas.",
+        "Termina retrayendo la pelvis, no solo subiendo las piernas.",
+        "Baja controlado sin balancear."
+      ],
+      "cues": [
+        "Sin balanceo",
+        "Retrae la pelvis arriba",
+        "Baja lento"
+      ],
+      "errors": [
+        "Usar impulso de balanceo",
+        "Subir solo con flexores de cadera sin retraer pelvis",
+        "Soltar el agarre antes de tiempo"
+      ],
+      "breathing": "Exhala al subir, inhala al bajar.",
+      "progressions": [],
+      "regressions": [
+        "ex_4010"
+      ],
+      "substitutes": [
+        "ex_4010"
+      ],
+      "asset": {
+        "clip": "ex_4014.mp4",
+        "imagen": "ex_4014.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_4015",
+      "slug": "pallof-press",
+      "name": "Pallof press",
+      "name_en": "Pallof press",
+      "aliases": [
+        "press pallof",
+        "antirotacion con banda"
+      ],
+      "family": "fam_antirotacion",
+      "category": "fuerza",
+      "goals": [
+        "postura",
+        "musculo",
+        "gym"
+      ],
+      "level": 2,
+      "equipment": [
+        "banda_larga",
+        "polea"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "minimo",
+      "unilateral": true,
+      "measure": "reps_por_lado",
+      "default": {
+        "series": 3,
+        "reps": 10,
+        "rest_s": 45
+      },
+      "met": 3.5,
+      "primary": [
+        "oblicuo_externo",
+        "transverso_abdominal"
+      ],
+      "secondary": [
+        "gluteo_medio",
+        "multifidos"
+      ],
+      "risk_zones": [],
+      "contra": [],
+      "desc": "El ejercicio de antirotacion por excelencia. La banda intenta girarte y tu core impide que ocurra.",
+      "steps": [
+        "Ancla la banda a la altura del pecho y ponte de lado.",
+        "Sujeta con las dos manos frente al esternon.",
+        "Extiende los brazos al frente resistiendo el giro.",
+        "Vuelve al pecho sin dejar que te rote."
+      ],
+      "cues": [
+        "No dejes que te gire",
+        "Costillas abajo",
+        "Extiende despacio"
+      ],
+      "errors": [
+        "Girar el torso al extender",
+        "Inclinarse hacia el ancla",
+        "Contener la respiracion"
+      ],
+      "breathing": "Exhala al extender, inhala al volver.",
+      "progressions": [
+        "ex_3019"
+      ],
+      "regressions": [],
+      "substitutes": [
+        "ex_4002"
+      ],
+      "asset": {
+        "clip": "ex_4015.mp4",
+        "imagen": "ex_4015.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_4016",
+      "slug": "bicicleta-abdominal",
+      "name": "Bicicleta abdominal",
+      "name_en": "Bicycle crunch",
+      "aliases": [
+        "bicicleta",
+        "crunch bicicleta"
+      ],
+      "family": "fam_flexion_espinal",
+      "category": "fuerza",
+      "goals": [
+        "musculo",
+        "bajar_peso"
+      ],
+      "level": 2,
+      "equipment": [
+        "colchoneta"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "colchoneta",
+      "unilateral": false,
+      "measure": "reps",
+      "default": {
+        "series": 3,
+        "reps": 20,
+        "rest_s": 45
+      },
+      "met": 4.5,
+      "primary": [
+        "recto_abdominal",
+        "oblicuo_externo"
+      ],
+      "secondary": [
+        "flexor_cadera"
+      ],
+      "risk_zones": [
+        "cuello",
+        "lumbar"
+      ],
+      "contra": [
+        "hernia_discal"
+      ],
+      "desc": "Crunch con rotacion alternando codo y rodilla contraria. Uno de los ejercicios con mayor activacion medida de oblicuos.",
+      "steps": [
+        "Boca arriba, manos apoyadas en las sienes sin tirar.",
+        "Lleva el codo hacia la rodilla contraria rotando el torso.",
+        "Extiende la otra pierna sin tocar el suelo.",
+        "Alterna con control."
+      ],
+      "cues": [
+        "Rota el torso, no solo el codo",
+        "Sin tirar del cuello",
+        "Lento"
+      ],
+      "errors": [
+        "Tirar de la nuca",
+        "Ir muy rapido sin rotar de verdad",
+        "Despegar la lumbar al extender la pierna"
+      ],
+      "breathing": "Exhala en cada rotacion.",
+      "progressions": [],
+      "regressions": [
+        "ex_4008"
+      ],
+      "substitutes": [
+        "ex_4012"
+      ],
+      "asset": {
+        "clip": "ex_4016.mp4",
+        "imagen": "ex_4016.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_4017",
+      "slug": "rueda-abdominal",
+      "name": "Rueda abdominal",
+      "name_en": "Ab wheel rollout",
+      "aliases": [
+        "ab wheel",
+        "rollout"
+      ],
+      "family": "fam_antiextension",
+      "category": "fuerza",
+      "goals": [
+        "musculo",
+        "calistenia",
+        "gym"
+      ],
+      "level": 3,
+      "equipment": [
+        "esterilla_deslizante",
+        "colchoneta"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "colchoneta",
+      "unilateral": false,
+      "measure": "reps",
+      "default": {
+        "series": 3,
+        "reps": 8,
+        "rest_s": 75
+      },
+      "met": 5.0,
+      "primary": [
+        "recto_abdominal",
+        "transverso_abdominal"
+      ],
+      "secondary": [
+        "dorsal_ancho",
+        "serrato_anterior",
+        "triceps"
+      ],
+      "risk_zones": [
+        "lumbar",
+        "hombro"
+      ],
+      "contra": [
+        "lesion_lumbar",
+        "hernia_discal"
+      ],
+      "desc": "Extension del cuerpo resistiendo con el abdomen. Es el antiextension mas duro del catalogo.",
+      "steps": [
+        "De rodillas con la rueda o los discos deslizantes bajo las manos.",
+        "Mete la pelvis y aprieta el abdomen.",
+        "Rueda hacia delante solo hasta donde la lumbar no se arquee.",
+        "Vuelve tirando con el abdomen, no con los brazos."
+      ],
+      "cues": [
+        "Pelvis metida",
+        "Ve solo hasta donde controles",
+        "Vuelve con el abdomen"
+      ],
+      "errors": [
+        "Ir demasiado lejos y arquear la lumbar",
+        "Volver tirando con los brazos",
+        "Empezar de pie sin base de fuerza"
+      ],
+      "breathing": "Inhala al extender, exhala al volver.",
+      "progressions": [],
+      "regressions": [
+        "ex_4001"
+      ],
+      "substitutes": [
+        "ex_4007"
+      ],
+      "asset": {
+        "clip": "ex_4017.mp4",
+        "imagen": "ex_4017.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_4018",
+      "slug": "bird-dog",
+      "name": "Bird dog",
+      "name_en": "Bird dog",
+      "aliases": [
+        "perro de caza",
+        "cuadrupedia contralateral"
+      ],
+      "family": "fam_antiextension",
+      "category": "fuerza",
+      "goals": [
+        "postura",
+        "musculo"
+      ],
+      "level": 1,
+      "equipment": [
+        "colchoneta"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "colchoneta",
+      "unilateral": true,
+      "measure": "reps_por_lado",
+      "default": {
+        "series": 3,
+        "reps": 10,
+        "rest_s": 40
+      },
+      "met": 3.0,
+      "primary": [
+        "multifidos",
+        "transverso_abdominal"
+      ],
+      "secondary": [
+        "gluteo_mayor",
+        "erectores_espinales",
+        "deltoide_posterior"
+      ],
+      "risk_zones": [
+        "lumbar"
+      ],
+      "contra": [],
+      "desc": "Extension de brazo y pierna contraria en cuadrupedia. De los ejercicios mas recomendados en programas de estabilidad lumbar.",
+      "steps": [
+        "A cuatro apoyos, columna neutra.",
+        "Extiende el brazo derecho y la pierna izquierda a la vez.",
+        "Manten la pelvis nivelada, sin rotar.",
+        "Vuelve y alterna."
+      ],
+      "cues": [
+        "Pelvis nivelada",
+        "Estira largo",
+        "Sin arquear"
+      ],
+      "errors": [
+        "Arquear la lumbar al extender la pierna",
+        "Rotar la cadera",
+        "Subir la pierna demasiado"
+      ],
+      "breathing": "Exhala al extender, inhala al volver.",
+      "progressions": [
+        "ex_4006"
+      ],
+      "regressions": [],
+      "substitutes": [
+        "ex_4006"
+      ],
+      "asset": {
+        "clip": "ex_4018.mp4",
+        "imagen": "ex_4018.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_4019",
+      "slug": "russian-twist",
+      "name": "Giro ruso",
+      "name_en": "Russian twist",
+      "aliases": [
+        "russian twist",
+        "giros con peso"
+      ],
+      "family": "fam_flexion_espinal",
+      "category": "fuerza",
+      "goals": [
+        "musculo",
+        "bajar_peso"
+      ],
+      "level": 2,
+      "equipment": [
+        "colchoneta",
+        "mancuernas"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "colchoneta",
+      "unilateral": false,
+      "measure": "reps",
+      "default": {
+        "series": 3,
+        "reps": 20,
+        "rest_s": 45
+      },
+      "met": 4.0,
+      "primary": [
+        "oblicuo_externo",
+        "oblicuo_interno"
+      ],
+      "secondary": [
+        "recto_abdominal",
+        "flexor_cadera"
+      ],
+      "risk_zones": [
+        "lumbar"
+      ],
+      "contra": [
+        "hernia_discal",
+        "lesion_lumbar"
+      ],
+      "evidence": {
+        "fuerza_oblicuos": "ok",
+        "reducir_grasa_cintura": "mito",
+        "seguro_con_dolor_lumbar": "mito"
+      },
+      "evidence_note": "Fortalece oblicuos, pero la rotacion con carga y columna flexionada es de los patrones peor tolerados con dolor lumbar. Si hay molestia lumbar, usa Pallof press.",
+      "desc": "Rotacion del torso sentado con el tronco inclinado atras.",
+      "steps": [
+        "Sentado, rodillas dobladas, torso inclinado atras.",
+        "Manos juntas o con peso frente al pecho.",
+        "Rota el torso a un lado y al otro.",
+        "Manten la espalda recta, no encorvada."
+      ],
+      "cues": [
+        "Espalda recta",
+        "Rota el torso",
+        "Controlado"
+      ],
+      "errors": [
+        "Encorvar la espalda",
+        "Mover solo los brazos sin rotar",
+        "Ir demasiado rapido con peso"
+      ],
+      "breathing": "Exhala en cada giro.",
+      "progressions": [],
+      "regressions": [
+        "ex_4015"
+      ],
+      "substitutes": [
+        "ex_4015"
+      ],
+      "asset": {
+        "clip": "ex_4019.mp4",
+        "imagen": "ex_4019.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_4020",
+      "slug": "plancha-fitball",
+      "name": "Plancha en fitball",
+      "name_en": "Stability ball plank",
+      "aliases": [
+        "plancha en pelota"
+      ],
+      "family": "fam_antiextension",
+      "category": "fuerza",
+      "goals": [
+        "musculo",
+        "postura",
+        "calistenia"
+      ],
+      "level": 3,
+      "equipment": [
+        "fitball",
+        "colchoneta"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "colchoneta",
+      "unilateral": false,
+      "measure": "tiempo",
+      "default": {
+        "series": 3,
+        "seg": 30,
+        "rest_s": 60
+      },
+      "met": 4.0,
+      "primary": [
+        "transverso_abdominal",
+        "recto_abdominal"
+      ],
+      "secondary": [
+        "serrato_anterior",
+        "gluteo_mayor"
+      ],
+      "risk_zones": [
+        "lumbar",
+        "hombro"
+      ],
+      "contra": [],
+      "desc": "Plancha con los antebrazos sobre la pelota. La inestabilidad multiplica la demanda de core.",
+      "steps": [
+        "Antebrazos sobre la pelota, codos bajo los hombros.",
+        "Cuerpo recto, gluteo apretado.",
+        "Aguanta sin que la pelota se mueva.",
+        "Progresion: pequeños circulos con los antebrazos."
+      ],
+      "cues": [
+        "Pelota quieta",
+        "Costillas abajo",
+        "Respira"
+      ],
+      "errors": [
+        "Dejar caer la cadera",
+        "Apoyar demasiado peso en la pelota",
+        "Empezar con circulos sin dominar la posicion"
+      ],
+      "breathing": "Respiracion continua.",
+      "progressions": [],
+      "regressions": [
+        "ex_4001"
+      ],
+      "substitutes": [
+        "ex_4001"
+      ],
+      "asset": {
+        "clip": "ex_4020.mp4",
+        "imagen": "ex_4020.jpg",
+        "recorrido": "sostenido"
+      }
+    },
+    {
+      "id": "ex_4021",
+      "slug": "respiracion-360",
+      "name": "Respiracion 360",
+      "name_en": "360 breathing",
+      "aliases": [
+        "respiracion diafragmatica",
+        "respiracion costal"
+      ],
+      "family": "fam_respiracion",
+      "category": "movilidad",
+      "goals": [
+        "postura",
+        "musculo"
+      ],
+      "level": 1,
+      "equipment": [
+        "colchoneta"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "colchoneta",
+      "unilateral": false,
+      "measure": "tiempo",
+      "default": {
+        "series": 2,
+        "seg": 60,
+        "rest_s": 30
+      },
+      "met": 1.5,
+      "primary": [
+        "diafragma",
+        "transverso_abdominal"
+      ],
+      "secondary": [
+        "suelo_pelvico",
+        "multifidos"
+      ],
+      "risk_zones": [],
+      "contra": [],
+      "desc": "Respiracion que expande costillas en 360 grados. Base del control del core y del trabajo postparto.",
+      "steps": [
+        "Tumbado boca arriba con las rodillas dobladas.",
+        "Manos en las costillas laterales.",
+        "Inhala por la nariz expandiendo las costillas hacia los lados y atras.",
+        "Exhala largo sintiendo como el abdomen se apreta solo."
+      ],
+      "cues": [
+        "Expande a los lados",
+        "Exhala largo",
+        "Hombros quietos"
+      ],
+      "errors": [
+        "Subir los hombros al inhalar",
+        "Solo hinchar la barriga hacia arriba",
+        "Inhalar demasiado rapido"
+      ],
+      "breathing": "Inhala 4 segundos, exhala 6 a 8 segundos.",
+      "progressions": [
+        "ex_4006"
+      ],
+      "regressions": [],
+      "substitutes": [],
+      "asset": {
+        "clip": "ex_4021.mp4",
+        "imagen": "ex_4021.jpg",
+        "recorrido": "sostenido"
+      }
+    },
+    {
+      "id": "ex_4022",
+      "slug": "plancha-un-brazo",
+      "name": "Plancha a un brazo",
+      "name_en": "One-arm plank",
+      "aliases": [],
+      "family": "fam_antirotacion",
+      "category": "fuerza",
+      "goals": [
+        "calistenia",
+        "musculo"
+      ],
+      "level": 3,
+      "equipment": [
+        "colchoneta"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "colchoneta",
+      "unilateral": true,
+      "measure": "tiempo",
+      "default": {
+        "series": 3,
+        "seg": 20,
+        "rest_s": 60
+      },
+      "met": 4.5,
+      "primary": [
+        "oblicuo_externo",
+        "transverso_abdominal"
+      ],
+      "secondary": [
+        "deltoide_anterior",
+        "gluteo_mayor"
+      ],
+      "risk_zones": [
+        "lumbar",
+        "hombro"
+      ],
+      "contra": [
+        "lesion_hombro"
+      ],
+      "desc": "Plancha levantando un brazo. Antirotacion maxima con peso corporal.",
+      "steps": [
+        "Plancha alta con los pies anchos.",
+        "Levanta un brazo al frente sin mover la cadera.",
+        "Aguanta y cambia."
+      ],
+      "cues": [
+        "Cadera cuadrada",
+        "Pies anchos",
+        "Sin rotar"
+      ],
+      "errors": [
+        "Rotar la cadera",
+        "Perder la linea del cuerpo",
+        "Aguantar la respiracion"
+      ],
+      "breathing": "Respiracion continua.",
+      "progressions": [],
+      "regressions": [
+        "ex_4002"
+      ],
+      "substitutes": [
+        "ex_4015"
+      ],
+      "asset": {
+        "clip": "ex_4022.mp4",
+        "imagen": "ex_4022.jpg",
+        "recorrido": "sostenido"
+      }
+    }
+  ]
+}

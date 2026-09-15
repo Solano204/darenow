@@ -1,0 +1,965 @@
+{
+  "coleccion": "ejercicios",
+  "bloque": "cardio_hiit",
+  "version": "2.0.0",
+  "nota": "Los movimientos pliometricos de cardio (burpee, saltos, cuerda) viven en 14_exercises_calisthenics.json. Aqui van los de bajo impacto, los de maquina y las estructuras de intervalo.",
+  "items": [
+    {
+      "id": "ex_5101",
+      "slug": "caminata-rapida",
+      "name": "Caminata rapida",
+      "name_en": "Brisk walk",
+      "aliases": [
+        "caminata",
+        "walk"
+      ],
+      "family": "fam_cardio_continuo",
+      "category": "cardio",
+      "goals": [
+        "bajar_peso",
+        "cardio"
+      ],
+      "level": 1,
+      "equipment": [
+        "ninguno"
+      ],
+      "impact": 1,
+      "noise": 0,
+      "space": "amplio",
+      "unilateral": false,
+      "measure": "tiempo",
+      "default": {
+        "series": 1,
+        "seg": 1800,
+        "rest_s": 0
+      },
+      "met": 4.3,
+      "primary": [
+        "cuadriceps",
+        "gemelos"
+      ],
+      "secondary": [
+        "gluteo_mayor",
+        "core",
+        "isquiotibiales"
+      ],
+      "risk_zones": [],
+      "contra": [],
+      "evidence": {
+        "salud_cardiovascular": "ok",
+        "gasto_calorico_sostenible": "ok",
+        "quemar_grasa_localizada": "mito"
+      },
+      "evidence_note": "Es el ejercicio con mejor adherencia a largo plazo que existe. No quema grasa de una zona concreta: reduce grasa corporal total si hay deficit energetico.",
+      "desc": "Caminar a ritmo vivo, donde puedes hablar pero no cantar. La base mas subestimada de todo el acondicionamiento.",
+      "steps": [
+        "Ritmo en el que puedas hablar con frases cortas.",
+        "Torso alto, mirada al frente.",
+        "Brazos flexionados moviendose de forma natural.",
+        "Manten el ritmo constante."
+      ],
+      "cues": [
+        "Puedes hablar, no cantar",
+        "Torso alto",
+        "Ritmo constante"
+      ],
+      "errors": [
+        "Ir demasiado lento para que cuente como estimulo",
+        "Mirar el telefono y encorvarse",
+        "Empezar con 90 minutos el primer dia"
+      ],
+      "breathing": "Nasal si es posible, continua.",
+      "progressions": [
+        "ex_5102",
+        "ex_6501"
+      ],
+      "regressions": [],
+      "substitutes": [
+        "ex_5103"
+      ],
+      "asset": {
+        "clip": "ex_5101.mp4",
+        "imagen": "ex_5101.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_5102",
+      "slug": "caminata-inclinada",
+      "name": "Caminata en pendiente",
+      "name_en": "Incline walk",
+      "aliases": [
+        "caminata en cuesta",
+        "incline walk"
+      ],
+      "family": "fam_cardio_continuo",
+      "category": "cardio",
+      "goals": [
+        "bajar_peso",
+        "cardio"
+      ],
+      "level": 1,
+      "equipment": [
+        "remo_maquina"
+      ],
+      "impact": 1,
+      "noise": 0,
+      "space": "amplio",
+      "unilateral": false,
+      "measure": "tiempo",
+      "default": {
+        "series": 1,
+        "seg": 1500,
+        "rest_s": 0
+      },
+      "met": 6.5,
+      "primary": [
+        "gluteo_mayor",
+        "cuadriceps"
+      ],
+      "secondary": [
+        "soleo",
+        "isquiotibiales",
+        "core"
+      ],
+      "risk_zones": [
+        "tobillo"
+      ],
+      "contra": [],
+      "desc": "Caminar en cuesta o caminadora inclinada. Casi el gasto de trotar con una fraccion del impacto en la rodilla.",
+      "steps": [
+        "Inclinacion entre 8 y 12 por ciento.",
+        "Camina sin agarrarte de los pasamanos.",
+        "Torso alto, pasos completos.",
+        "Manten el ritmo 20 a 30 minutos."
+      ],
+      "cues": [
+        "No te agarres",
+        "Torso alto",
+        "Paso completo"
+      ],
+      "errors": [
+        "Agarrarse de la maquina y perder la mitad del estimulo",
+        "Inclinar tanto que se corre en vez de caminar",
+        "Pasos demasiado cortos"
+      ],
+      "breathing": "Continua, algo mas profunda que en llano.",
+      "progressions": [
+        "ex_6501"
+      ],
+      "regressions": [
+        "ex_5101"
+      ],
+      "substitutes": [
+        "ex_5101"
+      ],
+      "asset": {
+        "clip": "ex_5102.mp4",
+        "imagen": "ex_5102.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_5103",
+      "slug": "marcha-en-el-sitio",
+      "name": "Marcha en el sitio",
+      "name_en": "Marching in place",
+      "aliases": [
+        "marcha estatica"
+      ],
+      "family": "fam_cardio_continuo",
+      "category": "cardio",
+      "goals": [
+        "cardio",
+        "bajar_peso",
+        "postura"
+      ],
+      "level": 1,
+      "equipment": [
+        "ninguno"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "minimo",
+      "unilateral": false,
+      "measure": "tiempo",
+      "default": {
+        "series": 3,
+        "seg": 60,
+        "rest_s": 30
+      },
+      "met": 3.5,
+      "primary": [
+        "flexor_cadera",
+        "cuadriceps"
+      ],
+      "secondary": [
+        "core",
+        "gemelos"
+      ],
+      "risk_zones": [],
+      "contra": [],
+      "desc": "Caminar en el sitio subiendo las rodillas. Cero impacto, cero ruido y cero espacio: la base del calentamiento en departamento.",
+      "steps": [
+        "De pie, sube una rodilla a la altura de la cadera.",
+        "Alterna con ritmo constante.",
+        "Acompaña con los brazos.",
+        "Aumenta la velocidad para subir intensidad."
+      ],
+      "cues": [
+        "Rodilla alta",
+        "Brazos activos",
+        "Ritmo constante"
+      ],
+      "errors": [
+        "Rodillas demasiado bajas",
+        "Encorvarse",
+        "Ir sin ritmo"
+      ],
+      "breathing": "Continua.",
+      "progressions": [
+        "ex_5019"
+      ],
+      "regressions": [],
+      "substitutes": [
+        "ex_5018"
+      ],
+      "asset": {
+        "clip": "ex_5103.mp4",
+        "imagen": "ex_5103.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_5104",
+      "slug": "escalador-lento",
+      "name": "Escalador lento",
+      "name_en": "Slow mountain climber",
+      "aliases": [
+        "escalador controlado"
+      ],
+      "family": "fam_locomocion",
+      "category": "cardio",
+      "goals": [
+        "cardio",
+        "postura",
+        "musculo"
+      ],
+      "level": 1,
+      "equipment": [
+        "colchoneta"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "colchoneta",
+      "unilateral": false,
+      "measure": "tiempo",
+      "default": {
+        "series": 3,
+        "seg": 40,
+        "rest_s": 30
+      },
+      "met": 5.0,
+      "primary": [
+        "core"
+      ],
+      "secondary": [
+        "flexor_cadera",
+        "deltoide_anterior"
+      ],
+      "risk_zones": [
+        "muneca"
+      ],
+      "contra": [
+        "lesion_muneca"
+      ],
+      "desc": "Escalador a velocidad controlada. Mantiene el estimulo de core sin impacto ni ruido.",
+      "steps": [
+        "Plancha alta estable.",
+        "Lleva una rodilla al pecho despacio.",
+        "Vuelve controlado y alterna.",
+        "Sin rebote ni prisa."
+      ],
+      "cues": [
+        "Lento",
+        "Cadera baja",
+        "Controlado"
+      ],
+      "errors": [
+        "Acelerar sin darte cuenta",
+        "Subir la cadera",
+        "Perder la alineacion de la muneca"
+      ],
+      "breathing": "Exhala al llevar la rodilla.",
+      "progressions": [
+        "ex_4011"
+      ],
+      "regressions": [
+        "ex_4001"
+      ],
+      "substitutes": [
+        "ex_5103"
+      ],
+      "asset": {
+        "clip": "ex_5104.mp4",
+        "imagen": "ex_5104.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_5105",
+      "slug": "remo-maquina-cardio",
+      "name": "Remo en maquina",
+      "name_en": "Rowing machine",
+      "aliases": [
+        "remo ergometro",
+        "rower"
+      ],
+      "family": "fam_cardio_continuo",
+      "category": "cardio",
+      "goals": [
+        "cardio",
+        "bajar_peso",
+        "gym"
+      ],
+      "level": 2,
+      "equipment": [
+        "remo_maquina"
+      ],
+      "impact": 0,
+      "noise": 1,
+      "space": "amplio",
+      "unilateral": false,
+      "measure": "tiempo",
+      "default": {
+        "series": 1,
+        "seg": 1200,
+        "rest_s": 0
+      },
+      "met": 7.0,
+      "primary": [
+        "dorsal_ancho",
+        "cuadriceps"
+      ],
+      "secondary": [
+        "gluteo_mayor",
+        "biceps",
+        "core",
+        "erectores_espinales"
+      ],
+      "risk_zones": [
+        "lumbar"
+      ],
+      "contra": [
+        "lesion_lumbar",
+        "hernia_discal"
+      ],
+      "desc": "Cardio de cuerpo completo sin impacto. La secuencia correcta es piernas, tronco, brazos; al revés es como se lesiona la gente.",
+      "steps": [
+        "Empieza con las piernas flexionadas y los brazos extendidos.",
+        "Empuja con las piernas primero.",
+        "Despues inclina el tronco atras.",
+        "Por ultimo tira con los brazos al abdomen. Vuelve en orden inverso."
+      ],
+      "cues": [
+        "Piernas, tronco, brazos",
+        "Espalda larga",
+        "Vuelve en orden inverso"
+      ],
+      "errors": [
+        "Tirar con los brazos antes que con las piernas",
+        "Redondear la espalda",
+        "Ir a maxima intensidad desde el primer minuto"
+      ],
+      "breathing": "Exhala al tirar, inhala al volver.",
+      "progressions": [],
+      "regressions": [
+        "ex_5101"
+      ],
+      "substitutes": [
+        "ex_5106"
+      ],
+      "asset": {
+        "clip": "ex_5105.mp4",
+        "imagen": "ex_5105.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_5106",
+      "slug": "bici-estatica",
+      "name": "Bicicleta estatica",
+      "name_en": "Stationary bike",
+      "aliases": [
+        "spinning",
+        "bici"
+      ],
+      "family": "fam_cardio_continuo",
+      "category": "cardio",
+      "goals": [
+        "cardio",
+        "bajar_peso",
+        "gym"
+      ],
+      "level": 1,
+      "equipment": [
+        "remo_maquina"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "amplio",
+      "unilateral": false,
+      "measure": "tiempo",
+      "default": {
+        "series": 1,
+        "seg": 1800,
+        "rest_s": 0
+      },
+      "met": 6.8,
+      "primary": [
+        "cuadriceps"
+      ],
+      "secondary": [
+        "gluteo_mayor",
+        "isquiotibiales",
+        "gemelos"
+      ],
+      "risk_zones": [
+        "rodilla"
+      ],
+      "contra": [],
+      "desc": "Cardio sin impacto y con carga graduable. La mejor opcion cuando hay molestia de rodilla, tobillo o sobrepeso alto.",
+      "steps": [
+        "Ajusta el sillin: con el pedal abajo, la rodilla queda casi extendida.",
+        "Manten la espalda neutra y las manos relajadas.",
+        "Cadencia entre 70 y 90 pedaladas por minuto.",
+        "Ajusta la resistencia, no la velocidad, para subir esfuerzo."
+      ],
+      "cues": [
+        "Sillin a la altura correcta",
+        "Cadencia constante",
+        "Sube resistencia, no prisa"
+      ],
+      "errors": [
+        "Sillin demasiado bajo, lo que castiga la rodilla",
+        "Pedalear sin resistencia a toda velocidad",
+        "Cargar el peso en las munecas"
+      ],
+      "breathing": "Continua y ritmica.",
+      "progressions": [
+        "ex_5108"
+      ],
+      "regressions": [],
+      "substitutes": [
+        "ex_5105"
+      ],
+      "asset": {
+        "clip": "ex_5106.mp4",
+        "imagen": "ex_5106.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_5107",
+      "slug": "eliptica",
+      "name": "Eliptica",
+      "name_en": "Elliptical",
+      "aliases": [
+        "eliptica"
+      ],
+      "family": "fam_cardio_continuo",
+      "category": "cardio",
+      "goals": [
+        "cardio",
+        "bajar_peso",
+        "gym"
+      ],
+      "level": 1,
+      "equipment": [
+        "remo_maquina"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "amplio",
+      "unilateral": false,
+      "measure": "tiempo",
+      "default": {
+        "series": 1,
+        "seg": 1500,
+        "rest_s": 0
+      },
+      "met": 5.0,
+      "primary": [
+        "cuadriceps",
+        "gluteo_mayor"
+      ],
+      "secondary": [
+        "isquiotibiales",
+        "dorsal_ancho",
+        "pectoral_mayor"
+      ],
+      "risk_zones": [],
+      "contra": [],
+      "desc": "Cardio sin impacto que involucra brazos y piernas. Comodo, aunque es facil engañarse y trabajar poco.",
+      "steps": [
+        "Apoya el pie completo en la plataforma.",
+        "Usa los brazos activamente, no solo de apoyo.",
+        "Manten el torso alto.",
+        "Ajusta la resistencia para que el esfuerzo sea real."
+      ],
+      "cues": [
+        "Usa los brazos",
+        "Torso alto",
+        "Resistencia real"
+      ],
+      "errors": [
+        "Apoyarse en el manillar y dejar de trabajar",
+        "Resistencia minima",
+        "Encorvar la espalda"
+      ],
+      "breathing": "Continua.",
+      "progressions": [],
+      "regressions": [],
+      "substitutes": [
+        "ex_5106"
+      ],
+      "asset": {
+        "clip": "ex_5107.mp4",
+        "imagen": "ex_5107.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_5108",
+      "slug": "sprint-bici",
+      "name": "Sprint en bici estatica",
+      "name_en": "Bike sprint",
+      "aliases": [
+        "sprint en bici"
+      ],
+      "family": "fam_cardio_intervalos",
+      "category": "cardio",
+      "goals": [
+        "cardio",
+        "bajar_peso",
+        "gym"
+      ],
+      "level": 2,
+      "equipment": [
+        "remo_maquina"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "amplio",
+      "unilateral": false,
+      "measure": "tiempo",
+      "default": {
+        "series": 8,
+        "seg": 20,
+        "rest_s": 40
+      },
+      "met": 12.0,
+      "primary": [
+        "cuadriceps"
+      ],
+      "secondary": [
+        "gluteo_mayor",
+        "gemelos",
+        "core"
+      ],
+      "risk_zones": [
+        "rodilla"
+      ],
+      "contra": [
+        "hipertension"
+      ],
+      "desc": "Intervalos maximos en bici. Todo el estimulo del HIIT sin nada de impacto articular: la mejor opcion de alta intensidad para quien tiene sobrepeso o rodillas sensibles.",
+      "steps": [
+        "Calienta 5 minutos a ritmo suave.",
+        "Sube la resistencia y pedalea al maximo 20 segundos.",
+        "Baja la resistencia y pedalea suave 40 segundos.",
+        "Repite 8 veces y enfria 5 minutos."
+      ],
+      "cues": [
+        "Maximo en el sprint",
+        "Suave de verdad en la pausa",
+        "No bajes la resistencia en el sprint"
+      ],
+      "errors": [
+        "No subir resistencia y solo pedalear rapido en vacio",
+        "No descansar de verdad entre series",
+        "Empezar sin calentar"
+      ],
+      "breathing": "Libre, profunda en la recuperacion.",
+      "progressions": [],
+      "regressions": [
+        "ex_5106"
+      ],
+      "substitutes": [
+        "ex_5017"
+      ],
+      "asset": {
+        "clip": "ex_5108.mp4",
+        "imagen": "ex_5108.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_5109",
+      "slug": "sombra-boxeo",
+      "name": "Sombra de boxeo",
+      "name_en": "Shadow boxing",
+      "aliases": [
+        "shadow boxing",
+        "boxeo sin contacto"
+      ],
+      "family": "fam_cardio_intervalos",
+      "category": "cardio",
+      "goals": [
+        "cardio",
+        "bajar_peso"
+      ],
+      "level": 1,
+      "equipment": [
+        "ninguno"
+      ],
+      "impact": 1,
+      "noise": 0,
+      "space": "colchoneta",
+      "unilateral": false,
+      "measure": "tiempo",
+      "default": {
+        "series": 4,
+        "seg": 60,
+        "rest_s": 45
+      },
+      "met": 7.0,
+      "primary": [
+        "deltoide_anterior",
+        "core"
+      ],
+      "secondary": [
+        "oblicuo_externo",
+        "gemelos",
+        "cuadriceps"
+      ],
+      "risk_zones": [
+        "hombro",
+        "codo"
+      ],
+      "contra": [
+        "lesion_hombro"
+      ],
+      "desc": "Golpeo al aire con desplazamiento. Cardio divertido, sin impacto alto y sin ruido para los vecinos.",
+      "steps": [
+        "Guardia alta, pies al ancho de hombros y uno adelantado.",
+        "Lanza golpes rotando la cadera, no solo el brazo.",
+        "No extiendas el codo del todo al final del golpe.",
+        "Muevete constantemente."
+      ],
+      "cues": [
+        "Rota la cadera",
+        "No bloquees el codo",
+        "Guardia arriba"
+      ],
+      "errors": [
+        "Bloquear el codo al extender, lo que castiga la articulacion",
+        "Golpear solo con el brazo",
+        "Bajar la guardia y perder la postura"
+      ],
+      "breathing": "Exhala en cada golpe.",
+      "progressions": [],
+      "regressions": [
+        "ex_5103"
+      ],
+      "substitutes": [
+        "ex_5018"
+      ],
+      "asset": {
+        "clip": "ex_5109.mp4",
+        "imagen": "ex_5109.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_5110",
+      "slug": "escaleras",
+      "name": "Subir escaleras",
+      "name_en": "Stair climbing",
+      "aliases": [
+        "escaleras",
+        "stair climb"
+      ],
+      "family": "fam_cardio_intervalos",
+      "category": "cardio",
+      "goals": [
+        "cardio",
+        "bajar_peso"
+      ],
+      "level": 2,
+      "equipment": [
+        "ninguno"
+      ],
+      "impact": 2,
+      "noise": 1,
+      "space": "amplio",
+      "unilateral": false,
+      "measure": "tiempo",
+      "default": {
+        "series": 6,
+        "seg": 45,
+        "rest_s": 75
+      },
+      "met": 8.0,
+      "primary": [
+        "cuadriceps",
+        "gluteo_mayor"
+      ],
+      "secondary": [
+        "soleo",
+        "gemelos",
+        "core"
+      ],
+      "risk_zones": [
+        "rodilla"
+      ],
+      "contra": [
+        "lesion_rodilla"
+      ],
+      "desc": "Subir escaleras a buen ritmo. Cardio gratis, disponible en casi cualquier edificio y con gasto muy alto.",
+      "steps": [
+        "Sube apoyando el pie completo en cada escalon.",
+        "Empuja con el gluteo, no solo con el cuadriceps.",
+        "Baja caminando y con cuidado: bajar castiga mas la rodilla que subir.",
+        "Alterna series de subida con bajada de recuperacion."
+      ],
+      "cues": [
+        "Pie completo",
+        "Empuja con el gluteo",
+        "Baja despacio"
+      ],
+      "errors": [
+        "Bajar corriendo y castigar la rodilla",
+        "Apoyar solo la punta del pie",
+        "Agarrarse del pasamanos para tirar"
+      ],
+      "breathing": "Profunda y ritmica.",
+      "progressions": [],
+      "regressions": [
+        "ex_5102"
+      ],
+      "substitutes": [
+        "ex_1012"
+      ],
+      "asset": {
+        "clip": "ex_5110.mp4",
+        "imagen": "ex_5110.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_5111",
+      "slug": "golpe-balon-medicinal",
+      "name": "Golpe con balon medicinal",
+      "name_en": "Medicine ball slam",
+      "aliases": [
+        "ball slam",
+        "slam"
+      ],
+      "family": "fam_pliometrico",
+      "category": "cardio",
+      "goals": [
+        "cardio",
+        "bajar_peso",
+        "gym"
+      ],
+      "level": 2,
+      "equipment": [
+        "kettlebell"
+      ],
+      "impact": 2,
+      "noise": 2,
+      "space": "colchoneta",
+      "unilateral": false,
+      "measure": "reps",
+      "default": {
+        "series": 4,
+        "reps": 12,
+        "rest_s": 45
+      },
+      "met": 8.0,
+      "primary": [
+        "core",
+        "dorsal_ancho"
+      ],
+      "secondary": [
+        "deltoide_anterior",
+        "cuadriceps",
+        "gluteo_mayor"
+      ],
+      "risk_zones": [
+        "lumbar",
+        "hombro"
+      ],
+      "contra": [
+        "lesion_lumbar",
+        "lesion_hombro"
+      ],
+      "desc": "Levantar el balon por encima de la cabeza y lanzarlo al suelo con fuerza. Descarga de tension y mucho gasto.",
+      "steps": [
+        "Balon en las manos, pies al ancho de hombros.",
+        "Sube el balon por encima de la cabeza extendiendo el cuerpo.",
+        "Lanzalo al suelo con toda la fuerza, acompanando con el abdomen.",
+        "Recogelo con las rodillas flexionadas, no con la espalda."
+      ],
+      "cues": [
+        "Extiende arriba",
+        "Golpe con el abdomen",
+        "Recoge con las piernas"
+      ],
+      "errors": [
+        "Recoger el balon con la espalda redondeada",
+        "Usar un balon que rebota",
+        "Lanzar solo con los brazos"
+      ],
+      "breathing": "Exhala con fuerza en el golpe.",
+      "progressions": [],
+      "regressions": [],
+      "substitutes": [
+        "ex_1024"
+      ],
+      "asset": {
+        "clip": "ex_5111.mp4",
+        "imagen": "ex_5111.jpg",
+        "recorrido": "ciclico"
+      }
+    }
+  ],
+  "estructuras_intervalo": [
+    {
+      "id": "str_tabata",
+      "name": "Tabata",
+      "protocolo": "20 s maximo / 10 s descanso x 8 rondas",
+      "duracion_total_min": 4,
+      "nivel": 3,
+      "desc": "Protocolo original de Izumi Tabata, disenado con esfuerzo casi maximo. Solo funciona si el trabajo es de verdad maximo; a intensidad media es solo un circuito corto.",
+      "evidence": {
+        "capacidad_anaerobica": "ok",
+        "4_minutos_equivalen_a_1_hora": "mito"
+      },
+      "evidence_note": "Cuatro minutos de tabata no equivalen a una hora de cardio. Es un estimulo distinto y complementario, no un sustituto.",
+      "apto_principiantes": false
+    },
+    {
+      "id": "str_hiit_30_30",
+      "name": "HIIT 30/30",
+      "protocolo": "30 s fuerte / 30 s suave x 10-16 rondas",
+      "duracion_total_min": 16,
+      "nivel": 2,
+      "desc": "La estructura mas usada y mas tolerable. Permite mantener buena tecnica en el bloque fuerte.",
+      "apto_principiantes": true
+    },
+    {
+      "id": "str_hiit_40_20",
+      "name": "HIIT 40/20",
+      "protocolo": "40 s trabajo / 20 s descanso x 8-12 rondas",
+      "duracion_total_min": 12,
+      "nivel": 2,
+      "desc": "Mas densidad de trabajo. Ideal para circuitos de cuerpo completo con ejercicios de fuerza.",
+      "apto_principiantes": true
+    },
+    {
+      "id": "str_emom",
+      "name": "EMOM (cada minuto al minuto)",
+      "protocolo": "Un numero fijo de repeticiones al inicio de cada minuto; el resto del minuto es descanso",
+      "duracion_total_min": 12,
+      "nivel": 2,
+      "desc": "Autorregulado: cuanto mas rapido terminas, mas descansas. Excelente para mantener tecnica.",
+      "apto_principiantes": true
+    },
+    {
+      "id": "str_amrap",
+      "name": "AMRAP (tantas rondas como puedas)",
+      "protocolo": "Circuito fijo repetido durante un tiempo total",
+      "duracion_total_min": 15,
+      "nivel": 2,
+      "desc": "Mide progreso de forma directa: la misma sesion, mas rondas. Muy buen indicador de mejora.",
+      "apto_principiantes": true
+    },
+    {
+      "id": "str_piramide",
+      "name": "Piramide",
+      "protocolo": "Repeticiones que suben y bajan: 2-4-6-8-6-4-2",
+      "duracion_total_min": 14,
+      "nivel": 2,
+      "desc": "Sube y baja la carga dentro de la misma sesion. Bueno para volumen sin monotonia.",
+      "apto_principiantes": true
+    },
+    {
+      "id": "str_estado_estable",
+      "name": "Estado estable (Zona 2)",
+      "protocolo": "Ritmo constante 25-60 min donde puedes hablar con frases completas",
+      "duracion_total_min": 40,
+      "nivel": 1,
+      "desc": "La base aerobica. Aburrido y el mas importante a largo plazo, sobre todo para corredores.",
+      "evidence": {
+        "base_aerobica": "ok",
+        "quema_de_grasa_como_sustrato": "parcial"
+      },
+      "evidence_note": "A esta intensidad se usa mayor proporcion de grasa como sustrato, pero eso no significa mas perdida de grasa: lo que decide es el balance energetico total.",
+      "apto_principiantes": true
+    },
+    {
+      "id": "str_circuito_densidad",
+      "name": "Circuito de densidad",
+      "protocolo": "5-8 ejercicios seguidos, 45 s cada uno, 15 s de transicion, 2-3 vueltas",
+      "duracion_total_min": 18,
+      "nivel": 2,
+      "desc": "La estructura por defecto del motor de bajar peso. Combina fuerza y cardio en el mismo bloque.",
+      "apto_principiantes": true
+    }
+  ],
+  "zonas_esfuerzo": [
+    {
+      "zona": 1,
+      "name": "Muy suave",
+      "pct_fcmax": "50-60%",
+      "prueba_habla": "Puedes cantar",
+      "rpe": "2-3",
+      "uso": "Calentamiento, enfriamiento, recuperacion activa"
+    },
+    {
+      "zona": 2,
+      "name": "Suave",
+      "pct_fcmax": "60-70%",
+      "prueba_habla": "Puedes hablar con frases completas",
+      "rpe": "4-5",
+      "uso": "Base aerobica, rodajes largos"
+    },
+    {
+      "zona": 3,
+      "name": "Moderado",
+      "pct_fcmax": "70-80%",
+      "prueba_habla": "Frases cortas, no parrafos",
+      "rpe": "6-7",
+      "uso": "Ritmo sostenido, tempo"
+    },
+    {
+      "zona": 4,
+      "name": "Fuerte",
+      "pct_fcmax": "80-90%",
+      "prueba_habla": "Tres palabras seguidas como maximo",
+      "rpe": "8-9",
+      "uso": "Intervalos, umbral"
+    },
+    {
+      "zona": 5,
+      "name": "Maximo",
+      "pct_fcmax": "90-100%",
+      "prueba_habla": "No puedes hablar",
+      "rpe": "10",
+      "uso": "Sprints cortos, tabata"
+    }
+  ],
+  "nota_frecuencia_cardiaca": "La formula 220 menos la edad es una aproximacion poblacional con un margen de error grande (desviacion tipica cercana a 10-12 latidos). La app la usa solo como referencia inicial y prioriza siempre la prueba del habla y el RPE."
+}

@@ -1,0 +1,2310 @@
+{
+  "coleccion": "ejercicios",
+  "bloque": "tren_inferior",
+  "version": "2.0.0",
+  "items": [
+    {
+      "id": "ex_1001",
+      "slug": "sentadilla-peso-corporal",
+      "name": "Sentadilla con peso corporal",
+      "name_en": "Bodyweight squat",
+      "aliases": [
+        "squat",
+        "sentadilla libre",
+        "sentadilla sin peso"
+      ],
+      "family": "fam_rodilla_bilateral",
+      "category": "fuerza",
+      "goals": [
+        "bajar_peso",
+        "musculo",
+        "calistenia",
+        "gym"
+      ],
+      "level": 1,
+      "equipment": [
+        "ninguno"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "minimo",
+      "unilateral": false,
+      "measure": "reps",
+      "default": {
+        "series": 3,
+        "reps": 15,
+        "rest_s": 45
+      },
+      "met": 5.0,
+      "primary": [
+        "cuadriceps"
+      ],
+      "secondary": [
+        "gluteo_mayor",
+        "isquiotibiales",
+        "core"
+      ],
+      "risk_zones": [
+        "rodilla"
+      ],
+      "contra": [
+        "lesion_rodilla"
+      ],
+      "desc": "El movimiento base de todo el tren inferior. Sentarse y levantarse sin nada mas que tu peso.",
+      "steps": [
+        "Pies al ancho de los hombros, puntas ligeramente hacia fuera.",
+        "Baja llevando la cadera atras y abajo, como si buscaras una silla.",
+        "Baja hasta donde puedas mantener la espalda recta y los talones pegados.",
+        "Empuja el suelo con todo el pie para subir."
+      ],
+      "cues": [
+        "Pecho arriba",
+        "Rodillas hacia fuera",
+        "Empuja el suelo"
+      ],
+      "errors": [
+        "La rodilla se mete hacia dentro al subir",
+        "Los talones se despegan del suelo",
+        "La espalda baja se redondea en el punto mas profundo"
+      ],
+      "breathing": "Inhala al bajar, exhala al subir.",
+      "progressions": [
+        "ex_1004",
+        "ex_1006",
+        "ex_1011"
+      ],
+      "regressions": [
+        "ex_1002",
+        "ex_1003"
+      ],
+      "substitutes": [
+        "ex_1005",
+        "ex_1020"
+      ],
+      "asset": {
+        "clip": "ex_1001.mp4",
+        "imagen": "ex_1001.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_1002",
+      "slug": "sentadilla-a-silla",
+      "name": "Sentadilla a la silla",
+      "name_en": "Box squat",
+      "aliases": [
+        "sentadilla al cajon",
+        "sit to stand"
+      ],
+      "family": "fam_rodilla_bilateral",
+      "category": "fuerza",
+      "goals": [
+        "bajar_peso",
+        "musculo",
+        "postura"
+      ],
+      "level": 1,
+      "equipment": [
+        "silla"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "minimo",
+      "unilateral": false,
+      "measure": "reps",
+      "default": {
+        "series": 3,
+        "reps": 12,
+        "rest_s": 45
+      },
+      "met": 4.5,
+      "primary": [
+        "cuadriceps"
+      ],
+      "secondary": [
+        "gluteo_mayor",
+        "core"
+      ],
+      "risk_zones": [],
+      "contra": [],
+      "desc": "Sentadilla con la silla como referencia de profundidad. La version mas segura para empezar o para volver tras una lesion.",
+      "steps": [
+        "Colocate de espaldas a la silla, a un paso de distancia.",
+        "Baja controlado hasta rozar el asiento sin dejarte caer.",
+        "Toca un segundo y levantate sin usar impulso ni manos."
+      ],
+      "cues": [
+        "Toca, no te sientes",
+        "Talones firmes",
+        "Sube empujando"
+      ],
+      "errors": [
+        "Dejarse caer de golpe en la silla",
+        "Usar los brazos para impulsarse",
+        "Usar una silla con ruedas"
+      ],
+      "breathing": "Inhala al bajar, exhala al subir.",
+      "progressions": [
+        "ex_1001"
+      ],
+      "regressions": [],
+      "substitutes": [
+        "ex_1003"
+      ],
+      "asset": {
+        "clip": "ex_1002.mp4",
+        "imagen": "ex_1002.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_1003",
+      "slug": "sentadilla-en-pared",
+      "name": "Sentadilla isometrica en pared",
+      "name_en": "Wall sit",
+      "aliases": [
+        "silla invisible",
+        "wall sit"
+      ],
+      "family": "fam_rodilla_bilateral",
+      "category": "fuerza",
+      "goals": [
+        "bajar_peso",
+        "musculo",
+        "calistenia"
+      ],
+      "level": 1,
+      "equipment": [
+        "pared"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "minimo",
+      "unilateral": false,
+      "measure": "tiempo",
+      "default": {
+        "series": 3,
+        "seg": 40,
+        "rest_s": 45
+      },
+      "met": 4.0,
+      "primary": [
+        "cuadriceps"
+      ],
+      "secondary": [
+        "gluteo_mayor",
+        "core"
+      ],
+      "risk_zones": [
+        "rodilla"
+      ],
+      "contra": [
+        "hipertension"
+      ],
+      "desc": "Isometrico de cuadriceps contra la pared. Mucha quemazon, cero impacto y cero ruido.",
+      "steps": [
+        "Apoya la espalda completa contra la pared.",
+        "Camina los pies hacia delante y baja hasta que las rodillas queden a 90 grados.",
+        "Manten la espalda pegada y aguanta."
+      ],
+      "cues": [
+        "Espalda pegada",
+        "Peso en los talones",
+        "Respira, no aguantes el aire"
+      ],
+      "errors": [
+        "Bajar por debajo de 90 grados y cargar la rotula",
+        "Apoyar las manos en los muslos",
+        "Aguantar la respiracion, lo que sube la presion arterial"
+      ],
+      "breathing": "Respiracion continua y tranquila. Nunca bloquear el aire.",
+      "progressions": [
+        "ex_1001",
+        "ex_1006"
+      ],
+      "regressions": [],
+      "substitutes": [
+        "ex_1002"
+      ],
+      "asset": {
+        "clip": "ex_1003.mp4",
+        "imagen": "ex_1003.jpg",
+        "recorrido": "sostenido"
+      }
+    },
+    {
+      "id": "ex_1004",
+      "slug": "sentadilla-goblet",
+      "name": "Sentadilla goblet",
+      "name_en": "Goblet squat",
+      "aliases": [
+        "goblet",
+        "sentadilla con mancuerna al pecho"
+      ],
+      "family": "fam_rodilla_bilateral",
+      "category": "fuerza",
+      "goals": [
+        "musculo",
+        "gym",
+        "bajar_peso"
+      ],
+      "level": 2,
+      "equipment": [
+        "mancuernas"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "minimo",
+      "unilateral": false,
+      "measure": "reps",
+      "default": {
+        "series": 4,
+        "reps": 10,
+        "rest_s": 75
+      },
+      "met": 5.5,
+      "primary": [
+        "cuadriceps",
+        "gluteo_mayor"
+      ],
+      "secondary": [
+        "core",
+        "erectores_espinales",
+        "trapecio_medio"
+      ],
+      "risk_zones": [
+        "rodilla",
+        "lumbar"
+      ],
+      "contra": [
+        "lesion_rodilla"
+      ],
+      "desc": "Sentadilla sujetando una mancuerna o pesa contra el pecho. El contrapeso frontal te obliga a mantener el torso erguido, asi que la tecnica sale sola.",
+      "steps": [
+        "Sujeta la mancuerna vertical contra el pecho, codos abajo.",
+        "Pies al ancho de hombros.",
+        "Baja entre las rodillas manteniendo el pecho alto.",
+        "Sube empujando el suelo y apretando el gluteo arriba."
+      ],
+      "cues": [
+        "Codos entre las rodillas",
+        "Pecho alto",
+        "Aprieta arriba"
+      ],
+      "errors": [
+        "Separar la pesa del pecho",
+        "Redondear la espalda alta bajo el peso",
+        "Bajar mas de lo que permite tu movilidad de tobillo"
+      ],
+      "breathing": "Inhala arriba, sostiene abajo, exhala al subir.",
+      "progressions": [
+        "ex_1006",
+        "ex_1011"
+      ],
+      "regressions": [
+        "ex_1001"
+      ],
+      "substitutes": [
+        "ex_1005",
+        "ex_1020"
+      ],
+      "asset": {
+        "clip": "ex_1004.mp4",
+        "imagen": "ex_1004.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_1005",
+      "slug": "sentadilla-sumo",
+      "name": "Sentadilla sumo",
+      "name_en": "Sumo squat",
+      "aliases": [
+        "sentadilla amplia",
+        "plie squat"
+      ],
+      "family": "fam_rodilla_bilateral",
+      "category": "fuerza",
+      "goals": [
+        "musculo",
+        "bajar_peso",
+        "gym"
+      ],
+      "level": 1,
+      "equipment": [
+        "ninguno",
+        "mancuernas"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "minimo",
+      "unilateral": false,
+      "measure": "reps",
+      "default": {
+        "series": 3,
+        "reps": 14,
+        "rest_s": 50
+      },
+      "met": 5.0,
+      "primary": [
+        "cuadriceps",
+        "aductores"
+      ],
+      "secondary": [
+        "gluteo_mayor",
+        "gluteo_medio"
+      ],
+      "risk_zones": [
+        "rodilla",
+        "cadera"
+      ],
+      "contra": [
+        "lesion_cadera"
+      ],
+      "desc": "Sentadilla con base ancha y puntas muy abiertas. Carga mas los aductores y el gluteo y exige menos movilidad de tobillo.",
+      "steps": [
+        "Pies mucho mas anchos que los hombros, puntas a 45 grados.",
+        "Baja recto, como si te deslizaras entre dos paredes.",
+        "Manten las rodillas alineadas con las puntas de los pies.",
+        "Sube apretando gluteo y aductores."
+      ],
+      "cues": [
+        "Baja recto",
+        "Rodillas siguen las puntas",
+        "Aprieta arriba"
+      ],
+      "errors": [
+        "Inclinar el torso hacia delante",
+        "Rodillas que colapsan hacia dentro",
+        "Base tan ancha que la cadera se pinza"
+      ],
+      "breathing": "Inhala al bajar, exhala al subir.",
+      "progressions": [
+        "ex_1004"
+      ],
+      "regressions": [
+        "ex_1002"
+      ],
+      "substitutes": [
+        "ex_1001"
+      ],
+      "asset": {
+        "clip": "ex_1005.mp4",
+        "imagen": "ex_1005.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_1006",
+      "slug": "sentadilla-barra-trasera",
+      "name": "Sentadilla con barra trasera",
+      "name_en": "Back squat",
+      "aliases": [
+        "back squat",
+        "sentadilla libre con barra"
+      ],
+      "family": "fam_rodilla_bilateral",
+      "category": "fuerza",
+      "goals": [
+        "musculo",
+        "gym"
+      ],
+      "level": 3,
+      "equipment": [
+        "barra",
+        "banco"
+      ],
+      "impact": 0,
+      "noise": 1,
+      "space": "amplio",
+      "unilateral": false,
+      "measure": "reps",
+      "default": {
+        "series": 4,
+        "reps": 6,
+        "rest_s": 150
+      },
+      "met": 6.0,
+      "primary": [
+        "cuadriceps",
+        "gluteo_mayor"
+      ],
+      "secondary": [
+        "erectores_espinales",
+        "isquiotibiales",
+        "core"
+      ],
+      "risk_zones": [
+        "rodilla",
+        "lumbar",
+        "hombro"
+      ],
+      "contra": [
+        "lesion_rodilla",
+        "lesion_lumbar",
+        "hernia_discal"
+      ],
+      "desc": "El ejercicio de fuerza mas eficiente para el tren inferior y tambien el mas exigente tecnicamente. Solo con rack y con progresion.",
+      "steps": [
+        "Coloca la barra sobre el trapecio, no sobre el cuello.",
+        "Aprieta las escapulas y saca la barra del rack con las dos piernas.",
+        "Da dos pasos atras, pies al ancho de hombros.",
+        "Baja con la cadera atras hasta la profundidad que controles y sube empujando el suelo."
+      ],
+      "cues": [
+        "Aire y aprieta",
+        "Rodillas fuera",
+        "Empuja el suelo"
+      ],
+      "errors": [
+        "Rebotar en el fondo",
+        "Subir primero la cadera y dejar la barra atras",
+        "Mirar hacia arriba y extender el cuello"
+      ],
+      "breathing": "Inhala y presuriza arriba, manten durante la bajada, exhala al pasar el punto duro.",
+      "progressions": [
+        "ex_1011"
+      ],
+      "regressions": [
+        "ex_1004",
+        "ex_1001"
+      ],
+      "substitutes": [
+        "ex_1004",
+        "ex_1010"
+      ],
+      "asset": {
+        "clip": "ex_1006.mp4",
+        "imagen": "ex_1006.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_1007",
+      "slug": "estocada-estatica",
+      "name": "Estocada estatica",
+      "name_en": "Static lunge",
+      "aliases": [
+        "zancada estatica",
+        "split squat"
+      ],
+      "family": "fam_rodilla_unilateral",
+      "category": "fuerza",
+      "goals": [
+        "musculo",
+        "bajar_peso",
+        "calistenia"
+      ],
+      "level": 1,
+      "equipment": [
+        "ninguno"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "colchoneta",
+      "unilateral": true,
+      "measure": "reps_por_lado",
+      "default": {
+        "series": 3,
+        "reps": 10,
+        "rest_s": 45
+      },
+      "met": 5.0,
+      "primary": [
+        "cuadriceps",
+        "gluteo_mayor"
+      ],
+      "secondary": [
+        "gluteo_medio",
+        "core",
+        "isquiotibiales"
+      ],
+      "risk_zones": [
+        "rodilla"
+      ],
+      "contra": [
+        "lesion_rodilla"
+      ],
+      "desc": "Un pie delante y otro detras, sin moverlos. Es la puerta de entrada a todo el trabajo unilateral y el mejor detector de asimetrias.",
+      "steps": [
+        "Da un paso largo hacia delante y manten los pies en su sitio.",
+        "Baja recto hasta que la rodilla trasera casi toque el suelo.",
+        "El torso vertical, sin inclinarse.",
+        "Sube empujando con el talon delantero."
+      ],
+      "cues": [
+        "Baja recto, no adelante",
+        "Torso vertical",
+        "Empuja con el talon"
+      ],
+      "errors": [
+        "Dar un paso demasiado corto y cargar la rodilla delantera",
+        "Inclinar el torso hacia delante",
+        "Perder el equilibrio por juntar demasiado los pies de lado a lado"
+      ],
+      "breathing": "Inhala al bajar, exhala al subir.",
+      "progressions": [
+        "ex_1008",
+        "ex_1009",
+        "ex_1012"
+      ],
+      "regressions": [
+        "ex_1002"
+      ],
+      "substitutes": [
+        "ex_1013"
+      ],
+      "asset": {
+        "clip": "ex_1007.mp4",
+        "imagen": "ex_1007.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_1008",
+      "slug": "estocada-hacia-atras",
+      "name": "Estocada hacia atras",
+      "name_en": "Reverse lunge",
+      "aliases": [
+        "zancada atras",
+        "estocada inversa"
+      ],
+      "family": "fam_rodilla_unilateral",
+      "category": "fuerza",
+      "goals": [
+        "musculo",
+        "bajar_peso",
+        "calistenia",
+        "gym"
+      ],
+      "level": 2,
+      "equipment": [
+        "ninguno",
+        "mancuernas"
+      ],
+      "impact": 1,
+      "noise": 0,
+      "space": "colchoneta",
+      "unilateral": true,
+      "measure": "reps_por_lado",
+      "default": {
+        "series": 3,
+        "reps": 10,
+        "rest_s": 50
+      },
+      "met": 5.5,
+      "primary": [
+        "cuadriceps",
+        "gluteo_mayor"
+      ],
+      "secondary": [
+        "gluteo_medio",
+        "isquiotibiales",
+        "core"
+      ],
+      "risk_zones": [
+        "rodilla"
+      ],
+      "contra": [],
+      "desc": "Estocada dando el paso hacia atras. Es mas amable con la rodilla que la version hacia delante porque el freno lo hace la pierna que ya esta apoyada.",
+      "steps": [
+        "De pie, pies al ancho de la cadera.",
+        "Da un paso largo hacia atras y baja la rodilla trasera hacia el suelo.",
+        "El muslo delantero queda paralelo al suelo.",
+        "Vuelve al centro empujando con la pierna de delante."
+      ],
+      "cues": [
+        "Paso largo atras",
+        "Rodilla casi al suelo",
+        "Vuelve con la de adelante"
+      ],
+      "errors": [
+        "Golpear la rodilla contra el suelo",
+        "Dar el paso demasiado corto",
+        "Dejar caer el torso hacia delante"
+      ],
+      "breathing": "Inhala al bajar, exhala al volver.",
+      "progressions": [
+        "ex_1009",
+        "ex_1012"
+      ],
+      "regressions": [
+        "ex_1007"
+      ],
+      "substitutes": [
+        "ex_1013"
+      ],
+      "asset": {
+        "clip": "ex_1008.mp4",
+        "imagen": "ex_1008.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_1009",
+      "slug": "estocada-caminando",
+      "name": "Estocada caminando",
+      "name_en": "Walking lunge",
+      "aliases": [
+        "zancada caminando"
+      ],
+      "family": "fam_rodilla_unilateral",
+      "category": "fuerza",
+      "goals": [
+        "musculo",
+        "bajar_peso",
+        "gym"
+      ],
+      "level": 2,
+      "equipment": [
+        "ninguno",
+        "mancuernas"
+      ],
+      "impact": 1,
+      "noise": 1,
+      "space": "amplio",
+      "unilateral": true,
+      "measure": "reps_por_lado",
+      "default": {
+        "series": 3,
+        "reps": 12,
+        "rest_s": 60
+      },
+      "met": 6.0,
+      "primary": [
+        "cuadriceps",
+        "gluteo_mayor"
+      ],
+      "secondary": [
+        "gluteo_medio",
+        "isquiotibiales",
+        "core"
+      ],
+      "risk_zones": [
+        "rodilla"
+      ],
+      "contra": [
+        "lesion_rodilla"
+      ],
+      "desc": "Estocadas avanzando. Suma componente cardiovascular y equilibrio dinamico. Necesita espacio.",
+      "steps": [
+        "Da un paso largo hacia delante y baja hasta que la rodilla trasera casi toque.",
+        "Sin volver atras, impulsa y trae el pie de atras al frente.",
+        "Encadena la siguiente estocada."
+      ],
+      "cues": [
+        "Paso largo",
+        "Rodilla al suelo",
+        "Sin frenar arriba"
+      ],
+      "errors": [
+        "Pasos cortos que llevan la rodilla mas alla de la punta del pie",
+        "Perder el eje y bambolearse a los lados",
+        "Mirar al suelo y encorvar la espalda alta"
+      ],
+      "breathing": "Inhala al bajar, exhala al impulsar.",
+      "progressions": [
+        "ex_1012"
+      ],
+      "regressions": [
+        "ex_1008"
+      ],
+      "substitutes": [
+        "ex_1008"
+      ],
+      "asset": {
+        "clip": "ex_1009.mp4",
+        "imagen": "ex_1009.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_1010",
+      "slug": "sentadilla-bulgara",
+      "name": "Sentadilla bulgara",
+      "name_en": "Bulgarian split squat",
+      "aliases": [
+        "bulgara",
+        "split squat elevado"
+      ],
+      "family": "fam_rodilla_unilateral",
+      "category": "fuerza",
+      "goals": [
+        "musculo",
+        "gym",
+        "calistenia"
+      ],
+      "level": 3,
+      "equipment": [
+        "silla",
+        "banco",
+        "mancuernas"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "colchoneta",
+      "unilateral": true,
+      "measure": "reps_por_lado",
+      "default": {
+        "series": 3,
+        "reps": 8,
+        "rest_s": 90
+      },
+      "met": 6.0,
+      "primary": [
+        "cuadriceps",
+        "gluteo_mayor"
+      ],
+      "secondary": [
+        "gluteo_medio",
+        "aductores",
+        "core"
+      ],
+      "risk_zones": [
+        "rodilla",
+        "cadera"
+      ],
+      "contra": [
+        "lesion_rodilla"
+      ],
+      "desc": "Estocada con el pie de atras elevado en una silla o banco. Brutal para una sola pierna y la mejor alternativa a la sentadilla pesada cuando no hay barra.",
+      "steps": [
+        "Apoya el empeine del pie trasero en la silla.",
+        "El pie delantero suficientemente adelante para bajar recto.",
+        "Baja hasta que el muslo delantero quede paralelo.",
+        "Sube empujando con el talon delantero."
+      ],
+      "cues": [
+        "Baja recto",
+        "Peso en el pie de adelante",
+        "Torso ligeramente inclinado"
+      ],
+      "errors": [
+        "Pie delantero demasiado cerca, lo que castiga la rodilla",
+        "Rotar la cadera hacia el lado libre",
+        "Empujar con el pie de atras"
+      ],
+      "breathing": "Inhala al bajar, exhala al subir.",
+      "progressions": [
+        "ex_1012"
+      ],
+      "regressions": [
+        "ex_1007"
+      ],
+      "substitutes": [
+        "ex_1013"
+      ],
+      "asset": {
+        "clip": "ex_1010.mp4",
+        "imagen": "ex_1010.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_1011",
+      "slug": "sentadilla-frontal",
+      "name": "Sentadilla frontal con barra",
+      "name_en": "Front squat",
+      "aliases": [
+        "front squat"
+      ],
+      "family": "fam_rodilla_bilateral",
+      "category": "fuerza",
+      "goals": [
+        "musculo",
+        "gym"
+      ],
+      "level": 3,
+      "equipment": [
+        "barra"
+      ],
+      "impact": 0,
+      "noise": 1,
+      "space": "amplio",
+      "unilateral": false,
+      "measure": "reps",
+      "default": {
+        "series": 4,
+        "reps": 6,
+        "rest_s": 150
+      },
+      "met": 6.0,
+      "primary": [
+        "cuadriceps"
+      ],
+      "secondary": [
+        "core",
+        "erectores_espinales",
+        "gluteo_mayor"
+      ],
+      "risk_zones": [
+        "rodilla",
+        "muneca",
+        "hombro"
+      ],
+      "contra": [
+        "lesion_rodilla",
+        "lesion_muneca"
+      ],
+      "desc": "Barra apoyada al frente sobre los deltoides. Carga mas el cuadriceps y exige torso vertical; perdonar menos la tecnica es justamente su ventaja.",
+      "steps": [
+        "Barra sobre los deltoides anteriores, codos muy altos.",
+        "Pies al ancho de hombros.",
+        "Baja manteniendo los codos arriba y el torso vertical.",
+        "Sube empujando y sin dejar caer los codos."
+      ],
+      "cues": [
+        "Codos arriba",
+        "Torso vertical",
+        "Empuja parejo"
+      ],
+      "errors": [
+        "Dejar caer los codos y perder la barra al frente",
+        "Redondear la espalda alta",
+        "Cargar la muneca en vez de los deltoides"
+      ],
+      "breathing": "Inhala y presuriza arriba, exhala al terminar la subida.",
+      "progressions": [],
+      "regressions": [
+        "ex_1004",
+        "ex_1006"
+      ],
+      "substitutes": [
+        "ex_1004"
+      ],
+      "asset": {
+        "clip": "ex_1011.mp4",
+        "imagen": "ex_1011.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_1012",
+      "slug": "step-up",
+      "name": "Subida al cajon (step-up)",
+      "name_en": "Step-up",
+      "aliases": [
+        "subida al banco",
+        "step up"
+      ],
+      "family": "fam_rodilla_unilateral",
+      "category": "fuerza",
+      "goals": [
+        "musculo",
+        "bajar_peso",
+        "cardio",
+        "gym"
+      ],
+      "level": 2,
+      "equipment": [
+        "silla",
+        "banco",
+        "mancuernas"
+      ],
+      "impact": 1,
+      "noise": 1,
+      "space": "colchoneta",
+      "unilateral": true,
+      "measure": "reps_por_lado",
+      "default": {
+        "series": 3,
+        "reps": 12,
+        "rest_s": 60
+      },
+      "met": 6.0,
+      "primary": [
+        "cuadriceps",
+        "gluteo_mayor"
+      ],
+      "secondary": [
+        "gluteo_medio",
+        "gemelos",
+        "core"
+      ],
+      "risk_zones": [
+        "rodilla"
+      ],
+      "contra": [],
+      "desc": "Subir a un escalon o banco con una pierna. Movimiento cotidiano, facil de progresar con peso y con altura.",
+      "steps": [
+        "Coloca el pie completo sobre el escalon.",
+        "Sube empujando con ese pie, sin impulsarte con el de abajo.",
+        "Extiende la cadera arriba.",
+        "Baja controlado, sin dejarte caer."
+      ],
+      "cues": [
+        "Empuja con el de arriba",
+        "No rebotes abajo",
+        "Baja despacio"
+      ],
+      "errors": [
+        "Impulsarse con la pierna de abajo",
+        "Escalon demasiado alto y la rodilla pasa el limite comodo",
+        "Bajar dejandose caer"
+      ],
+      "breathing": "Exhala al subir, inhala al bajar.",
+      "progressions": [
+        "ex_1010"
+      ],
+      "regressions": [
+        "ex_1007"
+      ],
+      "substitutes": [
+        "ex_1008"
+      ],
+      "asset": {
+        "clip": "ex_1012.mp4",
+        "imagen": "ex_1012.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_1013",
+      "slug": "sentadilla-dividida-apoyo",
+      "name": "Sentadilla dividida con apoyo",
+      "name_en": "Assisted split squat",
+      "aliases": [
+        "split squat asistido"
+      ],
+      "family": "fam_rodilla_unilateral",
+      "category": "fuerza",
+      "goals": [
+        "musculo",
+        "postura"
+      ],
+      "level": 1,
+      "equipment": [
+        "pared",
+        "silla"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "colchoneta",
+      "unilateral": true,
+      "measure": "reps_por_lado",
+      "default": {
+        "series": 3,
+        "reps": 10,
+        "rest_s": 45
+      },
+      "met": 4.5,
+      "primary": [
+        "cuadriceps"
+      ],
+      "secondary": [
+        "gluteo_mayor",
+        "gluteo_medio"
+      ],
+      "risk_zones": [],
+      "contra": [],
+      "desc": "Estocada estatica sujetandose de una pared o silla. Elimina el factor equilibrio para que puedas concentrarte en la fuerza.",
+      "steps": [
+        "Posicion de estocada con una mano apoyada en la pared.",
+        "Baja recto usando el apoyo solo para el equilibrio, no para empujar.",
+        "Sube con la pierna delantera."
+      ],
+      "cues": [
+        "El apoyo es para equilibrio",
+        "Baja recto",
+        "Torso vertical"
+      ],
+      "errors": [
+        "Cargar el peso en el brazo de apoyo",
+        "Paso demasiado corto",
+        "Rotar la cadera"
+      ],
+      "breathing": "Inhala al bajar, exhala al subir.",
+      "progressions": [
+        "ex_1007"
+      ],
+      "regressions": [],
+      "substitutes": [
+        "ex_1002"
+      ],
+      "asset": {
+        "clip": "ex_1013.mp4",
+        "imagen": "ex_1013.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_1014",
+      "slug": "puente-gluteo",
+      "name": "Puente de gluteo",
+      "name_en": "Glute bridge",
+      "aliases": [
+        "puente",
+        "butt bridge",
+        "elevacion de cadera"
+      ],
+      "family": "fam_cadera_bisagra",
+      "category": "fuerza",
+      "goals": [
+        "musculo",
+        "postura",
+        "bajar_peso",
+        "calistenia"
+      ],
+      "level": 1,
+      "equipment": [
+        "colchoneta"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "colchoneta",
+      "unilateral": false,
+      "measure": "reps",
+      "default": {
+        "series": 3,
+        "reps": 15,
+        "rest_s": 40
+      },
+      "met": 3.8,
+      "primary": [
+        "gluteo_mayor"
+      ],
+      "secondary": [
+        "isquiotibiales",
+        "core",
+        "erectores_espinales"
+      ],
+      "risk_zones": [
+        "lumbar"
+      ],
+      "contra": [],
+      "desc": "Elevacion de cadera tumbado boca arriba. El mejor primer ejercicio para despertar un gluteo dormido por estar sentado.",
+      "steps": [
+        "Tumbate boca arriba con las rodillas dobladas y los pies apoyados.",
+        "Mete un poco la pelvis y despega la cadera apretando el gluteo.",
+        "Sube hasta formar una linea de rodillas a hombros.",
+        "Baja controlado sin apoyar del todo entre repeticiones."
+      ],
+      "cues": [
+        "Aprieta el gluteo, no la lumbar",
+        "Costillas abajo",
+        "Pausa arriba"
+      ],
+      "errors": [
+        "Subir arqueando la lumbar en vez de extendiendo la cadera",
+        "Empujar con las puntas de los pies",
+        "Subir demasiado rapido sin apretar arriba"
+      ],
+      "breathing": "Exhala al subir, inhala al bajar.",
+      "progressions": [
+        "ex_1015",
+        "ex_1016"
+      ],
+      "regressions": [],
+      "substitutes": [
+        "ex_1017"
+      ],
+      "asset": {
+        "clip": "ex_1014.mp4",
+        "imagen": "ex_1014.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_1015",
+      "slug": "puente-gluteo-una-pierna",
+      "name": "Puente de gluteo a una pierna",
+      "name_en": "Single-leg glute bridge",
+      "aliases": [
+        "puente unilateral"
+      ],
+      "family": "fam_cadera_bisagra",
+      "category": "fuerza",
+      "goals": [
+        "musculo",
+        "postura",
+        "calistenia"
+      ],
+      "level": 2,
+      "equipment": [
+        "colchoneta"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "colchoneta",
+      "unilateral": true,
+      "measure": "reps_por_lado",
+      "default": {
+        "series": 3,
+        "reps": 10,
+        "rest_s": 45
+      },
+      "met": 4.2,
+      "primary": [
+        "gluteo_mayor"
+      ],
+      "secondary": [
+        "isquiotibiales",
+        "core",
+        "gluteo_medio"
+      ],
+      "risk_zones": [
+        "lumbar"
+      ],
+      "contra": [
+        "lesion_lumbar"
+      ],
+      "desc": "Puente con una sola pierna apoyada. Multiplica la carga y expone diferencias entre lados.",
+      "steps": [
+        "Puente normal, extiende una pierna al frente.",
+        "Sube la cadera con la pierna apoyada, manteniendo la pelvis nivelada.",
+        "Aguanta un segundo arriba y baja controlado."
+      ],
+      "cues": [
+        "Pelvis nivelada",
+        "Aprieta el gluteo apoyado",
+        "Sin torcer"
+      ],
+      "errors": [
+        "Dejar caer un lado de la pelvis",
+        "Compensar con la lumbar",
+        "Perder la posicion del pie apoyado"
+      ],
+      "breathing": "Exhala al subir, inhala al bajar.",
+      "progressions": [
+        "ex_1016"
+      ],
+      "regressions": [
+        "ex_1014"
+      ],
+      "substitutes": [
+        "ex_1017"
+      ],
+      "asset": {
+        "clip": "ex_1015.mp4",
+        "imagen": "ex_1015.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_1016",
+      "slug": "hip-thrust",
+      "name": "Hip thrust con banco",
+      "name_en": "Hip thrust",
+      "aliases": [
+        "empuje de cadera",
+        "hip thrust con barra"
+      ],
+      "family": "fam_cadera_bisagra",
+      "category": "fuerza",
+      "goals": [
+        "musculo",
+        "gym"
+      ],
+      "level": 2,
+      "equipment": [
+        "banco",
+        "barra",
+        "mancuernas"
+      ],
+      "impact": 0,
+      "noise": 1,
+      "space": "colchoneta",
+      "unilateral": false,
+      "measure": "reps",
+      "default": {
+        "series": 4,
+        "reps": 10,
+        "rest_s": 90
+      },
+      "met": 5.0,
+      "primary": [
+        "gluteo_mayor"
+      ],
+      "secondary": [
+        "isquiotibiales",
+        "core"
+      ],
+      "risk_zones": [
+        "lumbar"
+      ],
+      "contra": [
+        "lesion_lumbar"
+      ],
+      "desc": "El ejercicio con mayor activacion medida de gluteo mayor. Espalda alta apoyada en el banco, carga sobre la cadera.",
+      "steps": [
+        "Apoya la parte baja de las escapulas en el borde del banco.",
+        "Coloca la carga sobre el pliegue de la cadera, con almohadilla.",
+        "Empuja con los talones hasta que el torso quede paralelo al suelo.",
+        "Aprieta arriba un segundo y baja controlado."
+      ],
+      "cues": [
+        "Menton al pecho",
+        "Costillas abajo",
+        "Aprieta arriba"
+      ],
+      "errors": [
+        "Hiperextender la lumbar arriba en vez de terminar con el gluteo",
+        "Mirar al techo y extender el cuello",
+        "Bajar los pies demasiado cerca y convertirlo en cuadriceps"
+      ],
+      "breathing": "Exhala al subir, inhala al bajar.",
+      "progressions": [],
+      "regressions": [
+        "ex_1014"
+      ],
+      "substitutes": [
+        "ex_1014"
+      ],
+      "asset": {
+        "clip": "ex_1016.mp4",
+        "imagen": "ex_1016.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_1017",
+      "slug": "peso-muerto-rumano-mancuerna",
+      "name": "Peso muerto rumano con mancuernas",
+      "name_en": "Romanian deadlift",
+      "aliases": [
+        "RDL",
+        "peso muerto piernas rigidas"
+      ],
+      "family": "fam_cadera_bisagra",
+      "category": "fuerza",
+      "goals": [
+        "musculo",
+        "gym",
+        "postura"
+      ],
+      "level": 2,
+      "equipment": [
+        "mancuernas"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "minimo",
+      "unilateral": false,
+      "measure": "reps",
+      "default": {
+        "series": 3,
+        "reps": 10,
+        "rest_s": 90
+      },
+      "met": 5.0,
+      "primary": [
+        "isquiotibiales",
+        "gluteo_mayor"
+      ],
+      "secondary": [
+        "erectores_espinales",
+        "antebrazo",
+        "dorsal_ancho"
+      ],
+      "risk_zones": [
+        "lumbar"
+      ],
+      "contra": [
+        "lesion_lumbar",
+        "hernia_discal"
+      ],
+      "desc": "Bisagra de cadera con rodillas casi rectas. El mejor ejercicio para isquiotibiales y el que enseña a levantar cosas del suelo sin lesionarse.",
+      "steps": [
+        "De pie con las mancuernas al frente de los muslos.",
+        "Lleva la cadera hacia atras dejando que las pesas bajen pegadas a la pierna.",
+        "Baja hasta sentir tension en la parte trasera del muslo, sin redondear la espalda.",
+        "Vuelve empujando la cadera hacia delante."
+      ],
+      "cues": [
+        "Cadera atras, no bajar",
+        "Pesas pegadas a la pierna",
+        "Espalda larga"
+      ],
+      "errors": [
+        "Redondear la espalda baja",
+        "Doblar las rodillas como si fuera sentadilla",
+        "Separar las pesas del cuerpo y cargar la lumbar"
+      ],
+      "breathing": "Inhala al bajar, exhala al subir.",
+      "progressions": [
+        "ex_1018",
+        "ex_1019"
+      ],
+      "regressions": [
+        "ex_1014"
+      ],
+      "substitutes": [
+        "ex_1019"
+      ],
+      "asset": {
+        "clip": "ex_1017.mp4",
+        "imagen": "ex_1017.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_1018",
+      "slug": "peso-muerto-convencional",
+      "name": "Peso muerto convencional",
+      "name_en": "Conventional deadlift",
+      "aliases": [
+        "deadlift",
+        "peso muerto"
+      ],
+      "family": "fam_cadera_bisagra",
+      "category": "fuerza",
+      "goals": [
+        "musculo",
+        "gym"
+      ],
+      "level": 3,
+      "equipment": [
+        "barra"
+      ],
+      "impact": 0,
+      "noise": 2,
+      "space": "amplio",
+      "unilateral": false,
+      "measure": "reps",
+      "default": {
+        "series": 4,
+        "reps": 5,
+        "rest_s": 180
+      },
+      "met": 6.0,
+      "primary": [
+        "gluteo_mayor",
+        "isquiotibiales",
+        "erectores_espinales"
+      ],
+      "secondary": [
+        "dorsal_ancho",
+        "trapecio_medio",
+        "antebrazo",
+        "core"
+      ],
+      "risk_zones": [
+        "lumbar"
+      ],
+      "contra": [
+        "lesion_lumbar",
+        "hernia_discal",
+        "hipertension"
+      ],
+      "desc": "Levantar la barra del suelo. El ejercicio que mas masa muscular total involucra y el que menos perdona una espalda redondeada.",
+      "steps": [
+        "Barra sobre el medio del pie, tibias casi tocandola.",
+        "Agarra fuera de las rodillas, saca pecho y aprieta las escapulas.",
+        "Tensa la espalda antes de mover la barra y empuja el suelo.",
+        "Termina de pie extendiendo la cadera, sin echarte hacia atras."
+      ],
+      "cues": [
+        "Tensa antes de tirar",
+        "Barra pegada a la pierna",
+        "Empuja el suelo"
+      ],
+      "errors": [
+        "Redondear la espalda baja al iniciar",
+        "Subir la cadera primero y dejar la barra atras",
+        "Hiperextender arriba echando el torso hacia atras"
+      ],
+      "breathing": "Inhala y presuriza abajo, manten toda la repeticion, exhala arriba.",
+      "progressions": [],
+      "regressions": [
+        "ex_1017",
+        "ex_1019"
+      ],
+      "substitutes": [
+        "ex_1017"
+      ],
+      "asset": {
+        "clip": "ex_1018.mp4",
+        "imagen": "ex_1018.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_1019",
+      "slug": "buenos-dias",
+      "name": "Buenos dias",
+      "name_en": "Good morning",
+      "aliases": [
+        "good morning"
+      ],
+      "family": "fam_cadera_bisagra",
+      "category": "fuerza",
+      "goals": [
+        "musculo",
+        "postura",
+        "gym"
+      ],
+      "level": 2,
+      "equipment": [
+        "ninguno",
+        "barra",
+        "banda_larga"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "minimo",
+      "unilateral": false,
+      "measure": "reps",
+      "default": {
+        "series": 3,
+        "reps": 12,
+        "rest_s": 60
+      },
+      "met": 4.5,
+      "primary": [
+        "isquiotibiales",
+        "erectores_espinales"
+      ],
+      "secondary": [
+        "gluteo_mayor"
+      ],
+      "risk_zones": [
+        "lumbar"
+      ],
+      "contra": [
+        "lesion_lumbar",
+        "hernia_discal"
+      ],
+      "desc": "Bisagra de cadera con las manos en la nuca o barra en la espalda. Excelente para aprender el patron sin carga.",
+      "steps": [
+        "Manos en la nuca, codos abiertos, pies al ancho de cadera.",
+        "Rodillas ligeramente flexionadas y fijas.",
+        "Lleva la cadera atras bajando el torso hasta casi paralelo.",
+        "Vuelve empujando la cadera al frente."
+      ],
+      "cues": [
+        "Espalda larga",
+        "Cadera atras",
+        "Rodillas fijas"
+      ],
+      "errors": [
+        "Doblar y estirar las rodillas durante el movimiento",
+        "Redondear la espalda al bajar",
+        "Bajar mas alla del rango que permite tu isquiotibial"
+      ],
+      "breathing": "Inhala al bajar, exhala al subir.",
+      "progressions": [
+        "ex_1017"
+      ],
+      "regressions": [],
+      "substitutes": [
+        "ex_1017"
+      ],
+      "asset": {
+        "clip": "ex_1019.mp4",
+        "imagen": "ex_1019.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_1020",
+      "slug": "prensa-pierna",
+      "name": "Prensa de pierna",
+      "name_en": "Leg press",
+      "aliases": [
+        "leg press",
+        "prensa"
+      ],
+      "family": "fam_rodilla_bilateral",
+      "category": "fuerza",
+      "goals": [
+        "musculo",
+        "gym"
+      ],
+      "level": 1,
+      "equipment": [
+        "prensa"
+      ],
+      "impact": 0,
+      "noise": 1,
+      "space": "amplio",
+      "unilateral": false,
+      "measure": "reps",
+      "default": {
+        "series": 4,
+        "reps": 12,
+        "rest_s": 90
+      },
+      "met": 5.0,
+      "primary": [
+        "cuadriceps",
+        "gluteo_mayor"
+      ],
+      "secondary": [
+        "isquiotibiales"
+      ],
+      "risk_zones": [
+        "rodilla",
+        "lumbar"
+      ],
+      "contra": [
+        "lesion_rodilla"
+      ],
+      "desc": "Carga alta en pierna con demanda tecnica baja. Buena opcion para quien no controla la sentadilla o quiere volumen extra sin cargar la columna.",
+      "steps": [
+        "Apoya la espalda baja completa contra el respaldo.",
+        "Pies al ancho de hombros a media plataforma.",
+        "Baja hasta 90 grados sin que la cadera se despegue.",
+        "Empuja sin bloquear las rodillas del todo arriba."
+      ],
+      "cues": [
+        "Espalda pegada",
+        "No bloquees arriba",
+        "Baja controlado"
+      ],
+      "errors": [
+        "Bajar tanto que la pelvis se despega y redondea la lumbar",
+        "Bloquear las rodillas de golpe arriba",
+        "Poner las manos sobre las rodillas"
+      ],
+      "breathing": "Inhala al bajar, exhala al empujar.",
+      "progressions": [],
+      "regressions": [],
+      "substitutes": [
+        "ex_1004",
+        "ex_1001"
+      ],
+      "asset": {
+        "clip": "ex_1020.mp4",
+        "imagen": "ex_1020.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_1021",
+      "slug": "extension-cuadriceps",
+      "name": "Extension de cuadriceps",
+      "name_en": "Leg extension",
+      "aliases": [
+        "extension de rodilla",
+        "leg extension"
+      ],
+      "family": "fam_rodilla_bilateral",
+      "category": "fuerza",
+      "goals": [
+        "musculo",
+        "gym"
+      ],
+      "level": 1,
+      "equipment": [
+        "maquina_femoral"
+      ],
+      "impact": 0,
+      "noise": 1,
+      "space": "amplio",
+      "unilateral": false,
+      "measure": "reps",
+      "default": {
+        "series": 3,
+        "reps": 14,
+        "rest_s": 60
+      },
+      "met": 4.0,
+      "primary": [
+        "cuadriceps"
+      ],
+      "secondary": [],
+      "risk_zones": [
+        "rodilla"
+      ],
+      "contra": [
+        "lesion_rodilla"
+      ],
+      "desc": "Aislamiento puro del cuadriceps. Util como accesorio y en rehabilitacion guiada, no como base del entrenamiento de pierna.",
+      "steps": [
+        "Ajusta el respaldo para que la rodilla coincida con el eje de la maquina.",
+        "Sujeta los agarres y extiende sin impulso.",
+        "Pausa arriba un instante y baja controlado."
+      ],
+      "cues": [
+        "Sin impulso",
+        "Pausa arriba",
+        "Baja lento"
+      ],
+      "errors": [
+        "Usar impulso y despegar la espalda",
+        "Extender de golpe con carga alta",
+        "Rango incompleto"
+      ],
+      "breathing": "Exhala al extender, inhala al bajar.",
+      "progressions": [],
+      "regressions": [],
+      "substitutes": [
+        "ex_1001"
+      ],
+      "asset": {
+        "clip": "ex_1021.mp4",
+        "imagen": "ex_1021.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_1022",
+      "slug": "curl-femoral",
+      "name": "Curl femoral",
+      "name_en": "Leg curl",
+      "aliases": [
+        "curl de piernas",
+        "femoral en maquina"
+      ],
+      "family": "fam_cadera_bisagra",
+      "category": "fuerza",
+      "goals": [
+        "musculo",
+        "gym"
+      ],
+      "level": 1,
+      "equipment": [
+        "maquina_femoral"
+      ],
+      "impact": 0,
+      "noise": 1,
+      "space": "amplio",
+      "unilateral": false,
+      "measure": "reps",
+      "default": {
+        "series": 3,
+        "reps": 12,
+        "rest_s": 60
+      },
+      "met": 4.0,
+      "primary": [
+        "isquiotibiales"
+      ],
+      "secondary": [
+        "gemelos"
+      ],
+      "risk_zones": [
+        "rodilla"
+      ],
+      "contra": [],
+      "desc": "Flexion de rodilla contra resistencia. Complementa el peso muerto rumano trabajando la otra funcion del isquiotibial.",
+      "steps": [
+        "Ajusta el rodillo justo encima del talon.",
+        "Flexiona llevando el talon al gluteo sin despegar la cadera.",
+        "Baja controlado sin dejar que el peso caiga."
+      ],
+      "cues": [
+        "Cadera pegada",
+        "Sin rebote",
+        "Baja lento"
+      ],
+      "errors": [
+        "Despegar la cadera del banco",
+        "Usar impulso",
+        "Rango parcial por exceso de peso"
+      ],
+      "breathing": "Exhala al flexionar, inhala al volver.",
+      "progressions": [
+        "ex_1023"
+      ],
+      "regressions": [],
+      "substitutes": [
+        "ex_1023"
+      ],
+      "asset": {
+        "clip": "ex_1022.mp4",
+        "imagen": "ex_1022.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_1023",
+      "slug": "curl-nordico",
+      "name": "Curl nordico",
+      "name_en": "Nordic hamstring curl",
+      "aliases": [
+        "nordic curl",
+        "femoral nordico"
+      ],
+      "family": "fam_cadera_bisagra",
+      "category": "fuerza",
+      "goals": [
+        "musculo",
+        "running",
+        "calistenia"
+      ],
+      "level": 3,
+      "equipment": [
+        "colchoneta"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "colchoneta",
+      "unilateral": false,
+      "measure": "reps",
+      "default": {
+        "series": 3,
+        "reps": 5,
+        "rest_s": 120
+      },
+      "met": 5.0,
+      "primary": [
+        "isquiotibiales"
+      ],
+      "secondary": [
+        "gluteo_mayor",
+        "core"
+      ],
+      "risk_zones": [
+        "rodilla",
+        "lumbar"
+      ],
+      "contra": [
+        "lesion_rodilla"
+      ],
+      "desc": "Excentrico de isquiotibiales de rodillas, con los tobillos sujetos. Es el ejercicio con mejor evidencia para reducir lesiones de isquiotibial en corredores.",
+      "steps": [
+        "De rodillas sobre algo blando, con los tobillos sujetos o bajo un mueble firme.",
+        "Manten el cuerpo recto de rodillas a hombros.",
+        "Bajate hacia delante lo mas lento que puedas resistiendo con el isquiotibial.",
+        "Amortigua con las manos y vuelve empujando."
+      ],
+      "cues": [
+        "Cuerpo recto",
+        "Baja lo mas lento posible",
+        "Manos listas"
+      ],
+      "errors": [
+        "Doblar la cadera y convertirlo en una caida controlada del torso",
+        "Caer rapido sin resistir",
+        "Hacer demasiadas series: causa agujetas severas"
+      ],
+      "breathing": "Inhala al bajar de forma controlada, exhala al volver.",
+      "progressions": [],
+      "regressions": [
+        "ex_1022"
+      ],
+      "substitutes": [
+        "ex_1022"
+      ],
+      "asset": {
+        "clip": "ex_1023.mp4",
+        "imagen": "ex_1023.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_1024",
+      "slug": "balanceo-kettlebell",
+      "name": "Balanceo con kettlebell",
+      "name_en": "Kettlebell swing",
+      "aliases": [
+        "swing",
+        "kettlebell swing"
+      ],
+      "family": "fam_cadera_bisagra",
+      "category": "fuerza",
+      "goals": [
+        "bajar_peso",
+        "cardio",
+        "musculo",
+        "gym"
+      ],
+      "level": 2,
+      "equipment": [
+        "kettlebell"
+      ],
+      "impact": 1,
+      "noise": 1,
+      "space": "colchoneta",
+      "unilateral": false,
+      "measure": "reps",
+      "default": {
+        "series": 4,
+        "reps": 15,
+        "rest_s": 60
+      },
+      "met": 9.0,
+      "primary": [
+        "gluteo_mayor",
+        "isquiotibiales"
+      ],
+      "secondary": [
+        "core",
+        "erectores_espinales",
+        "antebrazo",
+        "deltoide_anterior"
+      ],
+      "risk_zones": [
+        "lumbar",
+        "hombro"
+      ],
+      "contra": [
+        "lesion_lumbar",
+        "hernia_discal"
+      ],
+      "desc": "Bisagra de cadera explosiva. Uno de los ejercicios con mejor relacion gasto calorico por minuto que existe sin correr.",
+      "steps": [
+        "Pesa en el suelo un poco adelante, cadera atras y espalda larga.",
+        "Lleva la pesa entre las piernas como si pasaras un balon hacia atras.",
+        "Extiende la cadera con fuerza: el impulso sube la pesa, no los brazos.",
+        "La pesa llega a la altura del pecho y vuelve entre las piernas."
+      ],
+      "cues": [
+        "Es cadera, no brazos",
+        "Aprieta el gluteo arriba",
+        "Espalda larga"
+      ],
+      "errors": [
+        "Convertirlo en sentadilla con elevacion frontal",
+        "Levantar la pesa con los hombros",
+        "Redondear la espalda en el arco de atras"
+      ],
+      "breathing": "Exhala con fuerza al extender la cadera, inhala en el arco de atras.",
+      "progressions": [],
+      "regressions": [
+        "ex_1014"
+      ],
+      "substitutes": [
+        "ex_1017"
+      ],
+      "asset": {
+        "clip": "ex_1024.mp4",
+        "imagen": "ex_1024.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_1025",
+      "slug": "abduccion-cadera-banda",
+      "name": "Abduccion de cadera con banda",
+      "name_en": "Banded hip abduction",
+      "aliases": [
+        "abduccion con banda",
+        "clamshell de pie"
+      ],
+      "family": "fam_rodilla_unilateral",
+      "category": "fuerza",
+      "goals": [
+        "postura",
+        "musculo",
+        "running"
+      ],
+      "level": 1,
+      "equipment": [
+        "banda_mini"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "minimo",
+      "unilateral": true,
+      "measure": "reps_por_lado",
+      "default": {
+        "series": 3,
+        "reps": 15,
+        "rest_s": 40
+      },
+      "met": 3.5,
+      "primary": [
+        "gluteo_medio"
+      ],
+      "secondary": [
+        "gluteo_menor",
+        "tensor_fascia_lata"
+      ],
+      "risk_zones": [],
+      "contra": [],
+      "desc": "Aislamiento de gluteo medio. Su debilidad es la causa mas comun de que la rodilla se meta hacia dentro al correr o en sentadilla.",
+      "steps": [
+        "Banda alrededor de los tobillos o encima de las rodillas.",
+        "De pie, apoya el peso en una pierna.",
+        "Abre la otra pierna al lado sin inclinar el torso.",
+        "Vuelve controlado sin soltar la tension."
+      ],
+      "cues": [
+        "Torso quieto",
+        "Abre despacio",
+        "No sueltes la tension"
+      ],
+      "errors": [
+        "Inclinar el torso al lado contrario",
+        "Rotar la pierna para hacerlo mas facil",
+        "Ir demasiado rapido"
+      ],
+      "breathing": "Exhala al abrir, inhala al volver.",
+      "progressions": [
+        "ex_1026"
+      ],
+      "regressions": [],
+      "substitutes": [
+        "ex_1026"
+      ],
+      "asset": {
+        "clip": "ex_1025.mp4",
+        "imagen": "ex_1025.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_1026",
+      "slug": "almeja",
+      "name": "Almeja (clamshell)",
+      "name_en": "Clamshell",
+      "aliases": [
+        "clamshell",
+        "concha"
+      ],
+      "family": "fam_rodilla_unilateral",
+      "category": "fuerza",
+      "goals": [
+        "postura",
+        "running",
+        "musculo"
+      ],
+      "level": 1,
+      "equipment": [
+        "colchoneta",
+        "banda_mini"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "colchoneta",
+      "unilateral": true,
+      "measure": "reps_por_lado",
+      "default": {
+        "series": 3,
+        "reps": 15,
+        "rest_s": 40
+      },
+      "met": 3.0,
+      "primary": [
+        "gluteo_medio"
+      ],
+      "secondary": [
+        "gluteo_menor"
+      ],
+      "risk_zones": [],
+      "contra": [],
+      "desc": "Rotacion externa de cadera tumbado de lado. Clasico de rehabilitacion y de activacion antes de correr.",
+      "steps": [
+        "Tumbate de lado con las rodillas dobladas a 45 grados.",
+        "Manten los pies juntos y la pelvis perpendicular al suelo.",
+        "Abre la rodilla de arriba sin rotar la pelvis atras.",
+        "Baja controlado."
+      ],
+      "cues": [
+        "Pelvis quieta",
+        "Pies juntos",
+        "Abre desde el gluteo"
+      ],
+      "errors": [
+        "Rodar la pelvis hacia atras para abrir mas",
+        "Separar los pies",
+        "Usar impulso"
+      ],
+      "breathing": "Exhala al abrir, inhala al cerrar.",
+      "progressions": [
+        "ex_1025"
+      ],
+      "regressions": [],
+      "substitutes": [
+        "ex_1025"
+      ],
+      "asset": {
+        "clip": "ex_1026.mp4",
+        "imagen": "ex_1026.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_1027",
+      "slug": "elevacion-talones",
+      "name": "Elevacion de talones",
+      "name_en": "Calf raise",
+      "aliases": [
+        "gemelos de pie",
+        "calf raise"
+      ],
+      "family": "fam_rodilla_bilateral",
+      "category": "fuerza",
+      "goals": [
+        "musculo",
+        "running",
+        "gym"
+      ],
+      "level": 1,
+      "equipment": [
+        "ninguno",
+        "mancuernas",
+        "silla"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "minimo",
+      "unilateral": false,
+      "measure": "reps",
+      "default": {
+        "series": 3,
+        "reps": 18,
+        "rest_s": 45
+      },
+      "met": 3.5,
+      "primary": [
+        "gemelos"
+      ],
+      "secondary": [
+        "soleo",
+        "pie_intrinsecos"
+      ],
+      "risk_zones": [
+        "tobillo"
+      ],
+      "contra": [
+        "lesion_tobillo"
+      ],
+      "desc": "Subir a puntas de pie. Fundamental para corredores: el gemelo y el soleo absorben varias veces tu peso corporal en cada zancada.",
+      "steps": [
+        "De pie, idealmente con la punta del pie en un escalon.",
+        "Baja el talon hasta sentir estiramiento.",
+        "Sube lo mas alto que puedas y aprieta un segundo.",
+        "Baja lento."
+      ],
+      "cues": [
+        "Rango completo",
+        "Pausa arriba",
+        "Baja lento"
+      ],
+      "errors": [
+        "Rebotar sin usar el rango completo",
+        "Ir demasiado rapido",
+        "Ignorar la version con rodilla flexionada, que trabaja el soleo"
+      ],
+      "breathing": "Exhala al subir, inhala al bajar.",
+      "progressions": [
+        "ex_1028"
+      ],
+      "regressions": [],
+      "substitutes": [
+        "ex_1028"
+      ],
+      "asset": {
+        "clip": "ex_1027.mp4",
+        "imagen": "ex_1027.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_1028",
+      "slug": "elevacion-talones-sentado",
+      "name": "Elevacion de talones sentado",
+      "name_en": "Seated calf raise",
+      "aliases": [
+        "soleo sentado"
+      ],
+      "family": "fam_rodilla_bilateral",
+      "category": "fuerza",
+      "goals": [
+        "musculo",
+        "running",
+        "gym"
+      ],
+      "level": 1,
+      "equipment": [
+        "silla",
+        "mancuernas"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "minimo",
+      "unilateral": false,
+      "measure": "reps",
+      "default": {
+        "series": 3,
+        "reps": 20,
+        "rest_s": 45
+      },
+      "met": 3.0,
+      "primary": [
+        "soleo"
+      ],
+      "secondary": [
+        "gemelos"
+      ],
+      "risk_zones": [
+        "tobillo"
+      ],
+      "contra": [],
+      "desc": "Con la rodilla flexionada, el gemelo se relaja y trabaja el soleo. Es el musculo que sostiene la carrera de fondo y casi nadie lo entrena.",
+      "steps": [
+        "Sentado, mancuerna sobre el muslo cerca de la rodilla.",
+        "Punta del pie en un libro o escalon bajo.",
+        "Sube el talon lo mas alto posible y aprieta.",
+        "Baja lento hasta el estiramiento."
+      ],
+      "cues": [
+        "Rodilla a 90",
+        "Pausa arriba",
+        "Rango completo"
+      ],
+      "errors": [
+        "Rebotar",
+        "Poner el peso muy cerca de la rodilla y perder carga",
+        "Rango corto"
+      ],
+      "breathing": "Exhala al subir, inhala al bajar.",
+      "progressions": [],
+      "regressions": [],
+      "substitutes": [
+        "ex_1027"
+      ],
+      "asset": {
+        "clip": "ex_1028.mp4",
+        "imagen": "ex_1028.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_1029",
+      "slug": "patada-gluteo-cuadrupedia",
+      "name": "Patada de gluteo en cuadrupedia",
+      "name_en": "Donkey kick",
+      "aliases": [
+        "donkey kick",
+        "patada de burro"
+      ],
+      "family": "fam_cadera_bisagra",
+      "category": "fuerza",
+      "goals": [
+        "musculo",
+        "postura"
+      ],
+      "level": 1,
+      "equipment": [
+        "colchoneta"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "colchoneta",
+      "unilateral": true,
+      "measure": "reps_por_lado",
+      "default": {
+        "series": 3,
+        "reps": 15,
+        "rest_s": 40
+      },
+      "met": 3.5,
+      "primary": [
+        "gluteo_mayor"
+      ],
+      "secondary": [
+        "isquiotibiales",
+        "core"
+      ],
+      "risk_zones": [
+        "lumbar"
+      ],
+      "contra": [
+        "lesion_lumbar"
+      ],
+      "desc": "Extension de cadera en cuadrupedia. Aislamiento de gluteo accesible, util como activacion.",
+      "steps": [
+        "A cuatro apoyos, manos bajo hombros y rodillas bajo cadera.",
+        "Manten la rodilla doblada y sube el talon hacia el techo.",
+        "Sube solo hasta donde la lumbar no se arquee.",
+        "Baja controlado."
+      ],
+      "cues": [
+        "Talon al techo",
+        "Costillas abajo",
+        "Sin arquear"
+      ],
+      "errors": [
+        "Arquear la lumbar para subir mas",
+        "Rotar la cadera al lado",
+        "Usar impulso"
+      ],
+      "breathing": "Exhala al subir, inhala al bajar.",
+      "progressions": [
+        "ex_1015"
+      ],
+      "regressions": [],
+      "substitutes": [
+        "ex_1014"
+      ],
+      "asset": {
+        "clip": "ex_1029.mp4",
+        "imagen": "ex_1029.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_1030",
+      "slug": "sentadilla-cosaco",
+      "name": "Sentadilla cosaco",
+      "name_en": "Cossack squat",
+      "aliases": [
+        "cossack squat",
+        "sentadilla lateral"
+      ],
+      "family": "fam_rodilla_unilateral",
+      "category": "fuerza",
+      "goals": [
+        "musculo",
+        "postura",
+        "calistenia"
+      ],
+      "level": 3,
+      "equipment": [
+        "ninguno"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "amplio",
+      "unilateral": true,
+      "measure": "reps_por_lado",
+      "default": {
+        "series": 3,
+        "reps": 8,
+        "rest_s": 60
+      },
+      "met": 5.0,
+      "primary": [
+        "cuadriceps",
+        "aductores"
+      ],
+      "secondary": [
+        "gluteo_mayor",
+        "gluteo_medio",
+        "core"
+      ],
+      "risk_zones": [
+        "rodilla",
+        "cadera"
+      ],
+      "contra": [
+        "lesion_rodilla",
+        "lesion_cadera"
+      ],
+      "desc": "Sentadilla lateral profunda. Combina fuerza unilateral con movilidad de cadera y tobillo.",
+      "steps": [
+        "Pies muy anchos, puntas al frente.",
+        "Desplaza el peso a un lado bajando esa cadera.",
+        "La otra pierna queda extendida con la punta hacia arriba.",
+        "Empuja para volver al centro."
+      ],
+      "cues": [
+        "Talon apoyado",
+        "Pecho arriba",
+        "Baja lo que controles"
+      ],
+      "errors": [
+        "Despegar el talon de la pierna que trabaja",
+        "Redondear la espalda para bajar mas",
+        "Forzar el rango sin movilidad de cadera"
+      ],
+      "breathing": "Inhala al bajar, exhala al volver.",
+      "progressions": [],
+      "regressions": [
+        "ex_1005"
+      ],
+      "substitutes": [
+        "ex_1010"
+      ],
+      "asset": {
+        "clip": "ex_1030.mp4",
+        "imagen": "ex_1030.jpg",
+        "recorrido": "ciclico"
+      }
+    }
+  ]
+}

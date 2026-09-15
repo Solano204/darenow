@@ -1,0 +1,1075 @@
+{
+  "coleccion": "ejercicios",
+  "bloque": "estiramiento_calentamiento",
+  "version": "2.0.0",
+  "nota_de_uso": "Regla de la app: dinamico ANTES de entrenar, estatico DESPUES o en sesion aparte. El estiramiento estatico prolongado justo antes de una serie pesada reduce ligeramente la produccion de fuerza.",
+  "items": [
+    {
+      "id": "ex_8001",
+      "slug": "circulos-brazos",
+      "name": "Circulos de brazos",
+      "name_en": "Arm circles",
+      "aliases": [
+        "rotacion de hombros"
+      ],
+      "family": "fam_calentamiento_dinamico",
+      "category": "movilidad",
+      "goals": [
+        "postura",
+        "musculo",
+        "cardio"
+      ],
+      "level": 1,
+      "equipment": [
+        "ninguno"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "minimo",
+      "unilateral": false,
+      "measure": "tiempo",
+      "default": {
+        "series": 1,
+        "seg": 40,
+        "rest_s": 10
+      },
+      "met": 2.5,
+      "primary": [
+        "deltoide_lateral",
+        "manguito_rotador"
+      ],
+      "secondary": [
+        "trapecio_medio",
+        "serrato_anterior"
+      ],
+      "risk_zones": [
+        "hombro"
+      ],
+      "contra": [],
+      "desc": "Circulos progresivos con los brazos. Calienta el hombro antes de cualquier empuje o traccion.",
+      "steps": [
+        "Brazos extendidos a los lados.",
+        "Empieza con circulos pequeños hacia delante.",
+        "Aumenta el diametro poco a poco.",
+        "Invierte la direccion."
+      ],
+      "cues": [
+        "De pequeño a grande",
+        "Hombros abajo",
+        "Ambas direcciones"
+      ],
+      "errors": [
+        "Empezar con circulos grandes en frio",
+        "Encoger los hombros",
+        "Ir demasiado rapido"
+      ],
+      "breathing": "Continua.",
+      "progressions": [],
+      "regressions": [],
+      "substitutes": [
+        "ex_8002"
+      ],
+      "asset": {
+        "clip": "ex_8001.mp4",
+        "imagen": "ex_8001.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_8002",
+      "slug": "balanceo-brazos-cruzado",
+      "name": "Balanceo cruzado de brazos",
+      "name_en": "Arm swings",
+      "aliases": [
+        "apertura de pecho dinamica"
+      ],
+      "family": "fam_calentamiento_dinamico",
+      "category": "movilidad",
+      "goals": [
+        "postura",
+        "musculo"
+      ],
+      "level": 1,
+      "equipment": [
+        "ninguno"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "minimo",
+      "unilateral": false,
+      "measure": "tiempo",
+      "default": {
+        "series": 1,
+        "seg": 30,
+        "rest_s": 10
+      },
+      "met": 2.5,
+      "primary": [
+        "pectoral_mayor",
+        "deltoide_posterior"
+      ],
+      "secondary": [
+        "romboides"
+      ],
+      "risk_zones": [
+        "hombro"
+      ],
+      "contra": [],
+      "desc": "Abrir y cruzar los brazos con ritmo. Prepara pectoral y espalda alta.",
+      "steps": [
+        "Brazos al frente a la altura del pecho.",
+        "Abrelos hacia atras con energia controlada.",
+        "Cruzalos al frente.",
+        "Alterna el brazo que queda arriba."
+      ],
+      "cues": [
+        "Abre atras",
+        "Alterna el cruce",
+        "Controlado"
+      ],
+      "errors": [
+        "Ir con latigazos bruscos",
+        "Arquear la lumbar al abrir",
+        "Encoger los hombros"
+      ],
+      "breathing": "Inhala al abrir, exhala al cruzar.",
+      "progressions": [],
+      "regressions": [],
+      "substitutes": [
+        "ex_8001"
+      ],
+      "asset": {
+        "clip": "ex_8002.mp4",
+        "imagen": "ex_8002.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_8003",
+      "slug": "balanceo-pierna-frontal",
+      "name": "Balanceo de pierna al frente",
+      "name_en": "Leg swings front to back",
+      "aliases": [
+        "swing de pierna"
+      ],
+      "family": "fam_calentamiento_dinamico",
+      "category": "movilidad",
+      "goals": [
+        "running",
+        "musculo",
+        "postura"
+      ],
+      "level": 1,
+      "equipment": [
+        "pared"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "colchoneta",
+      "unilateral": true,
+      "measure": "reps_por_lado",
+      "default": {
+        "series": 1,
+        "reps": 12,
+        "rest_s": 10
+      },
+      "met": 3.0,
+      "primary": [
+        "flexor_cadera",
+        "isquiotibiales"
+      ],
+      "secondary": [
+        "gluteo_mayor"
+      ],
+      "risk_zones": [
+        "cadera",
+        "lumbar"
+      ],
+      "contra": [],
+      "desc": "Balancear la pierna adelante y atras sujetandose de la pared. Calentamiento obligatorio antes de correr.",
+      "steps": [
+        "Sujetate de la pared con una mano.",
+        "Balancea una pierna al frente y atras.",
+        "Aumenta el rango poco a poco.",
+        "Manten el torso quieto."
+      ],
+      "cues": [
+        "Torso quieto",
+        "Rango progresivo",
+        "Sin latigazos"
+      ],
+      "errors": [
+        "Arquear la lumbar para llegar mas alto",
+        "Empezar con rango maximo",
+        "Rotar la cadera"
+      ],
+      "breathing": "Continua.",
+      "progressions": [],
+      "regressions": [],
+      "substitutes": [
+        "ex_8004"
+      ],
+      "asset": {
+        "clip": "ex_8003.mp4",
+        "imagen": "ex_8003.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_8004",
+      "slug": "balanceo-pierna-lateral",
+      "name": "Balanceo lateral de pierna",
+      "name_en": "Lateral leg swings",
+      "aliases": [],
+      "family": "fam_calentamiento_dinamico",
+      "category": "movilidad",
+      "goals": [
+        "running",
+        "postura"
+      ],
+      "level": 1,
+      "equipment": [
+        "pared"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "colchoneta",
+      "unilateral": true,
+      "measure": "reps_por_lado",
+      "default": {
+        "series": 1,
+        "reps": 12,
+        "rest_s": 10
+      },
+      "met": 3.0,
+      "primary": [
+        "aductores",
+        "gluteo_medio"
+      ],
+      "secondary": [
+        "tensor_fascia_lata"
+      ],
+      "risk_zones": [
+        "cadera"
+      ],
+      "contra": [],
+      "desc": "Balancear la pierna de lado a lado. Prepara el plano frontal de la cadera, que casi nadie calienta.",
+      "steps": [
+        "Frente a la pared con las dos manos apoyadas.",
+        "Balancea una pierna cruzando por delante y abriendo al lado.",
+        "Manten la pelvis nivelada.",
+        "Cambia de lado."
+      ],
+      "cues": [
+        "Pelvis nivelada",
+        "Rango progresivo",
+        "Torso quieto"
+      ],
+      "errors": [
+        "Rotar el torso",
+        "Inclinarse al lado contrario",
+        "Rango maximo desde el inicio"
+      ],
+      "breathing": "Continua.",
+      "progressions": [],
+      "regressions": [],
+      "substitutes": [
+        "ex_8003"
+      ],
+      "asset": {
+        "clip": "ex_8004.mp4",
+        "imagen": "ex_8004.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_8005",
+      "slug": "sentadilla-movilidad-dinamica",
+      "name": "Sentadilla de movilidad dinamica",
+      "name_en": "Dynamic squat prep",
+      "aliases": [
+        "squat to stand"
+      ],
+      "family": "fam_calentamiento_dinamico",
+      "category": "movilidad",
+      "goals": [
+        "musculo",
+        "postura",
+        "calistenia"
+      ],
+      "level": 1,
+      "equipment": [
+        "ninguno"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "minimo",
+      "unilateral": false,
+      "measure": "reps",
+      "default": {
+        "series": 1,
+        "reps": 10,
+        "rest_s": 15
+      },
+      "met": 3.5,
+      "primary": [
+        "cuadriceps",
+        "aductores"
+      ],
+      "secondary": [
+        "isquiotibiales",
+        "erectores_espinales"
+      ],
+      "risk_zones": [
+        "rodilla",
+        "lumbar"
+      ],
+      "contra": [],
+      "desc": "Bajar a sentadilla profunda sujetando las puntas de los pies y subir extendiendo. Prepara cadera, tobillo y columna en un solo movimiento.",
+      "steps": [
+        "De pie, agachate y agarra las puntas de los pies.",
+        "Baja la cadera y sube el pecho manteniendo el agarre.",
+        "Extiende las rodillas sin soltar los pies.",
+        "Vuelve a la sentadilla y repite."
+      ],
+      "cues": [
+        "Pecho arriba abajo",
+        "No sueltes los pies",
+        "Progresivo"
+      ],
+      "errors": [
+        "Forzar la espalda al extender",
+        "Perder el agarre",
+        "Ir con rebotes"
+      ],
+      "breathing": "Exhala al extender.",
+      "progressions": [],
+      "regressions": [
+        "ex_8003"
+      ],
+      "substitutes": [
+        "ex_7011"
+      ],
+      "asset": {
+        "clip": "ex_8005.mp4",
+        "imagen": "ex_8005.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_8006",
+      "slug": "estocada-con-rotacion",
+      "name": "Estocada con rotacion",
+      "name_en": "Lunge with rotation",
+      "aliases": [
+        "world's greatest stretch"
+      ],
+      "family": "fam_calentamiento_dinamico",
+      "category": "movilidad",
+      "goals": [
+        "running",
+        "postura",
+        "musculo"
+      ],
+      "level": 2,
+      "equipment": [
+        "colchoneta"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "colchoneta",
+      "unilateral": true,
+      "measure": "reps_por_lado",
+      "default": {
+        "series": 1,
+        "reps": 6,
+        "rest_s": 15
+      },
+      "met": 3.5,
+      "primary": [
+        "flexor_cadera",
+        "erectores_espinales"
+      ],
+      "secondary": [
+        "gluteo_mayor",
+        "aductores",
+        "oblicuo_externo"
+      ],
+      "risk_zones": [
+        "cadera",
+        "lumbar"
+      ],
+      "contra": [],
+      "desc": "El calentamiento mas completo del catalogo: cadera, columna toracica y tobillo en una sola secuencia.",
+      "steps": [
+        "Da un paso largo al frente y apoya las dos manos junto al pie.",
+        "Baja el codo del mismo lado hacia el suelo.",
+        "Rota abriendo ese brazo hacia el techo.",
+        "Vuelve y cambia de lado."
+      ],
+      "cues": [
+        "Codo al suelo",
+        "Abre al techo",
+        "Sigue la mano con la mirada"
+      ],
+      "errors": [
+        "Rodilla trasera muy doblada y perder el estiramiento de cadera",
+        "Rotar desde la lumbar",
+        "Ir demasiado rapido"
+      ],
+      "breathing": "Exhala al rotar.",
+      "progressions": [],
+      "regressions": [
+        "ex_7006"
+      ],
+      "substitutes": [
+        "ex_7006"
+      ],
+      "asset": {
+        "clip": "ex_8006.mp4",
+        "imagen": "ex_8006.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_8007",
+      "slug": "activacion-gluteo-banda",
+      "name": "Activacion de gluteo con banda",
+      "name_en": "Banded glute activation",
+      "aliases": [
+        "monster walk"
+      ],
+      "family": "fam_calentamiento_dinamico",
+      "category": "fuerza",
+      "goals": [
+        "running",
+        "musculo",
+        "postura"
+      ],
+      "level": 1,
+      "equipment": [
+        "banda_mini"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "colchoneta",
+      "unilateral": false,
+      "measure": "tiempo",
+      "default": {
+        "series": 2,
+        "seg": 30,
+        "rest_s": 20
+      },
+      "met": 3.5,
+      "primary": [
+        "gluteo_medio"
+      ],
+      "secondary": [
+        "gluteo_mayor",
+        "tensor_fascia_lata"
+      ],
+      "risk_zones": [],
+      "contra": [],
+      "desc": "Caminar lateralmente con banda en las rodillas. Despierta el gluteo medio antes de correr o de hacer pierna.",
+      "steps": [
+        "Banda encima de las rodillas, media sentadilla.",
+        "Camina lateralmente sin juntar los pies del todo.",
+        "Manten la tension todo el recorrido.",
+        "Vuelve al otro lado."
+      ],
+      "cues": [
+        "Media sentadilla",
+        "Sin juntar los pies",
+        "Tension constante"
+      ],
+      "errors": [
+        "Ponerse de pie y perder la tension",
+        "Juntar los pies entre pasos",
+        "Inclinar el torso"
+      ],
+      "breathing": "Continua.",
+      "progressions": [],
+      "regressions": [
+        "ex_1026"
+      ],
+      "substitutes": [
+        "ex_1025"
+      ],
+      "asset": {
+        "clip": "ex_8007.mp4",
+        "imagen": "ex_8007.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_8008",
+      "slug": "estiramiento-cuadriceps-pie",
+      "name": "Estiramiento de cuadriceps de pie",
+      "name_en": "Standing quad stretch",
+      "aliases": [
+        "estiramiento de muslo"
+      ],
+      "family": "fam_estiramiento_estatico",
+      "category": "estiramiento",
+      "goals": [
+        "running",
+        "postura"
+      ],
+      "level": 1,
+      "equipment": [
+        "pared"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "minimo",
+      "unilateral": true,
+      "measure": "tiempo",
+      "default": {
+        "series": 2,
+        "seg": 30,
+        "rest_s": 15
+      },
+      "met": 2.0,
+      "primary": [
+        "cuadriceps",
+        "recto_femoral"
+      ],
+      "secondary": [
+        "flexor_cadera"
+      ],
+      "risk_zones": [
+        "rodilla"
+      ],
+      "contra": [
+        "lesion_rodilla"
+      ],
+      "desc": "Llevar el talon al gluteo sujetando el tobillo. Clasico y efectivo si se hace con la pelvis metida.",
+      "steps": [
+        "Sujetate de la pared con una mano.",
+        "Toma el tobillo del mismo lado y lleva el talon al gluteo.",
+        "Mete la pelvis y aprieta el gluteo.",
+        "Rodillas juntas."
+      ],
+      "cues": [
+        "Mete la pelvis",
+        "Rodillas juntas",
+        "Aprieta el gluteo"
+      ],
+      "errors": [
+        "Arquear la lumbar",
+        "Abrir la rodilla al lado",
+        "Tirar del pie hasta el dolor de rodilla"
+      ],
+      "breathing": "Lenta y profunda.",
+      "progressions": [],
+      "regressions": [],
+      "substitutes": [
+        "ex_7006"
+      ],
+      "asset": {
+        "clip": "ex_8008.mp4",
+        "imagen": "ex_8008.jpg",
+        "recorrido": "sostenido"
+      }
+    },
+    {
+      "id": "ex_8009",
+      "slug": "estiramiento-gemelo-pared",
+      "name": "Estiramiento de gemelo en pared",
+      "name_en": "Calf stretch",
+      "aliases": [
+        "estiramiento de pantorrilla"
+      ],
+      "family": "fam_estiramiento_estatico",
+      "category": "estiramiento",
+      "goals": [
+        "running",
+        "postura"
+      ],
+      "level": 1,
+      "equipment": [
+        "pared"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "minimo",
+      "unilateral": true,
+      "measure": "tiempo",
+      "default": {
+        "series": 2,
+        "seg": 35,
+        "rest_s": 15
+      },
+      "met": 2.0,
+      "primary": [
+        "gemelos",
+        "soleo"
+      ],
+      "secondary": [
+        "pie_intrinsecos"
+      ],
+      "risk_zones": [
+        "tobillo"
+      ],
+      "contra": [],
+      "desc": "Estiramiento de pantorrilla con las manos en la pared. Con la rodilla recta estira el gemelo; con la rodilla doblada, el soleo.",
+      "steps": [
+        "Manos en la pared, un pie atras con el talon apoyado.",
+        "Empuja la cadera hacia delante manteniendo el talon en el suelo.",
+        "Manten 35 segundos con la rodilla recta.",
+        "Repite con la rodilla ligeramente doblada."
+      ],
+      "cues": [
+        "Talon pegado",
+        "Cadera al frente",
+        "Ambas versiones"
+      ],
+      "errors": [
+        "Despegar el talon",
+        "Rotar el pie hacia fuera",
+        "Olvidar la version con la rodilla doblada"
+      ],
+      "breathing": "Lenta y profunda.",
+      "progressions": [],
+      "regressions": [],
+      "substitutes": [
+        "ex_7013"
+      ],
+      "asset": {
+        "clip": "ex_8009.mp4",
+        "imagen": "ex_8009.jpg",
+        "recorrido": "sostenido"
+      }
+    },
+    {
+      "id": "ex_8010",
+      "slug": "postura-niño",
+      "name": "Postura del niño",
+      "name_en": "Child's pose",
+      "aliases": [
+        "balasana",
+        "postura del bebe"
+      ],
+      "family": "fam_estiramiento_estatico",
+      "category": "estiramiento",
+      "goals": [
+        "postura"
+      ],
+      "level": 1,
+      "equipment": [
+        "colchoneta"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "colchoneta",
+      "unilateral": false,
+      "measure": "tiempo",
+      "default": {
+        "series": 1,
+        "seg": 60,
+        "rest_s": 0
+      },
+      "met": 1.5,
+      "primary": [
+        "dorsal_ancho",
+        "erectores_espinales"
+      ],
+      "secondary": [
+        "gluteo_mayor",
+        "diafragma"
+      ],
+      "risk_zones": [
+        "rodilla"
+      ],
+      "contra": [
+        "lesion_rodilla"
+      ],
+      "desc": "Sentarse sobre los talones con los brazos extendidos al frente. Cierre habitual de sesion y buen reset de la respiracion.",
+      "steps": [
+        "De rodillas, sientate sobre los talones.",
+        "Extiende los brazos al frente y baja el pecho.",
+        "Apoya la frente en el suelo.",
+        "Respira hacia la espalda durante 60 segundos."
+      ],
+      "cues": [
+        "Frente apoyada",
+        "Brazos largos",
+        "Respira a la espalda"
+      ],
+      "errors": [
+        "Forzar la rodilla si molesta: pon un cojin detras",
+        "Encoger los hombros",
+        "Respiracion corta"
+      ],
+      "breathing": "Lenta, expandiendo la espalda.",
+      "progressions": [],
+      "regressions": [],
+      "substitutes": [
+        "ex_7005"
+      ],
+      "asset": {
+        "clip": "ex_8010.mp4",
+        "imagen": "ex_8010.jpg",
+        "recorrido": "sostenido"
+      }
+    },
+    {
+      "id": "ex_8011",
+      "slug": "torsion-espinal-tumbado",
+      "name": "Torsion espinal tumbado",
+      "name_en": "Supine spinal twist",
+      "aliases": [
+        "torsion tumbada"
+      ],
+      "family": "fam_estiramiento_estatico",
+      "category": "estiramiento",
+      "goals": [
+        "postura"
+      ],
+      "level": 1,
+      "equipment": [
+        "colchoneta"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "colchoneta",
+      "unilateral": true,
+      "measure": "tiempo",
+      "default": {
+        "series": 2,
+        "seg": 45,
+        "rest_s": 15
+      },
+      "met": 1.5,
+      "primary": [
+        "oblicuo_externo",
+        "erectores_espinales"
+      ],
+      "secondary": [
+        "gluteo_medio",
+        "pectoral_mayor"
+      ],
+      "risk_zones": [
+        "lumbar",
+        "hombro"
+      ],
+      "contra": [
+        "hernia_discal"
+      ],
+      "desc": "Dejar caer las rodillas a un lado con los hombros apoyados. Descarga la espalda al final de la sesion.",
+      "steps": [
+        "Boca arriba con los brazos en cruz.",
+        "Sube las rodillas y dejalas caer a un lado.",
+        "Manten los dos hombros en el suelo.",
+        "Mira al lado contrario y respira."
+      ],
+      "cues": [
+        "Hombros apoyados",
+        "Mira al lado contrario",
+        "Respira lento"
+      ],
+      "errors": [
+        "Despegar el hombro contrario",
+        "Forzar el giro",
+        "Aguantar la respiracion"
+      ],
+      "breathing": "Lenta y profunda.",
+      "progressions": [],
+      "regressions": [],
+      "substitutes": [
+        "ex_8010"
+      ],
+      "asset": {
+        "clip": "ex_8011.mp4",
+        "imagen": "ex_8011.jpg",
+        "recorrido": "sostenido"
+      }
+    },
+    {
+      "id": "ex_8012",
+      "slug": "estiramiento-triceps-cabeza",
+      "name": "Estiramiento de triceps",
+      "name_en": "Triceps stretch",
+      "aliases": [],
+      "family": "fam_estiramiento_estatico",
+      "category": "estiramiento",
+      "goals": [
+        "musculo",
+        "postura"
+      ],
+      "level": 1,
+      "equipment": [
+        "ninguno"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "minimo",
+      "unilateral": true,
+      "measure": "tiempo",
+      "default": {
+        "series": 2,
+        "seg": 30,
+        "rest_s": 15
+      },
+      "met": 1.5,
+      "primary": [
+        "triceps"
+      ],
+      "secondary": [
+        "dorsal_ancho"
+      ],
+      "risk_zones": [
+        "hombro"
+      ],
+      "contra": [
+        "lesion_hombro"
+      ],
+      "desc": "Llevar el codo detras de la cabeza con ayuda de la otra mano.",
+      "steps": [
+        "Levanta un brazo y dobla el codo llevando la mano a la espalda.",
+        "Con la otra mano empuja el codo suavemente hacia atras.",
+        "Manten sin dolor.",
+        "Cambia de lado."
+      ],
+      "cues": [
+        "Codo hacia atras",
+        "Costillas abajo",
+        "Sin dolor"
+      ],
+      "errors": [
+        "Arquear la lumbar",
+        "Tirar con fuerza",
+        "Encoger el hombro"
+      ],
+      "breathing": "Lenta.",
+      "progressions": [],
+      "regressions": [],
+      "substitutes": [
+        "ex_7012"
+      ],
+      "asset": {
+        "clip": "ex_8012.mp4",
+        "imagen": "ex_8012.jpg",
+        "recorrido": "sostenido"
+      }
+    },
+    {
+      "id": "ex_8013",
+      "slug": "estiramiento-aductores-mariposa",
+      "name": "Mariposa",
+      "name_en": "Butterfly stretch",
+      "aliases": [
+        "estiramiento de aductores"
+      ],
+      "family": "fam_estiramiento_estatico",
+      "category": "estiramiento",
+      "goals": [
+        "postura",
+        "running"
+      ],
+      "level": 1,
+      "equipment": [
+        "colchoneta"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "colchoneta",
+      "unilateral": false,
+      "measure": "tiempo",
+      "default": {
+        "series": 2,
+        "seg": 45,
+        "rest_s": 15
+      },
+      "met": 1.5,
+      "primary": [
+        "aductores"
+      ],
+      "secondary": [
+        "gluteo_medio"
+      ],
+      "risk_zones": [
+        "cadera",
+        "rodilla"
+      ],
+      "contra": [
+        "lesion_cadera"
+      ],
+      "desc": "Sentado con las plantas de los pies juntas dejando caer las rodillas.",
+      "steps": [
+        "Sentado, junta las plantas de los pies.",
+        "Sujeta los tobillos y mantente erguido.",
+        "Deja caer las rodillas por su propio peso.",
+        "Inclinate desde la cadera para profundizar."
+      ],
+      "cues": [
+        "Espalda recta",
+        "Deja caer, no empujes",
+        "Inclina desde la cadera"
+      ],
+      "errors": [
+        "Empujar las rodillas hacia abajo con fuerza",
+        "Redondear la espalda",
+        "Rebotar"
+      ],
+      "breathing": "Lenta y profunda.",
+      "progressions": [],
+      "regressions": [],
+      "substitutes": [
+        "ex_7007"
+      ],
+      "asset": {
+        "clip": "ex_8013.mp4",
+        "imagen": "ex_8013.jpg",
+        "recorrido": "sostenido"
+      }
+    },
+    {
+      "id": "ex_8014",
+      "slug": "rodillo-cuadriceps",
+      "name": "Rodillo en cuadriceps",
+      "name_en": "Quad foam rolling",
+      "aliases": [
+        "foam rolling de muslo"
+      ],
+      "family": "fam_estiramiento_estatico",
+      "category": "movilidad",
+      "goals": [
+        "running",
+        "musculo"
+      ],
+      "level": 1,
+      "equipment": [
+        "rodillo",
+        "colchoneta"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "colchoneta",
+      "unilateral": true,
+      "measure": "tiempo",
+      "default": {
+        "series": 1,
+        "seg": 45,
+        "rest_s": 15
+      },
+      "met": 2.0,
+      "primary": [
+        "cuadriceps"
+      ],
+      "secondary": [
+        "tensor_fascia_lata"
+      ],
+      "risk_zones": [
+        "rodilla"
+      ],
+      "contra": [],
+      "evidence": {
+        "rango_articular_temporal": "ok",
+        "recuperacion_percibida": "parcial",
+        "romper_adherencias": "mito"
+      },
+      "evidence_note": "Mejora el rango de forma temporal y reduce la sensacion de agujetas. La idea de que 'rompe adherencias' o remodela la fascia no tiene respaldo: el efecto es principalmente neural.",
+      "desc": "Rodar el muslo sobre el rodillo de espuma antes o despues de entrenar.",
+      "steps": [
+        "Boca abajo con el rodillo bajo un muslo.",
+        "Apoya el peso y rueda desde la cadera hasta encima de la rodilla.",
+        "Detente 20 segundos en los puntos sensibles.",
+        "Cambia de lado."
+      ],
+      "cues": [
+        "Presion tolerable",
+        "Rueda lento",
+        "Pausa en los puntos"
+      ],
+      "errors": [
+        "Rodar sobre la rodilla o la cadera osea",
+        "Presion hasta el dolor",
+        "Ir demasiado rapido"
+      ],
+      "breathing": "Lenta, sin bloquear.",
+      "progressions": [],
+      "regressions": [],
+      "substitutes": [
+        "ex_8008"
+      ],
+      "asset": {
+        "clip": "ex_8014.mp4",
+        "imagen": "ex_8014.jpg",
+        "recorrido": "sostenido"
+      }
+    },
+    {
+      "id": "ex_8015",
+      "slug": "rodillo-espalda-alta",
+      "name": "Rodillo en espalda alta",
+      "name_en": "Upper back foam rolling",
+      "aliases": [],
+      "family": "fam_movilidad_toracica",
+      "category": "movilidad",
+      "goals": [
+        "postura"
+      ],
+      "level": 1,
+      "equipment": [
+        "rodillo",
+        "colchoneta"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "colchoneta",
+      "unilateral": false,
+      "measure": "tiempo",
+      "default": {
+        "series": 1,
+        "seg": 60,
+        "rest_s": 15
+      },
+      "met": 2.0,
+      "primary": [
+        "erectores_espinales"
+      ],
+      "secondary": [
+        "trapecio_medio",
+        "romboides"
+      ],
+      "risk_zones": [
+        "lumbar",
+        "cuello"
+      ],
+      "contra": [
+        "lesion_lumbar"
+      ],
+      "desc": "Rodar la espalda alta sobre el rodillo. Nunca la zona lumbar: ahi no hay proteccion osea que lo justifique.",
+      "steps": [
+        "Rodillo perpendicular bajo las escapulas.",
+        "Manos detras de la cabeza, cadera despegada o apoyada.",
+        "Rueda solo entre la base del cuello y el final de las costillas.",
+        "No pases de la zona lumbar."
+      ],
+      "cues": [
+        "Solo espalda alta",
+        "No llegues a la lumbar",
+        "Lento"
+      ],
+      "errors": [
+        "Rodar sobre la zona lumbar",
+        "Extender el cuello sin apoyo",
+        "Ir demasiado rapido"
+      ],
+      "breathing": "Lenta.",
+      "progressions": [
+        "ex_7002"
+      ],
+      "regressions": [],
+      "substitutes": [
+        "ex_7002"
+      ],
+      "asset": {
+        "clip": "ex_8015.mp4",
+        "imagen": "ex_8015.jpg",
+        "recorrido": "ciclico"
+      }
+    }
+  ]
+}

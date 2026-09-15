@@ -1,0 +1,1574 @@
+{
+  "coleccion": "ejercicios",
+  "bloque": "calistenia",
+  "version": "2.0.0",
+  "nota": "Bloque de habilidades y progresiones de peso corporal. Los basicos (flexion, dominada, sentadilla) viven en sus bloques de patron; aqui van las habilidades y las variantes avanzadas.",
+  "items": [
+    {
+      "id": "ex_5001",
+      "slug": "burpee",
+      "name": "Burpee",
+      "name_en": "Burpee",
+      "aliases": [
+        "burpees"
+      ],
+      "family": "fam_pliometrico",
+      "category": "cardio",
+      "goals": [
+        "bajar_peso",
+        "cardio",
+        "calistenia"
+      ],
+      "level": 2,
+      "equipment": [
+        "colchoneta"
+      ],
+      "impact": 3,
+      "noise": 2,
+      "space": "colchoneta",
+      "unilateral": false,
+      "measure": "reps",
+      "default": {
+        "series": 4,
+        "reps": 10,
+        "rest_s": 45
+      },
+      "met": 9.0,
+      "primary": [
+        "cuadriceps",
+        "pectoral_mayor"
+      ],
+      "secondary": [
+        "core",
+        "deltoide_anterior",
+        "gluteo_mayor",
+        "gemelos"
+      ],
+      "risk_zones": [
+        "rodilla",
+        "muneca",
+        "lumbar"
+      ],
+      "contra": [
+        "lesion_rodilla",
+        "lesion_muneca",
+        "embarazo",
+        "postparto"
+      ],
+      "desc": "Sentadilla, plancha, flexion y salto en un solo movimiento. El ejercicio con mas gasto por minuto sin equipo, y el mas odiado.",
+      "steps": [
+        "De pie, baja las manos al suelo.",
+        "Salta o camina los pies atras hasta plancha.",
+        "Haz una flexion (opcional segun nivel).",
+        "Vuelve los pies a las manos y salta arriba con los brazos extendidos."
+      ],
+      "cues": [
+        "Pecho al suelo",
+        "Pies rapido",
+        "Salta arriba"
+      ],
+      "errors": [
+        "Dejar caer la cadera en la plancha",
+        "Aterrizar con las rodillas rigidas",
+        "Perder la tecnica al cansarse: mejor bajar el ritmo"
+      ],
+      "breathing": "Exhala en el salto, inhala al bajar.",
+      "progressions": [
+        "ex_5002"
+      ],
+      "regressions": [
+        "ex_5003"
+      ],
+      "substitutes": [
+        "ex_5003",
+        "ex_4011"
+      ],
+      "asset": {
+        "clip": "ex_5001.mp4",
+        "imagen": "ex_5001.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_5002",
+      "slug": "burpee-dominada",
+      "name": "Burpee con dominada",
+      "name_en": "Burpee pull-up",
+      "aliases": [],
+      "family": "fam_pliometrico",
+      "category": "cardio",
+      "goals": [
+        "calistenia",
+        "cardio"
+      ],
+      "level": 3,
+      "equipment": [
+        "barra_dominadas"
+      ],
+      "impact": 3,
+      "noise": 2,
+      "space": "colchoneta",
+      "unilateral": false,
+      "measure": "reps",
+      "default": {
+        "series": 3,
+        "reps": 8,
+        "rest_s": 90
+      },
+      "met": 10.0,
+      "primary": [
+        "dorsal_ancho",
+        "cuadriceps",
+        "pectoral_mayor"
+      ],
+      "secondary": [
+        "core",
+        "biceps",
+        "gemelos"
+      ],
+      "risk_zones": [
+        "hombro",
+        "rodilla",
+        "lumbar"
+      ],
+      "contra": [
+        "lesion_hombro",
+        "lesion_rodilla",
+        "embarazo"
+      ],
+      "desc": "Burpee terminando en dominada. Cuerpo completo al maximo.",
+      "steps": [
+        "Burpee completo debajo de la barra.",
+        "Al saltar, agarra la barra.",
+        "Haz una dominada.",
+        "Suelta controlado y encadena."
+      ],
+      "cues": [
+        "Salta hacia la barra",
+        "Dominada limpia",
+        "Aterriza suave"
+      ],
+      "errors": [
+        "Soltarse de golpe desde arriba",
+        "Perder la tecnica de la dominada por el cansancio",
+        "Aterrizar rigido"
+      ],
+      "breathing": "Exhala en cada esfuerzo.",
+      "progressions": [],
+      "regressions": [
+        "ex_5001"
+      ],
+      "substitutes": [
+        "ex_5001"
+      ],
+      "asset": {
+        "clip": "ex_5002.mp4",
+        "imagen": "ex_5002.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_5003",
+      "slug": "burpee-modificado",
+      "name": "Burpee modificado sin salto",
+      "name_en": "Modified burpee",
+      "aliases": [
+        "burpee sin salto"
+      ],
+      "family": "fam_locomocion",
+      "category": "cardio",
+      "goals": [
+        "bajar_peso",
+        "cardio"
+      ],
+      "level": 1,
+      "equipment": [
+        "colchoneta"
+      ],
+      "impact": 1,
+      "noise": 0,
+      "space": "colchoneta",
+      "unilateral": false,
+      "measure": "reps",
+      "default": {
+        "series": 3,
+        "reps": 10,
+        "rest_s": 45
+      },
+      "met": 6.0,
+      "primary": [
+        "cuadriceps",
+        "core"
+      ],
+      "secondary": [
+        "pectoral_mayor",
+        "deltoide_anterior"
+      ],
+      "risk_zones": [
+        "muneca"
+      ],
+      "contra": [
+        "lesion_muneca"
+      ],
+      "desc": "Burpee caminando los pies en vez de saltando. Mismo patron, sin impacto y sin ruido. Es la version que sobrevive al filtro de departamento.",
+      "steps": [
+        "De pie, baja las manos al suelo.",
+        "Camina un pie atras y luego el otro hasta plancha.",
+        "Camina de vuelta.",
+        "Extiende los brazos arriba sin saltar."
+      ],
+      "cues": [
+        "Camina, no saltes",
+        "Cadera baja en plancha",
+        "Ritmo constante"
+      ],
+      "errors": [
+        "Redondear la espalda al bajar las manos",
+        "Cadera alta en la plancha",
+        "Ir demasiado rapido y perder el control"
+      ],
+      "breathing": "Exhala al subir.",
+      "progressions": [
+        "ex_5001"
+      ],
+      "regressions": [],
+      "substitutes": [
+        "ex_4011"
+      ],
+      "asset": {
+        "clip": "ex_5003.mp4",
+        "imagen": "ex_5003.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_5004",
+      "slug": "pino-pared",
+      "name": "Pino contra la pared",
+      "name_en": "Wall handstand",
+      "aliases": [
+        "handstand",
+        "parada de manos"
+      ],
+      "family": "fam_empuje_vertical",
+      "category": "fuerza",
+      "goals": [
+        "calistenia"
+      ],
+      "level": 3,
+      "equipment": [
+        "pared"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "colchoneta",
+      "unilateral": false,
+      "measure": "tiempo",
+      "default": {
+        "series": 3,
+        "seg": 25,
+        "rest_s": 90
+      },
+      "met": 5.0,
+      "primary": [
+        "deltoide_anterior",
+        "triceps"
+      ],
+      "secondary": [
+        "core",
+        "trapecio_superior",
+        "serrato_anterior",
+        "antebrazo"
+      ],
+      "risk_zones": [
+        "hombro",
+        "muneca",
+        "cuello"
+      ],
+      "contra": [
+        "lesion_hombro",
+        "lesion_muneca",
+        "hipertension",
+        "vertigo"
+      ],
+      "desc": "Sostener el cuerpo invertido apoyado en la pared. Base de todo el trabajo de pino en calistenia.",
+      "steps": [
+        "Manos a un palmo de la pared, dedos abiertos.",
+        "Sube caminando los pies por la pared o pateando con control.",
+        "Cuerpo alineado, costillas metidas, hombros abiertos.",
+        "Baja de forma controlada."
+      ],
+      "cues": [
+        "Empuja el suelo",
+        "Costillas metidas",
+        "Mira entre las manos"
+      ],
+      "errors": [
+        "Arquear la lumbar como un platano",
+        "Encoger los hombros",
+        "Empezar sin calentar la muneca"
+      ],
+      "breathing": "Respiracion corta y continua.",
+      "progressions": [],
+      "regressions": [
+        "ex_2006"
+      ],
+      "substitutes": [
+        "ex_2006"
+      ],
+      "asset": {
+        "clip": "ex_5004.mp4",
+        "imagen": "ex_5004.jpg",
+        "recorrido": "sostenido"
+      }
+    },
+    {
+      "id": "ex_5005",
+      "slug": "sentadilla-pistol-asistida",
+      "name": "Sentadilla pistol asistida",
+      "name_en": "Assisted pistol squat",
+      "aliases": [
+        "pistol squat"
+      ],
+      "family": "fam_rodilla_unilateral",
+      "category": "fuerza",
+      "goals": [
+        "calistenia",
+        "musculo"
+      ],
+      "level": 3,
+      "equipment": [
+        "silla",
+        "banda_larga"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "colchoneta",
+      "unilateral": true,
+      "measure": "reps_por_lado",
+      "default": {
+        "series": 3,
+        "reps": 5,
+        "rest_s": 90
+      },
+      "met": 6.0,
+      "primary": [
+        "cuadriceps",
+        "gluteo_mayor"
+      ],
+      "secondary": [
+        "gluteo_medio",
+        "core",
+        "tibial_anterior"
+      ],
+      "risk_zones": [
+        "rodilla",
+        "tobillo"
+      ],
+      "contra": [
+        "lesion_rodilla"
+      ],
+      "desc": "Sentadilla a una pierna con la otra extendida al frente, sujetandose de algo. Exige fuerza, equilibrio y movilidad de tobillo.",
+      "steps": [
+        "Sujeta una silla o banda con una mano.",
+        "Extiende una pierna al frente.",
+        "Baja con la otra hasta abajo del todo.",
+        "Sube empujando con el talon."
+      ],
+      "cues": [
+        "Talon apoyado",
+        "Pierna libre alta",
+        "Sube parejo"
+      ],
+      "errors": [
+        "Dejarse caer abajo",
+        "Despegar el talon",
+        "Usar el apoyo para tirar en vez de equilibrar"
+      ],
+      "breathing": "Inhala al bajar, exhala al subir.",
+      "progressions": [],
+      "regressions": [
+        "ex_1010"
+      ],
+      "substitutes": [
+        "ex_1010"
+      ],
+      "asset": {
+        "clip": "ex_5005.mp4",
+        "imagen": "ex_5005.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_5006",
+      "slug": "oso-que-camina",
+      "name": "Oso que camina",
+      "name_en": "Bear crawl",
+      "aliases": [
+        "bear crawl",
+        "gateo del oso"
+      ],
+      "family": "fam_locomocion",
+      "category": "cardio",
+      "goals": [
+        "calistenia",
+        "cardio",
+        "bajar_peso"
+      ],
+      "level": 2,
+      "equipment": [
+        "colchoneta"
+      ],
+      "impact": 1,
+      "noise": 1,
+      "space": "amplio",
+      "unilateral": false,
+      "measure": "tiempo",
+      "default": {
+        "series": 3,
+        "seg": 30,
+        "rest_s": 45
+      },
+      "met": 7.0,
+      "primary": [
+        "core",
+        "deltoide_anterior"
+      ],
+      "secondary": [
+        "cuadriceps",
+        "triceps",
+        "serrato_anterior"
+      ],
+      "risk_zones": [
+        "muneca",
+        "hombro"
+      ],
+      "contra": [
+        "lesion_muneca"
+      ],
+      "desc": "Gateo con las rodillas a un palmo del suelo. Cuerpo completo, core integrado y mucho gasto.",
+      "steps": [
+        "A cuatro apoyos con las rodillas despegadas del suelo.",
+        "Avanza moviendo mano y pie contrarios a la vez.",
+        "Manten la cadera baja y la espalda plana.",
+        "Avanza y retrocede."
+      ],
+      "cues": [
+        "Rodillas bajas",
+        "Espalda plana",
+        "Mano y pie contrarios"
+      ],
+      "errors": [
+        "Subir la cadera",
+        "Mover mano y pie del mismo lado",
+        "Ir tan rapido que se pierde el control"
+      ],
+      "breathing": "Respiracion continua.",
+      "progressions": [],
+      "regressions": [
+        "ex_4001"
+      ],
+      "substitutes": [
+        "ex_4011"
+      ],
+      "asset": {
+        "clip": "ex_5006.mp4",
+        "imagen": "ex_5006.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_5007",
+      "slug": "cangrejo-que-camina",
+      "name": "Cangrejo que camina",
+      "name_en": "Crab walk",
+      "aliases": [
+        "crab walk"
+      ],
+      "family": "fam_locomocion",
+      "category": "cardio",
+      "goals": [
+        "calistenia",
+        "cardio",
+        "postura"
+      ],
+      "level": 2,
+      "equipment": [
+        "colchoneta"
+      ],
+      "impact": 1,
+      "noise": 1,
+      "space": "amplio",
+      "unilateral": false,
+      "measure": "tiempo",
+      "default": {
+        "series": 3,
+        "seg": 30,
+        "rest_s": 45
+      },
+      "met": 6.0,
+      "primary": [
+        "triceps",
+        "gluteo_mayor"
+      ],
+      "secondary": [
+        "deltoide_posterior",
+        "core",
+        "isquiotibiales"
+      ],
+      "risk_zones": [
+        "muneca",
+        "hombro"
+      ],
+      "contra": [
+        "lesion_muneca",
+        "lesion_hombro"
+      ],
+      "desc": "Desplazamiento boca arriba con manos y pies. Trabaja la cadena posterior, que casi nunca se entrena en locomocion.",
+      "steps": [
+        "Sientate y apoya las manos detras con los dedos hacia los pies.",
+        "Levanta la cadera hasta formar una mesa.",
+        "Camina hacia delante y hacia atras.",
+        "Manten la cadera alta todo el tiempo."
+      ],
+      "cues": [
+        "Cadera alta",
+        "Dedos hacia los pies",
+        "No te sientes"
+      ],
+      "errors": [
+        "Dejar caer la cadera",
+        "Poner los dedos hacia atras y forzar el hombro",
+        "Encoger los hombros"
+      ],
+      "breathing": "Respiracion continua.",
+      "progressions": [],
+      "regressions": [
+        "ex_1014"
+      ],
+      "substitutes": [
+        "ex_5006"
+      ],
+      "asset": {
+        "clip": "ex_5007.mp4",
+        "imagen": "ex_5007.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_5008",
+      "slug": "colgarse-activo",
+      "name": "Suspension activa (scapular hang)",
+      "name_en": "Active hang",
+      "aliases": [
+        "scapular pull-up",
+        "suspension escapular"
+      ],
+      "family": "fam_traccion_vertical",
+      "category": "fuerza",
+      "goals": [
+        "calistenia",
+        "postura"
+      ],
+      "level": 2,
+      "equipment": [
+        "barra_dominadas"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "minimo",
+      "unilateral": false,
+      "measure": "reps",
+      "default": {
+        "series": 3,
+        "reps": 8,
+        "rest_s": 60
+      },
+      "met": 4.0,
+      "primary": [
+        "trapecio_inferior",
+        "dorsal_ancho"
+      ],
+      "secondary": [
+        "romboides",
+        "antebrazo",
+        "serrato_anterior"
+      ],
+      "risk_zones": [
+        "hombro"
+      ],
+      "contra": [
+        "lesion_hombro"
+      ],
+      "desc": "Colgado, subir y bajar el cuerpo moviendo solo las escapulas. Es el paso previo obligatorio a la dominada y lo que protege el hombro.",
+      "steps": [
+        "Cuelgate con los brazos rectos y los hombros relajados.",
+        "Sin doblar los codos, baja los hombros alejandolos de las orejas.",
+        "El cuerpo sube unos centimetros.",
+        "Vuelve controlado."
+      ],
+      "cues": [
+        "Codos rectos",
+        "Baja los hombros",
+        "Solo escapulas"
+      ],
+      "errors": [
+        "Doblar los codos y convertirlo en dominada",
+        "Movimiento demasiado rapido",
+        "Hombros encogidos todo el tiempo"
+      ],
+      "breathing": "Exhala al subir, inhala al bajar.",
+      "progressions": [
+        "ex_3003"
+      ],
+      "regressions": [
+        "ex_3017"
+      ],
+      "substitutes": [
+        "ex_3017"
+      ],
+      "asset": {
+        "clip": "ex_5008.mp4",
+        "imagen": "ex_5008.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_5009",
+      "slug": "l-sit-apoyado",
+      "name": "L-sit apoyado",
+      "name_en": "Supported L-sit",
+      "aliases": [
+        "l sit"
+      ],
+      "family": "fam_antiextension",
+      "category": "fuerza",
+      "goals": [
+        "calistenia"
+      ],
+      "level": 3,
+      "equipment": [
+        "silla",
+        "colchoneta"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "colchoneta",
+      "unilateral": false,
+      "measure": "tiempo",
+      "default": {
+        "series": 3,
+        "seg": 15,
+        "rest_s": 75
+      },
+      "met": 5.0,
+      "primary": [
+        "recto_abdominal",
+        "flexor_cadera"
+      ],
+      "secondary": [
+        "triceps",
+        "dorsal_ancho",
+        "cuadriceps"
+      ],
+      "risk_zones": [
+        "muneca",
+        "hombro",
+        "lumbar"
+      ],
+      "contra": [
+        "lesion_muneca"
+      ],
+      "desc": "Sostener el cuerpo con las manos y las piernas extendidas al frente formando una L. Habilidad clasica de calistenia.",
+      "steps": [
+        "Manos apoyadas en dos soportes o en el suelo, brazos rectos.",
+        "Empuja los hombros hacia abajo y despega el gluteo.",
+        "Extiende las piernas al frente lo mas rectas que puedas.",
+        "Aguanta."
+      ],
+      "cues": [
+        "Empuja los hombros abajo",
+        "Piernas rectas",
+        "Costillas metidas"
+      ],
+      "errors": [
+        "Encoger los hombros",
+        "Doblar las rodillas sin darse cuenta",
+        "Contener la respiracion"
+      ],
+      "breathing": "Respiracion corta y continua.",
+      "progressions": [],
+      "regressions": [
+        "ex_4007"
+      ],
+      "substitutes": [
+        "ex_4007"
+      ],
+      "asset": {
+        "clip": "ex_5009.mp4",
+        "imagen": "ex_5009.jpg",
+        "recorrido": "sostenido"
+      }
+    },
+    {
+      "id": "ex_5010",
+      "slug": "puente-completo",
+      "name": "Puente completo",
+      "name_en": "Back bridge",
+      "aliases": [
+        "puente de espalda",
+        "wheel pose"
+      ],
+      "family": "fam_movilidad_toracica",
+      "category": "movilidad",
+      "goals": [
+        "calistenia",
+        "postura"
+      ],
+      "level": 3,
+      "equipment": [
+        "colchoneta"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "colchoneta",
+      "unilateral": false,
+      "measure": "tiempo",
+      "default": {
+        "series": 3,
+        "seg": 20,
+        "rest_s": 60
+      },
+      "met": 4.0,
+      "primary": [
+        "erectores_espinales",
+        "gluteo_mayor"
+      ],
+      "secondary": [
+        "deltoide_anterior",
+        "cuadriceps",
+        "pectoral_mayor"
+      ],
+      "risk_zones": [
+        "lumbar",
+        "hombro",
+        "muneca"
+      ],
+      "contra": [
+        "lesion_lumbar",
+        "hernia_discal",
+        "lesion_hombro",
+        "lesion_muneca"
+      ],
+      "desc": "Extension completa de columna apoyando manos y pies. Exige movilidad de hombro y de columna toracica; no es para principiantes.",
+      "steps": [
+        "Tumbado boca arriba, manos junto a las orejas con los dedos hacia los hombros.",
+        "Pies apoyados cerca del gluteo.",
+        "Empuja con brazos y piernas para levantar la cadera.",
+        "Busca la extension desde la zona toracica, no solo la lumbar."
+      ],
+      "cues": [
+        "Extiende del torax",
+        "Empuja parejo",
+        "Baja controlado"
+      ],
+      "errors": [
+        "Cargar todo el arco en la lumbar",
+        "Intentarlo sin movilidad de hombro previa",
+        "Bajar de golpe"
+      ],
+      "breathing": "Respiracion continua.",
+      "progressions": [],
+      "regressions": [
+        "ex_1014",
+        "ex_7002"
+      ],
+      "substitutes": [
+        "ex_7002"
+      ],
+      "asset": {
+        "clip": "ex_5010.mp4",
+        "imagen": "ex_5010.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_5011",
+      "slug": "flexion-explosiva",
+      "name": "Flexion explosiva",
+      "name_en": "Clap push-up",
+      "aliases": [
+        "flexion con palmada",
+        "plyo push up"
+      ],
+      "family": "fam_pliometrico",
+      "category": "fuerza",
+      "goals": [
+        "calistenia"
+      ],
+      "level": 3,
+      "equipment": [
+        "colchoneta"
+      ],
+      "impact": 2,
+      "noise": 2,
+      "space": "colchoneta",
+      "unilateral": false,
+      "measure": "reps",
+      "default": {
+        "series": 3,
+        "reps": 6,
+        "rest_s": 90
+      },
+      "met": 8.0,
+      "primary": [
+        "pectoral_mayor",
+        "triceps"
+      ],
+      "secondary": [
+        "deltoide_anterior",
+        "core"
+      ],
+      "risk_zones": [
+        "muneca",
+        "hombro",
+        "codo"
+      ],
+      "contra": [
+        "lesion_muneca",
+        "lesion_hombro"
+      ],
+      "desc": "Flexion despegando las manos del suelo. Trabaja potencia de empuje.",
+      "steps": [
+        "Flexion normal, baja controlado.",
+        "Empuja con fuerza maxima para despegar las manos.",
+        "Aterriza con los codos ligeramente doblados para amortiguar.",
+        "Encadena o reinicia."
+      ],
+      "cues": [
+        "Empuja fuerte",
+        "Amortigua al caer",
+        "Cuerpo recto"
+      ],
+      "errors": [
+        "Aterrizar con los brazos rigidos",
+        "Hacer series largas y perder potencia",
+        "Intentarlo sin dominar 15 flexiones limpias"
+      ],
+      "breathing": "Exhala en el empuje.",
+      "progressions": [],
+      "regressions": [
+        "ex_2001"
+      ],
+      "substitutes": [
+        "ex_2005"
+      ],
+      "asset": {
+        "clip": "ex_5011.mp4",
+        "imagen": "ex_5011.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_5012",
+      "slug": "muscle-up-progresion",
+      "name": "Progresion de muscle-up",
+      "name_en": "Muscle-up progression",
+      "aliases": [
+        "muscle up"
+      ],
+      "family": "fam_traccion_vertical",
+      "category": "fuerza",
+      "goals": [
+        "calistenia"
+      ],
+      "level": 3,
+      "equipment": [
+        "barra_dominadas",
+        "banda_larga"
+      ],
+      "impact": 0,
+      "noise": 1,
+      "space": "minimo",
+      "unilateral": false,
+      "measure": "reps",
+      "default": {
+        "series": 4,
+        "reps": 3,
+        "rest_s": 150
+      },
+      "met": 8.0,
+      "primary": [
+        "dorsal_ancho",
+        "triceps",
+        "pectoral_mayor"
+      ],
+      "secondary": [
+        "biceps",
+        "core",
+        "deltoide_anterior"
+      ],
+      "risk_zones": [
+        "hombro",
+        "codo",
+        "muneca"
+      ],
+      "contra": [
+        "lesion_hombro",
+        "lesion_codo"
+      ],
+      "desc": "Transicion de dominada a fondo sobre la barra. Requiere una base solida: al menos 10 dominadas y 15 fondos limpios.",
+      "steps": [
+        "Dominada explosiva llevando el pecho a la barra.",
+        "Al llegar arriba, mete el torso por encima rotando las munecas.",
+        "Termina con un fondo sobre la barra.",
+        "Baja controlado invirtiendo el movimiento."
+      ],
+      "cues": [
+        "Pecho a la barra",
+        "Mete el torso",
+        "Termina el fondo"
+      ],
+      "errors": [
+        "Intentarlo sin base de dominadas y fondos",
+        "Kipping descontrolado",
+        "Bajar de golpe cargando el codo"
+      ],
+      "breathing": "Exhala en la transicion.",
+      "progressions": [],
+      "regressions": [
+        "ex_3001",
+        "ex_2014"
+      ],
+      "substitutes": [
+        "ex_3001"
+      ],
+      "asset": {
+        "clip": "ex_5012.mp4",
+        "imagen": "ex_5012.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_5013",
+      "slug": "sentadilla-salto",
+      "name": "Sentadilla con salto",
+      "name_en": "Jump squat",
+      "aliases": [
+        "squat jump",
+        "salto de sentadilla"
+      ],
+      "family": "fam_pliometrico",
+      "category": "cardio",
+      "goals": [
+        "bajar_peso",
+        "cardio",
+        "calistenia"
+      ],
+      "level": 2,
+      "equipment": [
+        "ninguno"
+      ],
+      "impact": 3,
+      "noise": 2,
+      "space": "minimo",
+      "unilateral": false,
+      "measure": "reps",
+      "default": {
+        "series": 4,
+        "reps": 12,
+        "rest_s": 45
+      },
+      "met": 8.0,
+      "primary": [
+        "cuadriceps",
+        "gluteo_mayor"
+      ],
+      "secondary": [
+        "gemelos",
+        "core",
+        "isquiotibiales"
+      ],
+      "risk_zones": [
+        "rodilla",
+        "tobillo"
+      ],
+      "contra": [
+        "lesion_rodilla",
+        "lesion_tobillo",
+        "embarazo",
+        "postparto"
+      ],
+      "desc": "Sentadilla terminando en salto. Potencia de tren inferior y mucho gasto por minuto.",
+      "steps": [
+        "Sentadilla normal hasta media profundidad.",
+        "Salta con fuerza extendiendo cadera, rodilla y tobillo.",
+        "Aterriza con la punta primero y absorbe bajando a sentadilla.",
+        "Encadena."
+      ],
+      "cues": [
+        "Aterriza suave",
+        "Rodillas fuera",
+        "Absorbe el impacto"
+      ],
+      "errors": [
+        "Aterrizar con las piernas rigidas",
+        "Rodillas hacia dentro al caer",
+        "Hacer series largas con tecnica degradada"
+      ],
+      "breathing": "Exhala en el salto.",
+      "progressions": [
+        "ex_5014"
+      ],
+      "regressions": [
+        "ex_1001"
+      ],
+      "substitutes": [
+        "ex_1001"
+      ],
+      "asset": {
+        "clip": "ex_5013.mp4",
+        "imagen": "ex_5013.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_5014",
+      "slug": "salto-al-cajon",
+      "name": "Salto al cajon",
+      "name_en": "Box jump",
+      "aliases": [
+        "box jump"
+      ],
+      "family": "fam_pliometrico",
+      "category": "cardio",
+      "goals": [
+        "cardio",
+        "calistenia",
+        "gym"
+      ],
+      "level": 3,
+      "equipment": [
+        "banco"
+      ],
+      "impact": 3,
+      "noise": 2,
+      "space": "amplio",
+      "unilateral": false,
+      "measure": "reps",
+      "default": {
+        "series": 4,
+        "reps": 8,
+        "rest_s": 75
+      },
+      "met": 8.5,
+      "primary": [
+        "cuadriceps",
+        "gluteo_mayor"
+      ],
+      "secondary": [
+        "gemelos",
+        "core"
+      ],
+      "risk_zones": [
+        "rodilla",
+        "tobillo"
+      ],
+      "contra": [
+        "lesion_rodilla",
+        "lesion_tobillo",
+        "embarazo"
+      ],
+      "desc": "Salto a una superficie elevada estable. Potencia con menos impacto en la caida que el salto vertical, porque bajas caminando.",
+      "steps": [
+        "Colocate frente al cajon a un paso de distancia.",
+        "Flexiona y salta usando los brazos.",
+        "Aterriza suave con los dos pies completos sobre el cajon.",
+        "Baja caminando, nunca saltando."
+      ],
+      "cues": [
+        "Aterriza suave",
+        "Pies completos",
+        "Baja caminando"
+      ],
+      "errors": [
+        "Saltar de vuelta al suelo, que multiplica el impacto",
+        "Usar un cajon inestable",
+        "Elegir una altura por ego y golpearse la espinilla"
+      ],
+      "breathing": "Exhala en el salto.",
+      "progressions": [],
+      "regressions": [
+        "ex_5013"
+      ],
+      "substitutes": [
+        "ex_5013"
+      ],
+      "asset": {
+        "clip": "ex_5014.mp4",
+        "imagen": "ex_5014.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_5015",
+      "slug": "salto-skater",
+      "name": "Salto de patinador",
+      "name_en": "Skater jump",
+      "aliases": [
+        "skater",
+        "salto lateral"
+      ],
+      "family": "fam_pliometrico",
+      "category": "cardio",
+      "goals": [
+        "cardio",
+        "bajar_peso",
+        "running"
+      ],
+      "level": 2,
+      "equipment": [
+        "ninguno"
+      ],
+      "impact": 3,
+      "noise": 2,
+      "space": "amplio",
+      "unilateral": true,
+      "measure": "tiempo",
+      "default": {
+        "series": 4,
+        "seg": 30,
+        "rest_s": 40
+      },
+      "met": 8.0,
+      "primary": [
+        "gluteo_medio",
+        "cuadriceps"
+      ],
+      "secondary": [
+        "gemelos",
+        "core",
+        "gluteo_mayor"
+      ],
+      "risk_zones": [
+        "rodilla",
+        "tobillo"
+      ],
+      "contra": [
+        "lesion_rodilla",
+        "lesion_tobillo",
+        "embarazo"
+      ],
+      "desc": "Saltos laterales de pierna a pierna. Trabaja el plano frontal, que casi ningun ejercicio cubre y que es clave para la estabilidad de rodilla al correr.",
+      "steps": [
+        "Salta lateralmente de un pie al otro.",
+        "Aterriza en un pie y absorbe con la cadera.",
+        "Cruza la pierna libre por detras.",
+        "Manten el pecho alto."
+      ],
+      "cues": [
+        "Aterriza en un pie",
+        "Absorbe con la cadera",
+        "Pecho alto"
+      ],
+      "errors": [
+        "Rodilla hacia dentro al aterrizar",
+        "Saltos demasiado cortos",
+        "Ir rapido sin control"
+      ],
+      "breathing": "Respiracion ritmica.",
+      "progressions": [],
+      "regressions": [
+        "ex_1025"
+      ],
+      "substitutes": [
+        "ex_5013"
+      ],
+      "asset": {
+        "clip": "ex_5015.mp4",
+        "imagen": "ex_5015.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_5016",
+      "slug": "saltos-tijera",
+      "name": "Saltos de tijera",
+      "name_en": "Jumping jacks",
+      "aliases": [
+        "jumping jacks",
+        "polichinelas"
+      ],
+      "family": "fam_pliometrico",
+      "category": "cardio",
+      "goals": [
+        "cardio",
+        "bajar_peso"
+      ],
+      "level": 1,
+      "equipment": [
+        "ninguno"
+      ],
+      "impact": 3,
+      "noise": 2,
+      "space": "minimo",
+      "unilateral": false,
+      "measure": "tiempo",
+      "default": {
+        "series": 4,
+        "seg": 40,
+        "rest_s": 30
+      },
+      "met": 7.0,
+      "primary": [
+        "gemelos",
+        "deltoide_lateral"
+      ],
+      "secondary": [
+        "cuadriceps",
+        "gluteo_medio",
+        "core"
+      ],
+      "risk_zones": [
+        "rodilla",
+        "tobillo",
+        "hombro"
+      ],
+      "contra": [
+        "lesion_tobillo",
+        "postparto"
+      ],
+      "desc": "El calentamiento cardiovascular mas conocido del mundo. Simple, eficaz y ruidoso.",
+      "steps": [
+        "De pie con los pies juntos y los brazos a los lados.",
+        "Salta abriendo las piernas y subiendo los brazos.",
+        "Vuelve a la posicion inicial.",
+        "Ritmo constante."
+      ],
+      "cues": [
+        "Aterriza suave",
+        "Brazos completos",
+        "Ritmo constante"
+      ],
+      "errors": [
+        "Aterrizar con las piernas rigidas",
+        "No completar el rango de brazos",
+        "Ir demasiado rapido al inicio"
+      ],
+      "breathing": "Respiracion ritmica.",
+      "progressions": [
+        "ex_5017"
+      ],
+      "regressions": [
+        "ex_5018"
+      ],
+      "substitutes": [
+        "ex_5018"
+      ],
+      "asset": {
+        "clip": "ex_5016.mp4",
+        "imagen": "ex_5016.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_5017",
+      "slug": "salto-cuerda",
+      "name": "Salto de cuerda",
+      "name_en": "Jump rope",
+      "aliases": [
+        "saltar la cuerda",
+        "comba"
+      ],
+      "family": "fam_cardio_intervalos",
+      "category": "cardio",
+      "goals": [
+        "cardio",
+        "bajar_peso",
+        "running"
+      ],
+      "level": 2,
+      "equipment": [
+        "cuerda"
+      ],
+      "impact": 3,
+      "noise": 2,
+      "space": "colchoneta",
+      "unilateral": false,
+      "measure": "tiempo",
+      "default": {
+        "series": 5,
+        "seg": 60,
+        "rest_s": 45
+      },
+      "met": 11.0,
+      "primary": [
+        "gemelos",
+        "soleo"
+      ],
+      "secondary": [
+        "antebrazo",
+        "core",
+        "cuadriceps"
+      ],
+      "risk_zones": [
+        "tobillo",
+        "rodilla"
+      ],
+      "contra": [
+        "lesion_tobillo",
+        "lesion_rodilla",
+        "postparto"
+      ],
+      "desc": "El cardio con mejor relacion gasto/espacio/precio que existe. Tambien mejora la rigidez del tendon, lo que se transfiere a la carrera.",
+      "steps": [
+        "Cuerda a la medida: pisada al centro, los mangos llegan a la axila.",
+        "Salta bajo, apenas unos centimetros.",
+        "Gira con las munecas, no con los brazos.",
+        "Ritmo constante, mirada al frente."
+      ],
+      "cues": [
+        "Salta bajo",
+        "Gira con la muneca",
+        "Codos pegados"
+      ],
+      "errors": [
+        "Saltar demasiado alto y agotarse en un minuto",
+        "Girar con todo el brazo",
+        "Aterrizar con el talon"
+      ],
+      "breathing": "Respiracion ritmica.",
+      "progressions": [],
+      "regressions": [
+        "ex_5016"
+      ],
+      "substitutes": [
+        "ex_5016"
+      ],
+      "asset": {
+        "clip": "ex_5017.mp4",
+        "imagen": "ex_5017.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_5018",
+      "slug": "step-touch",
+      "name": "Paso lateral (step touch)",
+      "name_en": "Step touch",
+      "aliases": [
+        "paso lateral sin impacto"
+      ],
+      "family": "fam_cardio_continuo",
+      "category": "cardio",
+      "goals": [
+        "cardio",
+        "bajar_peso"
+      ],
+      "level": 1,
+      "equipment": [
+        "ninguno"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "minimo",
+      "unilateral": false,
+      "measure": "tiempo",
+      "default": {
+        "series": 3,
+        "seg": 45,
+        "rest_s": 30
+      },
+      "met": 4.0,
+      "primary": [
+        "cuadriceps",
+        "gluteo_medio"
+      ],
+      "secondary": [
+        "gemelos",
+        "deltoide_lateral"
+      ],
+      "risk_zones": [],
+      "contra": [],
+      "desc": "Version sin impacto y sin ruido de los saltos de tijera. La opcion para departamentos, embarazo y rodillas sensibles.",
+      "steps": [
+        "Da un paso lateral y junta el otro pie.",
+        "Sube los brazos al mismo tiempo.",
+        "Alterna lados con ritmo constante.",
+        "Aumenta la amplitud para subir intensidad."
+      ],
+      "cues": [
+        "Pasos amplios",
+        "Brazos arriba",
+        "Ritmo constante"
+      ],
+      "errors": [
+        "Pasos demasiado cortos",
+        "No usar los brazos",
+        "Perder el ritmo"
+      ],
+      "breathing": "Respiracion continua.",
+      "progressions": [
+        "ex_5016"
+      ],
+      "regressions": [],
+      "substitutes": [
+        "ex_5016"
+      ],
+      "asset": {
+        "clip": "ex_5018.mp4",
+        "imagen": "ex_5018.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_5019",
+      "slug": "rodillas-altas",
+      "name": "Rodillas altas",
+      "name_en": "High knees",
+      "aliases": [
+        "high knees",
+        "skipping alto"
+      ],
+      "family": "fam_pliometrico",
+      "category": "cardio",
+      "goals": [
+        "cardio",
+        "running",
+        "bajar_peso"
+      ],
+      "level": 2,
+      "equipment": [
+        "ninguno"
+      ],
+      "impact": 3,
+      "noise": 2,
+      "space": "minimo",
+      "unilateral": false,
+      "measure": "tiempo",
+      "default": {
+        "series": 4,
+        "seg": 30,
+        "rest_s": 30
+      },
+      "met": 8.0,
+      "primary": [
+        "flexor_cadera",
+        "gemelos"
+      ],
+      "secondary": [
+        "core",
+        "cuadriceps"
+      ],
+      "risk_zones": [
+        "rodilla",
+        "tobillo"
+      ],
+      "contra": [
+        "lesion_tobillo",
+        "postparto"
+      ],
+      "desc": "Correr en el sitio subiendo las rodillas a la altura de la cadera. Cardio y tecnica de carrera a la vez.",
+      "steps": [
+        "De pie, corre en el sitio.",
+        "Sube la rodilla hasta la altura de la cadera.",
+        "Apoya con la parte media del pie.",
+        "Manten el torso alto, sin echarte atras."
+      ],
+      "cues": [
+        "Rodilla a la cadera",
+        "Apoyo medio del pie",
+        "Torso alto"
+      ],
+      "errors": [
+        "Echarse hacia atras",
+        "Rodillas bajas",
+        "Aterrizar de talon"
+      ],
+      "breathing": "Respiracion ritmica.",
+      "progressions": [],
+      "regressions": [
+        "ex_5018"
+      ],
+      "substitutes": [
+        "ex_4011"
+      ],
+      "asset": {
+        "clip": "ex_5019.mp4",
+        "imagen": "ex_5019.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_5020",
+      "slug": "sentadilla-isometrica-pared-una-pierna",
+      "name": "Isometrico en pared a una pierna",
+      "name_en": "Single-leg wall sit",
+      "aliases": [],
+      "family": "fam_rodilla_unilateral",
+      "category": "fuerza",
+      "goals": [
+        "calistenia",
+        "musculo"
+      ],
+      "level": 3,
+      "equipment": [
+        "pared"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "minimo",
+      "unilateral": true,
+      "measure": "tiempo",
+      "default": {
+        "series": 3,
+        "seg": 20,
+        "rest_s": 60
+      },
+      "met": 4.5,
+      "primary": [
+        "cuadriceps"
+      ],
+      "secondary": [
+        "gluteo_mayor",
+        "core"
+      ],
+      "risk_zones": [
+        "rodilla"
+      ],
+      "contra": [
+        "lesion_rodilla"
+      ],
+      "desc": "Isometrico de cuadriceps a una sola pierna. Muy exigente sin nada de equipo ni ruido.",
+      "steps": [
+        "Sentadilla en pared normal.",
+        "Extiende una pierna al frente.",
+        "Aguanta con la otra a 90 grados.",
+        "Cambia de lado."
+      ],
+      "cues": [
+        "Espalda pegada",
+        "Rodilla a 90",
+        "Respira"
+      ],
+      "errors": [
+        "Bajar de mas",
+        "Apoyar la pierna libre",
+        "Aguantar la respiracion"
+      ],
+      "breathing": "Respiracion continua.",
+      "progressions": [],
+      "regressions": [
+        "ex_1003"
+      ],
+      "substitutes": [
+        "ex_1003"
+      ],
+      "asset": {
+        "clip": "ex_5020.mp4",
+        "imagen": "ex_5020.jpg",
+        "recorrido": "sostenido"
+      }
+    }
+  ]
+}

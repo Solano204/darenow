@@ -1,0 +1,1525 @@
+{
+  "coleccion": "ejercicios",
+  "bloque": "empuje",
+  "version": "2.0.0",
+  "items": [
+    {
+      "id": "ex_2001",
+      "slug": "flexion-brazos",
+      "name": "Flexion de brazos",
+      "name_en": "Push-up",
+      "aliases": [
+        "lagartija",
+        "push up",
+        "plancha de pecho"
+      ],
+      "family": "fam_empuje_horizontal",
+      "category": "fuerza",
+      "goals": [
+        "musculo",
+        "calistenia",
+        "bajar_peso",
+        "gym"
+      ],
+      "level": 2,
+      "equipment": [
+        "ninguno"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "colchoneta",
+      "unilateral": false,
+      "measure": "reps",
+      "default": {
+        "series": 3,
+        "reps": 10,
+        "rest_s": 60
+      },
+      "met": 5.0,
+      "primary": [
+        "pectoral_mayor"
+      ],
+      "secondary": [
+        "triceps",
+        "deltoide_anterior",
+        "serrato_anterior",
+        "core"
+      ],
+      "risk_zones": [
+        "hombro",
+        "muneca"
+      ],
+      "contra": [
+        "lesion_muneca",
+        "lesion_hombro"
+      ],
+      "desc": "El empuje horizontal basico. Trabaja pecho, triceps y core al mismo tiempo y no necesita nada.",
+      "steps": [
+        "Manos un poco mas anchas que los hombros, bajo el pecho.",
+        "Cuerpo recto de talones a cabeza, gluteo apretado.",
+        "Baja hasta que el pecho quede a un puno del suelo.",
+        "Empuja manteniendo los codos a unos 45 grados del torso."
+      ],
+      "cues": [
+        "Cuerpo recto",
+        "Codos a 45",
+        "Empuja el suelo"
+      ],
+      "errors": [
+        "Dejar caer la cadera y arquear la lumbar",
+        "Abrir los codos a 90 grados y castigar el hombro",
+        "Bajar solo la cabeza en vez del pecho"
+      ],
+      "breathing": "Inhala al bajar, exhala al empujar.",
+      "progressions": [
+        "ex_2003",
+        "ex_2004",
+        "ex_2005"
+      ],
+      "regressions": [
+        "ex_2002"
+      ],
+      "substitutes": [
+        "ex_2007",
+        "ex_2011"
+      ],
+      "asset": {
+        "clip": "ex_2001.mp4",
+        "imagen": "ex_2001.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_2002",
+      "slug": "flexion-inclinada",
+      "name": "Flexion inclinada",
+      "name_en": "Incline push-up",
+      "aliases": [
+        "flexion en pared",
+        "flexion en banco"
+      ],
+      "family": "fam_empuje_horizontal",
+      "category": "fuerza",
+      "goals": [
+        "musculo",
+        "calistenia",
+        "postura"
+      ],
+      "level": 1,
+      "equipment": [
+        "pared",
+        "silla",
+        "banco"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "minimo",
+      "unilateral": false,
+      "measure": "reps",
+      "default": {
+        "series": 3,
+        "reps": 12,
+        "rest_s": 45
+      },
+      "met": 4.0,
+      "primary": [
+        "pectoral_mayor"
+      ],
+      "secondary": [
+        "triceps",
+        "deltoide_anterior",
+        "core"
+      ],
+      "risk_zones": [
+        "muneca"
+      ],
+      "contra": [],
+      "desc": "Flexion con las manos elevadas. Cuanto mas alto el apoyo, mas facil. Permite progresar desde la pared hasta el suelo sin saltos bruscos.",
+      "steps": [
+        "Apoya las manos en una pared, mesa o silla firme.",
+        "Cuerpo recto, pies atras hasta sentir carga.",
+        "Baja el pecho al apoyo y empuja."
+      ],
+      "cues": [
+        "Cuerpo recto",
+        "Baja el pecho",
+        "Codos a 45"
+      ],
+      "errors": [
+        "Doblar la cadera",
+        "Usar un apoyo inestable",
+        "Rango corto"
+      ],
+      "breathing": "Inhala al bajar, exhala al empujar.",
+      "progressions": [
+        "ex_2001"
+      ],
+      "regressions": [],
+      "substitutes": [
+        "ex_2007"
+      ],
+      "asset": {
+        "clip": "ex_2002.mp4",
+        "imagen": "ex_2002.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_2003",
+      "slug": "flexion-diamante",
+      "name": "Flexion diamante",
+      "name_en": "Diamond push-up",
+      "aliases": [
+        "flexion cerrada",
+        "diamond push up"
+      ],
+      "family": "fam_empuje_horizontal",
+      "category": "fuerza",
+      "goals": [
+        "musculo",
+        "calistenia"
+      ],
+      "level": 3,
+      "equipment": [
+        "ninguno"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "colchoneta",
+      "unilateral": false,
+      "measure": "reps",
+      "default": {
+        "series": 3,
+        "reps": 8,
+        "rest_s": 60
+      },
+      "met": 5.0,
+      "primary": [
+        "triceps"
+      ],
+      "secondary": [
+        "pectoral_mayor",
+        "deltoide_anterior",
+        "core"
+      ],
+      "risk_zones": [
+        "muneca",
+        "codo"
+      ],
+      "contra": [
+        "lesion_muneca",
+        "lesion_codo"
+      ],
+      "desc": "Flexion con las manos juntas formando un diamante. Es la version con mas activacion de triceps del catalogo sin equipo.",
+      "steps": [
+        "Junta las manos bajo el pecho, indices y pulgares tocandose.",
+        "Cuerpo recto, codos pegados al torso.",
+        "Baja el pecho hacia las manos.",
+        "Empuja extendiendo el codo."
+      ],
+      "cues": [
+        "Codos pegados",
+        "Cuerpo recto",
+        "Baja al centro"
+      ],
+      "errors": [
+        "Abrir los codos y perder el estimulo de triceps",
+        "Dejar caer la cadera",
+        "Forzar la muneca si duele: usa mancuernas como agarre"
+      ],
+      "breathing": "Inhala al bajar, exhala al empujar.",
+      "progressions": [
+        "ex_2005"
+      ],
+      "regressions": [
+        "ex_2001"
+      ],
+      "substitutes": [
+        "ex_2013"
+      ],
+      "asset": {
+        "clip": "ex_2003.mp4",
+        "imagen": "ex_2003.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_2004",
+      "slug": "flexion-declinada",
+      "name": "Flexion declinada",
+      "name_en": "Decline push-up",
+      "aliases": [
+        "flexion con pies elevados"
+      ],
+      "family": "fam_empuje_horizontal",
+      "category": "fuerza",
+      "goals": [
+        "musculo",
+        "calistenia"
+      ],
+      "level": 3,
+      "equipment": [
+        "silla",
+        "banco"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "colchoneta",
+      "unilateral": false,
+      "measure": "reps",
+      "default": {
+        "series": 3,
+        "reps": 8,
+        "rest_s": 60
+      },
+      "met": 5.5,
+      "primary": [
+        "pectoral_mayor",
+        "deltoide_anterior"
+      ],
+      "secondary": [
+        "triceps",
+        "serrato_anterior",
+        "core"
+      ],
+      "risk_zones": [
+        "hombro",
+        "muneca"
+      ],
+      "contra": [
+        "lesion_hombro"
+      ],
+      "desc": "Flexion con los pies elevados. Traslada carga a la porcion clavicular del pectoral y al hombro.",
+      "steps": [
+        "Pies sobre una silla o banco, manos en el suelo.",
+        "Cuerpo recto, gluteo apretado.",
+        "Baja el pecho al suelo.",
+        "Empuja sin dejar caer la cadera."
+      ],
+      "cues": [
+        "Cuerpo recto",
+        "Costillas abajo",
+        "Empuja parejo"
+      ],
+      "errors": [
+        "Arquear la lumbar",
+        "Elevar demasiado los pies y convertirlo en press vertical",
+        "Perder el control al bajar"
+      ],
+      "breathing": "Inhala al bajar, exhala al empujar.",
+      "progressions": [
+        "ex_2005"
+      ],
+      "regressions": [
+        "ex_2001"
+      ],
+      "substitutes": [
+        "ex_2010"
+      ],
+      "asset": {
+        "clip": "ex_2004.mp4",
+        "imagen": "ex_2004.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_2005",
+      "slug": "flexion-arquero",
+      "name": "Flexion arquero",
+      "name_en": "Archer push-up",
+      "aliases": [
+        "archer push up"
+      ],
+      "family": "fam_empuje_horizontal",
+      "category": "fuerza",
+      "goals": [
+        "calistenia",
+        "musculo"
+      ],
+      "level": 3,
+      "equipment": [
+        "ninguno"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "colchoneta",
+      "unilateral": true,
+      "measure": "reps_por_lado",
+      "default": {
+        "series": 3,
+        "reps": 6,
+        "rest_s": 90
+      },
+      "met": 6.0,
+      "primary": [
+        "pectoral_mayor"
+      ],
+      "secondary": [
+        "triceps",
+        "deltoide_anterior",
+        "core"
+      ],
+      "risk_zones": [
+        "hombro",
+        "muneca",
+        "codo"
+      ],
+      "contra": [
+        "lesion_hombro"
+      ],
+      "desc": "Flexion cargando casi todo el peso en un brazo mientras el otro se extiende. Puente hacia la flexion a una mano.",
+      "steps": [
+        "Manos muy separadas, mas anchas que en la flexion normal.",
+        "Baja hacia un lado doblando ese brazo y estirando el otro.",
+        "Empuja con el brazo doblado para volver al centro.",
+        "Alterna lados."
+      ],
+      "cues": [
+        "Baja a un lado",
+        "El otro brazo estirado",
+        "Cuerpo recto"
+      ],
+      "errors": [
+        "Rotar la cadera al bajar",
+        "Doblar el brazo extendido y repartir la carga",
+        "Perder la linea del cuerpo"
+      ],
+      "breathing": "Inhala al bajar, exhala al empujar.",
+      "progressions": [],
+      "regressions": [
+        "ex_2001"
+      ],
+      "substitutes": [
+        "ex_2003"
+      ],
+      "asset": {
+        "clip": "ex_2005.mp4",
+        "imagen": "ex_2005.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_2006",
+      "slug": "pike-push-up",
+      "name": "Pike push-up",
+      "name_en": "Pike push-up",
+      "aliases": [
+        "flexion en pica",
+        "press vertical con peso corporal"
+      ],
+      "family": "fam_empuje_vertical",
+      "category": "fuerza",
+      "goals": [
+        "musculo",
+        "calistenia"
+      ],
+      "level": 3,
+      "equipment": [
+        "ninguno"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "colchoneta",
+      "unilateral": false,
+      "measure": "reps",
+      "default": {
+        "series": 3,
+        "reps": 8,
+        "rest_s": 75
+      },
+      "met": 5.5,
+      "primary": [
+        "deltoide_anterior",
+        "deltoide_lateral"
+      ],
+      "secondary": [
+        "triceps",
+        "trapecio_inferior",
+        "serrato_anterior"
+      ],
+      "risk_zones": [
+        "hombro",
+        "muneca",
+        "cuello"
+      ],
+      "contra": [
+        "lesion_hombro",
+        "lesion_muneca",
+        "hipertension",
+        "vertigo"
+      ],
+      "desc": "Flexion en posicion de V invertida. Es el press de hombro con peso corporal y el paso previo al pino.",
+      "steps": [
+        "Desde plancha, camina los pies hacia las manos formando una V invertida.",
+        "Cadera alta, mirada hacia los pies.",
+        "Baja la coronilla hacia el suelo entre las manos.",
+        "Empuja hasta extender los codos."
+      ],
+      "cues": [
+        "Cadera alta",
+        "Baja la coronilla",
+        "Empuja arriba"
+      ],
+      "errors": [
+        "Bajar la cadera y convertirlo en flexion normal",
+        "Apoyar la cabeza con peso",
+        "Forzar el cuello"
+      ],
+      "breathing": "Inhala al bajar, exhala al empujar.",
+      "progressions": [],
+      "regressions": [
+        "ex_2002"
+      ],
+      "substitutes": [
+        "ex_2009"
+      ],
+      "asset": {
+        "clip": "ex_2006.mp4",
+        "imagen": "ex_2006.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_2007",
+      "slug": "press-banca-mancuernas",
+      "name": "Press de banca con mancuernas",
+      "name_en": "Dumbbell bench press",
+      "aliases": [
+        "press con mancuernas",
+        "press plano"
+      ],
+      "family": "fam_empuje_horizontal",
+      "category": "fuerza",
+      "goals": [
+        "musculo",
+        "gym"
+      ],
+      "level": 2,
+      "equipment": [
+        "mancuernas",
+        "banco"
+      ],
+      "impact": 0,
+      "noise": 1,
+      "space": "colchoneta",
+      "unilateral": false,
+      "measure": "reps",
+      "default": {
+        "series": 4,
+        "reps": 10,
+        "rest_s": 90
+      },
+      "met": 5.0,
+      "primary": [
+        "pectoral_mayor"
+      ],
+      "secondary": [
+        "triceps",
+        "deltoide_anterior"
+      ],
+      "risk_zones": [
+        "hombro"
+      ],
+      "contra": [
+        "lesion_hombro"
+      ],
+      "desc": "Empuje horizontal con mancuernas. Mas rango y menos exigencia para el hombro que la barra, y cada lado trabaja por su cuenta.",
+      "steps": [
+        "Tumbado en el banco, escapulas juntas y pies firmes en el suelo.",
+        "Mancuernas a la altura del pecho, codos a unos 45 grados.",
+        "Empuja arriba sin chocar las mancuernas.",
+        "Baja controlado hasta sentir estiramiento en el pecho."
+      ],
+      "cues": [
+        "Escapulas juntas",
+        "Codos a 45",
+        "Baja controlado"
+      ],
+      "errors": [
+        "Abrir los codos a 90 grados",
+        "Rebotar en el pecho",
+        "Despegar la espalda alta del banco perdiendo la base"
+      ],
+      "breathing": "Inhala al bajar, exhala al empujar.",
+      "progressions": [
+        "ex_2008"
+      ],
+      "regressions": [
+        "ex_2001"
+      ],
+      "substitutes": [
+        "ex_2011",
+        "ex_2001"
+      ],
+      "asset": {
+        "clip": "ex_2007.mp4",
+        "imagen": "ex_2007.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_2008",
+      "slug": "press-banca-barra",
+      "name": "Press de banca con barra",
+      "name_en": "Barbell bench press",
+      "aliases": [
+        "bench press",
+        "press plano con barra"
+      ],
+      "family": "fam_empuje_horizontal",
+      "category": "fuerza",
+      "goals": [
+        "musculo",
+        "gym"
+      ],
+      "level": 3,
+      "equipment": [
+        "barra",
+        "banco"
+      ],
+      "impact": 0,
+      "noise": 1,
+      "space": "amplio",
+      "unilateral": false,
+      "measure": "reps",
+      "default": {
+        "series": 4,
+        "reps": 6,
+        "rest_s": 150
+      },
+      "met": 6.0,
+      "primary": [
+        "pectoral_mayor"
+      ],
+      "secondary": [
+        "triceps",
+        "deltoide_anterior"
+      ],
+      "risk_zones": [
+        "hombro",
+        "muneca"
+      ],
+      "contra": [
+        "lesion_hombro"
+      ],
+      "desc": "El empuje horizontal con mas carga posible. Requiere rack o un compañero para las series pesadas.",
+      "steps": [
+        "Escapulas retraidas y apoyadas, pies firmes, ligera curva lumbar natural.",
+        "Agarre poco mas ancho que los hombros.",
+        "Baja la barra a la linea del pecho con los codos a 45 grados.",
+        "Empuja hacia arriba y ligeramente atras."
+      ],
+      "cues": [
+        "Aprieta las escapulas",
+        "Baja a la linea del pecho",
+        "Empuja el suelo con los pies"
+      ],
+      "errors": [
+        "Rebotar la barra en el pecho",
+        "Levantar el gluteo del banco",
+        "Codos completamente abiertos"
+      ],
+      "breathing": "Inhala al bajar, exhala en la subida.",
+      "progressions": [],
+      "regressions": [
+        "ex_2007"
+      ],
+      "substitutes": [
+        "ex_2007",
+        "ex_2011"
+      ],
+      "asset": {
+        "clip": "ex_2008.mp4",
+        "imagen": "ex_2008.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_2009",
+      "slug": "press-militar-mancuernas",
+      "name": "Press militar con mancuernas",
+      "name_en": "Dumbbell shoulder press",
+      "aliases": [
+        "press de hombro",
+        "overhead press"
+      ],
+      "family": "fam_empuje_vertical",
+      "category": "fuerza",
+      "goals": [
+        "musculo",
+        "gym"
+      ],
+      "level": 2,
+      "equipment": [
+        "mancuernas",
+        "silla"
+      ],
+      "impact": 0,
+      "noise": 1,
+      "space": "minimo",
+      "unilateral": false,
+      "measure": "reps",
+      "default": {
+        "series": 4,
+        "reps": 10,
+        "rest_s": 90
+      },
+      "met": 5.0,
+      "primary": [
+        "deltoide_anterior",
+        "deltoide_lateral"
+      ],
+      "secondary": [
+        "triceps",
+        "trapecio_inferior",
+        "core"
+      ],
+      "risk_zones": [
+        "hombro",
+        "lumbar"
+      ],
+      "contra": [
+        "lesion_hombro"
+      ],
+      "desc": "Empuje por encima de la cabeza. Construye hombro y exige control del core para no arquear la lumbar.",
+      "steps": [
+        "Mancuernas a la altura de los hombros, palmas al frente o neutras.",
+        "Aprieta gluteo y abdomen para fijar las costillas.",
+        "Empuja arriba hasta casi extender.",
+        "Baja controlado a la altura de la oreja."
+      ],
+      "cues": [
+        "Costillas abajo",
+        "Aprieta el gluteo",
+        "Sube en linea"
+      ],
+      "errors": [
+        "Arquear la lumbar para ayudarse",
+        "Bajar demasiado y forzar el hombro",
+        "Empujar hacia delante en vez de arriba"
+      ],
+      "breathing": "Exhala al empujar, inhala al bajar.",
+      "progressions": [
+        "ex_2010"
+      ],
+      "regressions": [
+        "ex_2006"
+      ],
+      "substitutes": [
+        "ex_2010",
+        "ex_2006"
+      ],
+      "asset": {
+        "clip": "ex_2009.mp4",
+        "imagen": "ex_2009.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_2010",
+      "slug": "press-militar-barra",
+      "name": "Press militar con barra",
+      "name_en": "Overhead press",
+      "aliases": [
+        "OHP",
+        "press estricto"
+      ],
+      "family": "fam_empuje_vertical",
+      "category": "fuerza",
+      "goals": [
+        "musculo",
+        "gym"
+      ],
+      "level": 3,
+      "equipment": [
+        "barra"
+      ],
+      "impact": 0,
+      "noise": 1,
+      "space": "amplio",
+      "unilateral": false,
+      "measure": "reps",
+      "default": {
+        "series": 4,
+        "reps": 6,
+        "rest_s": 150
+      },
+      "met": 6.0,
+      "primary": [
+        "deltoide_anterior"
+      ],
+      "secondary": [
+        "triceps",
+        "deltoide_lateral",
+        "core",
+        "trapecio_superior"
+      ],
+      "risk_zones": [
+        "hombro",
+        "lumbar"
+      ],
+      "contra": [
+        "lesion_hombro",
+        "lesion_lumbar"
+      ],
+      "desc": "El press vertical clasico de pie. Es el mejor indicador de fuerza real de tren superior porque no hay banco que ayude.",
+      "steps": [
+        "Barra sobre la clavicula, codos ligeramente al frente.",
+        "Aprieta gluteo y abdomen.",
+        "Empuja arriba moviendo la cabeza ligeramente atras al pasar la barra.",
+        "Termina con la barra sobre el medio del pie."
+      ],
+      "cues": [
+        "Aprieta todo",
+        "Cabeza atras al pasar",
+        "Termina encima"
+      ],
+      "errors": [
+        "Arquear la lumbar de forma exagerada",
+        "Empujar la barra hacia delante",
+        "Encoger los hombros antes de tiempo"
+      ],
+      "breathing": "Inhala y presuriza abajo, exhala arriba.",
+      "progressions": [],
+      "regressions": [
+        "ex_2009"
+      ],
+      "substitutes": [
+        "ex_2009"
+      ],
+      "asset": {
+        "clip": "ex_2010.mp4",
+        "imagen": "ex_2010.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_2011",
+      "slug": "press-maquina-pecho",
+      "name": "Press de pecho en maquina",
+      "name_en": "Chest press machine",
+      "aliases": [
+        "press en maquina"
+      ],
+      "family": "fam_empuje_horizontal",
+      "category": "fuerza",
+      "goals": [
+        "musculo",
+        "gym"
+      ],
+      "level": 1,
+      "equipment": [
+        "maquina_pecho"
+      ],
+      "impact": 0,
+      "noise": 1,
+      "space": "amplio",
+      "unilateral": false,
+      "measure": "reps",
+      "default": {
+        "series": 3,
+        "reps": 12,
+        "rest_s": 75
+      },
+      "met": 4.5,
+      "primary": [
+        "pectoral_mayor"
+      ],
+      "secondary": [
+        "triceps",
+        "deltoide_anterior"
+      ],
+      "risk_zones": [
+        "hombro"
+      ],
+      "contra": [],
+      "desc": "Empuje horizontal guiado. Ideal para principiantes o para acumular volumen al final de la sesion sin riesgo tecnico.",
+      "steps": [
+        "Ajusta el asiento para que los agarres queden a la altura del pecho.",
+        "Espalda apoyada, escapulas atras.",
+        "Empuja sin bloquear del todo.",
+        "Vuelve controlado sin dejar chocar las placas."
+      ],
+      "cues": [
+        "Agarres a la altura del pecho",
+        "Escapulas atras",
+        "Sin golpear las placas"
+      ],
+      "errors": [
+        "Asiento mal ajustado y empuje por encima del hombro",
+        "Despegar la espalda",
+        "Rango parcial por exceso de peso"
+      ],
+      "breathing": "Exhala al empujar, inhala al volver.",
+      "progressions": [],
+      "regressions": [],
+      "substitutes": [
+        "ex_2007"
+      ],
+      "asset": {
+        "clip": "ex_2011.mp4",
+        "imagen": "ex_2011.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_2012",
+      "slug": "aperturas-mancuernas",
+      "name": "Aperturas con mancuernas",
+      "name_en": "Dumbbell fly",
+      "aliases": [
+        "fly",
+        "aperturas"
+      ],
+      "family": "fam_empuje_horizontal",
+      "category": "fuerza",
+      "goals": [
+        "musculo",
+        "gym"
+      ],
+      "level": 2,
+      "equipment": [
+        "mancuernas",
+        "banco"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "colchoneta",
+      "unilateral": false,
+      "measure": "reps",
+      "default": {
+        "series": 3,
+        "reps": 12,
+        "rest_s": 60
+      },
+      "met": 4.0,
+      "primary": [
+        "pectoral_mayor"
+      ],
+      "secondary": [
+        "deltoide_anterior"
+      ],
+      "risk_zones": [
+        "hombro"
+      ],
+      "contra": [
+        "lesion_hombro"
+      ],
+      "desc": "Aislamiento de pectoral con el codo casi fijo. Complementa el press trabajando la funcion de aduccion.",
+      "steps": [
+        "Tumbado, mancuernas arriba con los codos ligeramente doblados.",
+        "Abre los brazos en arco hasta sentir estiramiento en el pecho.",
+        "No bajes mas alla de la linea del torso.",
+        "Cierra apretando el pecho, sin chocar las pesas."
+      ],
+      "cues": [
+        "Codo fijo",
+        "Abre en arco",
+        "Aprieta al cerrar"
+      ],
+      "errors": [
+        "Bajar demasiado y forzar la capsula del hombro",
+        "Convertirlo en press doblando el codo",
+        "Usar demasiado peso"
+      ],
+      "breathing": "Inhala al abrir, exhala al cerrar.",
+      "progressions": [],
+      "regressions": [],
+      "substitutes": [
+        "ex_2007"
+      ],
+      "asset": {
+        "clip": "ex_2012.mp4",
+        "imagen": "ex_2012.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_2013",
+      "slug": "fondos-banco",
+      "name": "Fondos en banco",
+      "name_en": "Bench dips",
+      "aliases": [
+        "fondos de triceps",
+        "dips en silla"
+      ],
+      "family": "fam_empuje_horizontal",
+      "category": "fuerza",
+      "goals": [
+        "musculo",
+        "calistenia"
+      ],
+      "level": 2,
+      "equipment": [
+        "silla",
+        "banco"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "colchoneta",
+      "unilateral": false,
+      "measure": "reps",
+      "default": {
+        "series": 3,
+        "reps": 12,
+        "rest_s": 60
+      },
+      "met": 4.5,
+      "primary": [
+        "triceps"
+      ],
+      "secondary": [
+        "deltoide_anterior",
+        "pectoral_mayor"
+      ],
+      "risk_zones": [
+        "hombro",
+        "muneca"
+      ],
+      "contra": [
+        "lesion_hombro"
+      ],
+      "desc": "Fondos con las manos en una silla y los pies en el suelo. Accesible, pero exige cuidado con el hombro.",
+      "steps": [
+        "Manos en el borde de la silla, dedos hacia delante.",
+        "Cadera cerca de la silla, piernas extendidas o dobladas.",
+        "Baja hasta que el codo quede a 90 grados, no mas.",
+        "Empuja para subir."
+      ],
+      "cues": [
+        "Cadera pegada a la silla",
+        "Baja solo a 90",
+        "Pecho arriba"
+      ],
+      "errors": [
+        "Bajar demasiado y comprimir la parte anterior del hombro",
+        "Separar la cadera de la silla",
+        "Encoger los hombros hacia las orejas"
+      ],
+      "breathing": "Inhala al bajar, exhala al subir.",
+      "progressions": [
+        "ex_2014"
+      ],
+      "regressions": [
+        "ex_2003"
+      ],
+      "substitutes": [
+        "ex_2015"
+      ],
+      "asset": {
+        "clip": "ex_2013.mp4",
+        "imagen": "ex_2013.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_2014",
+      "slug": "fondos-paralelas",
+      "name": "Fondos en paralelas",
+      "name_en": "Parallel bar dips",
+      "aliases": [
+        "dips",
+        "fondos"
+      ],
+      "family": "fam_empuje_horizontal",
+      "category": "fuerza",
+      "goals": [
+        "musculo",
+        "calistenia",
+        "gym"
+      ],
+      "level": 3,
+      "equipment": [
+        "anillas_trx",
+        "barra_dominadas"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "colchoneta",
+      "unilateral": false,
+      "measure": "reps",
+      "default": {
+        "series": 3,
+        "reps": 8,
+        "rest_s": 90
+      },
+      "met": 6.0,
+      "primary": [
+        "pectoral_mayor",
+        "triceps"
+      ],
+      "secondary": [
+        "deltoide_anterior",
+        "serrato_anterior"
+      ],
+      "risk_zones": [
+        "hombro",
+        "codo"
+      ],
+      "contra": [
+        "lesion_hombro"
+      ],
+      "desc": "Uno de los ejercicios de empuje mas completos con peso corporal. Inclinando el torso trabaja mas pecho; vertical, mas triceps.",
+      "steps": [
+        "Sujetate en las paralelas con los brazos extendidos.",
+        "Baja controlado hasta que el hombro quede a la altura del codo.",
+        "No bajes mas de lo que controles.",
+        "Empuja hasta extender sin bloquear de golpe."
+      ],
+      "cues": [
+        "Hombros abajo",
+        "Baja controlado",
+        "No bloquees de golpe"
+      ],
+      "errors": [
+        "Bajar en exceso y estresar la capsula anterior",
+        "Encoger los hombros hacia las orejas",
+        "Balancearse para subir"
+      ],
+      "breathing": "Inhala al bajar, exhala al subir.",
+      "progressions": [],
+      "regressions": [
+        "ex_2013"
+      ],
+      "substitutes": [
+        "ex_2013"
+      ],
+      "asset": {
+        "clip": "ex_2014.mp4",
+        "imagen": "ex_2014.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_2015",
+      "slug": "extension-triceps-cabeza",
+      "name": "Extension de triceps sobre la cabeza",
+      "name_en": "Overhead triceps extension",
+      "aliases": [
+        "frances",
+        "triceps frances"
+      ],
+      "family": "fam_empuje_vertical",
+      "category": "fuerza",
+      "goals": [
+        "musculo",
+        "gym"
+      ],
+      "level": 2,
+      "equipment": [
+        "mancuernas"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "minimo",
+      "unilateral": false,
+      "measure": "reps",
+      "default": {
+        "series": 3,
+        "reps": 12,
+        "rest_s": 60
+      },
+      "met": 4.0,
+      "primary": [
+        "triceps"
+      ],
+      "secondary": [],
+      "risk_zones": [
+        "codo",
+        "hombro"
+      ],
+      "contra": [
+        "lesion_codo"
+      ],
+      "desc": "Extension de codo con el brazo arriba. Es la posicion que mas estira la cabeza larga del triceps.",
+      "steps": [
+        "Sujeta una mancuerna con las dos manos por encima de la cabeza.",
+        "Codos apuntando al frente y pegados.",
+        "Baja detras de la nuca doblando solo el codo.",
+        "Extiende sin bloquear de golpe."
+      ],
+      "cues": [
+        "Codos quietos",
+        "Solo se mueve el antebrazo",
+        "Baja controlado"
+      ],
+      "errors": [
+        "Abrir los codos hacia los lados",
+        "Mover el hombro en vez del codo",
+        "Bajar demasiado rapido"
+      ],
+      "breathing": "Inhala al bajar, exhala al extender.",
+      "progressions": [],
+      "regressions": [],
+      "substitutes": [
+        "ex_2016",
+        "ex_2003"
+      ],
+      "asset": {
+        "clip": "ex_2015.mp4",
+        "imagen": "ex_2015.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_2016",
+      "slug": "pushdown-polea",
+      "name": "Pushdown en polea",
+      "name_en": "Triceps pushdown",
+      "aliases": [
+        "jalon de triceps",
+        "pushdown"
+      ],
+      "family": "fam_empuje_vertical",
+      "category": "fuerza",
+      "goals": [
+        "musculo",
+        "gym"
+      ],
+      "level": 1,
+      "equipment": [
+        "polea"
+      ],
+      "impact": 0,
+      "noise": 1,
+      "space": "amplio",
+      "unilateral": false,
+      "measure": "reps",
+      "default": {
+        "series": 3,
+        "reps": 14,
+        "rest_s": 60
+      },
+      "met": 4.0,
+      "primary": [
+        "triceps"
+      ],
+      "secondary": [],
+      "risk_zones": [
+        "codo"
+      ],
+      "contra": [],
+      "desc": "Extension de triceps en polea alta. Tension constante y facil de cargar de forma progresiva.",
+      "steps": [
+        "De pie frente a la polea alta, agarra la barra o cuerda.",
+        "Codos pegados al torso y fijos.",
+        "Extiende hacia abajo hasta bloquear suave.",
+        "Vuelve controlado sin dejar que el codo se abra."
+      ],
+      "cues": [
+        "Codos pegados",
+        "Solo antebrazo",
+        "Aprieta abajo"
+      ],
+      "errors": [
+        "Inclinarse hacia delante para usar el peso corporal",
+        "Despegar los codos del torso",
+        "Usar impulso de hombro"
+      ],
+      "breathing": "Exhala al extender, inhala al volver.",
+      "progressions": [],
+      "regressions": [],
+      "substitutes": [
+        "ex_2015"
+      ],
+      "asset": {
+        "clip": "ex_2016.mp4",
+        "imagen": "ex_2016.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_2017",
+      "slug": "elevacion-lateral",
+      "name": "Elevacion lateral",
+      "name_en": "Lateral raise",
+      "aliases": [
+        "vuelos laterales",
+        "elevaciones laterales"
+      ],
+      "family": "fam_empuje_vertical",
+      "category": "fuerza",
+      "goals": [
+        "musculo",
+        "gym"
+      ],
+      "level": 1,
+      "equipment": [
+        "mancuernas",
+        "banda_larga"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "minimo",
+      "unilateral": false,
+      "measure": "reps",
+      "default": {
+        "series": 3,
+        "reps": 14,
+        "rest_s": 50
+      },
+      "met": 3.5,
+      "primary": [
+        "deltoide_lateral"
+      ],
+      "secondary": [
+        "trapecio_superior"
+      ],
+      "risk_zones": [
+        "hombro"
+      ],
+      "contra": [
+        "lesion_hombro"
+      ],
+      "desc": "Aislamiento del deltoide lateral, que es el que da anchura visual al hombro. Poco peso y mucho control.",
+      "steps": [
+        "De pie, mancuernas a los lados, codos ligeramente doblados.",
+        "Sube los brazos a los lados hasta la altura del hombro.",
+        "Manten el menique ligeramente mas alto que el pulgar.",
+        "Baja lento."
+      ],
+      "cues": [
+        "Sube solo hasta el hombro",
+        "Codos ligeramente doblados",
+        "Baja lento"
+      ],
+      "errors": [
+        "Usar impulso de cadera",
+        "Subir por encima del hombro con el pulgar abajo, lo que pinza",
+        "Encoger el trapecio en vez de abrir el deltoide"
+      ],
+      "breathing": "Exhala al subir, inhala al bajar.",
+      "progressions": [],
+      "regressions": [],
+      "substitutes": [
+        "ex_2018"
+      ],
+      "asset": {
+        "clip": "ex_2017.mp4",
+        "imagen": "ex_2017.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_2018",
+      "slug": "elevacion-frontal",
+      "name": "Elevacion frontal",
+      "name_en": "Front raise",
+      "aliases": [
+        "vuelos frontales"
+      ],
+      "family": "fam_empuje_vertical",
+      "category": "fuerza",
+      "goals": [
+        "musculo",
+        "gym"
+      ],
+      "level": 1,
+      "equipment": [
+        "mancuernas",
+        "banda_larga"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "minimo",
+      "unilateral": false,
+      "measure": "reps",
+      "default": {
+        "series": 3,
+        "reps": 12,
+        "rest_s": 50
+      },
+      "met": 3.5,
+      "primary": [
+        "deltoide_anterior"
+      ],
+      "secondary": [
+        "pectoral_mayor"
+      ],
+      "risk_zones": [
+        "hombro"
+      ],
+      "contra": [
+        "lesion_hombro"
+      ],
+      "desc": "Aislamiento del deltoide anterior. Accesorio de bajo valor si ya haces mucho press: la mayoria lo tiene de sobra trabajado.",
+      "steps": [
+        "Mancuernas al frente de los muslos.",
+        "Sube los brazos al frente hasta la altura del hombro.",
+        "Baja lento sin balancear."
+      ],
+      "cues": [
+        "Sin impulso",
+        "Hasta el hombro",
+        "Baja lento"
+      ],
+      "errors": [
+        "Balancear el torso",
+        "Subir por encima del hombro",
+        "Usar demasiado peso"
+      ],
+      "breathing": "Exhala al subir, inhala al bajar.",
+      "progressions": [],
+      "regressions": [],
+      "substitutes": [
+        "ex_2017"
+      ],
+      "asset": {
+        "clip": "ex_2018.mp4",
+        "imagen": "ex_2018.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_2019",
+      "slug": "press-arnold",
+      "name": "Press Arnold",
+      "name_en": "Arnold press",
+      "aliases": [
+        "arnold press"
+      ],
+      "family": "fam_empuje_vertical",
+      "category": "fuerza",
+      "goals": [
+        "musculo",
+        "gym"
+      ],
+      "level": 2,
+      "equipment": [
+        "mancuernas",
+        "silla"
+      ],
+      "impact": 0,
+      "noise": 1,
+      "space": "minimo",
+      "unilateral": false,
+      "measure": "reps",
+      "default": {
+        "series": 3,
+        "reps": 10,
+        "rest_s": 75
+      },
+      "met": 5.0,
+      "primary": [
+        "deltoide_anterior",
+        "deltoide_lateral"
+      ],
+      "secondary": [
+        "triceps",
+        "manguito_rotador"
+      ],
+      "risk_zones": [
+        "hombro"
+      ],
+      "contra": [
+        "lesion_hombro"
+      ],
+      "desc": "Press de hombro con rotacion. Cubre mas rango del deltoide en una sola serie.",
+      "steps": [
+        "Empieza con las palmas hacia ti a la altura del pecho.",
+        "Al subir, rota las palmas hacia fuera.",
+        "Termina con los brazos casi extendidos arriba.",
+        "Invierte el movimiento al bajar."
+      ],
+      "cues": [
+        "Rota al subir",
+        "Costillas abajo",
+        "Controla la bajada"
+      ],
+      "errors": [
+        "Rotar de golpe con peso alto",
+        "Arquear la lumbar",
+        "Bajar demasiado rapido"
+      ],
+      "breathing": "Exhala al subir, inhala al bajar.",
+      "progressions": [],
+      "regressions": [
+        "ex_2009"
+      ],
+      "substitutes": [
+        "ex_2009"
+      ],
+      "asset": {
+        "clip": "ex_2019.mp4",
+        "imagen": "ex_2019.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_2020",
+      "slug": "flexion-pseudo-planche",
+      "name": "Flexion pseudo-planche",
+      "name_en": "Pseudo planche push-up",
+      "aliases": [
+        "pseudo planche"
+      ],
+      "family": "fam_empuje_horizontal",
+      "category": "fuerza",
+      "goals": [
+        "calistenia"
+      ],
+      "level": 3,
+      "equipment": [
+        "ninguno"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "colchoneta",
+      "unilateral": false,
+      "measure": "reps",
+      "default": {
+        "series": 3,
+        "reps": 6,
+        "rest_s": 90
+      },
+      "met": 6.0,
+      "primary": [
+        "deltoide_anterior",
+        "pectoral_mayor"
+      ],
+      "secondary": [
+        "serrato_anterior",
+        "core",
+        "triceps"
+      ],
+      "risk_zones": [
+        "hombro",
+        "muneca"
+      ],
+      "contra": [
+        "lesion_muneca",
+        "lesion_hombro"
+      ],
+      "desc": "Flexion con las manos a la altura de la cadera y el torso inclinado al frente. Preparacion para la plancha en calistenia.",
+      "steps": [
+        "Manos a la altura de la cintura, dedos hacia fuera o atras.",
+        "Inclina los hombros por delante de las manos.",
+        "Baja manteniendo esa inclinacion.",
+        "Empuja sin retroceder el torso."
+      ],
+      "cues": [
+        "Hombros adelante",
+        "Escapulas protraidas",
+        "Cuerpo recto"
+      ],
+      "errors": [
+        "Retroceder el torso al empujar",
+        "Cargar la muneca sin preparacion previa",
+        "Dejar caer la cadera"
+      ],
+      "breathing": "Inhala al bajar, exhala al empujar.",
+      "progressions": [],
+      "regressions": [
+        "ex_2001"
+      ],
+      "substitutes": [
+        "ex_2004"
+      ],
+      "asset": {
+        "clip": "ex_2020.mp4",
+        "imagen": "ex_2020.jpg",
+        "recorrido": "ciclico"
+      }
+    }
+  ]
+}

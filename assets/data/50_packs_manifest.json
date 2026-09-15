@@ -1,0 +1,41 @@
+{
+  "coleccion": "packs",
+  "version": "1.0.0",
+  "cdn": "https://cdn.forja.app/packs/",
+  "principio": "Nunca streaming por ejercicio. Todo se descarga como pack versionado y se guarda en el telefono. Sin señal, la app funciona completa. El catalogo de datos (JSON compilado a SQLite) va dentro del APK; solo los clips de video se descargan.",
+  "formato_video": {"codec":"H.264","resolucion":"480p","fps":30,"audio":"ninguno","duracion_s":"6-10","loop":true,"peso_objetivo_kb":400,"thumb":"WebP 320px, ~18 KB"},
+  "packs": [
+    {"id":"pack_base","name":"Pack base","incluido_en_apk":true,"ejercicios":18,"peso_mb":7.5,"desc":"Los 18 ejercicios de la primera sesion de cualquier motor. Va dentro del APK para que la app funcione desde el primer segundo sin descargar nada.","contenido":["ex_1001","ex_1002","ex_1014","ex_2001","ex_2002","ex_3007","ex_4001","ex_4006","ex_5003","ex_5018","ex_5103","ex_6103","ex_7001","ex_7020","ex_8001","ex_8005","ex_8010","ex_1003"]},
+    {"id":"pack_bajar_peso","name":"Bajar peso","incluido_en_apk":false,"ejercicios":42,"peso_mb":17.6,"desc":"Circuitos de densidad, cardio de bajo impacto y versiones silenciosas.","depende_de":["pack_base"]},
+    {"id":"pack_musculo_casa","name":"Musculo en casa","incluido_en_apk":false,"ejercicios":38,"peso_mb":15.9,"desc":"Todo el trabajo con mancuernas, banco y banda."},
+    {"id":"pack_gym","name":"Gym completo","incluido_en_apk":false,"ejercicios":34,"peso_mb":14.2,"desc":"Barra, maquinas y poleas."},
+    {"id":"pack_core","name":"Core y abdomen","incluido_en_apk":false,"ejercicios":22,"peso_mb":9.2,"desc":"Bloque completo de core, incluidas las variantes seguras para lumbar."},
+    {"id":"pack_calistenia","name":"Calistenia","incluido_en_apk":false,"ejercicios":26,"peso_mb":10.9,"desc":"Habilidades, progresiones y pliometria."},
+    {"id":"pack_facial","name":"Mandibula y rostro","incluido_en_apk":false,"ejercicios":20,"peso_mb":8.4,"desc":"Bloque facial completo. Los clips son en primer plano, asi que se graban aparte del resto."},
+    {"id":"pack_postura","name":"Postura y altura","incluido_en_apk":false,"ejercicios":20,"peso_mb":8.4,"desc":"Movilidad toracica, descompresion y reeducacion cervical."},
+    {"id":"pack_running","name":"Running","incluido_en_apk":false,"ejercicios":12,"peso_mb":5.0,"desc":"Drills de tecnica y estructuras de sesion."},
+    {"id":"pack_estiramiento","name":"Estiramiento y calentamiento","incluido_en_apk":false,"ejercicios":15,"peso_mb":6.3,"desc":"Se descarga junto con cualquier otro pack porque toda rutina lo usa.","autodescarga":true},
+    {"id":"pack_tips","name":"Contenido editorial","incluido_en_apk":false,"ejercicios":0,"peso_mb":2.1,"desc":"Los 38 tips, los 20 mitos, los 15 errores de ejecucion, nutricion, glosario y FAQ. Solo JSON e imagenes ligeras. Es el pack que se actualiza mas seguido y no requiere desplegar version nueva de la app.","actualizacion":"quincenal"}
+  ],
+  "totales": {
+    "ejercicios_catalogo": 190,
+    "peso_total_clips_mb": 96.3,
+    "peso_total_con_thumbs_mb": 99.7,
+    "peso_medio_por_usuario_mb": "25-45, segun cuantos motores active"
+  },
+  "logica_de_descarga": {
+    "al_instalar": "Nada. El pack base ya viene dentro.",
+    "al_terminar_onboarding": "Se descarga el pack del motor elegido mas pack_estiramiento, en segundo plano y solo con wifi por defecto.",
+    "al_cambiar_de_motor": "Se descarga el pack nuevo. Los anteriores se conservan salvo que el usuario libere espacio.",
+    "solo_wifi": "Activado por defecto. El usuario puede permitir datos moviles de forma explicita.",
+    "gestion_de_espacio": "Pantalla de ajustes que muestra el peso de cada pack descargado y permite borrarlos uno a uno.",
+    "versionado": "Cada pack tiene version semantica. La app compara con el manifiesto remoto al abrir y descarga solo los packs con version nueva."
+  },
+  "costo_estimado": {
+    "almacenamiento_r2_gb": 0.11,
+    "costo_almacenamiento_usd_mes": 0.0,
+    "egreso_100_usuarios_gb": 4.5,
+    "costo_egreso_usd_mes": 0.0,
+    "nota": "R2 no cobra egreso y el tier gratuito cubre 10 GB de almacenamiento. Con 100 usuarios el costo de distribucion es cero."
+  }
+}

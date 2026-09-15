@@ -1,0 +1,1447 @@
+{
+  "coleccion": "ejercicios",
+  "bloque": "facial_mandibula",
+  "version": "2.0.0",
+  "aviso_global": "Este bloque completo se muestra con insignia Parcial. Los ejercicios faciales aumentan el tono y el volumen del musculo trabajado. NO reducen grasa facial (la reduccion localizada de grasa no existe) y NO modifican la forma del hueso mandibular en un adulto. El contorno visible depende de tres cosas: porcentaje de grasa corporal, tono muscular del cuello y la mandibula, y postura de la cabeza.",
+  "referencia_evidencia": "Alam M. et al., JAMA Dermatology, 2018. Ensayo con 16 mujeres de 40 a 65 años, 32 ejercicios faciales, 30 minutos diarios durante 8 semanas y despues en dias alternos hasta la semana 20. Resultado: mejillas superiores e inferiores mas llenas y una edad aparente estimada unos 3 años menor. Es evidencia preliminar, con muestra pequeña y sin grupo control estricto. Ningun estudio muestra reduccion de grasa facial por ejercicio.",
+  "regla_de_seguridad_atm": "Los ejercicios de la familia fam_masticatorio se limitan a 3 sesiones por semana. Si el usuario reporta chasquido, bloqueo o dolor en la articulacion temporomandibular, la app elimina automaticamente todo el bloque masticatorio y de apertura maxima, y sugiere consultar a un dentista u odontologo especialista en ATM.",
+  "items": [
+    {
+      "id": "ex_6101",
+      "slug": "lengua-al-paladar",
+      "name": "Lengua al paladar",
+      "name_en": "Tongue to palate",
+      "aliases": [
+        "postura lingual",
+        "mewing basico"
+      ],
+      "family": "fam_lengua_postural",
+      "category": "facial",
+      "goals": [
+        "mandibula",
+        "postura"
+      ],
+      "level": 1,
+      "equipment": [
+        "ninguno"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "minimo",
+      "unilateral": false,
+      "measure": "tiempo",
+      "default": {
+        "series": 3,
+        "seg": 45,
+        "rest_s": 20
+      },
+      "met": 1.2,
+      "primary": [
+        "lengua",
+        "digastrico"
+      ],
+      "secondary": [
+        "platisma"
+      ],
+      "risk_zones": [
+        "atm"
+      ],
+      "contra": [
+        "problema_atm"
+      ],
+      "evidence": {
+        "tono_suprahioideo": "parcial",
+        "respiracion_nasal": "parcial",
+        "remodelar_hueso_facial_adulto": "mito"
+      },
+      "evidence_note": "La terapia miofuncional tiene uso clinico real en respiracion y deglucion, siempre guiada por profesional. Las promesas de internet sobre remodelar el hueso en adultos no tienen respaldo.",
+      "desc": "Colocar toda la lengua contra el paladar con los labios cerrados y respirando por la nariz. Es una postura de reposo, no un ejercicio de fuerza.",
+      "steps": [
+        "Cierra los labios sin apretar los dientes.",
+        "Coloca la punta de la lengua justo detras de los incisivos superiores, sin tocarlos.",
+        "Sube todo el dorso de la lengua contra el paladar, no solo la punta.",
+        "Respira por la nariz manteniendo la posicion."
+      ],
+      "cues": [
+        "Toda la lengua, no solo la punta",
+        "Dientes sin apretar",
+        "Respira por la nariz"
+      ],
+      "errors": [
+        "Apretar los dientes, lo que carga el masetero y puede generar dolor de ATM",
+        "Empujar contra los dientes, que puede desplazarlos",
+        "Forzar la posicion cuando hay obstruccion nasal: primero hay que resolver eso"
+      ],
+      "breathing": "Nasal, continua y tranquila.",
+      "progressions": [
+        "ex_6102"
+      ],
+      "regressions": [],
+      "substitutes": [],
+      "asset": {
+        "clip": "ex_6101.mp4",
+        "imagen": "ex_6101.jpg",
+        "recorrido": "sostenido"
+      }
+    },
+    {
+      "id": "ex_6102",
+      "slug": "deglucion-correcta",
+      "name": "Deglucion con lengua alta",
+      "name_en": "Correct swallow",
+      "aliases": [
+        "tragar correctamente"
+      ],
+      "family": "fam_lengua_postural",
+      "category": "facial",
+      "goals": [
+        "mandibula"
+      ],
+      "level": 1,
+      "equipment": [
+        "ninguno"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "minimo",
+      "unilateral": false,
+      "measure": "reps",
+      "default": {
+        "series": 2,
+        "reps": 10,
+        "rest_s": 20
+      },
+      "met": 1.2,
+      "primary": [
+        "lengua",
+        "digastrico"
+      ],
+      "secondary": [
+        "platisma"
+      ],
+      "risk_zones": [
+        "atm"
+      ],
+      "contra": [
+        "problema_atm"
+      ],
+      "desc": "Practicar el patron de deglucion con la lengua contra el paladar en vez de empujando los dientes.",
+      "steps": [
+        "Junta un poco de saliva.",
+        "Coloca la lengua completa contra el paladar.",
+        "Traga sin que la lengua empuje los dientes ni el labio se tense.",
+        "Repite con calma."
+      ],
+      "cues": [
+        "Lengua arriba",
+        "Labios relajados",
+        "Sin empujar los dientes"
+      ],
+      "errors": [
+        "Tensar el cuello al tragar",
+        "Empujar con la punta contra los incisivos",
+        "Hacerlo con la boca seca"
+      ],
+      "breathing": "Nasal entre repeticiones.",
+      "progressions": [],
+      "regressions": [
+        "ex_6101"
+      ],
+      "substitutes": [],
+      "asset": {
+        "clip": "ex_6102.mp4",
+        "imagen": "ex_6102.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_6103",
+      "slug": "chin-tuck",
+      "name": "Retraccion cervical (chin tuck)",
+      "name_en": "Chin tuck",
+      "aliases": [
+        "chin tuck",
+        "doble menton activo",
+        "retraccion de cabeza"
+      ],
+      "family": "fam_cuello_postural",
+      "category": "facial",
+      "goals": [
+        "mandibula",
+        "postura"
+      ],
+      "level": 1,
+      "equipment": [
+        "ninguno",
+        "pared"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "minimo",
+      "unilateral": false,
+      "measure": "reps",
+      "default": {
+        "series": 3,
+        "reps": 12,
+        "rest_s": 30
+      },
+      "met": 1.5,
+      "primary": [
+        "cuello_flexores"
+      ],
+      "secondary": [
+        "trapecio_inferior",
+        "extensores_cuello"
+      ],
+      "risk_zones": [
+        "cuello"
+      ],
+      "contra": [
+        "lesion_cuello",
+        "vertigo"
+      ],
+      "evidence": {
+        "cabeza_adelantada": "ok",
+        "definicion_visual_del_angulo_mandibular": "parcial",
+        "dolor_cervical_tensional": "parcial"
+      },
+      "evidence_note": "Es el ejercicio con mejor relacion esfuerzo/resultado de todo el motor de mandibula. Corregir la cabeza adelantada cambia visiblemente el angulo entre menton y cuello en semanas, sin tocar la grasa ni el hueso.",
+      "desc": "Llevar la cabeza hacia atras en linea recta, sin inclinarla. El ejercicio que casi nadie hace y el que mas cambia el perfil.",
+      "steps": [
+        "Sientate o ponte de pie con los hombros relajados.",
+        "Sin inclinar la cabeza, deslizala hacia atras como si hicieras papada a proposito.",
+        "Manten 3 segundos sintiendo el estiramiento en la nuca.",
+        "Vuelve despacio."
+      ],
+      "cues": [
+        "Desliza atras, no inclines",
+        "Orejas sobre los hombros",
+        "Manten 3 segundos"
+      ],
+      "errors": [
+        "Inclinar la cabeza hacia abajo en vez de deslizarla atras",
+        "Encoger los hombros",
+        "Hacerlo con fuerza brusca"
+      ],
+      "breathing": "Exhala al retraer.",
+      "progressions": [
+        "ex_6104"
+      ],
+      "regressions": [],
+      "substitutes": [
+        "ex_6105"
+      ],
+      "asset": {
+        "clip": "ex_6103.mp4",
+        "imagen": "ex_6103.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_6104",
+      "slug": "chin-tuck-pared",
+      "name": "Retraccion cervical contra pared",
+      "name_en": "Wall chin tuck",
+      "aliases": [],
+      "family": "fam_cuello_postural",
+      "category": "facial",
+      "goals": [
+        "mandibula",
+        "postura"
+      ],
+      "level": 2,
+      "equipment": [
+        "pared"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "minimo",
+      "unilateral": false,
+      "measure": "tiempo",
+      "default": {
+        "series": 3,
+        "seg": 20,
+        "rest_s": 30
+      },
+      "met": 1.8,
+      "primary": [
+        "cuello_flexores"
+      ],
+      "secondary": [
+        "trapecio_inferior"
+      ],
+      "risk_zones": [
+        "cuello"
+      ],
+      "contra": [
+        "lesion_cuello"
+      ],
+      "desc": "Chin tuck manteniendo la nuca en contacto con la pared. Anade resistencia isometrica.",
+      "steps": [
+        "De pie con talones, gluteo y espalda alta contra la pared.",
+        "Lleva la nuca hacia la pared sin levantar la barbilla.",
+        "Presiona suave contra la pared y aguanta.",
+        "Relaja sin perder la alineacion."
+      ],
+      "cues": [
+        "Nuca a la pared",
+        "Barbilla nivelada",
+        "Presion suave"
+      ],
+      "errors": [
+        "Levantar la barbilla para tocar la pared",
+        "Presionar demasiado fuerte",
+        "Arquear la lumbar"
+      ],
+      "breathing": "Continua.",
+      "progressions": [],
+      "regressions": [
+        "ex_6103"
+      ],
+      "substitutes": [
+        "ex_6103"
+      ],
+      "asset": {
+        "clip": "ex_6104.mp4",
+        "imagen": "ex_6104.jpg",
+        "recorrido": "sostenido"
+      }
+    },
+    {
+      "id": "ex_6105",
+      "slug": "elevacion-menton",
+      "name": "Elevacion de menton",
+      "name_en": "Chin lift",
+      "aliases": [
+        "chin lift",
+        "estiramiento de cuello frontal"
+      ],
+      "family": "fam_isometrico_facial",
+      "category": "facial",
+      "goals": [
+        "mandibula"
+      ],
+      "level": 1,
+      "equipment": [
+        "ninguno"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "minimo",
+      "unilateral": false,
+      "measure": "tiempo",
+      "default": {
+        "series": 3,
+        "seg": 30,
+        "rest_s": 20
+      },
+      "met": 1.5,
+      "primary": [
+        "platisma",
+        "digastrico"
+      ],
+      "secondary": [
+        "esternocleidomastoideo"
+      ],
+      "risk_zones": [
+        "cuello",
+        "atm"
+      ],
+      "contra": [
+        "lesion_cuello",
+        "problema_atm",
+        "hipertension"
+      ],
+      "desc": "Mirar al techo y adelantar el labio inferior. Tensa el platisma, que es el musculo que dibuja la linea del cuello.",
+      "steps": [
+        "Sientate derecho y mira hacia el techo.",
+        "Cierra los labios sin apretar los dientes.",
+        "Adelanta el labio inferior como si quisieras tocar la nariz.",
+        "Manten la tension y vuelve despacio."
+      ],
+      "cues": [
+        "Mira arriba",
+        "Labio inferior adelante",
+        "Sin apretar los dientes"
+      ],
+      "errors": [
+        "Extender el cuello de golpe",
+        "Apretar los dientes",
+        "Hacerlo con la espalda encorvada"
+      ],
+      "breathing": "Exhala al tensar.",
+      "progressions": [
+        "ex_6106"
+      ],
+      "regressions": [],
+      "substitutes": [
+        "ex_6107"
+      ],
+      "asset": {
+        "clip": "ex_6105.mp4",
+        "imagen": "ex_6105.jpg",
+        "recorrido": "sostenido"
+      }
+    },
+    {
+      "id": "ex_6106",
+      "slug": "tension-platisma",
+      "name": "Tension de platisma",
+      "name_en": "Platysma tension",
+      "aliases": [
+        "cuerda del cuello"
+      ],
+      "family": "fam_isometrico_facial",
+      "category": "facial",
+      "goals": [
+        "mandibula"
+      ],
+      "level": 2,
+      "equipment": [
+        "espejo"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "minimo",
+      "unilateral": false,
+      "measure": "tiempo",
+      "default": {
+        "series": 3,
+        "seg": 25,
+        "rest_s": 20
+      },
+      "met": 1.5,
+      "primary": [
+        "platisma"
+      ],
+      "secondary": [
+        "depresor_labio",
+        "esternocleidomastoideo"
+      ],
+      "risk_zones": [
+        "cuello"
+      ],
+      "contra": [
+        "lesion_cuello"
+      ],
+      "desc": "Contraer el platisma bajando las comisuras y tensando el cuello. Es el musculo directamente responsable de la definicion del angulo cuello-menton.",
+      "steps": [
+        "Frente al espejo, cabeza en posicion neutra.",
+        "Baja las comisuras de la boca como una mueca de desagrado.",
+        "Veras aparecer las cuerdas verticales del cuello: esa es la contraccion correcta.",
+        "Manten y relaja."
+      ],
+      "cues": [
+        "Comisuras abajo",
+        "Cuerdas visibles",
+        "Cabeza neutra"
+      ],
+      "errors": [
+        "Extender el cuello hacia atras",
+        "Apretar los dientes",
+        "Mantener demasiado tiempo y generar tension cervical"
+      ],
+      "breathing": "Continua.",
+      "progressions": [],
+      "regressions": [
+        "ex_6105"
+      ],
+      "substitutes": [
+        "ex_6105"
+      ],
+      "asset": {
+        "clip": "ex_6106.mp4",
+        "imagen": "ex_6106.jpg",
+        "recorrido": "sostenido"
+      }
+    },
+    {
+      "id": "ex_6107",
+      "slug": "resistencia-menton-mano",
+      "name": "Resistencia de menton con la mano",
+      "name_en": "Chin resistance",
+      "aliases": [
+        "isometrico de cuello frontal"
+      ],
+      "family": "fam_cuello_postural",
+      "category": "facial",
+      "goals": [
+        "mandibula",
+        "postura"
+      ],
+      "level": 1,
+      "equipment": [
+        "ninguno"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "minimo",
+      "unilateral": false,
+      "measure": "tiempo",
+      "default": {
+        "series": 3,
+        "seg": 15,
+        "rest_s": 25
+      },
+      "met": 1.8,
+      "primary": [
+        "cuello_flexores"
+      ],
+      "secondary": [
+        "esternocleidomastoideo",
+        "digastrico"
+      ],
+      "risk_zones": [
+        "cuello"
+      ],
+      "contra": [
+        "lesion_cuello",
+        "vertigo",
+        "hipertension"
+      ],
+      "desc": "Isometrico de cuello empujando la frente o el menton contra la propia mano. Fortalece los flexores profundos sin equipo.",
+      "steps": [
+        "Coloca la palma en la frente.",
+        "Empuja la cabeza contra la mano sin que la cabeza se mueva.",
+        "Presion moderada, nunca maxima.",
+        "Repite con la mano en la nuca y en cada lado."
+      ],
+      "cues": [
+        "La cabeza no se mueve",
+        "Presion moderada",
+        "Cuello largo"
+      ],
+      "errors": [
+        "Usar fuerza maxima",
+        "Aguantar la respiracion",
+        "Dejar que la cabeza se desplace"
+      ],
+      "breathing": "Continua, nunca bloqueada.",
+      "progressions": [
+        "ex_6104"
+      ],
+      "regressions": [],
+      "substitutes": [
+        "ex_6103"
+      ],
+      "asset": {
+        "clip": "ex_6107.mp4",
+        "imagen": "ex_6107.jpg",
+        "recorrido": "sostenido"
+      }
+    },
+    {
+      "id": "ex_6108",
+      "slug": "mejillas-infladas",
+      "name": "Mejillas infladas alternas",
+      "name_en": "Cheek puff transfer",
+      "aliases": [
+        "inflar mejillas",
+        "pasar el aire"
+      ],
+      "family": "fam_isometrico_facial",
+      "category": "facial",
+      "goals": [
+        "mandibula"
+      ],
+      "level": 1,
+      "equipment": [
+        "ninguno"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "minimo",
+      "unilateral": false,
+      "measure": "tiempo",
+      "default": {
+        "series": 3,
+        "seg": 30,
+        "rest_s": 20
+      },
+      "met": 1.2,
+      "primary": [
+        "buccinador",
+        "orbicular_labios"
+      ],
+      "secondary": [
+        "cigomaticos"
+      ],
+      "risk_zones": [],
+      "contra": [
+        "hipertension"
+      ],
+      "desc": "Inflar una mejilla y pasar el aire a la otra. Trabaja buccinador y orbicular, los musculos del volumen de la mejilla.",
+      "steps": [
+        "Llena la boca de aire con los labios cerrados.",
+        "Pasa todo el aire a la mejilla derecha y aguanta 5 segundos.",
+        "Pasalo a la izquierda y aguanta.",
+        "Alterna sin dejar escapar el aire."
+      ],
+      "cues": [
+        "Labios sellados",
+        "5 segundos por lado",
+        "Sin soltar el aire"
+      ],
+      "errors": [
+        "Dejar escapar el aire",
+        "Inflar con demasiada presion",
+        "Tensar el cuello"
+      ],
+      "breathing": "Inhala por la nariz entre ciclos.",
+      "progressions": [],
+      "regressions": [],
+      "substitutes": [
+        "ex_6109"
+      ],
+      "asset": {
+        "clip": "ex_6108.mp4",
+        "imagen": "ex_6108.jpg",
+        "recorrido": "sostenido"
+      }
+    },
+    {
+      "id": "ex_6109",
+      "slug": "sonrisa-pez",
+      "name": "Cara de pez sonriente",
+      "name_en": "Smiling fish face",
+      "aliases": [
+        "fish face",
+        "cara de pez"
+      ],
+      "family": "fam_isometrico_facial",
+      "category": "facial",
+      "goals": [
+        "mandibula"
+      ],
+      "level": 1,
+      "equipment": [
+        "ninguno"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "minimo",
+      "unilateral": false,
+      "measure": "tiempo",
+      "default": {
+        "series": 3,
+        "seg": 25,
+        "rest_s": 20
+      },
+      "met": 1.2,
+      "primary": [
+        "buccinador",
+        "cigomaticos"
+      ],
+      "secondary": [
+        "orbicular_labios"
+      ],
+      "risk_zones": [],
+      "contra": [],
+      "desc": "Succionar las mejillas hacia dentro e intentar sonreir manteniendo la posicion. Uno de los ejercicios mas usados en los protocolos de yoga facial.",
+      "steps": [
+        "Succiona las mejillas hacia dentro contra los dientes.",
+        "Manten esa succion y trata de sonreir.",
+        "Aguanta sintiendo la tension en las mejillas.",
+        "Relaja despacio."
+      ],
+      "cues": [
+        "Succiona fuerte",
+        "Ahora sonrie",
+        "Aguanta la tension"
+      ],
+      "errors": [
+        "Perder la succion al sonreir",
+        "Apretar la mandibula",
+        "Fruncir demasiado la zona de los ojos, lo que marca lineas"
+      ],
+      "breathing": "Nasal, continua.",
+      "progressions": [],
+      "regressions": [],
+      "substitutes": [
+        "ex_6108"
+      ],
+      "asset": {
+        "clip": "ex_6109.mp4",
+        "imagen": "ex_6109.jpg",
+        "recorrido": "sostenido"
+      }
+    },
+    {
+      "id": "ex_6110",
+      "slug": "sonrisa-con-resistencia",
+      "name": "Sonrisa con resistencia",
+      "name_en": "Resisted smile",
+      "aliases": [
+        "cheek lifter"
+      ],
+      "family": "fam_isometrico_facial",
+      "category": "facial",
+      "goals": [
+        "mandibula"
+      ],
+      "level": 1,
+      "equipment": [
+        "ninguno"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "minimo",
+      "unilateral": false,
+      "measure": "reps",
+      "default": {
+        "series": 3,
+        "reps": 12,
+        "rest_s": 20
+      },
+      "met": 1.2,
+      "primary": [
+        "cigomaticos"
+      ],
+      "secondary": [
+        "buccinador"
+      ],
+      "risk_zones": [],
+      "contra": [],
+      "desc": "Sonreir ampliamente mientras los dedos ofrecen resistencia sobre las mejillas. Anade carga al musculo elevador.",
+      "steps": [
+        "Coloca los dedos indices sobre la parte alta de las mejillas.",
+        "Sonrie de forma amplia elevando las mejillas contra los dedos.",
+        "Manten 3 segundos.",
+        "Relaja del todo entre repeticiones."
+      ],
+      "cues": [
+        "Eleva contra el dedo",
+        "3 segundos",
+        "Relaja del todo"
+      ],
+      "errors": [
+        "Presionar demasiado fuerte con los dedos y arrastrar la piel",
+        "Fruncir los ojos con fuerza",
+        "No relajar entre repeticiones"
+      ],
+      "breathing": "Continua.",
+      "progressions": [],
+      "regressions": [
+        "ex_6109"
+      ],
+      "substitutes": [
+        "ex_6109"
+      ],
+      "asset": {
+        "clip": "ex_6110.mp4",
+        "imagen": "ex_6110.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_6111",
+      "slug": "apertura-mandibular-controlada",
+      "name": "Apertura mandibular controlada",
+      "name_en": "Controlled jaw opening",
+      "aliases": [
+        "apertura de mandibula"
+      ],
+      "family": "fam_masticatorio",
+      "category": "facial",
+      "goals": [
+        "mandibula"
+      ],
+      "level": 2,
+      "equipment": [
+        "ninguno"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "minimo",
+      "unilateral": false,
+      "measure": "reps",
+      "default": {
+        "series": 2,
+        "reps": 10,
+        "rest_s": 30
+      },
+      "met": 1.3,
+      "primary": [
+        "digastrico"
+      ],
+      "secondary": [
+        "masetero",
+        "temporal"
+      ],
+      "risk_zones": [
+        "atm"
+      ],
+      "contra": [
+        "problema_atm"
+      ],
+      "evidence": {
+        "control_mandibular": "parcial",
+        "riesgo_atm": "ok"
+      },
+      "evidence_note": "Ejercicio de control, no de fuerza. Si aparece chasquido, bloqueo o dolor, se suspende de inmediato y se consulta a un profesional. La app lo elimina automaticamente si el usuario reporta cualquiera de esos sintomas.",
+      "desc": "Abrir y cerrar la boca en linea recta, con la lengua en el paladar. Trabaja el control de la articulacion, no la fuerza.",
+      "steps": [
+        "Coloca la punta de la lengua en el paladar.",
+        "Abre la boca despacio manteniendo la lengua arriba.",
+        "Abre solo hasta donde no haya molestia ni desviacion.",
+        "Cierra igual de despacio."
+      ],
+      "cues": [
+        "Abre en linea recta",
+        "Lengua arriba",
+        "Sin forzar"
+      ],
+      "errors": [
+        "Abrir al maximo forzando la articulacion",
+        "Desviar la mandibula a un lado",
+        "Continuar si hay chasquido o dolor"
+      ],
+      "breathing": "Nasal, continua.",
+      "progressions": [],
+      "regressions": [
+        "ex_6101"
+      ],
+      "substitutes": [
+        "ex_6101"
+      ],
+      "asset": {
+        "clip": "ex_6111.mp4",
+        "imagen": "ex_6111.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_6112",
+      "slug": "resistencia-mandibular-lateral",
+      "name": "Resistencia mandibular lateral",
+      "name_en": "Lateral jaw resistance",
+      "aliases": [],
+      "family": "fam_masticatorio",
+      "category": "facial",
+      "goals": [
+        "mandibula"
+      ],
+      "level": 2,
+      "equipment": [
+        "ninguno"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "minimo",
+      "unilateral": true,
+      "measure": "tiempo",
+      "default": {
+        "series": 2,
+        "seg": 10,
+        "rest_s": 30
+      },
+      "met": 1.3,
+      "primary": [
+        "masetero",
+        "temporal"
+      ],
+      "secondary": [
+        "pterigoideos"
+      ],
+      "risk_zones": [
+        "atm"
+      ],
+      "contra": [
+        "problema_atm"
+      ],
+      "evidence": {
+        "hipertrofia_masetero": "parcial",
+        "riesgo_atm": "ok"
+      },
+      "evidence_note": "El masetero responde a la carga, pero su sobreuso es una causa reconocida de dolor de ATM y bruxismo. Maximo 3 sesiones por semana y siempre con presion suave.",
+      "desc": "Empujar la mandibula lateralmente contra la mano. Isometrico suave del masetero.",
+      "steps": [
+        "Coloca la palma en el lateral de la mandibula.",
+        "Empuja la mandibula contra la mano sin que se mueva.",
+        "Presion suave, nunca maxima.",
+        "Repite del otro lado."
+      ],
+      "cues": [
+        "Presion suave",
+        "La mandibula no se mueve",
+        "Nunca hasta el dolor"
+      ],
+      "errors": [
+        "Usar fuerza excesiva",
+        "Hacerlo a diario",
+        "Continuar con molestia articular"
+      ],
+      "breathing": "Continua.",
+      "progressions": [],
+      "regressions": [],
+      "substitutes": [
+        "ex_6111"
+      ],
+      "asset": {
+        "clip": "ex_6112.mp4",
+        "imagen": "ex_6112.jpg",
+        "recorrido": "sostenido"
+      }
+    },
+    {
+      "id": "ex_6113",
+      "slug": "lengua-fuera-sostenida",
+      "name": "Lengua extendida sostenida",
+      "name_en": "Tongue extension hold",
+      "aliases": [
+        "sacar la lengua"
+      ],
+      "family": "fam_isometrico_facial",
+      "category": "facial",
+      "goals": [
+        "mandibula"
+      ],
+      "level": 1,
+      "equipment": [
+        "ninguno"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "minimo",
+      "unilateral": false,
+      "measure": "tiempo",
+      "default": {
+        "series": 3,
+        "seg": 20,
+        "rest_s": 20
+      },
+      "met": 1.2,
+      "primary": [
+        "lengua",
+        "digastrico"
+      ],
+      "secondary": [
+        "platisma"
+      ],
+      "risk_zones": [
+        "atm"
+      ],
+      "contra": [
+        "problema_atm"
+      ],
+      "desc": "Sacar la lengua al maximo hacia fuera y abajo y sostener. Activa la musculatura suprahioidea, que sostiene el piso de la boca.",
+      "steps": [
+        "Abre la boca de forma comoda.",
+        "Saca la lengua hacia fuera y hacia abajo, apuntando al menton.",
+        "Aguanta sintiendo la tension bajo el menton.",
+        "Relaja despacio."
+      ],
+      "cues": [
+        "Hacia abajo, al menton",
+        "Siente bajo el menton",
+        "Sin forzar la mandibula"
+      ],
+      "errors": [
+        "Abrir la mandibula al maximo",
+        "Tensar el cuello y los hombros",
+        "Aguantar demasiado tiempo"
+      ],
+      "breathing": "Nasal entre repeticiones.",
+      "progressions": [],
+      "regressions": [],
+      "substitutes": [
+        "ex_6105"
+      ],
+      "asset": {
+        "clip": "ex_6113.mp4",
+        "imagen": "ex_6113.jpg",
+        "recorrido": "sostenido"
+      }
+    },
+    {
+      "id": "ex_6114",
+      "slug": "presion-lengua-paladar",
+      "name": "Presion de lengua contra el paladar",
+      "name_en": "Tongue press",
+      "aliases": [
+        "tongue press"
+      ],
+      "family": "fam_lengua_postural",
+      "category": "facial",
+      "goals": [
+        "mandibula"
+      ],
+      "level": 1,
+      "equipment": [
+        "ninguno"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "minimo",
+      "unilateral": false,
+      "measure": "reps",
+      "default": {
+        "series": 3,
+        "reps": 10,
+        "rest_s": 20
+      },
+      "met": 1.2,
+      "primary": [
+        "lengua",
+        "digastrico"
+      ],
+      "secondary": [],
+      "risk_zones": [
+        "atm"
+      ],
+      "contra": [
+        "problema_atm"
+      ],
+      "desc": "Presionar toda la lengua contra el paladar de forma intermitente. Version con carga de la postura lingual.",
+      "steps": [
+        "Lengua completa contra el paladar.",
+        "Presiona con fuerza moderada durante 5 segundos.",
+        "Relaja 3 segundos.",
+        "Repite."
+      ],
+      "cues": [
+        "Toda la lengua",
+        "5 segundos",
+        "Relaja entre reps"
+      ],
+      "errors": [
+        "Presionar contra los dientes",
+        "Apretar la mandibula al mismo tiempo",
+        "Tensar el cuello"
+      ],
+      "breathing": "Nasal, continua.",
+      "progressions": [],
+      "regressions": [
+        "ex_6101"
+      ],
+      "substitutes": [
+        "ex_6101"
+      ],
+      "asset": {
+        "clip": "ex_6114.mp4",
+        "imagen": "ex_6114.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_6115",
+      "slug": "beso-al-techo",
+      "name": "Beso al techo",
+      "name_en": "Ceiling kiss",
+      "aliases": [
+        "kiss the ceiling"
+      ],
+      "family": "fam_isometrico_facial",
+      "category": "facial",
+      "goals": [
+        "mandibula"
+      ],
+      "level": 1,
+      "equipment": [
+        "ninguno"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "minimo",
+      "unilateral": false,
+      "measure": "reps",
+      "default": {
+        "series": 3,
+        "reps": 12,
+        "rest_s": 20
+      },
+      "met": 1.3,
+      "primary": [
+        "orbicular_labios",
+        "platisma"
+      ],
+      "secondary": [
+        "digastrico",
+        "esternocleidomastoideo"
+      ],
+      "risk_zones": [
+        "cuello"
+      ],
+      "contra": [
+        "lesion_cuello"
+      ],
+      "desc": "Mirar al techo y lanzar un beso estirando los labios hacia arriba. Combina trabajo de labio y de cuello anterior.",
+      "steps": [
+        "Inclina la cabeza hacia atras de forma comoda, sin forzar.",
+        "Frunce los labios como para dar un beso al techo.",
+        "Estira hasta sentir tension en el cuello frontal.",
+        "Vuelve a la posicion neutra."
+      ],
+      "cues": [
+        "Estira los labios arriba",
+        "Siente el cuello",
+        "Sin forzar la nuca"
+      ],
+      "errors": [
+        "Extender el cuello al maximo",
+        "Hacerlo con la espalda encorvada",
+        "Ir demasiado rapido"
+      ],
+      "breathing": "Exhala al fruncir.",
+      "progressions": [],
+      "regressions": [
+        "ex_6105"
+      ],
+      "substitutes": [
+        "ex_6105"
+      ],
+      "asset": {
+        "clip": "ex_6115.mp4",
+        "imagen": "ex_6115.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_6116",
+      "slug": "rotacion-cuello-suave",
+      "name": "Rotacion suave de cuello",
+      "name_en": "Gentle neck rotation",
+      "aliases": [
+        "movilidad cervical"
+      ],
+      "family": "fam_cuello_postural",
+      "category": "movilidad",
+      "goals": [
+        "mandibula",
+        "postura"
+      ],
+      "level": 1,
+      "equipment": [
+        "ninguno"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "minimo",
+      "unilateral": true,
+      "measure": "reps_por_lado",
+      "default": {
+        "series": 2,
+        "reps": 8,
+        "rest_s": 20
+      },
+      "met": 1.5,
+      "primary": [
+        "esternocleidomastoideo",
+        "extensores_cuello"
+      ],
+      "secondary": [
+        "trapecio_superior"
+      ],
+      "risk_zones": [
+        "cuello"
+      ],
+      "contra": [
+        "lesion_cuello",
+        "vertigo"
+      ],
+      "desc": "Rotar la cabeza a los lados de forma controlada. Calentamiento obligatorio antes del bloque facial y del de cuello.",
+      "steps": [
+        "Cabeza en posicion neutra, hombros relajados.",
+        "Gira despacio hacia un lado hasta el final del rango comodo.",
+        "Manten 2 segundos y vuelve al centro.",
+        "Alterna lados."
+      ],
+      "cues": [
+        "Despacio",
+        "Hasta donde sea comodo",
+        "Hombros abajo"
+      ],
+      "errors": [
+        "Hacer circulos completos con la cabeza",
+        "Forzar el rango",
+        "Encoger los hombros"
+      ],
+      "breathing": "Exhala al girar.",
+      "progressions": [],
+      "regressions": [],
+      "substitutes": [
+        "ex_6117"
+      ],
+      "asset": {
+        "clip": "ex_6116.mp4",
+        "imagen": "ex_6116.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_6117",
+      "slug": "estiramiento-escaleno",
+      "name": "Estiramiento lateral de cuello",
+      "name_en": "Lateral neck stretch",
+      "aliases": [
+        "estiramiento de escalenos",
+        "estiramiento de trapecio superior"
+      ],
+      "family": "fam_estiramiento_estatico",
+      "category": "estiramiento",
+      "goals": [
+        "mandibula",
+        "postura"
+      ],
+      "level": 1,
+      "equipment": [
+        "ninguno"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "minimo",
+      "unilateral": true,
+      "measure": "tiempo",
+      "default": {
+        "series": 2,
+        "seg": 30,
+        "rest_s": 15
+      },
+      "met": 1.5,
+      "primary": [
+        "trapecio_superior",
+        "esternocleidomastoideo"
+      ],
+      "secondary": [],
+      "risk_zones": [
+        "cuello"
+      ],
+      "contra": [
+        "lesion_cuello"
+      ],
+      "desc": "Inclinar la cabeza a un lado con ayuda suave de la mano. Alivia la tension del trapecio superior, que es lo que mantiene el cuello rigido.",
+      "steps": [
+        "Sentado, deja caer la oreja hacia el hombro.",
+        "Apoya la mano del mismo lado sobre la cabeza sin tirar fuerte.",
+        "El hombro contrario se mantiene abajo.",
+        "Respira y aguanta."
+      ],
+      "cues": [
+        "Hombro contrario abajo",
+        "Peso de la mano, sin tirar",
+        "Respira"
+      ],
+      "errors": [
+        "Tirar con fuerza de la cabeza",
+        "Subir el hombro contrario",
+        "Rotar la cabeza al inclinar"
+      ],
+      "breathing": "Lenta y profunda.",
+      "progressions": [],
+      "regressions": [],
+      "substitutes": [
+        "ex_6116"
+      ],
+      "asset": {
+        "clip": "ex_6117.mp4",
+        "imagen": "ex_6117.jpg",
+        "recorrido": "sostenido"
+      }
+    },
+    {
+      "id": "ex_6118",
+      "slug": "masaje-masetero",
+      "name": "Liberacion de masetero",
+      "name_en": "Masseter release",
+      "aliases": [
+        "masaje de mandibula"
+      ],
+      "family": "fam_masticatorio",
+      "category": "movilidad",
+      "goals": [
+        "mandibula"
+      ],
+      "level": 1,
+      "equipment": [
+        "ninguno"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "minimo",
+      "unilateral": true,
+      "measure": "tiempo",
+      "default": {
+        "series": 2,
+        "seg": 45,
+        "rest_s": 15
+      },
+      "met": 1.2,
+      "primary": [
+        "masetero"
+      ],
+      "secondary": [
+        "temporal"
+      ],
+      "risk_zones": [
+        "atm"
+      ],
+      "contra": [],
+      "desc": "Masaje circular suave sobre el masetero. Util para quien aprieta los dientes; relaja en vez de cargar.",
+      "steps": [
+        "Localiza el masetero apretando los dientes: es el bulto del angulo mandibular.",
+        "Relaja la mandibula.",
+        "Haz circulos suaves con los dedos durante 45 segundos.",
+        "Repite del otro lado."
+      ],
+      "cues": [
+        "Mandibula relajada",
+        "Circulos suaves",
+        "Sin dolor"
+      ],
+      "errors": [
+        "Presionar hasta el dolor",
+        "Hacerlo con la mandibula apretada",
+        "Confundirlo con un ejercicio de fuerza"
+      ],
+      "breathing": "Lenta y profunda.",
+      "progressions": [],
+      "regressions": [],
+      "substitutes": [
+        "ex_6117"
+      ],
+      "asset": {
+        "clip": "ex_6118.mp4",
+        "imagen": "ex_6118.jpg",
+        "recorrido": "sostenido"
+      }
+    },
+    {
+      "id": "ex_6119",
+      "slug": "elevacion-frente",
+      "name": "Elevacion de cejas con resistencia",
+      "name_en": "Resisted brow lift",
+      "aliases": [
+        "forehead lift"
+      ],
+      "family": "fam_isometrico_facial",
+      "category": "facial",
+      "goals": [
+        "mandibula"
+      ],
+      "level": 1,
+      "equipment": [
+        "ninguno"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "minimo",
+      "unilateral": false,
+      "measure": "reps",
+      "default": {
+        "series": 2,
+        "reps": 10,
+        "rest_s": 20
+      },
+      "met": 1.2,
+      "primary": [
+        "cigomaticos"
+      ],
+      "secondary": [],
+      "risk_zones": [],
+      "contra": [],
+      "evidence": {
+        "tono_frontal": "parcial",
+        "borrar_arrugas": "mito"
+      },
+      "evidence_note": "Puede aumentar el tono del musculo frontal. La contraccion repetida de la zona de la frente tambien puede marcar lineas dinamicas, asi que este ejercicio se mantiene con volumen bajo y no se recomienda a diario.",
+      "desc": "Elevar las cejas contra la resistencia de los dedos apoyados sobre la frente.",
+      "steps": [
+        "Apoya los dedos indices justo encima de las cejas.",
+        "Eleva las cejas contra la resistencia de los dedos.",
+        "Manten 3 segundos.",
+        "Relaja del todo."
+      ],
+      "cues": [
+        "Resistencia suave",
+        "3 segundos",
+        "Relaja completo"
+      ],
+      "errors": [
+        "Presionar y arrastrar la piel",
+        "Hacerlo a diario",
+        "Fruncir el entrecejo al mismo tiempo"
+      ],
+      "breathing": "Continua.",
+      "progressions": [],
+      "regressions": [],
+      "substitutes": [],
+      "asset": {
+        "clip": "ex_6119.mp4",
+        "imagen": "ex_6119.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_6120",
+      "slug": "respiracion-nasal-consciente",
+      "name": "Respiracion nasal consciente",
+      "name_en": "Conscious nasal breathing",
+      "aliases": [
+        "respiracion por la nariz"
+      ],
+      "family": "fam_lengua_postural",
+      "category": "movilidad",
+      "goals": [
+        "mandibula",
+        "postura"
+      ],
+      "level": 1,
+      "equipment": [
+        "ninguno"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "minimo",
+      "unilateral": false,
+      "measure": "tiempo",
+      "default": {
+        "series": 1,
+        "seg": 120,
+        "rest_s": 0
+      },
+      "met": 1.2,
+      "primary": [
+        "diafragma",
+        "lengua"
+      ],
+      "secondary": [
+        "digastrico"
+      ],
+      "risk_zones": [],
+      "contra": [],
+      "evidence": {
+        "tono_de_via_aerea": "parcial",
+        "cambiar_estructura_facial_adulto": "mito"
+      },
+      "evidence_note": "La respiracion bucal cronica en la infancia se asocia con cambios en el desarrollo facial; en un adulto la estructura ya no cambia. Si no puedes respirar por la nariz, eso es un tema medico (tabique, alergia) y va con un otorrino, no con una app.",
+      "desc": "Respirar por la nariz con la boca cerrada y la lengua en el paladar durante dos minutos.",
+      "steps": [
+        "Cierra los labios con la lengua en el paladar.",
+        "Inhala por la nariz contando 4.",
+        "Exhala por la nariz contando 6.",
+        "Manten durante 2 minutos."
+      ],
+      "cues": [
+        "Boca cerrada",
+        "Lengua arriba",
+        "Exhala mas largo"
+      ],
+      "errors": [
+        "Forzar si hay congestion",
+        "Respirar por la boca a mitad",
+        "Hiperventilar"
+      ],
+      "breathing": "Nasal, 4 dentro y 6 fuera.",
+      "progressions": [],
+      "regressions": [],
+      "substitutes": [
+        "ex_4021"
+      ],
+      "asset": {
+        "clip": "ex_6120.mp4",
+        "imagen": "ex_6120.jpg",
+        "recorrido": "sostenido"
+      }
+    }
+  ]
+}

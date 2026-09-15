@@ -1,0 +1,930 @@
+{
+  "coleccion": "ejercicios",
+  "bloque": "running",
+  "version": "2.0.0",
+  "principio_rector": "La regla que mas previene lesiones en corredores no es la tecnica ni el calzado: es no aumentar el volumen semanal mas de un 10 por ciento. La app bloquea saltos mayores y lo explica cuando lo hace.",
+  "items": [
+    {
+      "id": "ex_6501",
+      "slug": "trote-suave",
+      "name": "Trote suave",
+      "name_en": "Easy run",
+      "aliases": [
+        "rodaje suave",
+        "trote"
+      ],
+      "family": "fam_cardio_continuo",
+      "category": "cardio",
+      "goals": [
+        "running",
+        "cardio",
+        "bajar_peso"
+      ],
+      "level": 2,
+      "equipment": [
+        "ninguno"
+      ],
+      "impact": 3,
+      "noise": 1,
+      "space": "amplio",
+      "unilateral": false,
+      "measure": "tiempo",
+      "default": {
+        "series": 1,
+        "seg": 1800,
+        "rest_s": 0
+      },
+      "met": 8.0,
+      "primary": [
+        "cuadriceps",
+        "gemelos",
+        "soleo"
+      ],
+      "secondary": [
+        "gluteo_mayor",
+        "isquiotibiales",
+        "core"
+      ],
+      "risk_zones": [
+        "rodilla",
+        "tobillo"
+      ],
+      "contra": [
+        "lesion_rodilla",
+        "lesion_tobillo"
+      ],
+      "desc": "Correr a ritmo conversacional. Debe ser el 70 a 80 por ciento de tu volumen semanal, aunque casi todo el mundo corre sus suaves demasiado rapido.",
+      "steps": [
+        "Ritmo en el que puedes hablar con frases completas.",
+        "Cadencia alrededor de 170 a 180 pasos por minuto.",
+        "Apoyo bajo el centro de masa, no muy por delante.",
+        "Hombros relajados y brazos a 90 grados."
+      ],
+      "cues": [
+        "Puedes hablar",
+        "Pasos cortos y frecuentes",
+        "Hombros relajados"
+      ],
+      "errors": [
+        "Correr los suaves demasiado rapido, que es el error mas comun del corredor amateur",
+        "Zancada excesiva con el pie muy adelantado",
+        "Hombros encogidos y punos apretados"
+      ],
+      "breathing": "Ritmica y conversacional.",
+      "progressions": [
+        "ex_6502",
+        "ex_6503"
+      ],
+      "regressions": [
+        "ex_6508"
+      ],
+      "substitutes": [
+        "ex_5102"
+      ],
+      "asset": {
+        "clip": "ex_6501.mp4",
+        "imagen": "ex_6501.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_6502",
+      "slug": "tempo-run",
+      "name": "Ritmo tempo",
+      "name_en": "Tempo run",
+      "aliases": [
+        "carrera a umbral"
+      ],
+      "family": "fam_cardio_continuo",
+      "category": "cardio",
+      "goals": [
+        "running",
+        "cardio"
+      ],
+      "level": 3,
+      "equipment": [
+        "ninguno"
+      ],
+      "impact": 3,
+      "noise": 1,
+      "space": "amplio",
+      "unilateral": false,
+      "measure": "tiempo",
+      "default": {
+        "series": 1,
+        "seg": 1200,
+        "rest_s": 0
+      },
+      "met": 11.0,
+      "primary": [
+        "cuadriceps",
+        "soleo"
+      ],
+      "secondary": [
+        "gluteo_mayor",
+        "isquiotibiales",
+        "core"
+      ],
+      "risk_zones": [
+        "rodilla",
+        "tobillo"
+      ],
+      "contra": [
+        "lesion_rodilla"
+      ],
+      "desc": "Correr a ritmo comodamente duro durante 20 a 40 minutos. Mejora el umbral, que es lo que te permite sostener ritmo.",
+      "steps": [
+        "Calienta 10 minutos suave.",
+        "Sube a un ritmo donde solo puedas decir frases de tres palabras.",
+        "Mantenlo constante 20 minutos.",
+        "Enfria 10 minutos suave."
+      ],
+      "cues": [
+        "Comodamente duro",
+        "Ritmo constante",
+        "Sin acelerar al final"
+      ],
+      "errors": [
+        "Empezar demasiado rapido y morir a mitad",
+        "Convertirlo en una carrera al maximo",
+        "Saltarse el calentamiento"
+      ],
+      "breathing": "Profunda y controlada.",
+      "progressions": [
+        "ex_6503"
+      ],
+      "regressions": [
+        "ex_6501"
+      ],
+      "substitutes": [
+        "ex_6503"
+      ],
+      "asset": {
+        "clip": "ex_6502.mp4",
+        "imagen": "ex_6502.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_6503",
+      "slug": "series-intervalos",
+      "name": "Series de intervalos",
+      "name_en": "Interval repeats",
+      "aliases": [
+        "series",
+        "repeticiones"
+      ],
+      "family": "fam_cardio_intervalos",
+      "category": "cardio",
+      "goals": [
+        "running",
+        "cardio"
+      ],
+      "level": 3,
+      "equipment": [
+        "ninguno"
+      ],
+      "impact": 3,
+      "noise": 1,
+      "space": "amplio",
+      "unilateral": false,
+      "measure": "tiempo",
+      "default": {
+        "series": 6,
+        "seg": 180,
+        "rest_s": 90
+      },
+      "met": 12.0,
+      "primary": [
+        "cuadriceps",
+        "gemelos"
+      ],
+      "secondary": [
+        "gluteo_mayor",
+        "core",
+        "isquiotibiales"
+      ],
+      "risk_zones": [
+        "rodilla",
+        "tobillo"
+      ],
+      "contra": [
+        "lesion_rodilla",
+        "lesion_tobillo"
+      ],
+      "desc": "Repeticiones rapidas con recuperacion entre ellas. Es lo que sube el techo aerobico.",
+      "steps": [
+        "Calienta 12 minutos con drills incluidos.",
+        "Corre 3 minutos a ritmo fuerte pero sostenible.",
+        "Trota suave 90 segundos.",
+        "Repite 6 veces y enfria 10 minutos."
+      ],
+      "cues": [
+        "Todas las series al mismo ritmo",
+        "Recupera de verdad",
+        "Termina pudiendo una mas"
+      ],
+      "errors": [
+        "Hacer la primera serie mucho mas rapida que el resto",
+        "No recuperar entre series",
+        "Hacer series varios dias seguidos"
+      ],
+      "breathing": "Maxima en el esfuerzo, profunda en la recuperacion.",
+      "progressions": [],
+      "regressions": [
+        "ex_6502"
+      ],
+      "substitutes": [
+        "ex_5108"
+      ],
+      "asset": {
+        "clip": "ex_6503.mp4",
+        "imagen": "ex_6503.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_6504",
+      "slug": "skipping-bajo",
+      "name": "Skipping bajo",
+      "name_en": "A-skip",
+      "aliases": [
+        "a skip",
+        "skipping tecnico"
+      ],
+      "family": "fam_tecnica_carrera",
+      "category": "tecnica_carrera",
+      "goals": [
+        "running"
+      ],
+      "level": 2,
+      "equipment": [
+        "ninguno"
+      ],
+      "impact": 2,
+      "noise": 1,
+      "space": "amplio",
+      "unilateral": false,
+      "measure": "tiempo",
+      "default": {
+        "series": 3,
+        "seg": 20,
+        "rest_s": 40
+      },
+      "met": 6.0,
+      "primary": [
+        "flexor_cadera",
+        "gemelos"
+      ],
+      "secondary": [
+        "core",
+        "tibial_anterior"
+      ],
+      "risk_zones": [
+        "tobillo"
+      ],
+      "contra": [
+        "lesion_tobillo"
+      ],
+      "desc": "Avanzar con un salto corto subiendo la rodilla. Enseña el ciclo de la zancada y el apoyo activo.",
+      "steps": [
+        "Sube la rodilla a la altura de la cadera con el tobillo en flexion.",
+        "Da un pequeño salto con el pie de apoyo.",
+        "Baja el pie de forma activa, no lo dejes caer.",
+        "Avanza poco, la calidad importa mas que la distancia."
+      ],
+      "cues": [
+        "Rodilla alta",
+        "Punta arriba",
+        "Apoyo activo"
+      ],
+      "errors": [
+        "Avanzar demasiado y perder la tecnica",
+        "Dejar caer el pie sin control",
+        "Echarse hacia atras"
+      ],
+      "breathing": "Ritmica.",
+      "progressions": [
+        "ex_6505"
+      ],
+      "regressions": [
+        "ex_5019"
+      ],
+      "substitutes": [
+        "ex_5019"
+      ],
+      "asset": {
+        "clip": "ex_6504.mp4",
+        "imagen": "ex_6504.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_6505",
+      "slug": "talones-al-gluteo",
+      "name": "Talones al gluteo",
+      "name_en": "Butt kicks",
+      "aliases": [
+        "butt kicks"
+      ],
+      "family": "fam_tecnica_carrera",
+      "category": "tecnica_carrera",
+      "goals": [
+        "running",
+        "cardio"
+      ],
+      "level": 2,
+      "equipment": [
+        "ninguno"
+      ],
+      "impact": 2,
+      "noise": 1,
+      "space": "amplio",
+      "unilateral": false,
+      "measure": "tiempo",
+      "default": {
+        "series": 3,
+        "seg": 20,
+        "rest_s": 40
+      },
+      "met": 6.5,
+      "primary": [
+        "isquiotibiales"
+      ],
+      "secondary": [
+        "gemelos",
+        "flexor_cadera"
+      ],
+      "risk_zones": [
+        "rodilla"
+      ],
+      "contra": [
+        "lesion_rodilla"
+      ],
+      "desc": "Correr llevando los talones al gluteo. Trabaja la fase de recobro de la zancada.",
+      "steps": [
+        "Trota en el sitio o avanzando poco.",
+        "Lleva el talon hacia el gluteo con frecuencia alta.",
+        "Manten el muslo casi vertical, sin echar la rodilla adelante.",
+        "Torso alto."
+      ],
+      "cues": [
+        "Talon al gluteo",
+        "Frecuencia alta",
+        "Torso alto"
+      ],
+      "errors": [
+        "Inclinarse hacia delante",
+        "Subir la rodilla en vez de flexionar la rodilla",
+        "Ir lento"
+      ],
+      "breathing": "Ritmica.",
+      "progressions": [],
+      "regressions": [
+        "ex_5019"
+      ],
+      "substitutes": [
+        "ex_6504"
+      ],
+      "asset": {
+        "clip": "ex_6505.mp4",
+        "imagen": "ex_6505.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_6506",
+      "slug": "zancadas-progresivas",
+      "name": "Zancadas progresivas (strides)",
+      "name_en": "Strides",
+      "aliases": [
+        "strides",
+        "progresivos"
+      ],
+      "family": "fam_tecnica_carrera",
+      "category": "tecnica_carrera",
+      "goals": [
+        "running"
+      ],
+      "level": 2,
+      "equipment": [
+        "ninguno"
+      ],
+      "impact": 3,
+      "noise": 1,
+      "space": "amplio",
+      "unilateral": false,
+      "measure": "reps",
+      "default": {
+        "series": 6,
+        "reps": 1,
+        "rest_s": 60
+      },
+      "met": 10.0,
+      "primary": [
+        "cuadriceps",
+        "gemelos"
+      ],
+      "secondary": [
+        "gluteo_mayor",
+        "core",
+        "isquiotibiales"
+      ],
+      "risk_zones": [
+        "rodilla",
+        "isquiotibial"
+      ],
+      "contra": [
+        "lesion_rodilla"
+      ],
+      "desc": "Aceleraciones de 20 segundos que suben progresivamente hasta ritmo rapido y bajan. Mejoran la mecanica sin fatiga acumulada.",
+      "steps": [
+        "Empieza trotando.",
+        "Acelera progresivamente durante 10 segundos hasta ritmo rapido pero relajado.",
+        "Manten 5 segundos.",
+        "Desacelera de forma progresiva y camina 60 segundos."
+      ],
+      "cues": [
+        "Progresivo, sin arrancon",
+        "Relajado a velocidad",
+        "Desacelera suave"
+      ],
+      "errors": [
+        "Arrancar de golpe al maximo",
+        "Tensar la cara y los hombros",
+        "Hacerlos cuando ya estas agotado"
+      ],
+      "breathing": "Libre.",
+      "progressions": [],
+      "regressions": [
+        "ex_6504"
+      ],
+      "substitutes": [
+        "ex_6503"
+      ],
+      "asset": {
+        "clip": "ex_6506.mp4",
+        "imagen": "ex_6506.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_6507",
+      "slug": "cuesta-corta",
+      "name": "Cuestas cortas",
+      "name_en": "Hill sprints",
+      "aliases": [
+        "repeticiones en cuesta"
+      ],
+      "family": "fam_cardio_intervalos",
+      "category": "cardio",
+      "goals": [
+        "running",
+        "cardio"
+      ],
+      "level": 3,
+      "equipment": [
+        "ninguno"
+      ],
+      "impact": 3,
+      "noise": 1,
+      "space": "amplio",
+      "unilateral": false,
+      "measure": "reps",
+      "default": {
+        "series": 8,
+        "reps": 1,
+        "rest_s": 120
+      },
+      "met": 12.0,
+      "primary": [
+        "gluteo_mayor",
+        "cuadriceps"
+      ],
+      "secondary": [
+        "gemelos",
+        "soleo",
+        "core"
+      ],
+      "risk_zones": [
+        "tobillo",
+        "isquiotibial"
+      ],
+      "contra": [
+        "lesion_tobillo"
+      ],
+      "desc": "Sprints de 15 a 20 segundos en cuesta. Fuerza especifica de carrera con menos riesgo de lesion que el sprint en llano, porque la velocidad de contacto es menor.",
+      "steps": [
+        "Busca una cuesta con pendiente moderada.",
+        "Sube 15 a 20 segundos con esfuerzo fuerte.",
+        "Baja caminando o trotando muy suave.",
+        "Repite 8 veces."
+      ],
+      "cues": [
+        "Brazos activos",
+        "Torso ligeramente inclinado",
+        "Baja caminando"
+      ],
+      "errors": [
+        "Bajar corriendo rapido, que es donde se producen las lesiones",
+        "Hacerlas sin calentar",
+        "Elegir una pendiente demasiado empinada"
+      ],
+      "breathing": "Maxima en la subida, recupera en la bajada.",
+      "progressions": [],
+      "regressions": [
+        "ex_6503"
+      ],
+      "substitutes": [
+        "ex_5110"
+      ],
+      "asset": {
+        "clip": "ex_6507.mp4",
+        "imagen": "ex_6507.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_6508",
+      "slug": "caminar-correr",
+      "name": "Metodo caminar-correr",
+      "name_en": "Run-walk method",
+      "aliases": [
+        "run walk",
+        "metodo galloway"
+      ],
+      "family": "fam_cardio_intervalos",
+      "category": "cardio",
+      "goals": [
+        "running",
+        "bajar_peso",
+        "cardio"
+      ],
+      "level": 1,
+      "equipment": [
+        "ninguno"
+      ],
+      "impact": 2,
+      "noise": 1,
+      "space": "amplio",
+      "unilateral": false,
+      "measure": "tiempo",
+      "default": {
+        "series": 8,
+        "seg": 60,
+        "rest_s": 90
+      },
+      "met": 6.5,
+      "primary": [
+        "cuadriceps",
+        "gemelos"
+      ],
+      "secondary": [
+        "gluteo_mayor",
+        "core"
+      ],
+      "risk_zones": [
+        "rodilla",
+        "tobillo"
+      ],
+      "contra": [],
+      "desc": "Alternar minutos de trote con minutos de caminata. Es la forma correcta de empezar a correr y la que menos lesiona a principiantes.",
+      "steps": [
+        "Calienta caminando 5 minutos.",
+        "Trota 1 minuto suave.",
+        "Camina 90 segundos.",
+        "Repite 8 veces y termina caminando 5 minutos."
+      ],
+      "cues": [
+        "Trote suave, no rapido",
+        "Camina de verdad",
+        "Sin prisa por eliminar las pausas"
+      ],
+      "errors": [
+        "Trotar demasiado rapido en el intervalo de trote",
+        "Eliminar la caminata antes de tiempo",
+        "Aumentar mas del 10 por ciento semanal"
+      ],
+      "breathing": "Conversacional en el trote.",
+      "progressions": [
+        "ex_6501"
+      ],
+      "regressions": [
+        "ex_5101"
+      ],
+      "substitutes": [
+        "ex_5101"
+      ],
+      "asset": {
+        "clip": "ex_6508.mp4",
+        "imagen": "ex_6508.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_6509",
+      "slug": "carioca",
+      "name": "Carioca",
+      "name_en": "Carioca",
+      "aliases": [
+        "paso cruzado lateral"
+      ],
+      "family": "fam_tecnica_carrera",
+      "category": "tecnica_carrera",
+      "goals": [
+        "running"
+      ],
+      "level": 2,
+      "equipment": [
+        "ninguno"
+      ],
+      "impact": 2,
+      "noise": 1,
+      "space": "amplio",
+      "unilateral": true,
+      "measure": "tiempo",
+      "default": {
+        "series": 2,
+        "seg": 20,
+        "rest_s": 40
+      },
+      "met": 6.0,
+      "primary": [
+        "gluteo_medio",
+        "aductores"
+      ],
+      "secondary": [
+        "oblicuo_externo",
+        "gemelos"
+      ],
+      "risk_zones": [
+        "tobillo",
+        "rodilla"
+      ],
+      "contra": [
+        "lesion_tobillo"
+      ],
+      "desc": "Desplazamiento lateral cruzando las piernas alternadamente. Calienta cadera en rotacion, que ningun otro drill cubre.",
+      "steps": [
+        "Desplazate lateralmente cruzando una pierna por delante.",
+        "Despues cruzala por detras.",
+        "Manten los hombros hacia el frente.",
+        "Cambia de direccion."
+      ],
+      "cues": [
+        "Hombros al frente",
+        "Rota la cadera",
+        "Ritmo constante"
+      ],
+      "errors": [
+        "Rotar los hombros con la cadera",
+        "Ir demasiado rapido al principio",
+        "Pasos demasiado cortos"
+      ],
+      "breathing": "Ritmica.",
+      "progressions": [],
+      "regressions": [
+        "ex_8004"
+      ],
+      "substitutes": [
+        "ex_8004"
+      ],
+      "asset": {
+        "clip": "ex_6509.mp4",
+        "imagen": "ex_6509.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_6510",
+      "slug": "cadencia-metronomo",
+      "name": "Trabajo de cadencia",
+      "name_en": "Cadence drill",
+      "aliases": [
+        "cadencia",
+        "metronomo"
+      ],
+      "family": "fam_tecnica_carrera",
+      "category": "tecnica_carrera",
+      "goals": [
+        "running"
+      ],
+      "level": 2,
+      "equipment": [
+        "ninguno"
+      ],
+      "impact": 3,
+      "noise": 1,
+      "space": "amplio",
+      "unilateral": false,
+      "measure": "tiempo",
+      "default": {
+        "series": 4,
+        "seg": 60,
+        "rest_s": 60
+      },
+      "met": 8.0,
+      "primary": [
+        "gemelos",
+        "flexor_cadera"
+      ],
+      "secondary": [
+        "core",
+        "soleo"
+      ],
+      "risk_zones": [
+        "tobillo"
+      ],
+      "contra": [],
+      "evidence": {
+        "reduccion_carga_por_zancada": "ok",
+        "prevenir_toda_lesion": "parcial"
+      },
+      "evidence_note": "Subir la cadencia entre un 5 y un 10 por ciento reduce de forma medible la carga de impacto y el desplazamiento vertical. No es una vacuna contra la lesion, pero es de las intervenciones tecnicas con mejor respaldo.",
+      "desc": "Correr un minuto siguiendo un metronomo a una cadencia 5 a 10 por ciento superior a la tuya.",
+      "steps": [
+        "Cuenta tus pasos en 30 segundos y multiplica por 2 para saber tu cadencia por minuto.",
+        "Ajusta el metronomo a un 5 por ciento mas.",
+        "Corre 1 minuto siguiendo el ritmo.",
+        "Recupera y repite 4 veces."
+      ],
+      "cues": [
+        "Pasos mas cortos",
+        "No mas rapido, mas frecuente",
+        "Sigue el ritmo"
+      ],
+      "errors": [
+        "Subir la cadencia un 20 por ciento de golpe",
+        "Correr mas rapido en vez de dar mas pasos",
+        "Tensar los hombros"
+      ],
+      "breathing": "Ritmica.",
+      "progressions": [],
+      "regressions": [],
+      "substitutes": [
+        "ex_6504"
+      ],
+      "asset": {
+        "clip": "ex_6510.mp4",
+        "imagen": "ex_6510.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_6511",
+      "slug": "fartlek",
+      "name": "Fartlek",
+      "name_en": "Fartlek",
+      "aliases": [
+        "juego de velocidad"
+      ],
+      "family": "fam_cardio_intervalos",
+      "category": "cardio",
+      "goals": [
+        "running",
+        "cardio"
+      ],
+      "level": 2,
+      "equipment": [
+        "ninguno"
+      ],
+      "impact": 3,
+      "noise": 1,
+      "space": "amplio",
+      "unilateral": false,
+      "measure": "tiempo",
+      "default": {
+        "series": 1,
+        "seg": 1800,
+        "rest_s": 0
+      },
+      "met": 10.0,
+      "primary": [
+        "cuadriceps",
+        "gemelos"
+      ],
+      "secondary": [
+        "gluteo_mayor",
+        "core"
+      ],
+      "risk_zones": [
+        "rodilla",
+        "tobillo"
+      ],
+      "contra": [
+        "lesion_rodilla"
+      ],
+      "desc": "Cambios de ritmo libres durante el rodaje, sin cronometro ni estructura fija. Divertido y menos rigido que las series.",
+      "steps": [
+        "Trota 10 minutos de calentamiento.",
+        "Elige una referencia visual y acelera hasta ella.",
+        "Recupera trotando hasta que te sientas listo.",
+        "Repite de forma libre durante 20 minutos."
+      ],
+      "cues": [
+        "Elige un objetivo visual",
+        "Acelera",
+        "Recupera lo que necesites"
+      ],
+      "errors": [
+        "Convertirlo en series encubiertas sin recuperar",
+        "Hacerlo cansado",
+        "Empezar sin calentar"
+      ],
+      "breathing": "Libre.",
+      "progressions": [
+        "ex_6503"
+      ],
+      "regressions": [
+        "ex_6501"
+      ],
+      "substitutes": [
+        "ex_6503"
+      ],
+      "asset": {
+        "clip": "ex_6511.mp4",
+        "imagen": "ex_6511.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_6512",
+      "slug": "tirada-larga",
+      "name": "Tirada larga",
+      "name_en": "Long run",
+      "aliases": [
+        "long run",
+        "fondo"
+      ],
+      "family": "fam_cardio_continuo",
+      "category": "cardio",
+      "goals": [
+        "running",
+        "cardio"
+      ],
+      "level": 3,
+      "equipment": [
+        "ninguno"
+      ],
+      "impact": 3,
+      "noise": 1,
+      "space": "amplio",
+      "unilateral": false,
+      "measure": "tiempo",
+      "default": {
+        "series": 1,
+        "seg": 4500,
+        "rest_s": 0
+      },
+      "met": 9.0,
+      "primary": [
+        "cuadriceps",
+        "soleo",
+        "gemelos"
+      ],
+      "secondary": [
+        "gluteo_mayor",
+        "isquiotibiales",
+        "core"
+      ],
+      "risk_zones": [
+        "rodilla",
+        "tobillo"
+      ],
+      "contra": [
+        "lesion_rodilla",
+        "lesion_tobillo"
+      ],
+      "desc": "La sesion mas larga de la semana, a ritmo suave. Construye la base que sostiene todo lo demas.",
+      "steps": [
+        "Ritmo claramente conversacional, mas lento de lo que crees que deberias.",
+        "Aumenta la duracion un maximo de 10 por ciento por semana.",
+        "Lleva agua si superas los 60 minutos.",
+        "Termina sintiendote capaz de seguir."
+      ],
+      "cues": [
+        "Mas lento de lo que quieres",
+        "Constante",
+        "Termina con reserva"
+      ],
+      "errors": [
+        "Correrla al ritmo de un tempo",
+        "Subir la distancia de golpe",
+        "No hidratar en tiradas largas"
+      ],
+      "breathing": "Conversacional todo el tiempo.",
+      "progressions": [],
+      "regressions": [
+        "ex_6501"
+      ],
+      "substitutes": [
+        "ex_6501"
+      ],
+      "asset": {
+        "clip": "ex_6512.mp4",
+        "imagen": "ex_6512.jpg",
+        "recorrido": "ciclico"
+      }
+    }
+  ]
+}

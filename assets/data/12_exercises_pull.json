@@ -1,0 +1,1538 @@
+{
+  "coleccion": "ejercicios",
+  "bloque": "traccion",
+  "version": "2.0.0",
+  "items": [
+    {
+      "id": "ex_3001",
+      "slug": "dominada-pronada",
+      "name": "Dominada",
+      "name_en": "Pull-up",
+      "aliases": [
+        "pull up",
+        "dominadas",
+        "barra"
+      ],
+      "family": "fam_traccion_vertical",
+      "category": "fuerza",
+      "goals": [
+        "musculo",
+        "calistenia",
+        "gym"
+      ],
+      "level": 3,
+      "equipment": [
+        "barra_dominadas"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "minimo",
+      "unilateral": false,
+      "measure": "reps",
+      "default": {
+        "series": 4,
+        "reps": 6,
+        "rest_s": 120
+      },
+      "met": 8.0,
+      "primary": [
+        "dorsal_ancho"
+      ],
+      "secondary": [
+        "biceps",
+        "romboides",
+        "redondo_mayor",
+        "trapecio_inferior",
+        "antebrazo",
+        "core"
+      ],
+      "risk_zones": [
+        "hombro",
+        "codo"
+      ],
+      "contra": [
+        "lesion_hombro",
+        "lesion_codo"
+      ],
+      "desc": "Traccion vertical con agarre prono. El mejor constructor de espalda con peso corporal y el que da la forma de V.",
+      "steps": [
+        "Agarre poco mas ancho que los hombros, palmas al frente.",
+        "Empieza colgado con los hombros activos, no hundido.",
+        "Tira llevando los codos hacia las costillas hasta pasar la barbilla.",
+        "Baja controlado hasta extender los codos."
+      ],
+      "cues": [
+        "Hombros abajo primero",
+        "Codos a las costillas",
+        "Baja completo"
+      ],
+      "errors": [
+        "Balancearse para subir (kipping sin control)",
+        "No bajar del todo y acortar el rango",
+        "Encoger los hombros hacia las orejas al colgarse"
+      ],
+      "breathing": "Exhala al subir, inhala al bajar.",
+      "progressions": [
+        "ex_3004"
+      ],
+      "regressions": [
+        "ex_3002",
+        "ex_3003"
+      ],
+      "substitutes": [
+        "ex_3005",
+        "ex_3006"
+      ],
+      "asset": {
+        "clip": "ex_3001.mp4",
+        "imagen": "ex_3001.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_3002",
+      "slug": "dominada-asistida-banda",
+      "name": "Dominada asistida con banda",
+      "name_en": "Band-assisted pull-up",
+      "aliases": [
+        "dominada con banda"
+      ],
+      "family": "fam_traccion_vertical",
+      "category": "fuerza",
+      "goals": [
+        "musculo",
+        "calistenia"
+      ],
+      "level": 2,
+      "equipment": [
+        "barra_dominadas",
+        "banda_larga"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "minimo",
+      "unilateral": false,
+      "measure": "reps",
+      "default": {
+        "series": 3,
+        "reps": 8,
+        "rest_s": 90
+      },
+      "met": 6.0,
+      "primary": [
+        "dorsal_ancho"
+      ],
+      "secondary": [
+        "biceps",
+        "romboides",
+        "trapecio_inferior"
+      ],
+      "risk_zones": [
+        "hombro"
+      ],
+      "contra": [
+        "lesion_hombro"
+      ],
+      "desc": "Dominada con una banda bajo la rodilla o el pie que ayuda en la parte mas dificil. La forma correcta de llegar a la primera dominada.",
+      "steps": [
+        "Ancla la banda a la barra y pisa o apoya la rodilla en ella.",
+        "Empieza colgado con los hombros activos.",
+        "Tira hasta pasar la barbilla.",
+        "Baja controlado."
+      ],
+      "cues": [
+        "No rebotes en la banda",
+        "Baja completo",
+        "Codos a las costillas"
+      ],
+      "errors": [
+        "Usar una banda tan gruesa que hace todo el trabajo",
+        "Rebotar abajo",
+        "No bajar del todo"
+      ],
+      "breathing": "Exhala al subir, inhala al bajar.",
+      "progressions": [
+        "ex_3001"
+      ],
+      "regressions": [
+        "ex_3003"
+      ],
+      "substitutes": [
+        "ex_3006"
+      ],
+      "asset": {
+        "clip": "ex_3002.mp4",
+        "imagen": "ex_3002.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_3003",
+      "slug": "dominada-negativa",
+      "name": "Dominada negativa",
+      "name_en": "Negative pull-up",
+      "aliases": [
+        "excentrica de dominada"
+      ],
+      "family": "fam_traccion_vertical",
+      "category": "fuerza",
+      "goals": [
+        "calistenia",
+        "musculo"
+      ],
+      "level": 2,
+      "equipment": [
+        "barra_dominadas",
+        "silla"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "minimo",
+      "unilateral": false,
+      "measure": "reps",
+      "default": {
+        "series": 3,
+        "reps": 5,
+        "rest_s": 90
+      },
+      "met": 6.0,
+      "primary": [
+        "dorsal_ancho"
+      ],
+      "secondary": [
+        "biceps",
+        "antebrazo",
+        "core"
+      ],
+      "risk_zones": [
+        "hombro",
+        "codo"
+      ],
+      "contra": [
+        "lesion_hombro"
+      ],
+      "desc": "Solo la fase de bajada, lo mas lento posible. Es la via mas eficaz para conseguir la primera dominada.",
+      "steps": [
+        "Sube con una silla hasta tener la barbilla sobre la barra.",
+        "Quita los pies y aguanta arriba un segundo.",
+        "Baja lo mas lento que puedas, apuntando a 5 segundos.",
+        "Vuelve a subir con la silla."
+      ],
+      "cues": [
+        "Aguanta arriba",
+        "Baja en 5 segundos",
+        "Hombros activos"
+      ],
+      "errors": [
+        "Dejarse caer",
+        "Soltar la tension a mitad de la bajada",
+        "Hacer demasiadas: genera muchas agujetas"
+      ],
+      "breathing": "Inhala arriba, exhala durante la bajada.",
+      "progressions": [
+        "ex_3002",
+        "ex_3001"
+      ],
+      "regressions": [
+        "ex_3006"
+      ],
+      "substitutes": [
+        "ex_3005"
+      ],
+      "asset": {
+        "clip": "ex_3003.mp4",
+        "imagen": "ex_3003.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_3004",
+      "slug": "dominada-supina",
+      "name": "Dominada supina (chin-up)",
+      "name_en": "Chin-up",
+      "aliases": [
+        "chin up",
+        "dominada de biceps"
+      ],
+      "family": "fam_traccion_vertical",
+      "category": "fuerza",
+      "goals": [
+        "musculo",
+        "calistenia"
+      ],
+      "level": 3,
+      "equipment": [
+        "barra_dominadas"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "minimo",
+      "unilateral": false,
+      "measure": "reps",
+      "default": {
+        "series": 3,
+        "reps": 8,
+        "rest_s": 120
+      },
+      "met": 8.0,
+      "primary": [
+        "dorsal_ancho",
+        "biceps"
+      ],
+      "secondary": [
+        "romboides",
+        "antebrazo",
+        "core"
+      ],
+      "risk_zones": [
+        "codo",
+        "hombro"
+      ],
+      "contra": [
+        "lesion_codo"
+      ],
+      "desc": "Dominada con las palmas hacia ti. Mas participacion de biceps y normalmente algo mas facil que la prona.",
+      "steps": [
+        "Agarre al ancho de hombros, palmas hacia ti.",
+        "Cuelga con hombros activos.",
+        "Tira hasta pasar la barbilla, pecho hacia la barra.",
+        "Baja controlado."
+      ],
+      "cues": [
+        "Pecho a la barra",
+        "Codos abajo",
+        "Baja completo"
+      ],
+      "errors": [
+        "Balancear",
+        "Rango parcial",
+        "Cerrar demasiado el agarre y cargar la muneca"
+      ],
+      "breathing": "Exhala al subir, inhala al bajar.",
+      "progressions": [],
+      "regressions": [
+        "ex_3002"
+      ],
+      "substitutes": [
+        "ex_3001"
+      ],
+      "asset": {
+        "clip": "ex_3004.mp4",
+        "imagen": "ex_3004.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_3005",
+      "slug": "remo-invertido",
+      "name": "Remo invertido",
+      "name_en": "Inverted row",
+      "aliases": [
+        "remo australiano",
+        "body row"
+      ],
+      "family": "fam_traccion_horizontal",
+      "category": "fuerza",
+      "goals": [
+        "musculo",
+        "calistenia",
+        "postura"
+      ],
+      "level": 2,
+      "equipment": [
+        "barra_dominadas",
+        "anillas_trx"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "colchoneta",
+      "unilateral": false,
+      "measure": "reps",
+      "default": {
+        "series": 3,
+        "reps": 10,
+        "rest_s": 75
+      },
+      "met": 5.0,
+      "primary": [
+        "romboides",
+        "trapecio_medio",
+        "dorsal_ancho"
+      ],
+      "secondary": [
+        "biceps",
+        "deltoide_posterior",
+        "core"
+      ],
+      "risk_zones": [
+        "hombro"
+      ],
+      "contra": [],
+      "desc": "Traccion horizontal con peso corporal bajo una barra baja o anillas. El mejor ejercicio de postura que existe sin equipo pesado.",
+      "steps": [
+        "Coloca la barra a la altura de la cadera y tumbate debajo.",
+        "Cuerpo recto, talones apoyados.",
+        "Tira del pecho hacia la barra juntando las escapulas.",
+        "Baja controlado extendiendo los brazos."
+      ],
+      "cues": [
+        "Cuerpo recto",
+        "Junta los omoplatos",
+        "Pecho a la barra"
+      ],
+      "errors": [
+        "Dejar caer la cadera",
+        "Tirar solo con los brazos sin mover las escapulas",
+        "Rango incompleto"
+      ],
+      "breathing": "Exhala al tirar, inhala al bajar.",
+      "progressions": [
+        "ex_3001"
+      ],
+      "regressions": [
+        "ex_3007"
+      ],
+      "substitutes": [
+        "ex_3008"
+      ],
+      "asset": {
+        "clip": "ex_3005.mp4",
+        "imagen": "ex_3005.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_3006",
+      "slug": "jalon-al-pecho",
+      "name": "Jalon al pecho",
+      "name_en": "Lat pulldown",
+      "aliases": [
+        "polea al pecho",
+        "jalon dorsal"
+      ],
+      "family": "fam_traccion_vertical",
+      "category": "fuerza",
+      "goals": [
+        "musculo",
+        "gym"
+      ],
+      "level": 1,
+      "equipment": [
+        "maquina_jalon"
+      ],
+      "impact": 0,
+      "noise": 1,
+      "space": "amplio",
+      "unilateral": false,
+      "measure": "reps",
+      "default": {
+        "series": 4,
+        "reps": 12,
+        "rest_s": 75
+      },
+      "met": 5.0,
+      "primary": [
+        "dorsal_ancho"
+      ],
+      "secondary": [
+        "biceps",
+        "romboides",
+        "redondo_mayor",
+        "trapecio_inferior"
+      ],
+      "risk_zones": [
+        "hombro"
+      ],
+      "contra": [],
+      "desc": "Traccion vertical con carga graduable. La forma de entrenar el patron de dominada cuando aun no puedes hacer una.",
+      "steps": [
+        "Ajusta el soporte de muslos para no despegarte.",
+        "Agarre poco mas ancho que los hombros.",
+        "Tira la barra a la clavicula bajando primero las escapulas.",
+        "Vuelve controlado dejando que el dorsal se estire."
+      ],
+      "cues": [
+        "Escapulas abajo primero",
+        "A la clavicula",
+        "Sube controlado"
+      ],
+      "errors": [
+        "Tirar detras de la nuca, que estresa el hombro",
+        "Echar el torso muy atras y convertirlo en remo",
+        "Usar impulso de espalda baja"
+      ],
+      "breathing": "Exhala al tirar, inhala al volver.",
+      "progressions": [
+        "ex_3001"
+      ],
+      "regressions": [],
+      "substitutes": [
+        "ex_3002"
+      ],
+      "asset": {
+        "clip": "ex_3006.mp4",
+        "imagen": "ex_3006.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_3007",
+      "slug": "remo-banda",
+      "name": "Remo con banda sentado",
+      "name_en": "Seated band row",
+      "aliases": [
+        "remo con banda elastica"
+      ],
+      "family": "fam_traccion_horizontal",
+      "category": "fuerza",
+      "goals": [
+        "postura",
+        "musculo",
+        "calistenia"
+      ],
+      "level": 1,
+      "equipment": [
+        "banda_larga",
+        "colchoneta"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "colchoneta",
+      "unilateral": false,
+      "measure": "reps",
+      "default": {
+        "series": 3,
+        "reps": 15,
+        "rest_s": 45
+      },
+      "met": 3.5,
+      "primary": [
+        "romboides",
+        "trapecio_medio"
+      ],
+      "secondary": [
+        "dorsal_ancho",
+        "biceps",
+        "deltoide_posterior"
+      ],
+      "risk_zones": [],
+      "contra": [],
+      "desc": "Remo sentado con banda alrededor de los pies. La forma mas accesible de empezar a corregir hombros adelantados.",
+      "steps": [
+        "Sentado con las piernas extendidas y la banda alrededor de los pies.",
+        "Espalda recta, pecho arriba.",
+        "Tira los codos atras pegados al torso juntando escapulas.",
+        "Vuelve controlado sin encorvar."
+      ],
+      "cues": [
+        "Pecho arriba",
+        "Codos atras",
+        "Junta los omoplatos"
+      ],
+      "errors": [
+        "Encorvar la espalda al volver",
+        "Tirar solo con los brazos",
+        "Encoger los hombros a las orejas"
+      ],
+      "breathing": "Exhala al tirar, inhala al volver.",
+      "progressions": [
+        "ex_3005",
+        "ex_3008"
+      ],
+      "regressions": [],
+      "substitutes": [
+        "ex_3008"
+      ],
+      "asset": {
+        "clip": "ex_3007.mp4",
+        "imagen": "ex_3007.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_3008",
+      "slug": "remo-mancuerna-un-brazo",
+      "name": "Remo con mancuerna a un brazo",
+      "name_en": "One-arm dumbbell row",
+      "aliases": [
+        "remo a un brazo",
+        "serrucho"
+      ],
+      "family": "fam_traccion_horizontal",
+      "category": "fuerza",
+      "goals": [
+        "musculo",
+        "gym",
+        "postura"
+      ],
+      "level": 2,
+      "equipment": [
+        "mancuernas",
+        "banco",
+        "silla"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "colchoneta",
+      "unilateral": true,
+      "measure": "reps_por_lado",
+      "default": {
+        "series": 3,
+        "reps": 10,
+        "rest_s": 75
+      },
+      "met": 5.0,
+      "primary": [
+        "dorsal_ancho",
+        "romboides"
+      ],
+      "secondary": [
+        "biceps",
+        "deltoide_posterior",
+        "core"
+      ],
+      "risk_zones": [
+        "lumbar",
+        "hombro"
+      ],
+      "contra": [
+        "lesion_lumbar"
+      ],
+      "desc": "Remo apoyando una mano y una rodilla en el banco. Permite carga alta con la espalda protegida por el apoyo.",
+      "steps": [
+        "Apoya rodilla y mano del mismo lado en el banco.",
+        "Espalda paralela al suelo y neutra.",
+        "Tira la mancuerna hacia la cadera, codo pegado.",
+        "Baja controlado hasta estirar el dorsal."
+      ],
+      "cues": [
+        "Espalda neutra",
+        "Codo a la cadera",
+        "Estira abajo"
+      ],
+      "errors": [
+        "Rotar el torso para levantar mas peso",
+        "Tirar el codo hacia fuera",
+        "Redondear la espalda"
+      ],
+      "breathing": "Exhala al tirar, inhala al bajar.",
+      "progressions": [],
+      "regressions": [
+        "ex_3007"
+      ],
+      "substitutes": [
+        "ex_3009"
+      ],
+      "asset": {
+        "clip": "ex_3008.mp4",
+        "imagen": "ex_3008.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_3009",
+      "slug": "remo-barra-inclinado",
+      "name": "Remo con barra inclinado",
+      "name_en": "Barbell bent-over row",
+      "aliases": [
+        "remo pendlay",
+        "remo con barra"
+      ],
+      "family": "fam_traccion_horizontal",
+      "category": "fuerza",
+      "goals": [
+        "musculo",
+        "gym"
+      ],
+      "level": 3,
+      "equipment": [
+        "barra"
+      ],
+      "impact": 0,
+      "noise": 1,
+      "space": "amplio",
+      "unilateral": false,
+      "measure": "reps",
+      "default": {
+        "series": 4,
+        "reps": 8,
+        "rest_s": 120
+      },
+      "met": 6.0,
+      "primary": [
+        "dorsal_ancho",
+        "romboides",
+        "trapecio_medio"
+      ],
+      "secondary": [
+        "biceps",
+        "erectores_espinales",
+        "deltoide_posterior"
+      ],
+      "risk_zones": [
+        "lumbar"
+      ],
+      "contra": [
+        "lesion_lumbar",
+        "hernia_discal"
+      ],
+      "desc": "Remo con barra y torso inclinado. Mucho volumen de espalda por serie, a cambio de exigir una lumbar solida.",
+      "steps": [
+        "Bisagra de cadera hasta que el torso quede casi paralelo al suelo.",
+        "Agarre al ancho de hombros.",
+        "Tira la barra al ombligo juntando escapulas.",
+        "Baja controlado sin perder la posicion del torso."
+      ],
+      "cues": [
+        "Torso fijo",
+        "Barra al ombligo",
+        "Espalda larga"
+      ],
+      "errors": [
+        "Subir el torso al tirar",
+        "Redondear la espalda baja",
+        "Usar impulso de cadera en cada repeticion"
+      ],
+      "breathing": "Exhala al tirar, inhala al bajar.",
+      "progressions": [],
+      "regressions": [
+        "ex_3008"
+      ],
+      "substitutes": [
+        "ex_3008"
+      ],
+      "asset": {
+        "clip": "ex_3009.mp4",
+        "imagen": "ex_3009.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_3010",
+      "slug": "face-pull",
+      "name": "Face pull",
+      "name_en": "Face pull",
+      "aliases": [
+        "jalon a la cara",
+        "tiron a la cara"
+      ],
+      "family": "fam_traccion_horizontal",
+      "category": "fuerza",
+      "goals": [
+        "postura",
+        "musculo",
+        "gym"
+      ],
+      "level": 1,
+      "equipment": [
+        "banda_larga",
+        "polea"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "minimo",
+      "unilateral": false,
+      "measure": "reps",
+      "default": {
+        "series": 3,
+        "reps": 15,
+        "rest_s": 45
+      },
+      "met": 3.5,
+      "primary": [
+        "deltoide_posterior",
+        "trapecio_medio"
+      ],
+      "secondary": [
+        "romboides",
+        "manguito_rotador",
+        "trapecio_inferior"
+      ],
+      "risk_zones": [
+        "hombro"
+      ],
+      "contra": [],
+      "desc": "Traccion a la altura de la cara con rotacion externa. Es el mejor accesorio del catalogo para hombro sano y postura, y el mas ignorado.",
+      "steps": [
+        "Ancla la banda a la altura de la cara.",
+        "Tira hacia la frente separando las manos.",
+        "Termina con los punos a los lados de la cabeza y los codos altos.",
+        "Vuelve controlado."
+      ],
+      "cues": [
+        "Codos altos",
+        "Separa las manos",
+        "Aprieta atras"
+      ],
+      "errors": [
+        "Tirar hacia el pecho en vez de la cara",
+        "Codos caidos",
+        "Usar demasiada resistencia y perder la rotacion"
+      ],
+      "breathing": "Exhala al tirar, inhala al volver.",
+      "progressions": [],
+      "regressions": [],
+      "substitutes": [
+        "ex_3011"
+      ],
+      "asset": {
+        "clip": "ex_3010.mp4",
+        "imagen": "ex_3010.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_3011",
+      "slug": "pajaro-mancuernas",
+      "name": "Pajaro con mancuernas",
+      "name_en": "Rear delt fly",
+      "aliases": [
+        "vuelos posteriores",
+        "reverse fly"
+      ],
+      "family": "fam_traccion_horizontal",
+      "category": "fuerza",
+      "goals": [
+        "postura",
+        "musculo",
+        "gym"
+      ],
+      "level": 1,
+      "equipment": [
+        "mancuernas",
+        "banda_larga"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "minimo",
+      "unilateral": false,
+      "measure": "reps",
+      "default": {
+        "series": 3,
+        "reps": 14,
+        "rest_s": 50
+      },
+      "met": 3.5,
+      "primary": [
+        "deltoide_posterior"
+      ],
+      "secondary": [
+        "romboides",
+        "trapecio_medio"
+      ],
+      "risk_zones": [
+        "hombro",
+        "lumbar"
+      ],
+      "contra": [
+        "lesion_lumbar"
+      ],
+      "desc": "Aperturas hacia atras con el torso inclinado. Compensa el exceso de trabajo de pecho y hombro anterior.",
+      "steps": [
+        "Inclina el torso con la espalda recta.",
+        "Mancuernas colgando con los codos ligeramente doblados.",
+        "Abre los brazos a los lados hasta la altura del hombro.",
+        "Baja controlado."
+      ],
+      "cues": [
+        "Pulgares arriba",
+        "Abre a los lados",
+        "Sin impulso"
+      ],
+      "errors": [
+        "Usar impulso del torso",
+        "Convertirlo en remo doblando los codos",
+        "Peso excesivo"
+      ],
+      "breathing": "Exhala al abrir, inhala al bajar.",
+      "progressions": [],
+      "regressions": [],
+      "substitutes": [
+        "ex_3010"
+      ],
+      "asset": {
+        "clip": "ex_3011.mp4",
+        "imagen": "ex_3011.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_3012",
+      "slug": "curl-biceps-mancuernas",
+      "name": "Curl de biceps con mancuernas",
+      "name_en": "Dumbbell curl",
+      "aliases": [
+        "curl",
+        "biceps"
+      ],
+      "family": "fam_traccion_horizontal",
+      "category": "fuerza",
+      "goals": [
+        "musculo",
+        "gym"
+      ],
+      "level": 1,
+      "equipment": [
+        "mancuernas",
+        "banda_larga"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "minimo",
+      "unilateral": false,
+      "measure": "reps",
+      "default": {
+        "series": 3,
+        "reps": 12,
+        "rest_s": 60
+      },
+      "met": 3.5,
+      "primary": [
+        "biceps"
+      ],
+      "secondary": [
+        "braquial",
+        "antebrazo"
+      ],
+      "risk_zones": [
+        "codo"
+      ],
+      "contra": [
+        "lesion_codo"
+      ],
+      "desc": "Flexion de codo con supinacion. El aislamiento clasico de biceps.",
+      "steps": [
+        "De pie, mancuernas a los lados con las palmas al frente.",
+        "Codos pegados al torso y fijos.",
+        "Sube flexionando el codo sin mover el hombro.",
+        "Baja controlado hasta extender."
+      ],
+      "cues": [
+        "Codos quietos",
+        "Sin balancear",
+        "Baja completo"
+      ],
+      "errors": [
+        "Balancear el torso para subir",
+        "Adelantar el codo",
+        "No extender abajo"
+      ],
+      "breathing": "Exhala al subir, inhala al bajar.",
+      "progressions": [],
+      "regressions": [],
+      "substitutes": [
+        "ex_3013"
+      ],
+      "asset": {
+        "clip": "ex_3012.mp4",
+        "imagen": "ex_3012.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_3013",
+      "slug": "curl-martillo",
+      "name": "Curl martillo",
+      "name_en": "Hammer curl",
+      "aliases": [
+        "hammer curl",
+        "curl neutro"
+      ],
+      "family": "fam_traccion_horizontal",
+      "category": "fuerza",
+      "goals": [
+        "musculo",
+        "gym"
+      ],
+      "level": 1,
+      "equipment": [
+        "mancuernas"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "minimo",
+      "unilateral": false,
+      "measure": "reps",
+      "default": {
+        "series": 3,
+        "reps": 12,
+        "rest_s": 60
+      },
+      "met": 3.5,
+      "primary": [
+        "braquial",
+        "biceps"
+      ],
+      "secondary": [
+        "antebrazo"
+      ],
+      "risk_zones": [
+        "codo"
+      ],
+      "contra": [],
+      "desc": "Curl con agarre neutro. Trabaja mas el braquial, que es el que empuja el biceps hacia arriba y da grosor al brazo.",
+      "steps": [
+        "Mancuernas a los lados con las palmas enfrentadas.",
+        "Sube manteniendo el agarre neutro.",
+        "Baja controlado."
+      ],
+      "cues": [
+        "Palmas enfrentadas",
+        "Codos pegados",
+        "Baja lento"
+      ],
+      "errors": [
+        "Rotar la muneca al subir",
+        "Balancear",
+        "Rango parcial"
+      ],
+      "breathing": "Exhala al subir, inhala al bajar.",
+      "progressions": [],
+      "regressions": [],
+      "substitutes": [
+        "ex_3012"
+      ],
+      "asset": {
+        "clip": "ex_3013.mp4",
+        "imagen": "ex_3013.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_3014",
+      "slug": "encogimiento-hombros",
+      "name": "Encogimiento de hombros",
+      "name_en": "Shrug",
+      "aliases": [
+        "shrugs",
+        "trapecios"
+      ],
+      "family": "fam_traccion_horizontal",
+      "category": "fuerza",
+      "goals": [
+        "musculo",
+        "gym"
+      ],
+      "level": 1,
+      "equipment": [
+        "mancuernas",
+        "barra"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "minimo",
+      "unilateral": false,
+      "measure": "reps",
+      "default": {
+        "series": 3,
+        "reps": 14,
+        "rest_s": 60
+      },
+      "met": 3.5,
+      "primary": [
+        "trapecio_superior"
+      ],
+      "secondary": [
+        "antebrazo"
+      ],
+      "risk_zones": [
+        "cuello"
+      ],
+      "contra": [
+        "lesion_cuello"
+      ],
+      "desc": "Elevacion de hombros con peso. Desarrolla trapecio superior. Ojo: en gente con cuello tenso, suele convenir mas trapecio inferior que superior.",
+      "steps": [
+        "Mancuernas a los lados, brazos extendidos.",
+        "Encoge los hombros hacia las orejas.",
+        "Pausa arriba y baja controlado."
+      ],
+      "cues": [
+        "Solo sube y baja",
+        "No rotes",
+        "Pausa arriba"
+      ],
+      "errors": [
+        "Rotar los hombros en circulo",
+        "Usar impulso de rodilla",
+        "Doblar el codo"
+      ],
+      "breathing": "Exhala al subir, inhala al bajar.",
+      "progressions": [],
+      "regressions": [],
+      "substitutes": [
+        "ex_3010"
+      ],
+      "asset": {
+        "clip": "ex_3014.mp4",
+        "imagen": "ex_3014.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_3015",
+      "slug": "remo-trx",
+      "name": "Remo en TRX o anillas",
+      "name_en": "TRX row",
+      "aliases": [
+        "remo en suspension"
+      ],
+      "family": "fam_traccion_horizontal",
+      "category": "fuerza",
+      "goals": [
+        "musculo",
+        "postura",
+        "calistenia"
+      ],
+      "level": 2,
+      "equipment": [
+        "anillas_trx"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "colchoneta",
+      "unilateral": false,
+      "measure": "reps",
+      "default": {
+        "series": 3,
+        "reps": 12,
+        "rest_s": 60
+      },
+      "met": 5.0,
+      "primary": [
+        "romboides",
+        "dorsal_ancho"
+      ],
+      "secondary": [
+        "biceps",
+        "deltoide_posterior",
+        "core"
+      ],
+      "risk_zones": [
+        "hombro"
+      ],
+      "contra": [],
+      "desc": "Remo en suspension. La dificultad se ajusta solo cambiando el angulo del cuerpo, lo que lo hace ideal para progresar sin material extra.",
+      "steps": [
+        "Sujeta las asas con los brazos extendidos y el cuerpo inclinado.",
+        "Cuanto mas horizontal, mas dificil.",
+        "Tira del pecho hacia las manos juntando escapulas.",
+        "Baja controlado."
+      ],
+      "cues": [
+        "Cuerpo recto",
+        "Junta escapulas",
+        "Controla la bajada"
+      ],
+      "errors": [
+        "Doblar la cadera",
+        "Tirar solo con brazos",
+        "Perder tension del core"
+      ],
+      "breathing": "Exhala al tirar, inhala al bajar.",
+      "progressions": [
+        "ex_3005"
+      ],
+      "regressions": [
+        "ex_3007"
+      ],
+      "substitutes": [
+        "ex_3005"
+      ],
+      "asset": {
+        "clip": "ex_3015.mp4",
+        "imagen": "ex_3015.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_3016",
+      "slug": "pull-over-mancuerna",
+      "name": "Pull-over con mancuerna",
+      "name_en": "Dumbbell pull-over",
+      "aliases": [
+        "pullover"
+      ],
+      "family": "fam_traccion_vertical",
+      "category": "fuerza",
+      "goals": [
+        "musculo",
+        "gym"
+      ],
+      "level": 2,
+      "equipment": [
+        "mancuernas",
+        "banco"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "colchoneta",
+      "unilateral": false,
+      "measure": "reps",
+      "default": {
+        "series": 3,
+        "reps": 12,
+        "rest_s": 60
+      },
+      "met": 4.5,
+      "primary": [
+        "dorsal_ancho"
+      ],
+      "secondary": [
+        "pectoral_mayor",
+        "serrato_anterior",
+        "triceps"
+      ],
+      "risk_zones": [
+        "hombro"
+      ],
+      "contra": [
+        "lesion_hombro"
+      ],
+      "evidence": {
+        "hipertrofia_dorsal": "ok",
+        "expandir_caja_toracica": "mito"
+      },
+      "evidence_note": "Trabaja dorsal y serrato. La idea de que 'expande la caja toracica' viene del culturismo de los años 60 y no ocurre en adultos: la caja osea no se agranda con ejercicio.",
+      "desc": "Arco por encima de la cabeza tumbado. Estira mucho el dorsal y el serrato.",
+      "steps": [
+        "Tumbado en el banco, mancuerna sostenida con las dos manos sobre el pecho.",
+        "Baja en arco por detras de la cabeza con los codos ligeramente doblados.",
+        "Baja hasta sentir estiramiento, sin forzar.",
+        "Vuelve al pecho con el dorsal."
+      ],
+      "cues": [
+        "Codos casi fijos",
+        "Baja hasta estirar",
+        "Vuelve con la espalda"
+      ],
+      "errors": [
+        "Arquear la lumbar al bajar",
+        "Bajar mas alla de la movilidad de hombro",
+        "Usar peso excesivo"
+      ],
+      "breathing": "Inhala al bajar, exhala al volver.",
+      "progressions": [],
+      "regressions": [],
+      "substitutes": [
+        "ex_3006"
+      ],
+      "asset": {
+        "clip": "ex_3016.mp4",
+        "imagen": "ex_3016.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_3017",
+      "slug": "colgarse-barra",
+      "name": "Colgarse de la barra",
+      "name_en": "Dead hang",
+      "aliases": [
+        "dead hang",
+        "suspension pasiva"
+      ],
+      "family": "fam_descompresion_axial",
+      "category": "movilidad",
+      "goals": [
+        "postura",
+        "calistenia",
+        "musculo"
+      ],
+      "level": 1,
+      "equipment": [
+        "barra_dominadas"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "minimo",
+      "unilateral": false,
+      "measure": "tiempo",
+      "default": {
+        "series": 3,
+        "seg": 30,
+        "rest_s": 60
+      },
+      "met": 3.0,
+      "primary": [
+        "dorsal_ancho",
+        "antebrazo"
+      ],
+      "secondary": [
+        "core",
+        "trapecio_inferior"
+      ],
+      "risk_zones": [
+        "hombro"
+      ],
+      "contra": [
+        "lesion_hombro"
+      ],
+      "evidence": {
+        "altura_postural_del_dia": "ok",
+        "fuerza_de_agarre": "ok",
+        "crecer_estatura": "mito"
+      },
+      "evidence_note": "Descomprime la columna de forma temporal y mejora la sensacion de altura del dia. No hace crecer hueso una vez cerradas las placas de crecimiento.",
+      "desc": "Colgarse pasivo de una barra. Base del motor de postura y del trabajo de agarre.",
+      "steps": [
+        "Agarra la barra al ancho de los hombros.",
+        "Cuelga con los brazos extendidos, dejando la columna en descarga.",
+        "Respira lento y relaja, sin balancearte.",
+        "Baja apoyando los pies de forma controlada."
+      ],
+      "cues": [
+        "Relaja",
+        "Respira lento",
+        "No te balancees"
+      ],
+      "errors": [
+        "Saltar para bajar en vez de apoyar",
+        "Tensar el cuello",
+        "Empezar con demasiado tiempo y lastimar el hombro"
+      ],
+      "breathing": "Respiracion lenta y continua.",
+      "progressions": [
+        "ex_3001"
+      ],
+      "regressions": [],
+      "substitutes": [
+        "ex_5008"
+      ],
+      "asset": {
+        "clip": "ex_3017.mp4",
+        "imagen": "ex_3017.jpg",
+        "recorrido": "sostenido"
+      }
+    },
+    {
+      "id": "ex_3018",
+      "slug": "paseo-granjero",
+      "name": "Paseo del granjero",
+      "name_en": "Farmer's walk",
+      "aliases": [
+        "farmer walk",
+        "caminata con peso"
+      ],
+      "family": "fam_locomocion",
+      "category": "fuerza",
+      "goals": [
+        "musculo",
+        "bajar_peso",
+        "gym",
+        "postura"
+      ],
+      "level": 1,
+      "equipment": [
+        "mancuernas",
+        "kettlebell"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "amplio",
+      "unilateral": false,
+      "measure": "tiempo",
+      "default": {
+        "series": 3,
+        "seg": 40,
+        "rest_s": 75
+      },
+      "met": 6.0,
+      "primary": [
+        "antebrazo",
+        "trapecio_superior",
+        "core"
+      ],
+      "secondary": [
+        "gluteo_medio",
+        "erectores_espinales",
+        "cuadriceps"
+      ],
+      "risk_zones": [
+        "lumbar",
+        "hombro"
+      ],
+      "contra": [
+        "lesion_lumbar"
+      ],
+      "desc": "Caminar sujetando peso a los lados. Entrena agarre, core y postura de una forma que ningun aislamiento consigue.",
+      "steps": [
+        "Sujeta una pesa en cada mano.",
+        "Ponte de pie, alto, con los hombros atras.",
+        "Camina con pasos cortos y control.",
+        "Manten el torso quieto sin inclinarte a los lados."
+      ],
+      "cues": [
+        "Alto y firme",
+        "Pasos cortos",
+        "Sin inclinarte"
+      ],
+      "errors": [
+        "Encorvar la espalda alta",
+        "Inclinarse a un lado",
+        "Ir demasiado rapido"
+      ],
+      "breathing": "Respiracion continua, sin bloquear.",
+      "progressions": [
+        "ex_3019"
+      ],
+      "regressions": [],
+      "substitutes": [
+        "ex_3019"
+      ],
+      "asset": {
+        "clip": "ex_3018.mp4",
+        "imagen": "ex_3018.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_3019",
+      "slug": "paseo-maleta",
+      "name": "Paseo de la maleta",
+      "name_en": "Suitcase carry",
+      "aliases": [
+        "suitcase carry",
+        "carga unilateral"
+      ],
+      "family": "fam_antiflexion_lateral",
+      "category": "fuerza",
+      "goals": [
+        "postura",
+        "musculo",
+        "gym"
+      ],
+      "level": 2,
+      "equipment": [
+        "mancuernas",
+        "kettlebell"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "amplio",
+      "unilateral": true,
+      "measure": "tiempo",
+      "default": {
+        "series": 3,
+        "seg": 30,
+        "rest_s": 60
+      },
+      "met": 5.5,
+      "primary": [
+        "oblicuo_externo",
+        "core"
+      ],
+      "secondary": [
+        "gluteo_medio",
+        "antebrazo",
+        "trapecio_medio"
+      ],
+      "risk_zones": [
+        "lumbar"
+      ],
+      "contra": [
+        "lesion_lumbar"
+      ],
+      "desc": "Caminar con peso en un solo lado. El core tiene que impedir que te inclines, y esa es su funcion real.",
+      "steps": [
+        "Sujeta una sola pesa a un lado.",
+        "Camina manteniendo los hombros nivelados.",
+        "No dejes que el peso te incline.",
+        "Cambia de lado."
+      ],
+      "cues": [
+        "Hombros nivelados",
+        "No te inclines",
+        "Aprieta el costado libre"
+      ],
+      "errors": [
+        "Inclinarse hacia el lado del peso",
+        "Sacar la cadera al lado contrario",
+        "Encoger el hombro"
+      ],
+      "breathing": "Respiracion continua.",
+      "progressions": [],
+      "regressions": [
+        "ex_3018"
+      ],
+      "substitutes": [
+        "ex_3018"
+      ],
+      "asset": {
+        "clip": "ex_3019.mp4",
+        "imagen": "ex_3019.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_3020",
+      "slug": "rotacion-externa-banda",
+      "name": "Rotacion externa con banda",
+      "name_en": "Band external rotation",
+      "aliases": [
+        "rotador externo",
+        "rotacion de manguito"
+      ],
+      "family": "fam_traccion_horizontal",
+      "category": "fuerza",
+      "goals": [
+        "postura",
+        "musculo"
+      ],
+      "level": 1,
+      "equipment": [
+        "banda_mini",
+        "banda_larga"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "minimo",
+      "unilateral": true,
+      "measure": "reps_por_lado",
+      "default": {
+        "series": 3,
+        "reps": 15,
+        "rest_s": 40
+      },
+      "met": 3.0,
+      "primary": [
+        "manguito_rotador"
+      ],
+      "secondary": [
+        "deltoide_posterior"
+      ],
+      "risk_zones": [
+        "hombro"
+      ],
+      "contra": [],
+      "desc": "Rotacion externa de hombro con resistencia ligera. Es el ejercicio preventivo de manguito rotador con mejor relacion coste/beneficio.",
+      "steps": [
+        "Codo pegado al costado, doblado a 90 grados.",
+        "Sujeta la banda con esa mano.",
+        "Rota el antebrazo hacia fuera sin despegar el codo.",
+        "Vuelve controlado."
+      ],
+      "cues": [
+        "Codo pegado",
+        "Solo el antebrazo rota",
+        "Resistencia ligera"
+      ],
+      "errors": [
+        "Despegar el codo del costado",
+        "Usar demasiada resistencia y compensar con el torso",
+        "Ir demasiado rapido"
+      ],
+      "breathing": "Exhala al rotar, inhala al volver.",
+      "progressions": [],
+      "regressions": [],
+      "substitutes": [
+        "ex_3010"
+      ],
+      "asset": {
+        "clip": "ex_3020.mp4",
+        "imagen": "ex_3020.jpg",
+        "recorrido": "ciclico"
+      }
+    }
+  ]
+}

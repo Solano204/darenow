@@ -1,0 +1,1472 @@
+{
+  "coleccion": "ejercicios",
+  "bloque": "postura_movilidad_estatura",
+  "version": "2.0.0",
+  "aviso_global": "El motor de estatura y postura se muestra con insignia Parcial. Ningun ejercicio hace crecer hueso despues del cierre de las placas de crecimiento. Lo que si ocurre y es medible: recuperar entre 1 y 3 cm de altura postural en 8 a 12 semanas, mas movilidad y menos dolor de espalda y cuello. La altura tambien varia de forma natural 1 a 2 cm entre la mañana y la noche por compresion de los discos intervertebrales; por eso el protocolo de medicion (41_measurements.json) exige medir siempre a la misma hora.",
+  "items": [
+    {
+      "id": "ex_7001",
+      "slug": "gato-vaca",
+      "name": "Gato-vaca",
+      "name_en": "Cat-cow",
+      "aliases": [
+        "cat cow",
+        "gato camello"
+      ],
+      "family": "fam_movilidad_toracica",
+      "category": "movilidad",
+      "goals": [
+        "postura",
+        "calistenia"
+      ],
+      "level": 1,
+      "equipment": [
+        "colchoneta"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "colchoneta",
+      "unilateral": false,
+      "measure": "reps",
+      "default": {
+        "series": 2,
+        "reps": 12,
+        "rest_s": 20
+      },
+      "met": 2.0,
+      "primary": [
+        "erectores_espinales",
+        "multifidos"
+      ],
+      "secondary": [
+        "transverso_abdominal",
+        "trapecio_medio"
+      ],
+      "risk_zones": [
+        "lumbar",
+        "muneca"
+      ],
+      "contra": [
+        "lesion_muneca"
+      ],
+      "desc": "Flexion y extension alternada de columna en cuadrupedia. El calentamiento de columna mas usado y con razon.",
+      "steps": [
+        "A cuatro apoyos, manos bajo hombros y rodillas bajo cadera.",
+        "Inhala hundiendo el abdomen y abriendo el pecho.",
+        "Exhala redondeando la espalda y metiendo el menton.",
+        "Mueve segmento a segmento, sin prisa."
+      ],
+      "cues": [
+        "Segmento a segmento",
+        "Respira con el movimiento",
+        "Sin prisa"
+      ],
+      "errors": [
+        "Mover solo la lumbar y no la zona toracica",
+        "Ir demasiado rapido",
+        "Cargar la muneca en extension: usa los punos si molesta"
+      ],
+      "breathing": "Inhala en extension, exhala en flexion.",
+      "progressions": [
+        "ex_7002"
+      ],
+      "regressions": [],
+      "substitutes": [
+        "ex_7003"
+      ],
+      "asset": {
+        "clip": "ex_7001.mp4",
+        "imagen": "ex_7001.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_7002",
+      "slug": "extension-toracica-rodillo",
+      "name": "Extension toracica sobre rodillo",
+      "name_en": "Thoracic extension over foam roller",
+      "aliases": [
+        "extension en foam roller"
+      ],
+      "family": "fam_movilidad_toracica",
+      "category": "movilidad",
+      "goals": [
+        "postura",
+        "mandibula"
+      ],
+      "level": 2,
+      "equipment": [
+        "rodillo",
+        "colchoneta"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "colchoneta",
+      "unilateral": false,
+      "measure": "reps",
+      "default": {
+        "series": 2,
+        "reps": 8,
+        "rest_s": 30
+      },
+      "met": 2.5,
+      "primary": [
+        "erectores_espinales"
+      ],
+      "secondary": [
+        "trapecio_medio",
+        "serrato_anterior",
+        "pectoral_menor"
+      ],
+      "risk_zones": [
+        "lumbar",
+        "cuello"
+      ],
+      "contra": [
+        "lesion_lumbar",
+        "hernia_discal",
+        "lesion_cuello"
+      ],
+      "desc": "Extension de la columna dorsal apoyada sobre un rodillo. Es la palanca mas rapida para recuperar altura postural y abrir el pecho encorvado.",
+      "steps": [
+        "Rodillo perpendicular a la columna, a la altura de las escapulas.",
+        "Manos detras de la cabeza sosteniendo el cuello.",
+        "Extiende la espalda alta sobre el rodillo sin arquear la lumbar.",
+        "Vuelve y desplaza el rodillo un par de centimetros para trabajar otro segmento."
+      ],
+      "cues": [
+        "Solo la espalda alta",
+        "Costillas abajo",
+        "Sostiene el cuello"
+      ],
+      "errors": [
+        "Arquear la lumbar en vez de la zona toracica",
+        "Colocar el rodillo demasiado bajo",
+        "Extender el cuello sin apoyo"
+      ],
+      "breathing": "Exhala al extender.",
+      "progressions": [],
+      "regressions": [
+        "ex_7001"
+      ],
+      "substitutes": [
+        "ex_7003"
+      ],
+      "asset": {
+        "clip": "ex_7002.mp4",
+        "imagen": "ex_7002.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_7003",
+      "slug": "apertura-libro",
+      "name": "Apertura de libro",
+      "name_en": "Open book",
+      "aliases": [
+        "book opener",
+        "rotacion toracica tumbado"
+      ],
+      "family": "fam_movilidad_toracica",
+      "category": "movilidad",
+      "goals": [
+        "postura"
+      ],
+      "level": 1,
+      "equipment": [
+        "colchoneta"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "colchoneta",
+      "unilateral": true,
+      "measure": "reps_por_lado",
+      "default": {
+        "series": 2,
+        "reps": 8,
+        "rest_s": 25
+      },
+      "met": 2.0,
+      "primary": [
+        "erectores_espinales",
+        "oblicuo_externo"
+      ],
+      "secondary": [
+        "pectoral_mayor",
+        "trapecio_medio"
+      ],
+      "risk_zones": [
+        "hombro",
+        "lumbar"
+      ],
+      "contra": [],
+      "desc": "Rotacion de la columna toracica tumbado de lado. Recupera la rotacion que se pierde por estar horas frente a una pantalla.",
+      "steps": [
+        "Tumbado de lado con las rodillas dobladas a 90 grados y los brazos extendidos al frente.",
+        "Manten las rodillas juntas y apoyadas.",
+        "Abre el brazo de arriba en arco hasta el suelo del otro lado.",
+        "Sigue la mano con la mirada y vuelve despacio."
+      ],
+      "cues": [
+        "Rodillas quietas",
+        "Sigue la mano con la mirada",
+        "Exhala al abrir"
+      ],
+      "errors": [
+        "Despegar las rodillas y rotar desde la lumbar",
+        "Forzar el hombro para tocar el suelo",
+        "Ir demasiado rapido"
+      ],
+      "breathing": "Exhala al abrir, inhala al volver.",
+      "progressions": [
+        "ex_7002"
+      ],
+      "regressions": [],
+      "substitutes": [
+        "ex_7001"
+      ],
+      "asset": {
+        "clip": "ex_7003.mp4",
+        "imagen": "ex_7003.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_7004",
+      "slug": "colgarse-descompresion",
+      "name": "Colgarse para descompresion",
+      "name_en": "Decompression hang",
+      "aliases": [
+        "colgarse",
+        "dead hang de descompresion"
+      ],
+      "family": "fam_descompresion_axial",
+      "category": "movilidad",
+      "goals": [
+        "postura"
+      ],
+      "level": 1,
+      "equipment": [
+        "barra_dominadas"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "minimo",
+      "unilateral": false,
+      "measure": "tiempo",
+      "default": {
+        "series": 3,
+        "seg": 30,
+        "rest_s": 45
+      },
+      "met": 3.0,
+      "primary": [
+        "dorsal_ancho"
+      ],
+      "secondary": [
+        "antebrazo",
+        "core",
+        "trapecio_inferior"
+      ],
+      "risk_zones": [
+        "hombro"
+      ],
+      "contra": [
+        "lesion_hombro"
+      ],
+      "evidence": {
+        "altura_postural_del_dia": "ok",
+        "alivio_temporal_lumbar": "parcial",
+        "crecer_estatura": "mito"
+      },
+      "evidence_note": "Descarga la columna y recupera parte de la altura que se pierde durante el dia. El efecto es real, medible y temporal. No hace crecer hueso.",
+      "desc": "El ejercicio central del motor de postura. Colgarse en descarga total con la respiracion lenta.",
+      "steps": [
+        "Agarra la barra al ancho de los hombros.",
+        "Deja el cuerpo colgando y relaja la espalda.",
+        "Respira lento y deja que la columna se alargue.",
+        "Si no alcanzas del todo, apoya las puntas de los pies para regular la carga."
+      ],
+      "cues": [
+        "Relaja",
+        "Respira lento",
+        "Deja que se alargue"
+      ],
+      "errors": [
+        "Tensar todo el cuerpo",
+        "Saltar para bajar",
+        "Empezar con 60 segundos y lastimar el hombro"
+      ],
+      "breathing": "Lenta y profunda.",
+      "progressions": [
+        "ex_3017"
+      ],
+      "regressions": [
+        "ex_7005"
+      ],
+      "substitutes": [
+        "ex_7005"
+      ],
+      "asset": {
+        "clip": "ex_7004.mp4",
+        "imagen": "ex_7004.jpg",
+        "recorrido": "sostenido"
+      }
+    },
+    {
+      "id": "ex_7005",
+      "slug": "descarga-piernas-pared",
+      "name": "Piernas en la pared",
+      "name_en": "Legs up the wall",
+      "aliases": [
+        "viparita karani",
+        "descarga de piernas"
+      ],
+      "family": "fam_descompresion_axial",
+      "category": "movilidad",
+      "goals": [
+        "postura"
+      ],
+      "level": 1,
+      "equipment": [
+        "pared",
+        "colchoneta"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "colchoneta",
+      "unilateral": false,
+      "measure": "tiempo",
+      "default": {
+        "series": 1,
+        "seg": 180,
+        "rest_s": 0
+      },
+      "met": 1.5,
+      "primary": [
+        "isquiotibiales"
+      ],
+      "secondary": [
+        "erectores_espinales",
+        "diafragma"
+      ],
+      "risk_zones": [],
+      "contra": [],
+      "desc": "Tumbarse con las piernas apoyadas en la pared. Descarga la columna sin necesidad de barra y ayuda a bajar la activacion antes de dormir.",
+      "steps": [
+        "Sientate de lado pegado a la pared.",
+        "Gira y sube las piernas por la pared mientras bajas la espalda al suelo.",
+        "Gluteo lo mas cerca posible de la pared.",
+        "Brazos abiertos y respiracion lenta."
+      ],
+      "cues": [
+        "Gluteo cerca de la pared",
+        "Brazos abiertos",
+        "Respira lento"
+      ],
+      "errors": [
+        "Forzar el estiramiento de isquiotibiales",
+        "Poner una almohada alta bajo la cabeza que cierre el cuello",
+        "Hacerlo con prisa"
+      ],
+      "breathing": "Lenta, exhalacion larga.",
+      "progressions": [
+        "ex_7004"
+      ],
+      "regressions": [],
+      "substitutes": [
+        "ex_7004"
+      ],
+      "asset": {
+        "clip": "ex_7005.mp4",
+        "imagen": "ex_7005.jpg",
+        "recorrido": "sostenido"
+      }
+    },
+    {
+      "id": "ex_7006",
+      "slug": "estiramiento-psoas",
+      "name": "Estiramiento de psoas en zancada",
+      "name_en": "Kneeling hip flexor stretch",
+      "aliases": [
+        "estiramiento de flexor de cadera"
+      ],
+      "family": "fam_movilidad_cadera",
+      "category": "estiramiento",
+      "goals": [
+        "postura",
+        "running"
+      ],
+      "level": 1,
+      "equipment": [
+        "colchoneta"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "colchoneta",
+      "unilateral": true,
+      "measure": "tiempo",
+      "default": {
+        "series": 2,
+        "seg": 40,
+        "rest_s": 20
+      },
+      "met": 2.0,
+      "primary": [
+        "flexor_cadera",
+        "recto_femoral"
+      ],
+      "secondary": [
+        "cuadriceps"
+      ],
+      "risk_zones": [
+        "rodilla",
+        "lumbar"
+      ],
+      "contra": [
+        "lesion_rodilla"
+      ],
+      "desc": "El estiramiento mas importante para quien pasa el dia sentado. El psoas acortado inclina la pelvis y aumenta la curva lumbar.",
+      "steps": [
+        "Apoya una rodilla en el suelo y el otro pie al frente a 90 grados.",
+        "Mete la pelvis hacia abajo (retroversion) antes de avanzar.",
+        "Empuja la cadera hacia delante sin arquear la lumbar.",
+        "Aprieta el gluteo del lado que estiras para intensificar."
+      ],
+      "cues": [
+        "Mete la pelvis primero",
+        "Aprieta el gluteo",
+        "Sin arquear la lumbar"
+      ],
+      "errors": [
+        "Arquear la lumbar y sentir el estiramiento en la espalda en vez de la cadera",
+        "No meter la pelvis",
+        "Poner la rodilla directamente sobre suelo duro"
+      ],
+      "breathing": "Lenta, exhalacion larga.",
+      "progressions": [],
+      "regressions": [],
+      "substitutes": [
+        "ex_7007"
+      ],
+      "asset": {
+        "clip": "ex_7006.mp4",
+        "imagen": "ex_7006.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_7007",
+      "slug": "posicion-90-90",
+      "name": "Posicion 90/90 de cadera",
+      "name_en": "90/90 hip stretch",
+      "aliases": [
+        "90 90"
+      ],
+      "family": "fam_movilidad_cadera",
+      "category": "movilidad",
+      "goals": [
+        "postura"
+      ],
+      "level": 2,
+      "equipment": [
+        "colchoneta"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "colchoneta",
+      "unilateral": true,
+      "measure": "tiempo",
+      "default": {
+        "series": 2,
+        "seg": 45,
+        "rest_s": 25
+      },
+      "met": 2.0,
+      "primary": [
+        "gluteo_mayor",
+        "gluteo_medio"
+      ],
+      "secondary": [
+        "aductores",
+        "flexor_cadera"
+      ],
+      "risk_zones": [
+        "rodilla",
+        "cadera"
+      ],
+      "contra": [
+        "lesion_rodilla"
+      ],
+      "desc": "Sentado con las dos piernas a 90 grados. Trabaja rotacion interna y externa de cadera, que es lo que mas se pierde con los años.",
+      "steps": [
+        "Sentado, pierna de delante a 90 grados y la de atras tambien a 90.",
+        "Espalda recta, manos apoyadas.",
+        "Inclinate hacia la pierna de delante manteniendo la espalda larga.",
+        "Cambia de lado rotando por el suelo."
+      ],
+      "cues": [
+        "Espalda larga",
+        "Inclina desde la cadera",
+        "Ambas rodillas a 90"
+      ],
+      "errors": [
+        "Redondear la espalda al inclinarse",
+        "Perder los 90 grados de la pierna trasera",
+        "Forzar hasta el dolor"
+      ],
+      "breathing": "Lenta y profunda.",
+      "progressions": [],
+      "regressions": [
+        "ex_7006"
+      ],
+      "substitutes": [
+        "ex_7006"
+      ],
+      "asset": {
+        "clip": "ex_7007.mp4",
+        "imagen": "ex_7007.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_7008",
+      "slug": "deslizamiento-pared",
+      "name": "Deslizamiento en pared",
+      "name_en": "Wall slide",
+      "aliases": [
+        "wall slides",
+        "angel de pared"
+      ],
+      "family": "fam_movilidad_toracica",
+      "category": "movilidad",
+      "goals": [
+        "postura",
+        "mandibula"
+      ],
+      "level": 2,
+      "equipment": [
+        "pared"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "minimo",
+      "unilateral": false,
+      "measure": "reps",
+      "default": {
+        "series": 3,
+        "reps": 10,
+        "rest_s": 30
+      },
+      "met": 2.5,
+      "primary": [
+        "trapecio_inferior",
+        "serrato_anterior"
+      ],
+      "secondary": [
+        "deltoide_posterior",
+        "romboides"
+      ],
+      "risk_zones": [
+        "hombro"
+      ],
+      "contra": [
+        "lesion_hombro"
+      ],
+      "desc": "Subir y bajar los brazos por la pared manteniendo el contacto. Diagnostico y ejercicio a la vez: si no puedes mantener el contacto, ahi tienes tu limitacion.",
+      "steps": [
+        "Espalda, cabeza y gluteo contra la pared.",
+        "Brazos en posicion de portero, dorso de la mano en contacto con la pared.",
+        "Sube los brazos manteniendo el contacto de muneca y codo.",
+        "Baja despacio sin despegar."
+      ],
+      "cues": [
+        "Todo en contacto",
+        "Costillas abajo",
+        "Sube solo lo que puedas sin despegar"
+      ],
+      "errors": [
+        "Arquear la lumbar para subir mas",
+        "Despegar las munecas",
+        "Encoger los hombros"
+      ],
+      "breathing": "Exhala al subir.",
+      "progressions": [],
+      "regressions": [
+        "ex_7003"
+      ],
+      "substitutes": [
+        "ex_3010"
+      ],
+      "asset": {
+        "clip": "ex_7008.mp4",
+        "imagen": "ex_7008.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_7009",
+      "slug": "prono-y-t",
+      "name": "Y y T en prono",
+      "name_en": "Prone Y-T raise",
+      "aliases": [
+        "y raises",
+        "t raises",
+        "superman de brazos"
+      ],
+      "family": "fam_traccion_horizontal",
+      "category": "fuerza",
+      "goals": [
+        "postura"
+      ],
+      "level": 1,
+      "equipment": [
+        "colchoneta"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "colchoneta",
+      "unilateral": false,
+      "measure": "reps",
+      "default": {
+        "series": 3,
+        "reps": 10,
+        "rest_s": 40
+      },
+      "met": 3.0,
+      "primary": [
+        "trapecio_inferior",
+        "trapecio_medio"
+      ],
+      "secondary": [
+        "deltoide_posterior",
+        "romboides",
+        "erectores_espinales"
+      ],
+      "risk_zones": [
+        "lumbar",
+        "hombro"
+      ],
+      "contra": [
+        "lesion_lumbar"
+      ],
+      "desc": "Boca abajo, elevar los brazos en forma de Y y de T. Fortalece el trapecio inferior y medio, que son los musculos que sostienen la postura erguida.",
+      "steps": [
+        "Boca abajo con la frente apoyada.",
+        "Brazos formando una Y con los pulgares arriba.",
+        "Despega los brazos apretando entre los omoplatos, no encogiendo hombros.",
+        "Repite con los brazos en T."
+      ],
+      "cues": [
+        "Pulgares arriba",
+        "Aprieta entre omoplatos",
+        "Hombros lejos de las orejas"
+      ],
+      "errors": [
+        "Encoger los hombros hacia las orejas",
+        "Arquear la lumbar para levantar mas",
+        "Levantar la cabeza"
+      ],
+      "breathing": "Exhala al elevar.",
+      "progressions": [
+        "ex_7010"
+      ],
+      "regressions": [],
+      "substitutes": [
+        "ex_3011"
+      ],
+      "asset": {
+        "clip": "ex_7009.mp4",
+        "imagen": "ex_7009.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_7010",
+      "slug": "superman",
+      "name": "Superman",
+      "name_en": "Superman",
+      "aliases": [
+        "extension lumbar en prono"
+      ],
+      "family": "fam_cadera_bisagra",
+      "category": "fuerza",
+      "goals": [
+        "postura",
+        "musculo"
+      ],
+      "level": 1,
+      "equipment": [
+        "colchoneta"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "colchoneta",
+      "unilateral": false,
+      "measure": "reps",
+      "default": {
+        "series": 3,
+        "reps": 12,
+        "rest_s": 40
+      },
+      "met": 3.0,
+      "primary": [
+        "erectores_espinales"
+      ],
+      "secondary": [
+        "gluteo_mayor",
+        "trapecio_medio",
+        "deltoide_posterior"
+      ],
+      "risk_zones": [
+        "lumbar",
+        "cuello"
+      ],
+      "contra": [
+        "lesion_lumbar",
+        "hernia_discal"
+      ],
+      "desc": "Boca abajo elevando brazos y piernas. Fortalece la cadena posterior completa, aunque con dolor lumbar activo suele preferirse bird dog.",
+      "steps": [
+        "Boca abajo con los brazos extendidos al frente.",
+        "Eleva brazos y piernas a la vez unos centimetros.",
+        "Manten la mirada al suelo, sin extender el cuello.",
+        "Baja controlado."
+      ],
+      "cues": [
+        "Estira largo",
+        "Mirada al suelo",
+        "Sube poco, aguanta"
+      ],
+      "errors": [
+        "Levantar la cabeza y comprimir el cuello",
+        "Subir demasiado y forzar la lumbar",
+        "Usar impulso"
+      ],
+      "breathing": "Exhala al elevar.",
+      "progressions": [],
+      "regressions": [
+        "ex_4018"
+      ],
+      "substitutes": [
+        "ex_4018"
+      ],
+      "asset": {
+        "clip": "ex_7010.mp4",
+        "imagen": "ex_7010.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_7011",
+      "slug": "sentadilla-profunda-sostenida",
+      "name": "Sentadilla profunda sostenida",
+      "name_en": "Deep squat hold",
+      "aliases": [
+        "asian squat",
+        "sentadilla de descanso"
+      ],
+      "family": "fam_movilidad_cadera",
+      "category": "movilidad",
+      "goals": [
+        "postura",
+        "calistenia"
+      ],
+      "level": 2,
+      "equipment": [
+        "ninguno"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "minimo",
+      "unilateral": false,
+      "measure": "tiempo",
+      "default": {
+        "series": 2,
+        "seg": 60,
+        "rest_s": 30
+      },
+      "met": 2.5,
+      "primary": [
+        "aductores",
+        "gluteo_mayor"
+      ],
+      "secondary": [
+        "soleo",
+        "erectores_espinales",
+        "tibial_anterior"
+      ],
+      "risk_zones": [
+        "rodilla",
+        "tobillo"
+      ],
+      "contra": [
+        "lesion_rodilla"
+      ],
+      "desc": "Permanecer en el fondo de la sentadilla. Recupera movilidad de cadera, tobillo y columna baja a la vez.",
+      "steps": [
+        "Baja al fondo de la sentadilla con los talones apoyados.",
+        "Si los talones se despegan, pon un libro debajo.",
+        "Codos entre las rodillas empujando suave hacia fuera.",
+        "Respira y relaja."
+      ],
+      "cues": [
+        "Talones apoyados",
+        "Pecho arriba",
+        "Respira y relaja"
+      ],
+      "errors": [
+        "Forzar con los talones despegados",
+        "Redondear mucho la espalda baja bajo tension",
+        "Aguantar hasta el dolor de rodilla"
+      ],
+      "breathing": "Lenta y profunda.",
+      "progressions": [],
+      "regressions": [
+        "ex_7007"
+      ],
+      "substitutes": [
+        "ex_7007"
+      ],
+      "asset": {
+        "clip": "ex_7011.mp4",
+        "imagen": "ex_7011.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_7012",
+      "slug": "estiramiento-pectoral-marco",
+      "name": "Estiramiento de pectoral en marco",
+      "name_en": "Doorway pec stretch",
+      "aliases": [
+        "estiramiento en puerta"
+      ],
+      "family": "fam_estiramiento_estatico",
+      "category": "estiramiento",
+      "goals": [
+        "postura",
+        "mandibula"
+      ],
+      "level": 1,
+      "equipment": [
+        "pared"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "minimo",
+      "unilateral": true,
+      "measure": "tiempo",
+      "default": {
+        "series": 2,
+        "seg": 40,
+        "rest_s": 20
+      },
+      "met": 2.0,
+      "primary": [
+        "pectoral_mayor",
+        "pectoral_menor"
+      ],
+      "secondary": [
+        "deltoide_anterior"
+      ],
+      "risk_zones": [
+        "hombro"
+      ],
+      "contra": [
+        "lesion_hombro"
+      ],
+      "desc": "Apoyar el antebrazo en el marco de una puerta y girar el torso. Abre el pecho cerrado por horas de escritorio.",
+      "steps": [
+        "Antebrazo apoyado en el marco con el codo a la altura del hombro.",
+        "Da un paso adelante con el pie del mismo lado.",
+        "Gira el torso hacia el lado contrario.",
+        "Manten sin dolor, solo tension."
+      ],
+      "cues": [
+        "Codo a la altura del hombro",
+        "Gira el torso",
+        "Solo tension, sin dolor"
+      ],
+      "errors": [
+        "Codo demasiado alto y pinzar el hombro",
+        "Forzar hasta el dolor",
+        "Arquear la lumbar"
+      ],
+      "breathing": "Lenta y profunda.",
+      "progressions": [],
+      "regressions": [],
+      "substitutes": [
+        "ex_7008"
+      ],
+      "asset": {
+        "clip": "ex_7012.mp4",
+        "imagen": "ex_7012.jpg",
+        "recorrido": "sostenido"
+      }
+    },
+    {
+      "id": "ex_7013",
+      "slug": "movilidad-tobillo-pared",
+      "name": "Movilidad de tobillo en pared",
+      "name_en": "Ankle dorsiflexion drill",
+      "aliases": [
+        "knee to wall"
+      ],
+      "family": "fam_movilidad_cadera",
+      "category": "movilidad",
+      "goals": [
+        "postura",
+        "running"
+      ],
+      "level": 1,
+      "equipment": [
+        "pared"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "minimo",
+      "unilateral": true,
+      "measure": "reps_por_lado",
+      "default": {
+        "series": 2,
+        "reps": 12,
+        "rest_s": 20
+      },
+      "met": 2.0,
+      "primary": [
+        "soleo",
+        "tibial_anterior"
+      ],
+      "secondary": [
+        "gemelos"
+      ],
+      "risk_zones": [
+        "tobillo"
+      ],
+      "contra": [],
+      "desc": "Llevar la rodilla hacia la pared con el talon apoyado. La falta de dorsiflexion de tobillo es la causa oculta de media docena de problemas de sentadilla y de carrera.",
+      "steps": [
+        "Pie a un palmo de la pared, talon pegado al suelo.",
+        "Lleva la rodilla hacia la pared sin despegar el talon.",
+        "Si tocas facil, aleja el pie un poco mas.",
+        "Repite y cambia de lado."
+      ],
+      "cues": [
+        "Talon pegado",
+        "Rodilla hacia la pared",
+        "Rodilla en linea con el pie"
+      ],
+      "errors": [
+        "Despegar el talon",
+        "Dejar que la rodilla se meta hacia dentro",
+        "Ir con rebotes bruscos"
+      ],
+      "breathing": "Continua.",
+      "progressions": [],
+      "regressions": [],
+      "substitutes": [
+        "ex_7011"
+      ],
+      "asset": {
+        "clip": "ex_7013.mp4",
+        "imagen": "ex_7013.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_7014",
+      "slug": "rotacion-toracica-cuadrupedia",
+      "name": "Rotacion toracica en cuadrupedia",
+      "name_en": "Thread the needle",
+      "aliases": [
+        "thread the needle",
+        "enhebrar la aguja"
+      ],
+      "family": "fam_movilidad_toracica",
+      "category": "movilidad",
+      "goals": [
+        "postura"
+      ],
+      "level": 1,
+      "equipment": [
+        "colchoneta"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "colchoneta",
+      "unilateral": true,
+      "measure": "reps_por_lado",
+      "default": {
+        "series": 2,
+        "reps": 8,
+        "rest_s": 25
+      },
+      "met": 2.0,
+      "primary": [
+        "erectores_espinales",
+        "trapecio_medio"
+      ],
+      "secondary": [
+        "deltoide_posterior",
+        "oblicuo_externo"
+      ],
+      "risk_zones": [
+        "hombro",
+        "cuello"
+      ],
+      "contra": [],
+      "desc": "Pasar un brazo por debajo del cuerpo rotando la espalda alta. Movilidad de rotacion sin cargar la lumbar.",
+      "steps": [
+        "A cuatro apoyos.",
+        "Pasa un brazo por debajo del otro rotando el torso.",
+        "Apoya el hombro y la sien en el suelo.",
+        "Vuelve abriendo el brazo hacia el techo."
+      ],
+      "cues": [
+        "Rota desde la espalda alta",
+        "Cadera quieta",
+        "Abre al techo al volver"
+      ],
+      "errors": [
+        "Mover la cadera para rotar mas",
+        "Cargar el cuello al apoyar",
+        "Ir rapido"
+      ],
+      "breathing": "Exhala al rotar.",
+      "progressions": [
+        "ex_7003"
+      ],
+      "regressions": [],
+      "substitutes": [
+        "ex_7003"
+      ],
+      "asset": {
+        "clip": "ex_7014.mp4",
+        "imagen": "ex_7014.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_7015",
+      "slug": "puente-escritorio",
+      "name": "Micro-pausa de escritorio",
+      "name_en": "Desk reset",
+      "aliases": [
+        "pausa activa",
+        "desk reset"
+      ],
+      "family": "fam_cuello_postural",
+      "category": "movilidad",
+      "goals": [
+        "postura",
+        "mandibula"
+      ],
+      "level": 1,
+      "equipment": [
+        "silla"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "minimo",
+      "unilateral": false,
+      "measure": "tiempo",
+      "default": {
+        "series": 1,
+        "seg": 90,
+        "rest_s": 0
+      },
+      "met": 1.8,
+      "primary": [
+        "cuello_flexores",
+        "trapecio_inferior"
+      ],
+      "secondary": [
+        "pectoral_menor",
+        "erectores_espinales"
+      ],
+      "risk_zones": [
+        "cuello"
+      ],
+      "contra": [],
+      "desc": "Secuencia de 90 segundos para hacer sentado en la silla. Es lo que convierte el motor de postura en un habito diario en vez de una sesion mas.",
+      "steps": [
+        "10 retracciones cervicales suaves.",
+        "10 retracciones de escapula juntando los omoplatos.",
+        "20 segundos de estiramiento lateral de cuello por lado.",
+        "10 respiraciones nasales con la lengua en el paladar."
+      ],
+      "cues": [
+        "Sin levantarte",
+        "Suave",
+        "Respira al final"
+      ],
+      "errors": [
+        "Hacerlo con prisa",
+        "Encoger los hombros",
+        "Saltarse la respiracion final"
+      ],
+      "breathing": "Nasal y lenta al final.",
+      "progressions": [],
+      "regressions": [],
+      "substitutes": [
+        "ex_6103"
+      ],
+      "asset": {
+        "clip": "ex_7015.mp4",
+        "imagen": "ex_7015.jpg",
+        "recorrido": "sostenido"
+      }
+    },
+    {
+      "id": "ex_7016",
+      "slug": "estiramiento-isquios-tumbado",
+      "name": "Estiramiento de isquiotibiales tumbado",
+      "name_en": "Supine hamstring stretch",
+      "aliases": [
+        "estiramiento de femoral"
+      ],
+      "family": "fam_estiramiento_estatico",
+      "category": "estiramiento",
+      "goals": [
+        "postura",
+        "running"
+      ],
+      "level": 1,
+      "equipment": [
+        "colchoneta",
+        "banda_larga"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "colchoneta",
+      "unilateral": true,
+      "measure": "tiempo",
+      "default": {
+        "series": 2,
+        "seg": 40,
+        "rest_s": 20
+      },
+      "met": 2.0,
+      "primary": [
+        "isquiotibiales"
+      ],
+      "secondary": [
+        "gemelos"
+      ],
+      "risk_zones": [
+        "lumbar"
+      ],
+      "contra": [],
+      "desc": "Estiramiento de isquiotibiales tumbado, con la lumbar protegida por el suelo. Mejor opcion que tocarse los pies de pie.",
+      "steps": [
+        "Boca arriba con una pierna doblada y el pie apoyado.",
+        "Sube la otra pierna con una banda o toalla alrededor del pie.",
+        "Estira hasta sentir tension, sin dolor.",
+        "Manten la lumbar apoyada."
+      ],
+      "cues": [
+        "Lumbar apoyada",
+        "Pierna lo mas recta posible",
+        "Solo tension"
+      ],
+      "errors": [
+        "Despegar la lumbar",
+        "Tirar hasta el dolor",
+        "Doblar mucho la rodilla y perder el estiramiento"
+      ],
+      "breathing": "Lenta, exhalacion larga.",
+      "progressions": [],
+      "regressions": [],
+      "substitutes": [
+        "ex_7005"
+      ],
+      "asset": {
+        "clip": "ex_7016.mp4",
+        "imagen": "ex_7016.jpg",
+        "recorrido": "sostenido"
+      }
+    },
+    {
+      "id": "ex_7017",
+      "slug": "elevacion-escapular-pared",
+      "name": "Elevacion escapular en pared",
+      "name_en": "Wall scapular push-up",
+      "aliases": [
+        "protraccion escapular"
+      ],
+      "family": "fam_movilidad_toracica",
+      "category": "fuerza",
+      "goals": [
+        "postura"
+      ],
+      "level": 1,
+      "equipment": [
+        "pared"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "minimo",
+      "unilateral": false,
+      "measure": "reps",
+      "default": {
+        "series": 3,
+        "reps": 12,
+        "rest_s": 30
+      },
+      "met": 2.5,
+      "primary": [
+        "serrato_anterior"
+      ],
+      "secondary": [
+        "trapecio_inferior"
+      ],
+      "risk_zones": [
+        "hombro"
+      ],
+      "contra": [],
+      "desc": "Empujar la pared moviendo solo las escapulas. Activa el serrato anterior, cuya debilidad produce escapula alada.",
+      "steps": [
+        "Manos en la pared a la altura del pecho, brazos extendidos.",
+        "Sin doblar los codos, junta las escapulas dejando que el pecho se acerque.",
+        "Empuja separando las escapulas al maximo.",
+        "Repite despacio."
+      ],
+      "cues": [
+        "Codos rectos",
+        "Solo escapulas",
+        "Empuja al final"
+      ],
+      "errors": [
+        "Doblar los codos",
+        "Encoger los hombros",
+        "Ir rapido"
+      ],
+      "breathing": "Exhala al empujar.",
+      "progressions": [
+        "ex_7008"
+      ],
+      "regressions": [],
+      "substitutes": [
+        "ex_7008"
+      ],
+      "asset": {
+        "clip": "ex_7017.mp4",
+        "imagen": "ex_7017.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_7018",
+      "slug": "estiramiento-gluteo-figura4",
+      "name": "Estiramiento de gluteo en figura 4",
+      "name_en": "Figure-4 glute stretch",
+      "aliases": [
+        "figura 4",
+        "estiramiento de piramidal"
+      ],
+      "family": "fam_estiramiento_estatico",
+      "category": "estiramiento",
+      "goals": [
+        "postura",
+        "running"
+      ],
+      "level": 1,
+      "equipment": [
+        "colchoneta"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "colchoneta",
+      "unilateral": true,
+      "measure": "tiempo",
+      "default": {
+        "series": 2,
+        "seg": 40,
+        "rest_s": 20
+      },
+      "met": 2.0,
+      "primary": [
+        "gluteo_mayor",
+        "gluteo_medio"
+      ],
+      "secondary": [],
+      "risk_zones": [
+        "cadera",
+        "rodilla"
+      ],
+      "contra": [
+        "lesion_cadera"
+      ],
+      "desc": "Cruzar el tobillo sobre la rodilla contraria y traer las piernas al pecho. El estiramiento de gluteo mas accesible.",
+      "steps": [
+        "Boca arriba, cruza el tobillo sobre la rodilla contraria formando un 4.",
+        "Pasa las manos por detras del muslo de apoyo.",
+        "Trae las piernas hacia el pecho.",
+        "Manten la cabeza apoyada."
+      ],
+      "cues": [
+        "Cabeza apoyada",
+        "Trae despacio",
+        "Solo tension"
+      ],
+      "errors": [
+        "Levantar la cabeza",
+        "Tirar de la rodilla cruzada y forzarla",
+        "Aguantar la respiracion"
+      ],
+      "breathing": "Lenta y profunda.",
+      "progressions": [],
+      "regressions": [],
+      "substitutes": [
+        "ex_7007"
+      ],
+      "asset": {
+        "clip": "ex_7018.mp4",
+        "imagen": "ex_7018.jpg",
+        "recorrido": "sostenido"
+      }
+    },
+    {
+      "id": "ex_7019",
+      "slug": "caminar-talon-punta",
+      "name": "Caminar de talon y de punta",
+      "name_en": "Heel and toe walk",
+      "aliases": [
+        "marcha de talones"
+      ],
+      "family": "fam_tecnica_carrera",
+      "category": "movilidad",
+      "goals": [
+        "postura",
+        "running"
+      ],
+      "level": 1,
+      "equipment": [
+        "ninguno"
+      ],
+      "impact": 1,
+      "noise": 0,
+      "space": "amplio",
+      "unilateral": false,
+      "measure": "tiempo",
+      "default": {
+        "series": 2,
+        "seg": 30,
+        "rest_s": 20
+      },
+      "met": 3.0,
+      "primary": [
+        "tibial_anterior",
+        "gemelos"
+      ],
+      "secondary": [
+        "soleo",
+        "pie_intrinsecos"
+      ],
+      "risk_zones": [
+        "tobillo"
+      ],
+      "contra": [],
+      "desc": "Caminar sobre los talones y luego sobre las puntas. Fortalece tibial anterior, que es la prevencion mas directa de la periostitis tibial.",
+      "steps": [
+        "Camina 15 segundos apoyando solo los talones con las puntas arriba.",
+        "Camina 15 segundos de puntas.",
+        "Manten el torso alto.",
+        "Alterna."
+      ],
+      "cues": [
+        "Puntas bien arriba",
+        "Torso alto",
+        "Pasos cortos"
+      ],
+      "errors": [
+        "Encorvar el torso",
+        "Pasos demasiado largos",
+        "Ir rapido"
+      ],
+      "breathing": "Continua.",
+      "progressions": [],
+      "regressions": [],
+      "substitutes": [
+        "ex_1027"
+      ],
+      "asset": {
+        "clip": "ex_7019.mp4",
+        "imagen": "ex_7019.jpg",
+        "recorrido": "ciclico"
+      }
+    },
+    {
+      "id": "ex_7020",
+      "slug": "postura-de-pie-alineada",
+      "name": "Alineacion de pie contra pared",
+      "name_en": "Wall posture check",
+      "aliases": [
+        "test de pared",
+        "chequeo postural"
+      ],
+      "family": "fam_cuello_postural",
+      "category": "movilidad",
+      "goals": [
+        "postura",
+        "mandibula"
+      ],
+      "level": 1,
+      "equipment": [
+        "pared"
+      ],
+      "impact": 0,
+      "noise": 0,
+      "space": "minimo",
+      "unilateral": false,
+      "measure": "tiempo",
+      "default": {
+        "series": 3,
+        "seg": 30,
+        "rest_s": 30
+      },
+      "met": 1.8,
+      "primary": [
+        "cuello_flexores",
+        "trapecio_inferior"
+      ],
+      "secondary": [
+        "transverso_abdominal",
+        "gluteo_mayor"
+      ],
+      "risk_zones": [],
+      "contra": [],
+      "desc": "Ejercicio y test a la vez: apoyar talones, gluteo, espalda alta y cabeza en la pared. Los puntos que no tocan son tu diagnostico postural.",
+      "steps": [
+        "Talones a unos 5 cm de la pared.",
+        "Apoya gluteo, espalda alta y, si puedes, la nuca.",
+        "Manten la barbilla nivelada, sin levantarla.",
+        "Aguanta 30 segundos respirando normal."
+      ],
+      "cues": [
+        "Cuatro puntos de contacto",
+        "Barbilla nivelada",
+        "Respira"
+      ],
+      "errors": [
+        "Levantar la barbilla para tocar la pared con la cabeza",
+        "Arquear la lumbar en exceso",
+        "Bloquear las rodillas"
+      ],
+      "breathing": "Continua.",
+      "progressions": [
+        "ex_6104"
+      ],
+      "regressions": [],
+      "substitutes": [
+        "ex_6104"
+      ],
+      "asset": {
+        "clip": "ex_7020.mp4",
+        "imagen": "ex_7020.jpg",
+        "recorrido": "sostenido"
+      }
+    }
+  ]
+}

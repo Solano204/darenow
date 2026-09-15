@@ -1,0 +1,56 @@
+{
+  "coleccion": "retos_logros",
+  "version": "1.0.0",
+  "principios": {
+    "p1": "Ningun logro depende del peso corporal ni de una medida corporal. Se premia lo que la persona controla: aparecer, sostener y mejorar en rendimiento.",
+    "p2": "Nada se pierde ni se castiga. Las rachas se pausan, no se reinician. No hay logros que se puedan perder una vez ganados.",
+    "p3": "Sin comparacion con otros usuarios. No hay tablas de clasificacion ni ranking social.",
+    "p4": "Ningun reto empuja a entrenar mas dias seguidos de los que es razonable. Los retos de constancia incluyen dias de movilidad como dias validos."
+  },
+  "retos": [
+    {"id":"ch_001","name":"Siete dias","tipo":"constancia","duracion_dias":7,"objetivo":"Completar una sesion, aunque sea la de 5 minutos, siete dias seguidos","dificultad":1,"desc":"El primer reto de todos. No mide intensidad: mide que apareciste.","recompensa":"logro_007dias"},
+    {"id":"ch_002","name":"Treinta dias de movimiento","tipo":"constancia","duracion_dias":30,"objetivo":"Al menos 20 sesiones en 30 dias","dificultad":2,"desc":"Deja margen para 10 dias libres. La idea no es la perfeccion, es el promedio.","recompensa":"logro_030dias"},
+    {"id":"ch_003","name":"Cien sesiones","tipo":"constancia","duracion_dias":null,"objetivo":"Completar 100 sesiones en total","dificultad":3,"desc":"Sin limite de tiempo. Puedes tardar cuatro meses o un año.","recompensa":"logro_100sesiones"},
+    {"id":"ch_004","name":"Mi primera dominada","tipo":"habilidad","duracion_dias":70,"objetivo":"Completar una dominada estricta","dificultad":3,"desc":"Reto ligado al programa pg_009. Excentricas, isometricos y asistidas.","recompensa":"logro_dominada","programa":"pg_009"},
+    {"id":"ch_005","name":"Plancha de dos minutos","tipo":"rendimiento","duracion_dias":42,"objetivo":"Sostener plancha con tecnica correcta durante 2 minutos","dificultad":2,"desc":"Con tecnica correcta: cadera alineada, costillas abajo y respirando. La app lo registra solo si completas el tiempo sin pausas.","recompensa":"logro_plancha2"},
+    {"id":"ch_006","name":"Cincuenta flexiones","tipo":"rendimiento","duracion_dias":56,"objetivo":"Completar 50 flexiones en una sesion, en las series que necesites","dificultad":2,"desc":"No tienen que ser seguidas. El total de la sesion es lo que cuenta.","recompensa":"logro_50flexiones"},
+    {"id":"ch_007","name":"Cinco kilometros","tipo":"rendimiento","duracion_dias":63,"objetivo":"Correr 5 km de forma continua","dificultad":2,"desc":"Ligado al programa pg_007. El tiempo no importa.","recompensa":"logro_5k","programa":"pg_007"},
+    {"id":"ch_008","name":"Diez kilometros","tipo":"rendimiento","duracion_dias":84,"objetivo":"Completar 10 km","dificultad":3,"desc":"Ligado al programa pg_008.","recompensa":"logro_10k","programa":"pg_008"},
+    {"id":"ch_009","name":"Cuatro semanas de postura","tipo":"constancia","duracion_dias":28,"objetivo":"20 micro-pausas de escritorio en 4 semanas","dificultad":1,"desc":"Tres minutos sentado en tu silla. Es el reto con mejor relacion esfuerzo/resultado de toda la app.","recompensa":"logro_postura4","rutina":"rt_017"},
+    {"id":"ch_010","name":"Mandibula 12 semanas","tipo":"constancia","duracion_dias":84,"objetivo":"Completar el programa facial con fotos de perfil cada 4 semanas","dificultad":2,"desc":"Ligado a pg_005. El logro se otorga por completar el programa, no por el resultado de las fotos.","recompensa":"logro_mandibula12","programa":"pg_005"},
+    {"id":"ch_011","name":"Colgarse un minuto","tipo":"rendimiento","duracion_dias":42,"objetivo":"Sostener la suspension pasiva durante 60 segundos","dificultad":2,"desc":"Progresion clasica de agarre. Empieza por 15 segundos.","recompensa":"logro_hang60"},
+    {"id":"ch_012","name":"Pino contra la pared","tipo":"habilidad","duracion_dias":84,"objetivo":"Sostener el pino contra la pared 30 segundos","dificultad":3,"desc":"Requiere base previa de empuje vertical. La app lo desbloquea al alcanzar 8 pike push-ups.","recompensa":"logro_pino"},
+    {"id":"ch_013","name":"Semana silenciosa","tipo":"constancia","duracion_dias":7,"objetivo":"Completar 5 sesiones en modo sin saltos","dificultad":1,"desc":"Para quien vive en departamento o entrena de noche. Demuestra que no hacen falta saltos.","recompensa":"logro_silenciosa"},
+    {"id":"ch_014","name":"Movilidad diaria","tipo":"constancia","duracion_dias":21,"objetivo":"21 dias seguidos con al menos la rutina de movilidad de mañana","dificultad":1,"desc":"Ocho minutos al dia. Es el reto que mas gente completa y el que mas cambia como se siente la espalda.","recompensa":"logro_movilidad21","rutina":"rt_027"},
+    {"id":"ch_015","name":"Volver","tipo":"constancia","duracion_dias":14,"objetivo":"Completar 6 sesiones tras 30 dias o mas sin entrenar","dificultad":1,"desc":"Reto que solo aparece cuando alguien vuelve tras una pausa larga. Volver es mas dificil que empezar y merece su propio reconocimiento.","recompensa":"logro_volver"}
+  ],
+  "logros": [
+    {"id":"logro_007dias","name":"Primera semana","icono":"semilla","desc":"Siete dias seguidos. Ya no es casualidad.","categoria":"constancia"},
+    {"id":"logro_030dias","name":"Un mes en pie","icono":"brote","desc":"Veinte sesiones en treinta dias.","categoria":"constancia"},
+    {"id":"logro_100sesiones","name":"Cien veces","icono":"arbol","desc":"Cien sesiones completadas.","categoria":"constancia"},
+    {"id":"logro_365sesiones","name":"Un año de trabajo","icono":"bosque","desc":"Trescientas sesenta y cinco sesiones. Esto ya es una parte de tu vida.","categoria":"constancia"},
+    {"id":"logro_dominada","name":"Primera dominada","icono":"barra","desc":"Una dominada estricta, de brazos extendidos a barbilla arriba.","categoria":"habilidad"},
+    {"id":"logro_plancha2","name":"Dos minutos de hierro","icono":"tabla","desc":"Plancha de dos minutos con tecnica correcta.","categoria":"rendimiento"},
+    {"id":"logro_50flexiones","name":"Cincuenta","icono":"empuje","desc":"Cincuenta flexiones en una sesion.","categoria":"rendimiento"},
+    {"id":"logro_5k","name":"Cinco kilometros","icono":"ruta","desc":"5 km corridos de forma continua.","categoria":"rendimiento"},
+    {"id":"logro_10k","name":"Diez kilometros","icono":"ruta_larga","desc":"10 km completados.","categoria":"rendimiento"},
+    {"id":"logro_postura4","name":"Cuello largo","icono":"columna","desc":"Veinte micro-pausas de postura completadas.","categoria":"postura"},
+    {"id":"logro_mandibula12","name":"Doce semanas de perfil","icono":"perfil","desc":"Programa facial completo con seguimiento fotografico.","categoria":"mandibula"},
+    {"id":"logro_hang60","name":"Un minuto colgado","icono":"mano","desc":"Sesenta segundos de suspension.","categoria":"rendimiento"},
+    {"id":"logro_pino","name":"Cabeza abajo","icono":"invertido","desc":"Treinta segundos de pino contra la pared.","categoria":"habilidad"},
+    {"id":"logro_silenciosa","name":"Sin despertar a nadie","icono":"silencio","desc":"Cinco sesiones completas en modo sin saltos.","categoria":"constancia"},
+    {"id":"logro_movilidad21","name":"Veintiun amaneceres","icono":"sol","desc":"Veintiun dias seguidos de movilidad matutina.","categoria":"postura"},
+    {"id":"logro_volver","name":"Volviste","icono":"regreso","desc":"Seis sesiones tras una pausa larga. Esto cuesta mas que empezar.","categoria":"constancia"},
+    {"id":"logro_descarga","name":"Sabes descansar","icono":"luna","desc":"Completaste tu primera semana de descarga sin saltartela.","categoria":"programacion"},
+    {"id":"logro_programa1","name":"Programa completo","icono":"bandera","desc":"Terminaste un programa entero de principio a fin.","categoria":"programacion"},
+    {"id":"logro_10patrones","name":"Cuerpo completo","icono":"mapa","desc":"Entrenaste los diez patrones de movimiento principales al menos una vez.","categoria":"variedad"},
+    {"id":"logro_mito","name":"Lector critico","icono":"lupa","desc":"Leiste diez fichas de mitos. Saber que no funciona vale tanto como saber que si.","categoria":"conocimiento"}
+  ],
+  "rachas": {
+    "regla": "Una racha cuenta dias con al menos una sesion completada, incluida la de 5 minutos y las de movilidad.",
+    "dias_de_gracia": 2,
+    "periodo_gracia": "mes natural",
+    "comportamiento_al_fallar": "La racha se pausa y muestra 'en pausa', no vuelve a cero. Al retomar, continua desde donde estaba.",
+    "sin_notificacion_culpabilizante": "Las notificaciones nunca usan lenguaje de perdida o fracaso. Nada de 'vas a perder tu racha de 40 dias'."
+  }
+}

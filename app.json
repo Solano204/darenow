@@ -1,0 +1,51 @@
+{
+  "expo": {
+    "name": "DARENOW",
+    "slug": "darenow",
+    "scheme": "forja",
+    "version": "2.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "dark",
+    "backgroundColor": "#100D0C",
+    "newArchEnabled": true,
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "app.forja.fitness",
+      "backgroundColor": "#100D0C"
+    },
+    "android": {
+      "package": "app.forja.fitness",
+      "edgeToEdgeEnabled": true,
+      "backgroundColor": "#100D0C",
+      "permissions": [
+        "android.permission.RECORD_AUDIO",
+        "android.permission.MODIFY_AUDIO_SETTINGS",
+        "android.permission.FOREGROUND_SERVICE",
+        "android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK"
+      ]
+    },
+    "plugins": [
+      "expo-image",
+      "expo-audio",
+      [
+        "expo-video",
+        {
+          "supportsBackgroundPlayback": false,
+          "supportsPictureInPicture": false
+        }
+      ],
+      "expo-font",
+      "expo-splash-screen",
+      "expo-web-browser"
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "aaa859f8-3582-46d8-b553-6a9f570e70cf"
+      }
+    },
+    "owner": "mastercreators"
+  }
+}

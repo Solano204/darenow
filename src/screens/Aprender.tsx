@@ -91,7 +91,7 @@ export default function Aprender({ navigation }: any) {
           renderItem={({ item, index }) => (
             <Aparece retraso={Math.min(index, 8) * 25}>
               <Toque onPress={() => navigation.navigate('Tip', { id: item.id })} estilo={s.tarjetaTip as never}>
-                <Foto tipo="tip" id={item.id} nombre={item.titulo} alto={110} ancho="100%" forma="tarjeta" />
+                <Foto tipo="tip" id={item.id} nombre={item.titulo} alto={160} ancho="100%" forma="tarjeta" />
                 <View style={s.favSobre}>
                   <Favorito activo={esFavorito('tips', item.id)}
                     onPress={() => alternarFavorito('tips', item.id)} sobreFoto tamano={34} />

@@ -162,7 +162,8 @@ export const colorSesion = {
   acento:        '#6E86FF',
   acentoTinte:   'rgba(110,134,255,0.13)',
   trabajo:       '#FF8A3D',
-  trabajoFondo:  '#2A160B',
+  /** Antes cafe (#2A160B); pedido explicito de cambiarlo a blanco. */
+  trabajoFondo:  '#FFFFFF',
   descanso:      '#7FC4FF',
   descansoFondo: '#0E1C28',
   preparado:     '#A2948B',
@@ -223,6 +224,7 @@ export const degradado = {
   verde:  ['#3FCB94', '#279C74'] as const,
   azul:   ['#5FA6FF', '#3D82E8'] as const,
   purpura:['#9B8BFA', '#7A63E8'] as const,
+  background:['#FFFFFF', '#FFFFFF'] as const,
   /**
    * Version clara de purpura/verde: para tarjetas que llevan texto oscuro
    * (color.texto) en vez de blanco. Medido con scripts/contraste.js:
@@ -286,7 +288,7 @@ export const peso = {
   bold:      'Inter_700Bold',
 } as const;
 
-export const esp = { xs: 4, sm: 8, md: 16, lg: 24, xl: 36 };
+export const esp = { xs: 4, sm: 10, md: 16, lg: 24, xl: 36 };
 export const radio = { pastilla: 999, tarjeta: 24, chip: 14, foto: 18 };
 
 /**

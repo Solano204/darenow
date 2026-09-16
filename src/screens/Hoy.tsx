@@ -437,18 +437,18 @@ function TarjetaColor({ tono, titulo, sub, tipoFoto, id, onPress }: {
   onPress: () => void;
 }) {
   return (
-    <Toque onPress={onPress} estilo={{ width: 280 }}>
+    <Toque onPress={onPress} estilo={{ width: 400 } }>
       <LinearGradient colors={degradado[tono]} start={sol.start} end={sol.end} style={s.tarjetaColor}>
         <View style={{ flex: 1, justifyContent: 'space-between' }}>
           <View style={{ paddingRight: esp.sm }}>
-            <Text style={[tipo.h3, { color: color.texto }]} numberOfLines={2}>{titulo}</Text>
+            <Text style={[tipo.h3, { color: color.texto }]} numberOfLines={3}>{titulo}</Text>
             <Text style={[tipo.pie, { color: color.texto, marginTop: esp.xs }]}>{sub}</Text>
           </View>
           <View style={s.pildoraInicio}>
             <Text style={[tipo.dato, { color: color.sobreOscuro }]}>Inicio</Text>
           </View>
         </View>
-        <Foto tipo={tipoFoto} id={id} nombre={titulo} alto={190} ancho={120} forma="tarjeta"
+        <Foto tipo={tipoFoto} id={id} nombre={titulo} alto={190} ancho={160} forma="tarjeta"
           estilo={{ position: 'absolute', right: 0, bottom: 0 }} />
       </LinearGradient>
     </Toque>

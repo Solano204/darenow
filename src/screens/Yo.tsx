@@ -554,6 +554,7 @@ export function Ajustes({ navigation }: any) {
             <Fila
               etiqueta={cuenta?.proveedor === 'google' ? 'Google' : 'Sin cuenta'}
               valor={cuenta?.email ?? cuenta?.nombre ?? 'Invitado'}
+              apilado
             />
           </Tarjeta>
 

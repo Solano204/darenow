@@ -235,7 +235,7 @@ export function Chip({ texto, activo, onPress, pequeno, oscuro }: {
   const cuerpo = (
     <Animated.View style={[
       s.chip,
-      pequeno && { paddingVertical: 4, paddingHorizontal: 10 },
+      pequeno && { paddingVertical: 4, paddingHorizontal: 7 },
       {
         backgroundColor: v.interpolate({ inputRange: [0, 1], outputRange: [fondoApagado, color.carbon] }),
         borderColor: v.interpolate({ inputRange: [0, 1], outputRange: [bordeApagado, color.carbon] }),
@@ -346,6 +346,7 @@ export function Contador({ valor, min, max, sufijo, onCambio }: {
           <TextInput
             value={texto} onChangeText={t => setTexto(t.replace(/[^0-9]/g, ''))}
             onEndEditing={confirmar} onSubmitEditing={confirmar}
+            maxLength={String(max).length}
             keyboardType="number-pad" returnKeyType="done"
             style={[tipo.relojSm, { color: color.texto, textAlign: 'center', padding: 0, minWidth: 60 }]}
             maxFontSizeMultiplier={1.2} accessibilityLabel={`Escribir número${resto}`}

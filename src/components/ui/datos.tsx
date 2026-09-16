@@ -11,17 +11,20 @@ import { color, tipo, esp, radio, insignia, anim, peso } from '../../theme';
 import type { Evidencia } from '../../data/catalog';
 import { useMovimientoReducido } from './movimiento';
 
-export function Fila({ etiqueta, valor, tenue, oscuro }: {
+export function Fila({ etiqueta, valor, tenue, oscuro, apilado }: {
   etiqueta: string; valor: string; tenue?: boolean; oscuro?: boolean;
+  /** Etiqueta arriba y valor abajo, en vez de lado a lado (para valores largos). */
+  apilado?: boolean;
 }) {
   return (
-    <View style={s.fila}>
-      <Text style={[tipo.cuerpo, { color: color.textoSuave, flex: 1 }]}>
+    <View style={apilado ? s.filaApilada : s.fila}>
+      <Text style={[tipo.cuerpo, { color: color.textoSuave, flex: apilado ? undefined : 1 }]}>
         {etiqueta}
       </Text>
       <Text style={[tipo.cuerpo, {
         color: tenue ? color.textoSuave : color.texto,
-        fontFamily: tenue ? peso.regular : peso.semibold, textAlign: 'right', flexShrink: 1,
+        fontFamily: tenue ? peso.regular : peso.semibold,
+        textAlign: apilado ? 'left' : 'right', flexShrink: 1,
       }]}>{valor}</Text>
     </View>
   );
@@ -211,6 +214,7 @@ export function Titulo({ children, sub }: { children: string; sub?: string }) {
 
 const s = StyleSheet.create({
   fila: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', gap: esp.sm },
+  filaApilada: { gap: 2 },
   insignia: {
     alignSelf: 'flex-start', paddingVertical: 5, paddingHorizontal: 11,
     borderRadius: radio.chip, borderWidth: 1,

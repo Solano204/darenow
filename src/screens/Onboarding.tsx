@@ -45,7 +45,7 @@ const EQUIPO_ONB = EQUIPO.filter(e => e.onboarding && e.id !== 'ninguno')
   }));
 
 const PASOS: Paso[] = [
-  { campo: 'objetivo', tipo: 'unica', obligatorio: true, saltable: true,
+  { campo: 'objetivo', tipo: 'unica', obligatorio: true,
     pregunta: 'Qué quieres trabajar',
     ayuda: 'Puedes cambiarlo cuando quieras, sin perder tu historial.',
     opciones: GOALS.map(g => ({ id: g.id, texto: g.nombre, detalle: g.sub })) },

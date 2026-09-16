@@ -52,6 +52,35 @@ const ACENTO = {
   fin: colorSesion.trabajo,
 } as const;
 
+/** TINTE.trabajo/fin son blancos: el texto ahi usa la paleta clara (`color`)
+ *  en vez de la oscura (`colorSesion`), que se ve invisible sobre blanco. */
+const TEXTO = {
+  preparado: colorSesion.texto,
+  trabajo: color.texto,
+  cambio_lado: colorSesion.texto,
+  descanso: colorSesion.texto,
+  pausa: colorSesion.texto,
+  fin: color.texto,
+} as const;
+
+const TEXTO_SUAVE = {
+  preparado: colorSesion.textoSuave,
+  trabajo: color.textoSuave,
+  cambio_lado: colorSesion.textoSuave,
+  descanso: colorSesion.textoSuave,
+  pausa: colorSesion.textoSuave,
+  fin: color.textoSuave,
+} as const;
+
+const TEXTO_TENUE = {
+  preparado: colorSesion.textoTenue,
+  trabajo: color.textoTenue,
+  cambio_lado: colorSesion.textoTenue,
+  descanso: colorSesion.textoTenue,
+  pausa: colorSesion.textoTenue,
+  fin: color.textoTenue,
+} as const;
+
 const ETIQUETA = {
   preparado: 'Prepárate',
   trabajo: 'Trabaja',
@@ -202,12 +231,12 @@ function EditorAntesDeEmpezar({ items, onConfirmar }: {
           de cada ejercicio antes de empezar.
         </Text>
         <View style={{ marginTop: esp.sm }}>
-          <Chip texto={`${minutos} min en total`} pequeno />
+          <Chip texto={`${minutos} minutos en total`} pequeno />
         </View>
 
         {lista.map((it, i) => (
           <Tarjeta key={`${it.id}_${i}`} estilo={{ marginTop: esp.md, gap: esp.xs }}>
-            <Clip id={it.id} nombre={it.name} alto={140} ancho="100%" forma="tarjeta" />
+            <Clip id={it.id} nombre={it.name} alto={220} ancho="100%" forma="tarjeta" />
             <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: esp.sm, marginTop: esp.xs }}>
               <Text style={[tipo.h3, { color: color.texto, flex: 1 }]}>{it.name}</Text>
               <Boton texto="Cambiar" variante="texto" onPress={() => cambiarEjercicio(i)} />
@@ -215,7 +244,6 @@ function EditorAntesDeEmpezar({ items, onConfirmar }: {
 
             <FilaAjuste etiqueta="Series" valor={it.seriesPlan} min={1} max={10}
               onCambio={v => actualizar(i, { seriesPlan: v })} />
-
             {it.segPlan != null ? (
               <FilaAjuste etiqueta="Tiempo" valor={it.segPlan} min={5} max={300} paso={5} sufijo=" s"
                 onCambio={v => actualizar(i, { segPlan: v })} />
@@ -230,7 +258,7 @@ function EditorAntesDeEmpezar({ items, onConfirmar }: {
             {esMaquina(it) && (
               <View style={{ marginTop: esp.xs }}>
                 <Text style={[tipo.pie, { color: color.textoSuave, marginBottom: 4 }]}>
-                  Ajuste de la maquina
+                  Ajuste de la maquina 
                 </Text>
                 <TextInput
                   defaultValue={ajustesMaquina[it.id] ?? ''}
@@ -574,9 +602,9 @@ function ReproductorActivo({ sesionInicial, restaurar, navigation }: {
       <View style={s.cabecera}>
         <Pressable onPress={() => { p.pausar(); setSalida(true); }} hitSlop={12}
           accessibilityRole="button" accessibilityLabel="Salir">
-          <Text style={[tipo.dato, { color: colorSesion.textoSuave }]}>Salir</Text>
+          <Text style={[tipo.dato, { color: TEXTO_SUAVE[estado.fase] }]}>Salir</Text>
         </Pressable>
-        <Text style={[tipo.micro, { color: colorSesion.textoTenue }]}>
+        <Text style={[tipo.micro, { color: TEXTO_TENUE[estado.fase] }]}>
           {estado.indice + 1} de {items.length}
         </Text>
         <Pressable
@@ -589,7 +617,7 @@ function ReproductorActivo({ sesionInicial, restaurar, navigation }: {
           accessibilityRole="button" accessibilityLabel={estado.fase === 'pausa' ? 'Seguir' : 'Pausa'}
           accessibilityState={{ disabled: estado.fase === 'pausa' && hablando }}
         >
-          <Text style={[tipo.dato, { color: estado.fase === 'pausa' && hablando ? colorSesion.textoTenue : colorSesion.textoSuave }]}>
+          <Text style={[tipo.dato, { color: estado.fase === 'pausa' && hablando ? TEXTO_TENUE[estado.fase] : TEXTO_SUAVE[estado.fase] }]}>
             {estado.fase === 'pausa' ? 'Seguir' : 'Pausa'}
           </Text>
         </Pressable>
@@ -606,7 +634,7 @@ function ReproductorActivo({ sesionInicial, restaurar, navigation }: {
 
         <Animated.Text
           style={[tipo.reloj, {
-            color: colorSesion.texto,
+            color: TEXTO[estado.fase],
             transform: [{ scale: pulsoCuenta.interpolate({ inputRange: [0, 1], outputRange: [1, 1.12] }) }],
           }]}
           maxFontSizeMultiplier={1.2}
@@ -622,7 +650,7 @@ function ReproductorActivo({ sesionInicial, restaurar, navigation }: {
             : (ejercicio.repsPlan ?? '—')}
         </Animated.Text>
 
-        <Text style={[tipo.h2, { color: colorSesion.texto, textAlign: 'center' }]}>
+        <Text style={[tipo.h2, { color: TEXTO[estado.fase], textAlign: 'center' }]}>
           {estado.fase === 'descanso' ? siguiente(items, estado.indice, estado.serieNum) : ejercicio.name}
         </Text>
 
@@ -631,12 +659,12 @@ function ReproductorActivo({ sesionInicial, restaurar, navigation }: {
             backgroundColor: colorSesion.acentoTinte, opacity: pulsoFondo, borderRadius: radio.chip,
           }]} />
           <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', paddingVertical: 2 }}>
-            <Text style={[tipo.pie, { color: colorSesion.textoSuave }]}>Serie </Text>
+            <Text style={[tipo.pie, { color: TEXTO_SUAVE[estado.fase] }]}>Serie </Text>
             <Animated.View style={{
               transform: [{ scale: pulsoEscala.interpolate({ inputRange: [0, 1], outputRange: [1, 1.06] }) }],
             }}>
               <View>
-                <Text style={[tipo.pie, { color: colorSesion.textoSuave }]}>{estado.serieNum}</Text>
+                <Text style={[tipo.pie, { color: TEXTO_SUAVE[estado.fase] }]}>{estado.serieNum}</Text>
                 <Animated.Text style={[tipo.pie, {
                   color: colorSesion.acento, opacity: pulsoEscala,
                   position: 'absolute', top: 0, left: 0,
@@ -645,7 +673,7 @@ function ReproductorActivo({ sesionInicial, restaurar, navigation }: {
                 </Animated.Text>
               </View>
             </Animated.View>
-            <Text style={[tipo.pie, { color: colorSesion.textoSuave }]}>
+            <Text style={[tipo.pie, { color: TEXTO_SUAVE[estado.fase] }]}>
               {' '}de {ejercicio.seriesPlan}
               {estado.lado ? ` · lado ${estado.lado === 'izq' ? 'izquierdo' : 'derecho'}` : ''}
             </Text>
@@ -657,7 +685,7 @@ function ReproductorActivo({ sesionInicial, restaurar, navigation }: {
             primer ejercicio que para cualquier otro, no solo a partir del
             segundo. */}
         {estado.fase !== 'descanso' && estado.fase !== 'fin' && items[estado.indice + 1] && (
-          <Text style={[tipo.pie, { color: colorSesion.textoTenue, marginTop: 2 }]}>
+          <Text style={[tipo.pie, { color: TEXTO_TENUE[estado.fase], marginTop: 2 }]}>
             Sigue: {items[estado.indice + 1].name}
           </Text>
         )}
@@ -702,7 +730,7 @@ function ReproductorActivo({ sesionInicial, restaurar, navigation }: {
         )}
 
         {estado.fase === 'trabajo' && p.esPorTiempo && (
-          <Boton texto="Terminar antes" variante="contorno" oscuro onPress={p.avanzar} estilo={{ flex: 1 }} deshabilitado={hablando || cuentaFinal} />
+          <Boton texto="Terminar antes" variante="texto"  onPress={p.avanzar} estilo={{ flex: 1 }} deshabilitado={hablando || cuentaFinal} />
         )}
 
         {estado.fase === 'pausa' && (
@@ -717,7 +745,7 @@ function ReproductorActivo({ sesionInicial, restaurar, navigation }: {
         accessibilityRole="button" accessibilityLabel="Omitir este ejercicio"
         accessibilityState={{ disabled: hablando }}
       >
-        <Text style={[tipo.pie, { color: colorSesion.textoTenue }]}>Omitir este ejercicio</Text>
+        <Text style={[tipo.pie, { color: TEXTO_TENUE[estado.fase] }]}>Omitir este ejercicio</Text>
       </Pressable>
 
       <Modal visible={salida} animationType="slide" transparent>

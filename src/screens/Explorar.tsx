@@ -218,7 +218,7 @@ export default function Explorar({ navigation, route }: any) {
           renderItem={({ item, index }) => (
             <Aparece retraso={Math.min(index, 8) * 25}>
               <Toque onPress={() => navigation.navigate('Rutina', { id: item.id })} estilo={s.tarjetaAncha as never}>
-                <Foto tipo="rutina" id={item.id} nombre={item.name} alto={132} ancho="100%" forma="tarjeta" />
+                <Foto tipo="rutina" id={item.id} nombre={item.name} alto={170} ancho="100%" forma="tarjeta" />
                 <View style={s.favSobre}>
                   <Favorito activo={esFavorito('rutinas', item.id)}
                     onPress={() => alternarFavorito('rutinas', item.id)} sobreFoto tamano={34} />
@@ -246,7 +246,7 @@ export default function Explorar({ navigation, route }: any) {
           renderItem={({ item, index }) => (
             <Aparece retraso={Math.min(index, 8) * 25}>
               <Toque onPress={() => navigation.navigate('Programa', { id: item.id })} estilo={s.tarjetaAncha as never}>
-                <Foto tipo="programa" id={item.id} nombre={item.name} alto={132} ancho="100%" forma="tarjeta" />
+                <Foto tipo="programa" id={item.id} nombre={item.name} alto={170} ancho="100%" forma="tarjeta" />
                 <View style={s.favSobre}>
                   <Favorito activo={esFavorito('programas', item.id)}
                     onPress={() => alternarFavorito('programas', item.id)} sobreFoto tamano={34} />

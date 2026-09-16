@@ -51,7 +51,7 @@ export default function Acceso({ onListo }: { onListo: () => void }) {
         <Aparece>
           <Text style={[tipo.display, { color: color.texto }]}>Tu cuenta</Text>
           <Text style={[tipo.cuerpo, { color: color.textoSuave, marginTop: esp.sm }]}>
-            Sirve para guardar tu progreso y recuperarlo si reinstalas la app.
+            Con Google no escribes tu nombre ni tu correo: quedan listos solos. Es lo único que hace hoy.
           </Text>
         </Aparece>
 
@@ -60,7 +60,7 @@ export default function Acceso({ onListo }: { onListo: () => void }) {
             <Text style={[tipo.micro, { color: color.textoTenue }]}>QUÉ GUARDAMOS</Text>
             <Punto texto="Tu nombre y tu correo, solo en este teléfono." />
             <Punto texto="Tu rutina, tu historial y tus medidas." />
-            <Punto texto="Nada se envía a ningún servidor nuestro." />
+            <Punto texto='Todo vive en este teléfono. Para pasarlo a otro, usa "Exportar mi progreso" en Ajustes.' />
           </LinearGradient>
         </Aparece>
 

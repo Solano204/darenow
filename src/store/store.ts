@@ -14,7 +14,7 @@ import React, { createContext, useContext, useEffect, useMemo, useState, useCall
 import { AppState } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const CLAVE = 'forja:v1';
+export const CLAVE = 'forja:v1';
 
 export interface SerieGuardada {
   ejercicioId: string; serieNum: number; lado: 'izq' | 'der' | null;

@@ -18,7 +18,7 @@
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const CLAVE = 'forja:cuenta:v1';
+export const CLAVE = 'forja:cuenta:v1';
 
 export type Proveedor = 'google' | 'invitado';
 

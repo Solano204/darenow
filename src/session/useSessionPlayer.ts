@@ -40,7 +40,7 @@ import { prepararSonido, soltarSonido, activarSonido, reproducir } from '../medi
 
 export type { EstadoPlayer, SerieHecha, Fase };
 
-const CLAVE_GUARDADO = 'forja:sesion_en_curso';
+export const CLAVE_GUARDADO = 'forja:sesion_en_curso';
 
 export interface SesionEnCurso {
   items: ItemSesion[];

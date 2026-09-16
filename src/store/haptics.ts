@@ -10,7 +10,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const CLAVE = 'forja:haptics';
+export const CLAVE = 'forja:haptics';
 
 export function useHapticosActivos(): [boolean, (v: boolean) => void] {
   const [activo, setActivo] = useState(true);

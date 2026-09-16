@@ -16,6 +16,7 @@ import {
 import { useHapticosActivos } from '../store/haptics';
 import { useVozActiva } from '../store/voz';
 import { useCuenta } from '../store/cuenta';
+import { exportarProgreso, elegirRespaldo, aplicarRespaldo } from '../store/respaldo';
 import {
   LOGROS, RETOS, MEDICIONES, EJERCICIOS, GOALS, EQUIPO, porId,
   programaPorId, rutinaPorId, musculoPorId, nombreGoal, ESTADISTICAS,
@@ -344,8 +345,52 @@ export function Ajustes({ navigation }: any) {
   const [seccion, setSeccion] = useState<string | null>(null);
   const [hapticosOn, setHapticosOn] = useHapticosActivos();
   const [vozOn, setVozOn] = useVozActiva();
+  const [exportando, setExportando] = useState(false);
+  const [importando, setImportando] = useState(false);
 
   const equipoOnb = EQUIPO.filter(e => e.onboarding && e.id !== 'ninguno');
+
+  const exportar = async () => {
+    setExportando(true);
+    const r = await exportarProgreso();
+    setExportando(false);
+    if (!r.ok) Alert.alert('No se pudo exportar', r.motivo);
+  };
+
+  // Elegir y validar el archivo primero; recien si es valido se pide
+  // confirmacion (reemplaza todo, no se puede deshacer) antes de escribir.
+  const importar = async () => {
+    setImportando(true);
+    const elegido = await elegirRespaldo();
+    setImportando(false);
+    if (elegido.ok === 'cancelado') return;
+    if (!elegido.ok) { Alert.alert('Archivo no válido', elegido.motivo); return; }
+
+    Alert.alert(
+      'Importar progreso',
+      'Esto reemplaza tu progreso actual. No se puede deshacer.',
+      [
+        { text: 'Cancelar', style: 'cancel' },
+        {
+          text: 'Importar', style: 'destructive',
+          onPress: async () => {
+            try {
+              await aplicarRespaldo(elegido.respaldo);
+              Alert.alert(
+                'Progreso importado',
+                'Cierra la app por completo y vuelve a abrirla para verlo reflejado.',
+              );
+            } catch {
+              Alert.alert(
+                'No se pudo importar',
+                'Algo falló al escribir el progreso. Tus datos actuales no deberían haber cambiado; intenta otra vez.',
+              );
+            }
+          },
+        },
+      ],
+    );
+  };
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: color.fondo }} edges={['bottom']}>
@@ -538,6 +583,25 @@ export function Ajustes({ navigation }: any) {
                 { text: 'Eliminar', style: 'destructive', onPress: () => { borrarCuenta(); } },
               ],
             )}
+          />
+        </Seccion>
+
+        <Seccion titulo="Tus datos">
+          <Text style={[tipo.pie, { color: color.textoSuave }]}>
+            Todo vive en este teléfono, sin copia en la nube. Exporta un
+            archivo para guardarlo tú o pasarlo a otro teléfono.
+          </Text>
+          <Boton
+            texto="Exportar mi progreso" variante="contorno"
+            estilo={{ marginTop: esp.sm }}
+            ocupado={exportando} textoOcupado="Exportando..."
+            onPress={exportar}
+          />
+          <Boton
+            texto="Importar progreso" variante="contorno"
+            estilo={{ marginTop: esp.sm }}
+            ocupado={importando} textoOcupado="Leyendo archivo..."
+            onPress={importar}
           />
         </Seccion>
 

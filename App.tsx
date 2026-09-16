@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { View, Text, ActivityIndicator, StyleSheet, Animated, Easing, Platform } from 'react-native';
-import { NavigationContainer, DarkTheme } from '@react-navigation/native';
+import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -11,8 +11,9 @@ import { Ionicons } from '@expo/vector-icons';
 import { useFonts } from 'expo-font';
 import { ArchivoBlack_400Regular } from '@expo-google-fonts/archivo-black';
 import { Inter_400Regular, Inter_600SemiBold, Inter_700Bold } from '@expo-google-fonts/inter';
+import { Baloo2_700Bold, Baloo2_800ExtraBold } from '@expo-google-fonts/baloo-2';
 
-import { color, tipo, anim, peso } from './src/theme';
+import { color, colorSesion, tipo, anim, peso } from './src/theme';
 import { ProveedorEstado, useEstado, hoy } from './src/store/store';
 import { ProveedorCuenta, useCuenta } from './src/store/cuenta';
 import { ProveedorAnuncios } from './src/components/RelojAnuncios';
@@ -45,16 +46,16 @@ const Stack = createNativeStackNavigator();
 /**
  * Tema de navegacion.
  *
- * Se construye sobre DarkTheme, no sobre DefaultTheme. React Navigation
- * pinta el fondo de la pantalla que entra usando este tema mientras corre
- * la animacion de transicion; con el tema claro de base, ese fondo era
- * blanco y se veia un destello en cada navegacion.
+ * Construido sobre DefaultTheme (la app es clara). React Navigation pinta
+ * el fondo de la pantalla que entra usando este tema mientras corre la
+ * animacion de transicion, asi que estos colores tienen que coincidir con
+ * los de `Pantalla`/las pantallas propias o se ve un destello.
  */
 const tema = {
-  ...DarkTheme,
-  dark: true,
+  ...DefaultTheme,
+  dark: false,
   colors: {
-    ...DarkTheme.colors,
+    ...DefaultTheme.colors,
     background: color.fondo,
     card: color.fondo,
     text: color.texto,
@@ -203,7 +204,12 @@ function Raiz() {
         options={{ headerShown: false, animation: 'fade' }} />
 
       <Stack.Screen name="Reproductor" component={Reproductor}
-        options={{ headerShown: false, gestureEnabled: false, animation: 'slide_from_bottom' }} />
+        options={{
+          headerShown: false, gestureEnabled: false, animation: 'slide_from_bottom',
+          // Unica pantalla que sigue oscura: sin esto, el fondo claro de
+          // contentStyle asoma un instante durante la transicion de entrada.
+          contentStyle: { backgroundColor: colorSesion.fondo },
+        }} />
       <Stack.Screen name="Resumen" component={Resumen}
         options={{ headerShown: false, gestureEnabled: false, animation: 'fade' }} />
 
@@ -230,6 +236,7 @@ function Raiz() {
 export default function App() {
   const [fontsLoaded, fontError] = useFonts({
     ArchivoBlack_400Regular, Inter_400Regular, Inter_600SemiBold, Inter_700Bold,
+    Baloo2_700Bold, Baloo2_800ExtraBold,
   });
 
   useEffect(() => {
@@ -256,7 +263,11 @@ export default function App() {
       <ProveedorCuenta>
       <ProveedorEstado>
         <NavigationContainer theme={tema}>
-          <StatusBar style="light" />
+          {/* Iconos oscuros por defecto (fondo claro). La sesion activa del
+              reproductor sigue oscura y monta su propio <StatusBar style="light">
+              mientras esta en pantalla — expo-status-bar respeta el mas
+              reciente montado y vuelve a este al desmontarse. */}
+          <StatusBar style="dark" />
           {/* El reloj de anuncios envuelve toda la app: un intersticial cada
               10 minutos, en cualquier pantalla salvo mientras se entrena. */}
           <ProveedorAnuncios>

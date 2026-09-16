@@ -4,11 +4,12 @@ import {
   KeyboardAvoidingView, Platform,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { StatusBar } from 'expo-status-bar';
 import { useKeepAwake } from 'expo-keep-awake';
 import * as Haptics from 'expo-haptics';
 import * as Speech from 'expo-speech';
 import { createAudioPlayer, type AudioPlayer } from 'expo-audio';
-import { color, tipo, esp, radio, TOQUE, anim, sombra } from '../theme';
+import { color, colorSesion, tipo, esp, radio, TOQUE, anim, sombra } from '../theme';
 import {
   useSessionPlayer, leerSesionGuardada, borrarSesionGuardada, type SesionEnCurso,
 } from '../session/useSessionPlayer';
@@ -34,21 +35,21 @@ import { VidrioFondo } from '../components/Vidrio';
  */
 
 const TINTE = {
-  preparado: color.preparadoFondo,
-  trabajo: color.trabajoFondo,
-  cambio_lado: color.preparadoFondo,
-  descanso: color.descansoFondo,
-  pausa: color.lienzo,
-  fin: color.trabajoFondo,
+  preparado: colorSesion.preparadoFondo,
+  trabajo: colorSesion.trabajoFondo,
+  cambio_lado: colorSesion.preparadoFondo,
+  descanso: colorSesion.descansoFondo,
+  pausa: colorSesion.lienzo,
+  fin: colorSesion.trabajoFondo,
 } as const;
 
 const ACENTO = {
-  preparado: color.preparado,
-  trabajo: color.trabajo,
-  cambio_lado: color.preparado,
-  descanso: color.descanso,
-  pausa: color.textoSuave,
-  fin: color.trabajo,
+  preparado: colorSesion.preparado,
+  trabajo: colorSesion.trabajo,
+  cambio_lado: colorSesion.preparado,
+  descanso: colorSesion.descanso,
+  pausa: colorSesion.textoSuave,
+  fin: colorSesion.trabajo,
 } as const;
 
 const ETIQUETA = {
@@ -544,10 +545,13 @@ function ReproductorActivo({ sesionInicial, restaurar, navigation }: {
 
   return (
     <View style={{ flex: 1 }}>
+      {/* Esta pantalla se queda oscura (ver colorSesion en theme.ts): iconos
+          claros mientras esta montada, vuelve solo al "dark" global al salir. */}
+      <StatusBar style="light" />
       <View style={[StyleSheet.absoluteFill, { backgroundColor: TINTE[tintePrevio] }]} />
       <Animated.View style={[StyleSheet.absoluteFill, { backgroundColor: TINTE[tinteActual], opacity: fundido }]} />
       <Animated.View pointerEvents="none" style={[StyleSheet.absoluteFill, {
-        backgroundColor: color.trabajo,
+        backgroundColor: colorSesion.trabajo,
         opacity: pulsoCuenta.interpolate({ inputRange: [0, 1], outputRange: [0, 0.08] }),
       }]} />
       <SafeAreaView style={{ flex: 1 }}>
@@ -570,9 +574,9 @@ function ReproductorActivo({ sesionInicial, restaurar, navigation }: {
       <View style={s.cabecera}>
         <Pressable onPress={() => { p.pausar(); setSalida(true); }} hitSlop={12}
           accessibilityRole="button" accessibilityLabel="Salir">
-          <Text style={[tipo.dato, { color: color.textoSuave }]}>Salir</Text>
+          <Text style={[tipo.dato, { color: colorSesion.textoSuave }]}>Salir</Text>
         </Pressable>
-        <Text style={[tipo.micro, { color: color.textoTenue }]}>
+        <Text style={[tipo.micro, { color: colorSesion.textoTenue }]}>
           {estado.indice + 1} de {items.length}
         </Text>
         <Pressable
@@ -585,7 +589,7 @@ function ReproductorActivo({ sesionInicial, restaurar, navigation }: {
           accessibilityRole="button" accessibilityLabel={estado.fase === 'pausa' ? 'Seguir' : 'Pausa'}
           accessibilityState={{ disabled: estado.fase === 'pausa' && hablando }}
         >
-          <Text style={[tipo.dato, { color: estado.fase === 'pausa' && hablando ? color.textoTenue : color.textoSuave }]}>
+          <Text style={[tipo.dato, { color: estado.fase === 'pausa' && hablando ? colorSesion.textoTenue : colorSesion.textoSuave }]}>
             {estado.fase === 'pausa' ? 'Seguir' : 'Pausa'}
           </Text>
         </Pressable>
@@ -602,7 +606,7 @@ function ReproductorActivo({ sesionInicial, restaurar, navigation }: {
 
         <Animated.Text
           style={[tipo.reloj, {
-            color: color.texto,
+            color: colorSesion.texto,
             transform: [{ scale: pulsoCuenta.interpolate({ inputRange: [0, 1], outputRange: [1, 1.12] }) }],
           }]}
           maxFontSizeMultiplier={1.2}
@@ -618,30 +622,30 @@ function ReproductorActivo({ sesionInicial, restaurar, navigation }: {
             : (ejercicio.repsPlan ?? '—')}
         </Animated.Text>
 
-        <Text style={[tipo.h2, { color: color.texto, textAlign: 'center' }]}>
+        <Text style={[tipo.h2, { color: colorSesion.texto, textAlign: 'center' }]}>
           {estado.fase === 'descanso' ? siguiente(items, estado.indice, estado.serieNum) : ejercicio.name}
         </Text>
 
         <View style={{ marginTop: esp.xs }}>
           <Animated.View pointerEvents="none" style={[StyleSheet.absoluteFill, {
-            backgroundColor: color.acentoTinte, opacity: pulsoFondo, borderRadius: radio.chip,
+            backgroundColor: colorSesion.acentoTinte, opacity: pulsoFondo, borderRadius: radio.chip,
           }]} />
           <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', paddingVertical: 2 }}>
-            <Text style={[tipo.pie, { color: color.textoSuave }]}>Serie </Text>
+            <Text style={[tipo.pie, { color: colorSesion.textoSuave }]}>Serie </Text>
             <Animated.View style={{
               transform: [{ scale: pulsoEscala.interpolate({ inputRange: [0, 1], outputRange: [1, 1.06] }) }],
             }}>
               <View>
-                <Text style={[tipo.pie, { color: color.textoSuave }]}>{estado.serieNum}</Text>
+                <Text style={[tipo.pie, { color: colorSesion.textoSuave }]}>{estado.serieNum}</Text>
                 <Animated.Text style={[tipo.pie, {
-                  color: color.acento, opacity: pulsoEscala,
+                  color: colorSesion.acento, opacity: pulsoEscala,
                   position: 'absolute', top: 0, left: 0,
                 }]}>
                   {estado.serieNum}
                 </Animated.Text>
               </View>
             </Animated.View>
-            <Text style={[tipo.pie, { color: color.textoSuave }]}>
+            <Text style={[tipo.pie, { color: colorSesion.textoSuave }]}>
               {' '}de {ejercicio.seriesPlan}
               {estado.lado ? ` · lado ${estado.lado === 'izq' ? 'izquierdo' : 'derecho'}` : ''}
             </Text>
@@ -653,7 +657,7 @@ function ReproductorActivo({ sesionInicial, restaurar, navigation }: {
             primer ejercicio que para cualquier otro, no solo a partir del
             segundo. */}
         {estado.fase !== 'descanso' && estado.fase !== 'fin' && items[estado.indice + 1] && (
-          <Text style={[tipo.pie, { color: color.textoTenue, marginTop: 2 }]}>
+          <Text style={[tipo.pie, { color: colorSesion.textoTenue, marginTop: 2 }]}>
             Sigue: {items[estado.indice + 1].name}
           </Text>
         )}
@@ -661,7 +665,7 @@ function ReproductorActivo({ sesionInicial, restaurar, navigation }: {
         {p.puedeDeshacer && (
           <Pressable onPress={p.deshacer} hitSlop={10} style={{ paddingVertical: esp.xs }}
             accessibilityRole="button" accessibilityLabel="Deshacer la última serie marcada">
-            <Text style={[tipo.pie, { color: color.acento }]}>Deshacer última serie</Text>
+            <Text style={[tipo.pie, { color: colorSesion.acento }]}>Deshacer última serie</Text>
           </Pressable>
         )}
 
@@ -698,7 +702,7 @@ function ReproductorActivo({ sesionInicial, restaurar, navigation }: {
         )}
 
         {estado.fase === 'trabajo' && p.esPorTiempo && (
-          <Boton texto="Terminar antes" variante="contorno" onPress={p.avanzar} estilo={{ flex: 1 }} deshabilitado={hablando || cuentaFinal} />
+          <Boton texto="Terminar antes" variante="contorno" oscuro onPress={p.avanzar} estilo={{ flex: 1 }} deshabilitado={hablando || cuentaFinal} />
         )}
 
         {estado.fase === 'pausa' && (
@@ -713,15 +717,15 @@ function ReproductorActivo({ sesionInicial, restaurar, navigation }: {
         accessibilityRole="button" accessibilityLabel="Omitir este ejercicio"
         accessibilityState={{ disabled: hablando }}
       >
-        <Text style={[tipo.pie, { color: color.textoTenue }]}>Omitir este ejercicio</Text>
+        <Text style={[tipo.pie, { color: colorSesion.textoTenue }]}>Omitir este ejercicio</Text>
       </Pressable>
 
       <Modal visible={salida} animationType="slide" transparent>
         <VidrioFondo intensidad={24} />
         <View style={s.modalFondo}>
           <View style={s.modal}>
-            <Text style={[tipo.h2, { color: color.texto }]}>Guardamos lo que llevas</Text>
-            <Text style={[tipo.cuerpo, { color: color.textoSuave, marginBottom: esp.md }]}>
+            <Text style={[tipo.h2, { color: colorSesion.texto }]}>Guardamos lo que llevas</Text>
+            <Text style={[tipo.cuerpo, { color: colorSesion.textoSuave, marginBottom: esp.md }]}>
               Cuéntanos qué pasó y ajustamos la próxima.
             </Text>
             {[
@@ -733,10 +737,10 @@ function ReproductorActivo({ sesionInicial, restaurar, navigation }: {
             ].map(([id, txt]) => (
               <Pressable key={id} onPress={() => { setSalida(false); finalizar(false, id); }} style={s.opcionSalida}
                 accessibilityRole="button" accessibilityLabel={txt}>
-                <Text style={[tipo.cuerpo, { color: color.texto }]}>{txt}</Text>
+                <Text style={[tipo.cuerpo, { color: colorSesion.texto }]}>{txt}</Text>
               </Pressable>
             ))}
-            <Boton texto="Mejor sigo" variante="texto" onPress={() => { setSalida(false); p.reanudar(); }} />
+            <Boton texto="Mejor sigo" variante="texto" oscuro onPress={() => { setSalida(false); p.reanudar(); }} />
           </View>
         </View>
       </Modal>
@@ -763,7 +767,7 @@ const s = StyleSheet.create({
     borderRadius: radio.tarjeta, paddingHorizontal: esp.md,
     color: color.texto, fontSize: 15, backgroundColor: color.lienzo,
   },
-  barra: { height: 3, backgroundColor: color.borde, marginHorizontal: esp.md, borderRadius: 2, overflow: 'hidden' },
+  barra: { height: 3, backgroundColor: colorSesion.borde, marginHorizontal: esp.md, borderRadius: 2, overflow: 'hidden' },
   barraLlena: { height: 3 },
   chispa: { position: 'absolute', top: 0, width: 3, height: 3, borderRadius: 1.5, ...sombra.brasa },
   cabecera: {
@@ -783,11 +787,11 @@ const s = StyleSheet.create({
   miniTxt: { fontSize: 22, color: color.textoSuave },
   modalFondo: { flex: 1, justifyContent: 'flex-end' },
   modal: {
-    backgroundColor: color.fondo, borderTopLeftRadius: 28, borderTopRightRadius: 28,
+    backgroundColor: colorSesion.fondo, borderTopLeftRadius: 28, borderTopRightRadius: 28,
     padding: esp.lg, gap: esp.sm,
   },
   opcionSalida: {
     minHeight: TOQUE, justifyContent: 'center', paddingHorizontal: esp.md,
-    borderWidth: 1, borderColor: color.borde, borderRadius: radio.tarjeta,
+    borderWidth: 1, borderColor: colorSesion.borde, borderRadius: radio.tarjeta,
   },
 });

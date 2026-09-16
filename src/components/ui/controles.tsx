@@ -11,7 +11,7 @@ import {
   type ViewStyle, type AccessibilityRole, type AccessibilityState,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { color, tipo, esp, radio, TOQUE, degradado, sombra, anim, peso } from '../../theme';
+import { color, colorSesion, tipo, esp, radio, TOQUE, degradado, sombra, anim, peso } from '../../theme';
 import { useMovimientoReducido } from './movimiento';
 
 /** Pulsable que se hunde un poco al tocarlo. */
@@ -51,7 +51,7 @@ export function Toque({ children, onPress, estilo, escala = 0.97, etiqueta, rol 
 /* ═══════════════════════════════════════════════════ botones */
 
 export function Boton({
-  texto, onPress, variante = 'principal', deshabilitado, estilo, ancho, ocupado, textoOcupado,
+  texto, onPress, variante = 'principal', deshabilitado, estilo, ancho, ocupado, textoOcupado, oscuro,
 }: {
   texto: string;
   onPress: () => void;
@@ -65,13 +65,19 @@ export function Boton({
   /** Gerundio ("Guardando...") para cuando el movimiento reducido apaga la
    *  animacion y el label es lo unico que puede decir "espera". */
   textoOcupado?: string;
+  /** Solo para el reproductor (pantalla que se queda oscura): usa texto y
+   *  borde de colorSesion en vez del tema claro, para que "contorno"/"texto"
+   *  sigan siendo legibles sobre su fondo oscuro. No afecta "principal"/
+   *  "acento": esas ya llevan su propio relleno y quedan legibles igual. */
+  oscuro?: boolean;
 }) {
   const reducido = useMovimientoReducido();
   const relleno = variante === 'principal' || variante === 'acento';
   const inactivo = deshabilitado || ocupado;
+  const c = oscuro ? colorSesion : color;
   const txt =
     relleno ? color.sobreOscuro :
-    variante === 'peligro' ? color.peligro : color.texto;
+    variante === 'peligro' ? color.peligro : c.texto;
 
   const textoVisible = ocupado && reducido ? (textoOcupado ?? texto) : texto;
   const etiqueta = (
@@ -104,7 +110,7 @@ export function Boton({
   return (
     <Toque onPress={inactivo ? undefined : onPress} estilo={[
       s.boton,
-      variante === 'contorno' && { borderWidth: 1, borderColor: color.bordeFuerte, backgroundColor: color.velo },
+      variante === 'contorno' && { borderWidth: 1, borderColor: c.bordeFuerte, backgroundColor: c.velo },
       variante === 'peligro' && { borderWidth: 1, borderColor: color.peligroBorde },
       variante === 'texto' && { minHeight: 44 },
       deshabilitado && { opacity: 0.35 },
@@ -237,7 +243,11 @@ export function Chip({ texto, activo, onPress, pequeno, oscuro }: {
       activo && sombra.brasa,
     ]}>
       <Text style={[pequeno ? tipo.micro : tipo.pie, {
-        color: activo ? color.sobreOscuro : color.textoSuave,
+        // "oscuro" es para chips sobre foto o degradado de acento: el
+        // texto cafe (textoSuave) esta pensado para el fondo claro de la
+        // pantalla, no para ahi. Medido con scripts/contraste.js: textoSuave
+        // sobre el degradado azul da ~1.4:1 (ilegible); blanco da >=4.9:1.
+        color: (activo || oscuro) ? color.sobreOscuro : color.textoSuave,
         fontFamily: activo ? peso.bold : peso.semibold,
       }]}>{texto}</Text>
     </Animated.View>

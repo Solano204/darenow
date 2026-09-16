@@ -153,7 +153,7 @@ export function Buscador({ valor, onCambio, placeholder }: {
         placeholderTextColor={color.textoTenue} style={s.buscador}
         onFocus={() => setFoco(true)} onBlur={() => setFoco(false)}
         clearButtonMode="while-editing"
-        keyboardAppearance="dark"
+        keyboardAppearance="light"
       />
     </View>
   );

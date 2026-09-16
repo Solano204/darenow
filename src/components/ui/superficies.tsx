@@ -1,41 +1,30 @@
 /**
  * FORJA · ui / superficies
  *
- * `Vidrio3D` es la pieza base (filo de luz + cuerpo + luz interior +
- * barrido opcional) y `Tarjeta` la envuelve para el uso comun. `Pantalla`
- * es el contenedor de cada pantalla, con su resplandor fijo.
+ * `Vidrio3D` es la pieza base (superficie plana: color o degradado de dos
+ * tonos, sombra suave, barrido opcional) y `Tarjeta` la envuelve para el
+ * uso comun. `Pantalla` es el contenedor de cada pantalla.
  */
 
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import {
   View, Text, Pressable, ScrollView, StyleSheet, KeyboardAvoidingView, Platform,
-  Animated, Easing, type ViewStyle,
+  type ViewStyle,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { BlurView } from 'expo-blur';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { color, tipo, esp, radio, degradado, sombra, sol, filoLuz, anim } from '../../theme';
-import { Brillo, useMovimientoReducido } from './movimiento';
+import { color, tipo, esp, radio, degradado, sombra, sol } from '../../theme';
+import { Brillo } from './movimiento';
 import { Toque } from './controles';
 
 /**
- * Superficie de vidrio.
+ * Superficie plana.
  *
- * Es la pieza que da el aspecto tridimensional a toda la app. Cinco
- * capas, de atras hacia adelante:
- *
- *   1. FILO DE LUZ  - envoltura de 1px pintada como degradado: brilla del
- *                     lado del sol y se apaga del opuesto. Es el canto.
- *   2. CUERPO       - degradado de superficie, orientado al mismo sol.
- *   3. DESENFOQUE   - opcional; solo donde hay algo detras que valga la
- *                     pena difuminar (una foto, el resplandor del fondo).
- *   4. LUZ INTERIOR - una linea clara pegada al canto de arriba y un
- *                     resplandor en la esquina del sol. Esto es lo que
- *                     convierte un rectangulo en una lamina con grosor.
- *   5. BARRIDO      - opcional, el reflejo que cruza.
- *
- * La sombra vive en la envoltura, no en el cuerpo: si va dentro, el
- * recorte de overflow se la come.
+ * Color solido o degradado de dos tonos (`degradado[tono]`), sombra suave
+ * y tenida, y un barrido de luz opcional para la tarjeta que manda en la
+ * pantalla. `desenfoque` se conserva en la firma por compatibilidad (una
+ * tarjeta de Hoy.tsx todavia lo pasa) pero ya no hace nada: una superficie
+ * plana no tiene nada detras que valga la pena difuminar.
  */
 export function Vidrio3D({
   children, tono = 'crema', estilo, radioExterior = radio.tarjeta,
@@ -47,76 +36,24 @@ export function Vidrio3D({
   radioExterior?: number;
   /** barrido de luz; solo para la tarjeta que manda en la pantalla */
   brillo?: boolean;
-  /** desenfoque real; cuesta GPU, uselo solo sobre fotos o el resplandor */
+  /** @deprecated sin efecto en la superficie plana; se deja por compatibilidad */
   desenfoque?: boolean;
   elevacion?: 'plana' | 'suave' | 'alta';
 }) {
   const sombraNivel =
     elevacion === 'alta' ? sombra.alta : elevacion === 'plana' ? undefined : sombra.suave;
 
-  // El vidrio real se materializa al entrar: nace transparente y algo mas
-  // chico, y se asienta. Una superficie opaca no lo necesita (no hay nada
-  // que "empañar"); el filo de luz de fuera queda fijo, solo el cristal
-  // de adentro se forma.
-  const reducido = useMovimientoReducido();
-  const v = useRef(new Animated.Value(desenfoque && !reducido ? 0 : 1)).current;
-  useEffect(() => {
-    if (!desenfoque || reducido) return;
-    Animated.timing(v, {
-      toValue: 1, duration: anim.lenta, easing: Easing.out(Easing.cubic), useNativeDriver: true,
-    }).start();
-  }, [desenfoque, reducido]);
-
   return (
-    <LinearGradient
-      colors={filoLuz}
-      start={sol.start}
-      end={sol.end}
-      style={[{ borderRadius: radioExterior, padding: 1 }, sombraNivel, estilo]}
-    >
-      <Animated.View style={{
-        borderRadius: radioExterior - 1, overflow: 'hidden',
-        opacity: v,
-        transform: [{ scale: v.interpolate({ inputRange: [0, 1], outputRange: [0.96, 1] }) }],
-      }}>
-        {/*
-          * El orden de estas capas no es casual. BlurView difumina lo que
-          * se pinto ANTES que el, asi que va primero: lo que difumina es
-          * el fondo de la pantalla y el resplandor, que es lo que hay
-          * detras de verdad. Si fuera despues del degradado, difuminaria
-          * el propio degradado y la tarjeta quedaria turbia.
-          *
-          * Cuando hay desenfoque el cuerpo va a media opacidad, para que
-          * el resplandor se vea a traves. Sin desenfoque va opaco.
-          */}
-        {desenfoque && (
-          <BlurView intensity={26} tint="dark" style={StyleSheet.absoluteFill} />
-        )}
-
-        <LinearGradient
-          colors={degradado[tono]}
-          start={sol.start}
-          end={sol.end}
-          style={[StyleSheet.absoluteFill, desenfoque ? { opacity: 0.72 } : null]}
-        />
-
-        {/* Resplandor de la esquina del sol: arriba a la izquierda. */}
-        <LinearGradient
-          pointerEvents="none"
-          colors={degradado.vidrioLuz}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 0.75, y: 0.85 }}
-          style={StyleSheet.absoluteFill}
-        />
-
-        {/* Canto iluminado de arriba. Un pixel, y es lo que da grosor. */}
-        <View pointerEvents="none" style={s.cantoAlto} />
-
-        {brillo && <Brillo />}
-
-        <View style={{ padding: esp.md, gap: esp.sm }}>{children}</View>
-      </Animated.View>
-    </LinearGradient>
+    <View style={[{ borderRadius: radioExterior, overflow: 'hidden' }, sombraNivel, estilo]}>
+      <LinearGradient
+        colors={degradado[tono]}
+        start={sol.start}
+        end={sol.end}
+        style={StyleSheet.absoluteFill}
+      />
+      {brillo && <Brillo />}
+      <View style={{ padding: esp.md, gap: esp.sm }}>{children}</View>
+    </View>
   );
 }
 
@@ -216,8 +153,9 @@ export function Pantalla({ children, sinPadding, lienzo, extraAbajo = 0 }: {
   );
 }
 
-/** El sol del sistema: un resplandor calido arriba a la izquierda. */
-export function Resplandor({ opacidad = 0.5 }: { opacidad?: number }) {
+/** Halo muy sutil arriba a la izquierda. Casi imperceptible a proposito:
+ *  una superficie plana no necesita el "sol" que justificaba el vidrio. */
+export function Resplandor({ opacidad = 0.15 }: { opacidad?: number }) {
   return (
     <View pointerEvents="none" style={s.resplandor}>
       <LinearGradient
@@ -230,17 +168,6 @@ export function Resplandor({ opacidad = 0.5 }: { opacidad?: number }) {
 }
 
 const s = StyleSheet.create({
-  // Envoltura de 1px que pinta el filo de luz de la tarjeta.
-  filo: { borderRadius: radio.tarjeta, padding: 1 },
-  // Un pixel claro pegado al canto de arriba. Es la diferencia entre un
-  // rectangulo pintado y una lamina que tiene grosor.
-  cantoAlto: {
-    position: 'absolute', top: 0, left: 14, right: 14, height: 1,
-    backgroundColor: color.cantoAlto,
-  },
-  tarjeta: {
-    borderRadius: radio.tarjeta - 1, padding: esp.md, gap: esp.sm, overflow: 'hidden',
-  },
   cabeceraSeccion: {
     flexDirection: 'row', justifyContent: 'space-between',
     alignItems: 'center', marginBottom: esp.sm,

@@ -12,7 +12,8 @@
 import React, { useMemo } from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { color, tipo, esp, radio } from '../theme';
+import { LinearGradient } from 'expo-linear-gradient';
+import { color, tipo, esp, radio, degradado, sol } from '../theme';
 import {
   Boton, Seccion, Chip, Aparece, Toque, Nota, BarrasSemana, BotonRedondo,
   useHuecoAbajo, NumeroAnimado, Resplandor, Vidrio3D,
@@ -143,16 +144,21 @@ export default function Hoy({ navigation }: any) {
             elevacion="alta"
             estilo={{ marginHorizontal: esp.md }}
           >
+            {/* Toda esta tarjeta va sobre degradado.carbon (azul vivo), no
+                sobre el fondo claro de la pantalla: el texto usa
+                color.sobreOscuro (blanco), no color.texto/textoSuave/acento.
+                Medido con scripts/contraste.js — ver el comentario junto a
+                degradado.carbon en theme.ts. */}
             {sinEjercicios ? (
               <>
-                <Text style={[tipo.h3, { color: color.texto }]}>Tu filtro de lesión está activo</Text>
-                <Text style={[tipo.pie, { color: color.textoSuave, marginTop: esp.xs }]}>
+                <Text style={[tipo.h3, { color: color.sobreOscuro }]}>Tu filtro de lesión está activo</Text>
+                <Text style={[tipo.pie, { color: color.sobreOscuro, marginTop: esp.xs }]}>
                   Con las zonas que declaraste, hoy no queda ningún ejercicio seguro para
                   armar tu sesión. Las contraindicaciones nunca se relajan solas.
                 </Text>
                 <Toque onPress={() => navigation.navigate('Tabs', { screen: 'Yo' })}
                   estilo={{ paddingVertical: esp.sm } as never}>
-                  <Text style={[tipo.dato, { color: color.acento }]}>Revisar mis lesiones en Ajustes</Text>
+                  <Text style={[tipo.dato, { color: color.sobreOscuro }]}>Revisar mis lesiones en Ajustes</Text>
                 </Toque>
               </>
             ) : (
@@ -170,7 +176,7 @@ export default function Hoy({ navigation }: any) {
                   {sesion.items.slice(0, 6).map(it => (
                     <View key={it.id} style={{ width: 82 }}>
                       <Foto tipo="ejercicio" id={it.id} nombre={it.name} alto={82} ancho={82} forma="redonda" />
-                      <Text style={[tipo.micro, { color: color.textoSuave, marginTop: 6 }]} numberOfLines={2}>
+                      <Text style={[tipo.micro, { color: color.sobreOscuro, marginTop: 6 }]} numberOfLines={2}>
                         {it.name}
                       </Text>
                     </View>
@@ -178,7 +184,7 @@ export default function Hoy({ navigation }: any) {
                 </ScrollView>
 
                 {avisosSesion.map((a, n) => (
-                  <Text key={n} style={[tipo.pie, { color: color.acento }]}>{a}</Text>
+                  <Text key={n} style={[tipo.pie, { color: color.sobreOscuro }]}>{a}</Text>
                 ))}
 
                 <Boton
@@ -193,7 +199,7 @@ export default function Hoy({ navigation }: any) {
                   })}
                   estilo={{ alignItems: 'center', paddingVertical: esp.sm } as never}
                 >
-                  <Text style={[tipo.pie, { color: color.textoSuave }]}>
+                  <Text style={[tipo.pie, { color: color.sobreOscuro }]}>
                     Hoy no tengo tiempo · sesión de 5 minutos
                   </Text>
                 </Toque>
@@ -201,6 +207,33 @@ export default function Hoy({ navigation }: any) {
             )}
           </Vidrio3D>
         </Aparece>
+
+        {/* Tarjetas de color: mismos 4 ejercicios que "Ejercicios para ti"
+            mas abajo, solo que los primeros 3 aqui arriba con mas peso
+            visual. Tocar la tarjeta lleva a la misma ficha de siempre. */}
+        {ejercicios.length > 0 && (
+          <Aparece retraso={70}>
+            <View style={{ marginTop: esp.lg }}>
+              <Text style={[tipo.h2, { color: color.texto, paddingHorizontal: esp.md, marginBottom: esp.sm }]}>
+                Elige tu enfoque
+              </Text>
+              <ScrollView horizontal showsHorizontalScrollIndicator={false}
+                contentContainerStyle={{ gap: esp.sm, paddingHorizontal: esp.md }}>
+                {ejercicios.slice(0, 3).map((e, i) => (
+                  <TarjetaColor
+                    key={e.id}
+                    tono={(['acento', 'purpuraClaro', 'verdeClaro'] as const)[i % 3]}
+                    titulo={e.name}
+                    sub={`Nivel ${e.level}`}
+                    tipoFoto="ejercicio"
+                    id={e.id}
+                    onPress={() => navigation.navigate('Ejercicio', { id: e.id })}
+                  />
+                ))}
+              </ScrollView>
+            </View>
+          </Aparece>
+        )}
 
         {/* Por si la sesion de arriba no convence: otras rutinas a mano,
             aqui mismo, sin bajar hasta el descubrimiento de mas abajo. */}
@@ -224,6 +257,9 @@ export default function Hoy({ navigation }: any) {
 
         {/* Racha */}
         <Aparece retraso={120}>
+          <View style={{ paddingHorizontal: esp.md, marginTop: esp.lg }}>
+            <DiaPicker semana={semana} />
+          </View>
           <View style={s.racha}>
             <View style={{ minWidth: 72 }}>
               <NumeroAnimado valor={racha.dias} estilo={[tipo.display, { color: color.acento }]} />
@@ -384,6 +420,67 @@ function Stat({ n, t }: { n: string; t: string }) {
   );
 }
 
+/**
+ * Tarjeta de categoria: degradado claro, foto y una pastilla "Inicio"
+ * decorativa (el toque de la tarjeta entera ya lleva a la ficha, igual
+ * que el resto de tarjetas de esta pantalla).
+ *
+ * Fondos claros a proposito (pedido explicito) + texto oscuro: los tonos
+ * vivos (degradado.carbon/purpura/verde) los usa la tarjeta principal de
+ * arriba con texto BLANCO, y aclararlos ahi rompe ese contraste. Estas
+ * versiones "Claro" son tokens aparte en theme.ts, no un aclarado local.
+ */
+function TarjetaColor({ tono, titulo, sub, tipoFoto, id, onPress }: {
+  tono: 'acento' | 'purpuraClaro' | 'verdeClaro';
+  titulo: string; sub: string;
+  tipoFoto: 'ejercicio' | 'rutina'; id: string;
+  onPress: () => void;
+}) {
+  return (
+    <Toque onPress={onPress} estilo={{ width: 280 }}>
+      <LinearGradient colors={degradado[tono]} start={sol.start} end={sol.end} style={s.tarjetaColor}>
+        <View style={{ flex: 1, justifyContent: 'space-between' }}>
+          <View style={{ paddingRight: esp.sm }}>
+            <Text style={[tipo.h3, { color: color.texto }]} numberOfLines={2}>{titulo}</Text>
+            <Text style={[tipo.pie, { color: color.texto, marginTop: esp.xs }]}>{sub}</Text>
+          </View>
+          <View style={s.pildoraInicio}>
+            <Text style={[tipo.dato, { color: color.sobreOscuro }]}>Inicio</Text>
+          </View>
+        </View>
+        <Foto tipo={tipoFoto} id={id} nombre={titulo} alto={190} ancho={120} forma="tarjeta"
+          estilo={{ position: 'absolute', right: 0, bottom: 0 }} />
+      </LinearGradient>
+    </Toque>
+  );
+}
+
+/** Fila de los ultimos 7 dias: el de hoy resaltado, un punto bajo el dia
+ *  que si tuvo sesion. Mismos datos que ya alimentan BarrasSemana, solo
+ *  presentados como calendario en vez de barras. */
+function DiaPicker({ semana }: { semana: { fecha: string; min: number }[] }) {
+  const hoyStr = hoy();
+  return (
+    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+      {semana.map(d => {
+        const esHoy = d.fecha === hoyStr;
+        const entreno = d.min > 0;
+        const numero = parseInt(d.fecha.slice(8, 10), 10);
+        return (
+          <View key={d.fecha} style={{ alignItems: 'center', gap: 5 }}>
+            <View style={[s.diaCirculo, esHoy && s.diaCirculoActivo]}>
+              <Text style={[tipo.dato, { color: esHoy ? color.sobreOscuro : color.textoTenue }]}>
+                {numero}
+              </Text>
+            </View>
+            <View style={[s.diaPunto, entreno && { backgroundColor: color.acento }]} />
+          </View>
+        );
+      })}
+    </View>
+  );
+}
+
 const s = StyleSheet.create({
   cabecera: {
     flexDirection: 'row', alignItems: 'center', gap: esp.sm,
@@ -412,4 +509,18 @@ const s = StyleSheet.create({
   },
   sep: { width: 1, height: 28, backgroundColor: color.borde },
   bannerAbajo: { position: 'absolute', left: esp.md, right: esp.md },
+  diaCirculo: {
+    width: 36, height: 36, borderRadius: 18, backgroundColor: color.cremaHonda,
+    alignItems: 'center', justifyContent: 'center',
+  },
+  diaCirculoActivo: { backgroundColor: color.texto },
+  diaPunto: { width: 5, height: 5, borderRadius: 2.5, backgroundColor: 'transparent' },
+  tarjetaColor: {
+    height: 190, borderRadius: radio.tarjeta, padding: esp.md,
+    overflow: 'hidden',
+  },
+  pildoraInicio: {
+    alignSelf: 'flex-start', backgroundColor: color.carbon,
+    borderRadius: radio.pastilla, paddingVertical: esp.xs, paddingHorizontal: esp.md,
+  },
 });

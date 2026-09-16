@@ -2,7 +2,7 @@
   "expo": {
     "name": "DARENOW",
     "slug": "darenow",
-    "scheme": "forja",
+    "scheme": ["forja", "app.forja.fitness"],
     "version": "2.0.0",
     "orientation": "portrait",
     "userInterfaceStyle": "dark",

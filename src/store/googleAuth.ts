@@ -19,8 +19,18 @@
 import { useEffect, useState } from 'react';
 import * as WebBrowser from 'expo-web-browser';
 import * as Google from 'expo-auth-session/providers/google';
+import { makeRedirectUri } from 'expo-auth-session';
 
 WebBrowser.maybeCompleteAuthSession();
+
+// Google exige que los clientes Android/iOS usen el package/bundle id como
+// esquema de retorno, no el "scheme" corto de app.json. Se pasa explicito
+// en vez de dejar que expo-auth-session lo infiera: la inferencia automatica
+// (Application.applicationId) es la que estaba devolviendo "forja:/..." en
+// vez de esto y Google lo rechazaba con "Error 400: invalid_request".
+const REDIRECT_URI = makeRedirectUri({ native: 'app.forja.fitness:/oauthredirect' });
+// TODO quitar antes de produccion
+console.log('[googleAuth] redirectUri:', REDIRECT_URI);
 
 const IOS_CLIENT_ID = process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID;
 const ANDROID_CLIENT_ID = process.env.EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID;
@@ -44,6 +54,7 @@ export function useGoogleSignIn() {
     androidClientId: ANDROID_CLIENT_ID || 'sin-configurar',
     webClientId: WEB_CLIENT_ID || 'sin-configurar',
     scopes: ['openid', 'profile', 'email'],
+    redirectUri: REDIRECT_URI,
   });
 
   const [cargando, setCargando] = useState(false);

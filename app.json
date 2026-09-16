@@ -29,7 +29,6 @@
       ]
     },
     "plugins": [
-      "expo-image",
       "expo-audio",
       [
         "expo-video",
@@ -40,9 +39,9 @@
       ],
       "expo-font",
       "expo-splash-screen",
-      "expo-web-browser",
       "expo-asset",
-      "expo-sharing"
+      "expo-sharing",
+      "@react-native-google-signin/google-signin"
     ],
     "extra": {
       "eas": {

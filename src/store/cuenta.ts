@@ -17,6 +17,7 @@
  */
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { cerrarGoogle } from './googleAuth';
 
 export const CLAVE = 'forja:cuenta:v1';
 
@@ -110,10 +111,12 @@ export function ProveedorCuenta({ children }: { children: React.ReactNode }) {
   }, [guardar]);
 
   const salir = useCallback(async () => {
+    await cerrarGoogle();
     await guardar(null);
   }, [guardar]);
 
   const borrarCuenta = useCallback(async () => {
+    await cerrarGoogle();
     await guardar(null);
   }, [guardar]);
 

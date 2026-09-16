@@ -1,114 +1,97 @@
 /**
  * FORJA · acceso con Google
  *
- * Reemplaza la version anterior, que solo leia el nombre. Ahora devuelve
- * tambien `id` (el campo `sub` de Google), que es lo que convierte esto en
- * una cuenta de verdad: es estable, no cambia si el usuario se cambia el
- * nombre, y es el identificador que se guarda en el telefono.
+ * Antes usaba expo-auth-session (navegador del sistema + redirect con
+ * esquema propio). Google bloquea ese flujo en Android con "Error 400:
+ * invalid_request" en cuanto el proyecto tiene un cliente Android real
+ * registrado: no es un problema de configuracion, es politica de Google
+ * para ese caso, y pide el SDK nativo. Este archivo migra a
+ * @react-native-google-signin/google-signin, que entra por Play Services
+ * en vez de abrir un navegador.
  *
  * Sigue sin haber backend. No hay sincronizacion entre dispositivos. Si el
  * usuario cambia de telefono, entra con el mismo Google pero su historial
  * de entrenamientos no viaja: eso requiere servidor y es otra fase.
  *
- * Flujo: navegador del sistema (no webview embebido, que Google bloquea).
- * Requiere un build de desarrollo o de produccion; en Expo Go el redirect
- * con esquema propio no resuelve.
+ * Requiere build de desarrollo o de produccion: Play Services nativo no
+ * esta disponible en Expo Go para este modulo.
  *
  * Ubicacion: src/store/googleAuth.ts
  */
-import { useEffect, useState } from 'react';
-import * as WebBrowser from 'expo-web-browser';
-import * as Google from 'expo-auth-session/providers/google';
-import { makeRedirectUri } from 'expo-auth-session';
+import { useState } from 'react';
+import {
+  GoogleSignin,
+  isErrorWithCode,
+  isSuccessResponse,
+  statusCodes,
+} from '@react-native-google-signin/google-signin';
 
-WebBrowser.maybeCompleteAuthSession();
-
-// Google exige que los clientes Android/iOS usen el package/bundle id como
-// esquema de retorno, no el "scheme" corto de app.json. Se pasa explicito
-// en vez de dejar que expo-auth-session lo infiera: la inferencia automatica
-// (Application.applicationId) es la que estaba devolviendo "forja:/..." en
-// vez de esto y Google lo rechazaba con "Error 400: invalid_request".
-const REDIRECT_URI = makeRedirectUri({ native: 'app.forja.fitness:/oauthredirect' });
-// TODO quitar antes de produccion
-console.log('[googleAuth] redirectUri:', REDIRECT_URI);
-
-const IOS_CLIENT_ID = process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID;
-const ANDROID_CLIENT_ID = process.env.EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID;
 const WEB_CLIENT_ID = process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID;
 
-export const googleDisponible = !!(IOS_CLIENT_ID || ANDROID_CLIENT_ID || WEB_CLIENT_ID);
+export const googleDisponible = !!WEB_CLIENT_ID;
+
+// Sin Web Client ID no hay nada que configurar: la app sigue funcionando
+// en modo invitado, sin boton de Google (ver Acceso.tsx).
+if (WEB_CLIENT_ID) {
+  GoogleSignin.configure({ webClientId: WEB_CLIENT_ID });
+}
 
 export interface PerfilGoogle {
-  /** `sub`: identificador estable de la cuenta de Google. */
+  /** id de Google: el mismo `sub` de antes, asi las cuentas ya guardadas siguen compatibles. */
   id: string;
   nombre: string;
   email?: string;
   foto?: string;
 }
 
-export type ErrorGoogle = null | 'cancelado' | 'sin_token' | 'red' | 'perfil';
+export type ErrorGoogle = null | 'cancelado' | 'sin_token' | 'red' | 'perfil' | 'servicios';
 
 export function useGoogleSignIn() {
-  const [request, response, promptAsync] = Google.useAuthRequest({
-    iosClientId: IOS_CLIENT_ID || 'sin-configurar',
-    androidClientId: ANDROID_CLIENT_ID || 'sin-configurar',
-    webClientId: WEB_CLIENT_ID || 'sin-configurar',
-    scopes: ['openid', 'profile', 'email'],
-    redirectUri: REDIRECT_URI,
-  });
-
   const [cargando, setCargando] = useState(false);
   const [perfil, setPerfil] = useState<PerfilGoogle | null>(null);
   const [error, setError] = useState<ErrorGoogle>(null);
 
-  useEffect(() => {
-    if (!response) return;
-
-    if (response.type === 'dismiss' || response.type === 'cancel') {
-      setCargando(false);
-      setError('cancelado');
-      return;
-    }
-    if (response.type !== 'success') {
-      setCargando(false);
-      setError('red');
-      return;
-    }
-
-    const token = response.authentication?.accessToken;
-    if (!token) {
-      setCargando(false);
-      setError('sin_token');
-      return;
-    }
-
-    fetch('https://openidconnect.googleapis.com/v1/userinfo', {
-      headers: { Authorization: `Bearer ${token}` },
-    })
-      .then(res => (res.ok ? res.json() : Promise.reject(res)))
-      .then(p => {
-        const id = String(p.sub || '').trim();
-        const nombre = String(p.given_name || p.name || '').trim();
-        // Sin `sub` no hay cuenta: es el unico campo que Google garantiza
-        // estable. El nombre puede venir vacio y no pasa nada, se pide
-        // despues en el onboarding.
-        if (!id) { setError('perfil'); return; }
-        setPerfil({ id, nombre, email: p.email, foto: p.picture });
-      })
-      .catch(() => setError('red'))
-      .finally(() => setCargando(false));
-  }, [response]);
-
-  const iniciar = () => {
+  const iniciar = async () => {
     setError(null);
     setCargando(true);
-    promptAsync().catch(() => { setError('red'); setCargando(false); });
+    try {
+      await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
+      const response = await GoogleSignin.signIn();
+
+      if (!isSuccessResponse(response)) {
+        setError('cancelado');
+        return;
+      }
+
+      const { user } = response.data;
+      const id = String(user.id || '').trim();
+      const nombre = String(user.givenName || user.name || '').trim();
+      // Sin id no hay cuenta: es el unico campo que Google garantiza
+      // estable. El nombre puede venir vacio y no pasa nada, se pide
+      // despues en el onboarding.
+      if (!id) { setError('perfil'); return; }
+      setPerfil({ id, nombre, email: user.email, foto: user.photo ?? undefined });
+    } catch (e) {
+      if (isErrorWithCode(e)) {
+        if (e.code === statusCodes.IN_PROGRESS) {
+          // ya hay un intento en curso: no es un error que haya que avisar
+        } else if (e.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+          setError('servicios');
+        } else {
+          setError('red');
+        }
+      } else {
+        setError('red');
+      }
+    } finally {
+      setCargando(false);
+    }
   };
 
   const limpiar = () => { setPerfil(null); setError(null); };
 
   return {
-    disponible: googleDisponible && !!request,
+    disponible: googleDisponible,
     cargando,
     perfil,
     error,
@@ -124,6 +107,16 @@ export function mensajeError(e: ErrorGoogle): string | null {
     case 'cancelado': return 'Cancelaste el acceso.';
     case 'sin_token': return 'Google no devolvió la sesión. Intenta otra vez.';
     case 'perfil': return 'No pudimos leer tu perfil de Google.';
+    case 'servicios': return 'Tu teléfono no tiene Google Play Services actualizado.';
     case 'red': return 'No hay conexión o Google no respondió. Puedes entrar sin cuenta.';
+  }
+}
+
+/** Cierra la sesion nativa de Google. Silencioso: un fallo aqui no debe bloquear salir() ni borrarCuenta(). */
+export async function cerrarGoogle(): Promise<void> {
+  try {
+    await GoogleSignin.signOut();
+  } catch {
+    // no hay nada que el usuario pueda hacer con esto: se sigue con el logout local igual
   }
 }

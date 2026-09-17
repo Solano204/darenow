@@ -224,6 +224,8 @@ interface Ctx {
   iniciarReto: (id: string) => void;
   ultimaVezDe: (id: string) => { reps?: number; segundos?: number; pesoKg?: number; fecha: string } | undefined;
   reiniciar: () => void;
+  /** Borra peso, altura, peso objetivo y todas las mediciones. Lo usa el retiro de consentimiento en Ajustes (ver consentimientoMedidas.ts). */
+  borrarMedidas: () => void;
 }
 
 const Contexto = createContext<Ctx | null>(null);
@@ -494,6 +496,18 @@ export function ProveedorEstado({ children }: { children: React.ReactNode }) {
     setEstado(ESTADO_INICIAL);
   }, []);
 
+  const borrarMedidas = useCallback(() => {
+    setEstado(prev => {
+      const e = {
+        ...prev,
+        mediciones: [],
+        perfil: { ...prev.perfil, pesoKg: undefined, pesoObjetivoKg: undefined, alturaCm: undefined },
+      };
+      guardar(e);
+      return e;
+    });
+  }, [guardar]);
+
   /** Ultimo rendimiento registrado de un ejercicio. */
   const ultimaVezDe = useCallback((id: string) => {
     for (let i = estado.sesiones.length - 1; i >= 0; i--) {
@@ -514,13 +528,13 @@ export function ProveedorEstado({ children }: { children: React.ReactNode }) {
   const valor = useMemo<Ctx>(() => ({
     estado, cargando, guardarPerfil, terminarOnboarding, marcarPresentacion, guardarSesion,
     guardarMedicion, alternarVeto, alternarTipGuardado, marcarTipLeido,
-    iniciarReto, ultimaVezDe, reiniciar,
+    iniciarReto, ultimaVezDe, reiniciar, borrarMedidas,
     alternarFavorito, esFavorito, marcarBienvenida, marcarAnuncio,
     aceptarAnuncios, registrarDescarga,
     guardarRutinaPropia, borrarRutinaPropia, nuevaRutinaPropia,
   }), [estado, cargando, guardarPerfil, terminarOnboarding, marcarPresentacion, guardarSesion,
        guardarMedicion, alternarVeto, alternarTipGuardado, marcarTipLeido,
-       iniciarReto, ultimaVezDe, reiniciar,
+       iniciarReto, ultimaVezDe, reiniciar, borrarMedidas,
        alternarFavorito, esFavorito, marcarBienvenida, marcarAnuncio,
        aceptarAnuncios, registrarDescarga,
        guardarRutinaPropia, borrarRutinaPropia, nuevaRutinaPropia]);

@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { View, Text, Pressable, StyleSheet, Alert, TextInput } from 'react-native';
+import { View, Text, Pressable, StyleSheet, Alert, TextInput, Linking } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { color, tipo, esp, radio } from '../theme';
 import {
@@ -16,7 +16,9 @@ import {
 import { useHapticosActivos } from '../store/haptics';
 import { useVozActiva } from '../store/voz';
 import { useCuenta } from '../store/cuenta';
+import { useConsentimientoMedidas, pedirConsentimientoMedidas } from '../store/consentimientoMedidas';
 import { exportarProgreso, elegirRespaldo, aplicarRespaldo } from '../store/respaldo';
+import { URL_PRIVACIDAD, URL_TERMINOS, URL_BORRAR_CUENTA } from '../legal';
 import {
   LOGROS, RETOS, MEDICIONES, EJERCICIOS, GOALS, EQUIPO, porId,
   programaPorId, rutinaPorId, musculoPorId, nombreGoal, ESTADISTICAS,
@@ -225,6 +227,7 @@ export function Mediciones() {
   const { estado, guardarMedicion } = useEstado();
   const [abierto, setAbierto] = useState<string | null>(null);
   const [valor, setValor] = useState('');
+  const [consentimientoMedidas, cambiarConsentimientoMedidas] = useConsentimientoMedidas();
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: color.fondo }} edges={['bottom']}>
@@ -279,8 +282,10 @@ export function Mediciones() {
                         onPress={() => {
                           const n = parseFloat(valor.replace(',', '.'));
                           if (!Number.isFinite(n)) return;
-                          guardarMedicion({ protocolo: p.id, fecha: hoy(), valor: n, unidad: '' });
-                          setValor('');
+                          pedirConsentimientoMedidas(consentimientoMedidas, cambiarConsentimientoMedidas, () => {
+                            guardarMedicion({ protocolo: p.id, fecha: hoy(), valor: n, unidad: '' });
+                            setValor('');
+                          });
                         }}
                       />
                     </View>
@@ -339,14 +344,31 @@ export function Historial({ navigation }: any) {
 /* ============================================================== AJUSTES */
 
 export function Ajustes({ navigation }: any) {
-  const { estado, guardarPerfil } = useEstado();
+  const { estado, guardarPerfil, borrarMedidas } = useEstado();
   const { cuenta, salir, borrarTodosLosDatos } = useCuenta();
   const p = estado.perfil;
   const [seccion, setSeccion] = useState<string | null>(null);
   const [hapticosOn, setHapticosOn] = useHapticosActivos();
   const [vozOn, setVozOn] = useVozActiva();
+  const [consentimientoMedidas, cambiarConsentimientoMedidas] = useConsentimientoMedidas();
   const [exportando, setExportando] = useState(false);
   const [importando, setImportando] = useState(false);
+
+  // Revocar = dejar de tratar el dato: se borran peso, altura, peso
+  // objetivo y mediciones, no solo la bandera de consentimiento.
+  const retirarConsentimientoMedidas = () => {
+    Alert.alert(
+      'Retirar consentimiento',
+      'Al retirar tu consentimiento se borrarán tu peso, altura y medidas guardados. ¿Continuar?',
+      [
+        { text: 'Cancelar', style: 'cancel' },
+        {
+          text: 'Continuar', style: 'destructive',
+          onPress: () => { borrarMedidas(); cambiarConsentimientoMedidas(false); },
+        },
+      ],
+    );
+  };
 
   const equipoOnb = EQUIPO.filter(e => e.onboarding && e.id !== 'ninguno');
 
@@ -515,6 +537,14 @@ export function Ajustes({ navigation }: any) {
             onCambio={v => guardarPerfil({ mostrarPeso: v })} />
         </Seccion>
 
+        <Seccion titulo="Peso y medidas">
+          <Interruptor
+            etiqueta="Guardar peso y medidas" valor={consentimientoMedidas}
+            ayuda="Peso, altura y mediciones son datos de salud: solo se guardan en este teléfono con tu consentimiento expreso, según el aviso de privacidad."
+            onCambio={v => (v ? cambiarConsentimientoMedidas(true) : retirarConsentimientoMedidas())}
+          />
+        </Seccion>
+
         {p.mostrarPeso && (
           <Seccion titulo="Peso (opcional)">
             <Text style={[tipo.pie, { color: color.textoSuave }]}>
@@ -522,14 +552,14 @@ export function Ajustes({ navigation }: any) {
               funciona igual y no muestra kcal.
             </Text>
             <Contador valor={p.pesoKg ?? 70} min={30} max={200} sufijo="kg ahora"
-              onCambio={v => guardarPerfil({ pesoKg: v })} />
+              onCambio={v => pedirConsentimientoMedidas(consentimientoMedidas, cambiarConsentimientoMedidas, () => guardarPerfil({ pesoKg: v }))} />
 
             <Text style={[tipo.pie, { color: color.textoSuave, marginTop: esp.md }]}>
               Peso de referencia. No cambia tu plan: no ponemos dietas, ni
               fechas, ni objetivos de calorías.
             </Text>
             <Contador valor={p.pesoObjetivoKg ?? p.pesoKg ?? 70} min={30} max={200} sufijo="kg objetivo"
-              onCambio={v => guardarPerfil({ pesoObjetivoKg: v })} />
+              onCambio={v => pedirConsentimientoMedidas(consentimientoMedidas, cambiarConsentimientoMedidas, () => guardarPerfil({ pesoObjetivoKg: v }))} />
           </Seccion>
         )}
 
@@ -538,7 +568,7 @@ export function Ajustes({ navigation }: any) {
             Dato de tu perfil. No se usa en ningún cálculo del plan.
           </Text>
           <Contador valor={p.alturaCm ?? 170} min={120} max={220} sufijo="cm"
-            onCambio={v => guardarPerfil({ alturaCm: v })} />
+            onCambio={v => pedirConsentimientoMedidas(consentimientoMedidas, cambiarConsentimientoMedidas, () => guardarPerfil({ alturaCm: v }))} />
         </Seccion>
 
         {p.vetos.length > 0 && (
@@ -613,6 +643,23 @@ export function Ajustes({ navigation }: any) {
             estilo={{ marginTop: esp.sm }}
             ocupado={importando} textoOcupado="Leyendo archivo..."
             onPress={importar}
+          />
+        </Seccion>
+
+        <Seccion titulo="Legal">
+          <Boton
+            texto="Aviso de privacidad" variante="contorno"
+            onPress={() => { Linking.openURL(URL_PRIVACIDAD); }}
+          />
+          <Boton
+            texto="Términos y condiciones" variante="contorno"
+            estilo={{ marginTop: esp.sm }}
+            onPress={() => { Linking.openURL(URL_TERMINOS); }}
+          />
+          <Boton
+            texto="Borrar cuenta y datos" variante="contorno"
+            estilo={{ marginTop: esp.sm }}
+            onPress={() => { Linking.openURL(URL_BORRAR_CUENTA); }}
           />
         </Seccion>
 

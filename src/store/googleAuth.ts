@@ -41,7 +41,6 @@ export interface PerfilGoogle {
   id: string;
   nombre: string;
   email?: string;
-  foto?: string;
 }
 
 export type ErrorGoogle = null | 'cancelado' | 'sin_token' | 'red' | 'perfil' | 'servicios';
@@ -70,7 +69,8 @@ export function useGoogleSignIn() {
       // estable. El nombre puede venir vacio y no pasa nada, se pide
       // despues en el onboarding.
       if (!id) { setError('perfil'); return; }
-      setPerfil({ id, nombre, email: user.email, foto: user.photo ?? undefined });
+      // No se guarda la foto de Google: no se usa en ningun lado de la app.
+      setPerfil({ id, nombre, email: user.email });
     } catch (e) {
       if (isErrorWithCode(e)) {
         if (e.code === statusCodes.IN_PROGRESS) {

@@ -13,7 +13,7 @@
  * esta pantalla es simplemente "Empezar" y ya.
  */
 import React, { useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Linking } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 
@@ -21,6 +21,7 @@ import { color, tipo, esp, radio, degradado } from '../theme';
 import { Boton, Aparece, Nota } from '../components/ui';
 import { useGoogleSignIn, mensajeError } from '../store/googleAuth';
 import { useCuenta } from '../store/cuenta';
+import { URL_PRIVACIDAD, URL_TERMINOS } from '../legal';
 
 export default function Acceso({ onListo }: { onListo: () => void }) {
   const google = useGoogleSignIn();
@@ -71,6 +72,14 @@ export default function Acceso({ onListo }: { onListo: () => void }) {
         )}
 
         <Aparece retraso={220}>
+          <Text style={[tipo.pie, { color: color.textoTenue, textAlign: 'center', marginTop: esp.lg }]}>
+            Al continuar aceptas los{' '}
+            <Text style={s.enlace} onPress={() => Linking.openURL(URL_TERMINOS)}>Términos</Text>
+            {' '}y el{' '}
+            <Text style={s.enlace} onPress={() => Linking.openURL(URL_PRIVACIDAD)}>Aviso de privacidad</Text>
+            . DARENOW no sustituye consejo médico. Para mayores de 18 años.
+          </Text>
+
           {google.disponible && (
             <Boton
               texto="Continuar con Google"
@@ -78,7 +87,7 @@ export default function Acceso({ onListo }: { onListo: () => void }) {
               ocupado={google.cargando}
               textoOcupado="Abriendo Google..."
               ancho
-              estilo={{ marginTop: esp.lg }}
+              estilo={{ marginTop: esp.md }}
             />
           )}
 
@@ -123,4 +132,5 @@ const s = StyleSheet.create({
     width: 6, height: 6, borderRadius: 3, marginTop: 8,
     backgroundColor: color.carbon,
   },
+  enlace: { color: color.texto, textDecorationLine: 'underline' },
 });

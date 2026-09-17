@@ -23,6 +23,7 @@ import { CLAVE as CLAVE_VOZ } from './voz';
 import { CLAVE as CLAVE_HAPTICS } from './haptics';
 import { CLAVE as CLAVE_MAQUINA } from './maquina';
 import { CLAVE_GUARDADO as CLAVE_SESION } from '../session/useSessionPlayer';
+import { CLAVE as CLAVE_CONSENTIMIENTO_MEDIDAS } from './consentimientoMedidas';
 import { borrarRespaldosCache } from './respaldo';
 import { seleccionarClavesForja } from './clavesForja';
 
@@ -36,7 +37,6 @@ export interface Cuenta {
   proveedor: Proveedor;
   nombre: string;
   email?: string;
-  foto?: string;
   /** ISO. Util para el aviso de privacidad y para soporte. */
   creada: string;
   ultimoAcceso: string;
@@ -46,7 +46,7 @@ interface Ctx {
   cuenta: Cuenta | null;
   cargando: boolean;
   /** Guarda la cuenta devuelta por Google. Si ya existia, conserva `creada`. */
-  entrarConGoogle: (p: { id: string; nombre: string; email?: string; foto?: string }) => Promise<void>;
+  entrarConGoogle: (p: { id: string; nombre: string; email?: string }) => Promise<void>;
   /** Entra sin vincular nada. Genera un id local. */
   entrarComoInvitado: (nombre?: string) => Promise<void>;
   /** Cierra sesion. NO borra el progreso de entrenamiento. */
@@ -87,7 +87,15 @@ export function ProveedorCuenta({ children }: { children: React.ReactNode }) {
     (async () => {
       try {
         const raw = await AsyncStorage.getItem(CLAVE);
-        if (raw) setCuenta(JSON.parse(raw) as Cuenta);
+        if (raw) {
+          // Minimizacion de datos: cuentas guardadas antes de este cambio
+          // traian la foto de Google en AsyncStorage sin usarla en ningun
+          // lado (nunca se renderiza). Se limpia al cargar en vez de
+          // esperar a que el usuario vuelva a iniciar sesion.
+          const { foto, ...limpia } = JSON.parse(raw) as Cuenta & { foto?: string };
+          setCuenta(limpia);
+          if (foto !== undefined) await AsyncStorage.setItem(CLAVE, JSON.stringify(limpia)).catch(() => {});
+        }
       } catch {
         // Storage corrupto: se arranca sin cuenta en vez de tronar.
       } finally {
@@ -107,14 +115,13 @@ export function ProveedorCuenta({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
-  const entrarConGoogle = useCallback(async (p: { id: string; nombre: string; email?: string; foto?: string }) => {
+  const entrarConGoogle = useCallback(async (p: { id: string; nombre: string; email?: string }) => {
     const previa = cuenta && cuenta.id === p.id ? cuenta : null;
     await guardar({
       id: p.id,
       proveedor: 'google',
       nombre: p.nombre,
       email: p.email,
-      foto: p.foto,
       creada: previa?.creada ?? ahora(),
       ultimoAcceso: ahora(),
     });
@@ -136,11 +143,14 @@ export function ProveedorCuenta({ children }: { children: React.ReactNode }) {
   }, [guardar]);
 
   const borrarTodosLosDatos = useCallback(async () => {
-    const conocidas = [CLAVE, CLAVE_ESTADO, CLAVE_VOZ, CLAVE_HAPTICS, CLAVE_MAQUINA, CLAVE_SESION];
+    const conocidas = [
+      CLAVE, CLAVE_ESTADO, CLAVE_VOZ, CLAVE_HAPTICS, CLAVE_MAQUINA, CLAVE_SESION,
+      CLAVE_CONSENTIMIENTO_MEDIDAS,
+    ];
     let existentes: readonly string[] = [];
     try { existentes = await AsyncStorage.getAllKeys(); } catch {
       // si getAllKeys falla se borra igual la lista conocida, que cubre
-      // los 6 stores reales de la app
+      // los stores reales de la app
     }
     await AsyncStorage.multiRemove(seleccionarClavesForja(conocidas, existentes)).catch(() => {});
     borrarRespaldosCache();

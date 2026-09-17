@@ -22,6 +22,10 @@ import { derivar, derivarNivel, elegirPrograma, avisosDe, type Rs } from '../dat
 import { fuente } from '../media/registry';
 import type { PerfilUsuario } from '../store/store';
 import { useCuenta } from '../store/cuenta';
+import { useConsentimientoMedidas, pedirConsentimientoMedidas } from '../store/consentimientoMedidas';
+
+/** Campos de salud: nunca se rellenan solos con el valor por defecto al saltarse el paso, y piden consentimiento antes de guardar cualquier valor real. */
+const ES_MEDIDA = new Set(['alturaCm', 'pesoKg', 'pesoObjetivoKg']);
 
 export { derivar, derivarNivel, elegirPrograma, avisosDe };
 
@@ -176,6 +180,7 @@ export default function Onboarding({ onTerminar }: { onTerminar: (p: PerfilUsuar
   };
 
   const set = (v: unknown) => setR(prev => ({ ...prev, [paso.campo]: v }));
+  const [consentimientoDado, darConsentimiento] = useConsentimientoMedidas();
 
   // Con esto, "Como te llamamos" se llena solo en vez de escribirlo a mano.
   // No crea cuenta ni sincroniza nada: solo lee el nombre de Google.
@@ -185,7 +190,12 @@ export default function Onboarding({ onTerminar }: { onTerminar: (p: PerfilUsuar
   }, [cuenta?.nombre]);
 
   const avanzar = () => {
-    if (r[paso.campo] === undefined && paso.defecto !== undefined) set(paso.defecto);
+    // Para peso/altura/peso objetivo NO se aplica el valor por defecto:
+    // sin consentimiento expreso, "Seguir" sin tocar el contador se
+    // comporta igual que "Prefiero no decirlo" (se queda sin responder).
+    if (r[paso.campo] === undefined && paso.defecto !== undefined && !ES_MEDIDA.has(paso.campo)) {
+      set(paso.defecto);
+    }
     if (i < pasos.length - 1) transicion(1, () => setI(i + 1));
     else {
       // Pausa breve armando el plan. No es humo: el motor esta filtrando
@@ -296,7 +306,10 @@ export default function Onboarding({ onTerminar }: { onTerminar: (p: PerfilUsuar
               {paso.tipo === 'numero' && (
                 <Contador
                   valor={Number(valor ?? 3)} min={paso.min ?? 1} max={paso.max ?? 7}
-                  sufijo={paso.sufijo} onCambio={set}
+                  sufijo={paso.sufijo}
+                  onCambio={ES_MEDIDA.has(paso.campo)
+                    ? (v: number) => pedirConsentimientoMedidas(consentimientoDado, darConsentimiento, () => set(v))
+                    : set}
                 />
               )}
 

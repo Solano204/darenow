@@ -9,6 +9,7 @@
     "fix": "expo install --fix",
     "typecheck": "tsc --noEmit",
     "lint:color": "node scripts/lint-color.js",
+    "iconos": "node scripts/generar-iconos.js",
     "test:player": "esbuild --bundle --platform=node --format=cjs tests/player.test.ts | node",
     "test:engine": "esbuild --bundle --platform=node --format=cjs tests/engine.test.ts | node",
     "test:ui": "esbuild --bundle --platform=node --format=cjs tests/ui.test.ts | node",
@@ -52,6 +53,7 @@
     "@types/react": "~19.2.3",
     "babel-preset-expo": "~57.0.0",
     "esbuild": "^0.25.0",
+    "sharp": "^0.35.4",
     "typescript": "~6.0.3"
   },
   "private": true

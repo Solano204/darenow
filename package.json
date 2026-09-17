@@ -10,6 +10,7 @@
     "typecheck": "tsc --noEmit",
     "lint:color": "node scripts/lint-color.js",
     "iconos": "node scripts/generar-iconos.js",
+    "banner": "node scripts/generar-banner.js",
     "test:player": "esbuild --bundle --platform=node --format=cjs tests/player.test.ts | node",
     "test:engine": "esbuild --bundle --platform=node --format=cjs tests/engine.test.ts | node",
     "test:ui": "esbuild --bundle --platform=node --format=cjs tests/ui.test.ts | node",

@@ -260,8 +260,12 @@ export default function App() {
 
   return (
     <SafeAreaProvider style={{ backgroundColor: color.fondo }}>
-      <ProveedorCuenta>
+      {/* Estado (progreso) por fuera de Cuenta: borrarTodosLosDatos() vive en
+          cuenta.ts y necesita poder resetear el progreso ademas de la
+          cuenta, asi que ProveedorCuenta tiene que quedar DENTRO de
+          ProveedorEstado para poder usar useEstado(). */}
       <ProveedorEstado>
+      <ProveedorCuenta>
         <NavigationContainer theme={tema}>
           {/* Iconos oscuros por defecto (fondo claro). La sesion activa del
               reproductor sigue oscura y monta su propio <StatusBar style="light">
@@ -274,8 +278,8 @@ export default function App() {
             <Raiz />
           </ProveedorAnuncios>
         </NavigationContainer>
-      </ProveedorEstado>
       </ProveedorCuenta>
+      </ProveedorEstado>
     </SafeAreaProvider>
   );
 }

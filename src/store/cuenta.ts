@@ -18,6 +18,13 @@
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { cerrarGoogle } from './googleAuth';
+import { useEstado, CLAVE as CLAVE_ESTADO } from './store';
+import { CLAVE as CLAVE_VOZ } from './voz';
+import { CLAVE as CLAVE_HAPTICS } from './haptics';
+import { CLAVE as CLAVE_MAQUINA } from './maquina';
+import { CLAVE_GUARDADO as CLAVE_SESION } from '../session/useSessionPlayer';
+import { borrarRespaldosCache } from './respaldo';
+import { seleccionarClavesForja } from './clavesForja';
 
 export const CLAVE = 'forja:cuenta:v1';
 
@@ -44,9 +51,18 @@ interface Ctx {
   entrarComoInvitado: (nombre?: string) => Promise<void>;
   /** Cierra sesion. NO borra el progreso de entrenamiento. */
   salir: () => Promise<void>;
-  /** Borra la cuenta. El progreso se borra aparte, desde `reiniciar()`. */
+  /** Borra TODOS los datos del usuario (alias de `borrarTodosLosDatos`). */
   borrarCuenta: () => Promise<void>;
   renombrar: (nombre: string) => Promise<void>;
+  /**
+   * Borra cuenta, progreso, rutinas, medidas y ajustes de este telefono.
+   * Cumple con el requisito de Play/LFPDPPP de "borrar todos los datos":
+   * barre AsyncStorage (lista conocida + barrido de "forja:"), borra los
+   * respaldos que hayan quedado en cache, resetea el progreso en memoria
+   * (cancelando la escritura diferida pendiente) y cierra la sesion de
+   * Google. Funciona con o sin cuenta de Google (modo invitado incluido).
+   */
+  borrarTodosLosDatos: () => Promise<void>;
 }
 
 const Contexto = createContext<Ctx | null>(null);
@@ -62,6 +78,10 @@ function idInvitado(): string {
 export function ProveedorCuenta({ children }: { children: React.ReactNode }) {
   const [cuenta, setCuenta] = useState<Cuenta | null>(null);
   const [cargando, setCargando] = useState(true);
+  // Requiere que <ProveedorCuenta> este DENTRO de <ProveedorEstado> (ver
+  // App.tsx): asi borrarTodosLosDatos() puede resetear el progreso ademas
+  // de la cuenta, sin que store.ts tenga que saber nada de cuentas.
+  const { reiniciar: reiniciarProgreso } = useEstado();
 
   useEffect(() => {
     (async () => {
@@ -115,10 +135,23 @@ export function ProveedorCuenta({ children }: { children: React.ReactNode }) {
     await guardar(null);
   }, [guardar]);
 
-  const borrarCuenta = useCallback(async () => {
-    await cerrarGoogle();
+  const borrarTodosLosDatos = useCallback(async () => {
+    const conocidas = [CLAVE, CLAVE_ESTADO, CLAVE_VOZ, CLAVE_HAPTICS, CLAVE_MAQUINA, CLAVE_SESION];
+    let existentes: readonly string[] = [];
+    try { existentes = await AsyncStorage.getAllKeys(); } catch {
+      // si getAllKeys falla se borra igual la lista conocida, que cubre
+      // los 6 stores reales de la app
+    }
+    await AsyncStorage.multiRemove(seleccionarClavesForja(conocidas, existentes)).catch(() => {});
+    borrarRespaldosCache();
+    reiniciarProgreso();
     await guardar(null);
-  }, [guardar]);
+    await cerrarGoogle();
+  }, [reiniciarProgreso, guardar]);
+
+  const borrarCuenta = useCallback(async () => {
+    await borrarTodosLosDatos();
+  }, [borrarTodosLosDatos]);
 
   const renombrar = useCallback(async (nombre: string) => {
     if (!cuenta) return;
@@ -126,8 +159,10 @@ export function ProveedorCuenta({ children }: { children: React.ReactNode }) {
   }, [cuenta, guardar]);
 
   const valor = useMemo<Ctx>(() => ({
-    cuenta, cargando, entrarConGoogle, entrarComoInvitado, salir, borrarCuenta, renombrar,
-  }), [cuenta, cargando, entrarConGoogle, entrarComoInvitado, salir, borrarCuenta, renombrar]);
+    cuenta, cargando, entrarConGoogle, entrarComoInvitado, salir, borrarCuenta,
+    borrarTodosLosDatos, renombrar,
+  }), [cuenta, cargando, entrarConGoogle, entrarComoInvitado, salir, borrarCuenta,
+       borrarTodosLosDatos, renombrar]);
 
   return React.createElement(Contexto.Provider, { value: valor }, children);
 }

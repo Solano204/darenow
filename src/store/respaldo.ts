@@ -33,17 +33,24 @@ import { CLAVE as CLAVE_CUENTA } from './cuenta';
 /** Version del formato del archivo de respaldo. Sube si cambia su forma. */
 const FORMATO_ACTUAL = 1;
 
-/** Las 6 claves reales de AsyncStorage bajo forja:*, tal como las define cada store. */
-const CLAVES = [
-  { clave: CLAVE_ESTADO, json: true },
-  { clave: CLAVE_SESION, json: true },
-  { clave: CLAVE_MAQUINA, json: true },
-  { clave: CLAVE_VOZ, json: false },
-  { clave: CLAVE_HAPTICS, json: false },
-  { clave: CLAVE_CUENTA, json: true },
-] as const;
-
-const CLAVES_VALIDAS = new Set<string>(CLAVES.map(c => c.clave));
+/**
+ * Las 6 claves reales de AsyncStorage bajo forja:*, tal como las define cada
+ * store. Es una funcion (no un const de modulo) a proposito: cuenta.ts
+ * importa de aqui `borrarRespaldosCache`, y este archivo importa `CLAVE` de
+ * cuenta.ts, asi que evaluar CLAVE_CUENTA al cargar el modulo (en vez de
+ * cuando de verdad se necesita) corre el riesgo de leerlo antes de que
+ * cuenta.ts haya terminado de inicializarlo, segun el orden de carga.
+ */
+function claves() {
+  return [
+    { clave: CLAVE_ESTADO, json: true },
+    { clave: CLAVE_SESION, json: true },
+    { clave: CLAVE_MAQUINA, json: true },
+    { clave: CLAVE_VOZ, json: false },
+    { clave: CLAVE_HAPTICS, json: false },
+    { clave: CLAVE_CUENTA, json: true },
+  ] as const;
+}
 
 export interface Respaldo {
   formato: number;
@@ -57,7 +64,7 @@ export type ResultadoExportar = { ok: true } | { ok: false; motivo: string };
 export async function exportarProgreso(): Promise<ResultadoExportar> {
   try {
     const datos: Record<string, string> = {};
-    for (const { clave } of CLAVES) {
+    for (const { clave } of claves()) {
       const v = await AsyncStorage.getItem(clave);
       if (v != null) datos[clave] = v;
     }
@@ -126,12 +133,13 @@ export async function elegirRespaldo(): Promise<ResultadoElegir> {
       return { ok: false, motivo: 'Este archivo no tiene progreso de entrenamiento de DARENOW.' };
     }
 
+    const clavesValidas = new Set<string>(claves().map(c => c.clave));
     for (const [clave, valor] of Object.entries(p.datos)) {
-      if (!CLAVES_VALIDAS.has(clave)) continue; // clave desconocida: se ignora, no invalida el resto
+      if (!clavesValidas.has(clave)) continue; // clave desconocida: se ignora, no invalida el resto
       if (typeof valor !== 'string') {
         return { ok: false, motivo: 'El respaldo está dañado o incompleto.' };
       }
-      const meta = CLAVES.find(c => c.clave === clave);
+      const meta = claves().find(c => c.clave === clave);
       if (meta?.json) {
         try { JSON.parse(valor); } catch {
           return { ok: false, motivo: 'El respaldo está dañado o incompleto.' };
@@ -150,9 +158,28 @@ export async function elegirRespaldo(): Promise<ResultadoElegir> {
  * CLAVE_CUENTA. Devuelve cuantas claves se escribieron de verdad.
  */
 export async function aplicarRespaldo(respaldo: Respaldo): Promise<number> {
+  const clavesValidas = new Set<string>(claves().map(c => c.clave));
   const pares = Object.entries(respaldo.datos)
-    .filter(([clave]) => clave !== CLAVE_CUENTA && CLAVES_VALIDAS.has(clave)) as [string, string][];
+    .filter(([clave]) => clave !== CLAVE_CUENTA && clavesValidas.has(clave)) as [string, string][];
   if (pares.length === 0) return 0;
   await AsyncStorage.multiSet(pares);
   return pares.length;
+}
+
+/**
+ * Borra del cache los JSON de respaldo que hayan quedado despues de
+ * exportarProgreso() (Paths.cache es del sistema, pero mejor no confiar en
+ * que el SO lo limpie a tiempo para un borrado de cuenta). Best-effort: si
+ * no se puede listar o borrar, no bloquea el resto del borrado de datos.
+ */
+export function borrarRespaldosCache(): void {
+  try {
+    for (const entrada of Paths.cache.list()) {
+      if (entrada instanceof File && entrada.name.startsWith('darenow-progreso-') && entrada.name.endsWith('.json')) {
+        entrada.delete();
+      }
+    }
+  } catch {
+    // ver comentario de arriba
+  }
 }

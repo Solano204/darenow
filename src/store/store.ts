@@ -13,6 +13,9 @@
 import React, { createContext, useContext, useEffect, useMemo, useState, useCallback, useRef } from 'react';
 import { AppState } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { PERFIL_INICIAL, FAVORITOS_VACIOS, ESTADO_INICIAL } from './estadoInicial';
+
+export { PERFIL_INICIAL, FAVORITOS_VACIOS, ESTADO_INICIAL };
 
 export const CLAVE = 'forja:v1';
 
@@ -130,36 +133,6 @@ export interface Estado {
   tipsGuardados: string[];
   semanaPrograma: number;
 }
-
-export const PERFIL_INICIAL: PerfilUsuario = {
-  nombre: '', objetivo: 'bajar_peso', nivel: 1, diasPorSemana: 3, minPorSesion: 20,
-  modoSinSaltos: false, espacio: 'colchoneta', equipo: [], contra: [], vetos: [],
-  programaId: 'pg_001', mostrarKcal: true, mostrarPeso: true, sonido: true,
-};
-
-export const FAVORITOS_VACIOS: Favoritos = {
-  ejercicios: [], musculos: [], rutinas: [], programas: [], tips: [],
-};
-
-const ESTADO_INICIAL: Estado = {
-  presentacionVista: false,
-  onboardingHecho: false,
-  bienvenidaVista: null,
-  anuncioVisto: null,
-  anunciosAceptados: false,
-  descargas: [],
-  favoritos: FAVORITOS_VACIOS,
-  rutinasPropias: [],
-  perfil: PERFIL_INICIAL,
-  sesiones: [],
-  mediciones: [],
-  racha: { dias: 0, mejor: 0, ultimoDia: null, graciaUsada: 0, mesGracia: null, enPausa: false },
-  logros: [],
-  retos: {},
-  tipsLeidos: [],
-  tipsGuardados: [],
-  semanaPrograma: 1,
-};
 
 /* ------------------------------------------------------------------ */
 /* Utilidades de fecha                                                 */
@@ -512,6 +485,11 @@ export function ProveedorEstado({ children }: { children: React.ReactNode }) {
   }, [guardar]);
 
   const reiniciar = useCallback(() => {
+    // Sin esto, una escritura diferida que ya estaba en el temporizador de
+    // 350ms (ver `guardar` arriba) se dispara DESPUES del borrado y
+    // resucita el progreso viejo en AsyncStorage.
+    if (temporizador.current) { clearTimeout(temporizador.current); temporizador.current = null; }
+    pendiente.current = null;
     AsyncStorage.removeItem(CLAVE).catch(() => {});
     setEstado(ESTADO_INICIAL);
   }, []);

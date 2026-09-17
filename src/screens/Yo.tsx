@@ -339,8 +339,8 @@ export function Historial({ navigation }: any) {
 /* ============================================================== AJUSTES */
 
 export function Ajustes({ navigation }: any) {
-  const { estado, guardarPerfil, reiniciar } = useEstado();
-  const { cuenta, salir, borrarCuenta } = useCuenta();
+  const { estado, guardarPerfil } = useEstado();
+  const { cuenta, salir, borrarTodosLosDatos } = useCuenta();
   const p = estado.perfil;
   const [seccion, setSeccion] = useState<string | null>(null);
   const [hapticosOn, setHapticosOn] = useHapticosActivos();
@@ -355,6 +355,23 @@ export function Ajustes({ navigation }: any) {
     const r = await exportarProgreso();
     setExportando(false);
     if (!r.ok) Alert.alert('No se pudo exportar', r.motivo);
+  };
+
+  // Mismo dialogo para "Eliminar mi cuenta" y "Borrar todos mis datos": las
+  // dos disparan el mismo borrado completo (borrarTodosLosDatos), asi que
+  // no puede haber un texto que prometa conservar el historial y otro que
+  // no. "Exportar respaldo primero" no borra nada: solo abre el compartir
+  // y deja el borrado para cuando el usuario confirme de nuevo.
+  const confirmarBorrarTodo = () => {
+    Alert.alert(
+      'Borrar mis datos',
+      'Se borrarán tu cuenta, tu progreso, rutinas, medidas y ajustes de este teléfono. No se puede deshacer.',
+      [
+        { text: 'Cancelar', style: 'cancel' },
+        { text: 'Exportar respaldo primero', onPress: exportar },
+        { text: 'Borrar todo', style: 'destructive', onPress: () => { borrarTodosLosDatos(); } },
+      ],
+    );
   };
 
   // Elegir y validar el archivo primero; recien si es valido se pide
@@ -576,14 +593,7 @@ export function Ajustes({ navigation }: any) {
           <Boton
             texto="Eliminar mi cuenta" variante="peligro"
             estilo={{ marginTop: esp.sm }}
-            onPress={() => Alert.alert(
-              'Eliminar cuenta',
-              'Se desvincula tu cuenta y se borra tu nombre y correo de este teléfono. Tu historial se borra aparte, con "Borrar todos mis datos".',
-              [
-                { text: 'Cancelar', style: 'cancel' },
-                { text: 'Eliminar', style: 'destructive', onPress: () => { borrarCuenta(); } },
-              ],
-            )}
+            onPress={confirmarBorrarTodo}
           />
         </Seccion>
 
@@ -609,14 +619,7 @@ export function Ajustes({ navigation }: any) {
         <Boton
           texto="Borrar todos mis datos" variante="peligro"
           estilo={{ marginTop: esp.lg }}
-          onPress={() => Alert.alert(
-            'Borrar todo',
-            'Se elimina tu historial, tus logros y tu perfil. No se puede deshacer.',
-            [
-              { text: 'Cancelar', style: 'cancel' },
-              { text: 'Borrar', style: 'destructive', onPress: reiniciar },
-            ],
-          )}
+          onPress={confirmarBorrarTodo}
         />
         <Text style={[tipo.pie, { color: color.textoTenue, marginTop: esp.sm, textAlign: 'center' }]}>
           Contenido educativo y de entrenamiento. No sustituye diagnóstico ni

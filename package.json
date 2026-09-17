@@ -14,7 +14,8 @@
     "test:player": "esbuild --bundle --platform=node --format=cjs tests/player.test.ts | node",
     "test:engine": "esbuild --bundle --platform=node --format=cjs tests/engine.test.ts | node",
     "test:ui": "esbuild --bundle --platform=node --format=cjs tests/ui.test.ts | node",
-    "test:rutinas": "esbuild --bundle --platform=node --format=cjs tests/rutinas.test.ts | node"
+    "test:rutinas": "esbuild --bundle --platform=node --format=cjs tests/rutinas.test.ts | node",
+    "test:borrarTodo": "esbuild --bundle --platform=node --format=cjs tests/borrarTodo.test.ts | node"
   },
   "dependencies": {
     "@expo-google-fonts/archivo-black": "^0.4.1",

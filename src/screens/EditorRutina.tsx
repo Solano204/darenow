@@ -263,10 +263,36 @@ function SelectorEjercicio({ visible, yaPuestos, onElegir, onCerrar }: {
                 onPress={() => setCat(c.id as string | null)} />
             ))}
           </ScrollView>
-          <Chip
-            texto={soloMios ? 'Solo con mi equipo' : 'Catálogo completo'}
-            pequeno onPress={() => setSoloMios(!soloMios)}
-          />
+          <View style={{ flexDirection: 'row', gap: esp.xs }}>
+            <Pressable
+              onPress={() => setSoloMios(true)}
+              accessibilityRole="radio"
+              accessibilityState={{ selected: soloMios }}
+              accessibilityLabel="Solo con mi equipo"
+              style={[s.segmento, soloMios && s.segmentoActivo]}
+            >
+              <Text style={[tipo.micro, {
+                fontFamily: soloMios ? peso.bold : peso.semibold,
+                color: soloMios ? color.sobreOscuro : color.textoSuave,
+              }]}>Solo con mi equipo</Text>
+            </Pressable>
+            <Pressable
+              onPress={() => setSoloMios(false)}
+              accessibilityRole="radio"
+              accessibilityState={{ selected: !soloMios }}
+              accessibilityLabel="Catálogo completo"
+              style={[s.segmento, !soloMios && s.segmentoActivo]}
+            >
+              <Text style={[tipo.micro, {
+                fontFamily: !soloMios ? peso.bold : peso.semibold,
+                color: !soloMios ? color.sobreOscuro : color.textoSuave,
+              }]}>Catálogo completo</Text>
+            </Pressable>
+          </View>
+          <Text style={[tipo.pie, { color: color.textoSuave }]}>
+            Mostrando {lista.length} {lista.length === 1 ? 'ejercicio' : 'ejercicios'}
+            {soloMios ? ' para tu equipo' : ''}
+          </Text>
         </View>
 
         <FlatList
@@ -274,7 +300,12 @@ function SelectorEjercicio({ visible, yaPuestos, onElegir, onCerrar }: {
           keyExtractor={e => e.id}
           contentContainerStyle={{ paddingHorizontal: esp.md, paddingBottom: esp.xl }}
           initialNumToRender={14}
-          ListEmptyComponent={<Vacio texto="Nada con esa búsqueda." />}
+          ListEmptyComponent={soloMios ? (
+            <View style={{ alignItems: 'center', gap: esp.sm }}>
+              <Vacio texto="Nada con tu equipo actual." />
+              <Boton texto="Ver catálogo completo" variante="contorno" onPress={() => setSoloMios(false)} />
+            </View>
+          ) : <Vacio texto="Nada con esa búsqueda." />}
           renderItem={({ item }) => (
             <FilaSelector item={item} puesto={yaPuestos.includes(item.id)} onElegir={onElegir} />
           )}
@@ -393,4 +424,10 @@ const s = StyleSheet.create({
     flexDirection: 'row', alignItems: 'center', gap: esp.sm, paddingVertical: esp.sm,
     borderBottomWidth: 1, borderBottomColor: color.borde,
   },
+  segmento: {
+    minHeight: 24, justifyContent: 'center', paddingHorizontal: esp.sm, paddingVertical: 6,
+    borderWidth: 1, borderColor: color.borde, backgroundColor: color.velo,
+    borderRadius: radio.pastilla,
+  },
+  segmentoActivo: { backgroundColor: color.carbon, borderColor: color.carbon },
 });

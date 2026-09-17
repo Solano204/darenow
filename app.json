@@ -27,7 +27,8 @@
         "monochromeImage": "./assets/adaptive-icon-mono.png",
         "backgroundColor": "#3B5EFF"
       },
-      "permissions": []
+      "permissions": [],
+      "blockedPermissions": ["android.permission.SYSTEM_ALERT_WINDOW"]
     },
     "plugins": [
       [

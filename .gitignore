@@ -10,3 +10,11 @@ dist/
 /android
 /ios
 
+
+# Credenciales de firma: NUNCA subir
+credentials.json
+credentials/
+*.jks
+*.keystore
+android/keystore.properties
+build/

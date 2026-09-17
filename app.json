@@ -8,8 +8,8 @@
     ],
     "version": "2.0.0",
     "orientation": "portrait",
-    "userInterfaceStyle": "dark",
-    "backgroundColor": "#100D0C",
+    "userInterfaceStyle": "light",
+    "backgroundColor": "#F7F4EF",
     "icon": "./assets/icon.png",
     "assetBundlePatterns": [
       "**/*"
@@ -17,25 +17,27 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "app.forja.fitness",
-      "backgroundColor": "#100D0C"
+      "backgroundColor": "#F7F4EF"
     },
     "android": {
       "package": "app.forja.fitness",
-      "backgroundColor": "#100D0C",
+      "backgroundColor": "#F7F4EF",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "monochromeImage": "./assets/adaptive-icon-mono.png",
         "backgroundColor": "#3B5EFF"
       },
-      "permissions": [
-        "android.permission.RECORD_AUDIO",
-        "android.permission.MODIFY_AUDIO_SETTINGS",
-        "android.permission.FOREGROUND_SERVICE",
-        "android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK"
-      ]
+      "permissions": []
     },
     "plugins": [
-      "expo-audio",
+      [
+        "expo-audio",
+        {
+          "recordAudioAndroid": false,
+          "microphonePermission": false,
+          "enableBackgroundPlayback": false
+        }
+      ],
       [
         "expo-video",
         {

@@ -15,7 +15,7 @@
  *    deja rutinas a medias por todos lados cuando alguien entra a mirar.
  */
 
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import {
   View, Text, StyleSheet, ScrollView, TextInput, Modal, FlatList, Alert, Pressable,
   KeyboardAvoidingView, Platform,
@@ -45,10 +45,31 @@ export default function EditorRutina({ route, navigation }: any) {
   const [r, setR] = useState<RutinaPropia>(
     () => original ?? nuevaRutinaPropia({ objetivo: estado.perfil.objetivo }),
   );
+  // Foto fija del arranque (crear en blanco o editar lo cargado), para
+  // saber si hubo cambios reales antes de dejar salir sin avisar.
+  const inicial = useRef(r).current;
+  const guardadoRef = useRef(false);
   const [selector, setSelector] = useState(false);
 
   const minutos = useMemo(() => minutosPropios(r.items), [r.items]);
   const avisos = useMemo(() => revisarPropia(r.items, estado.perfil), [r.items, estado.perfil]);
+  const hayCambios = useMemo(() => JSON.stringify(r) !== JSON.stringify(inicial), [r, inicial]);
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('beforeRemove', (e: any) => {
+      if (guardadoRef.current || !hayCambios) return;
+      e.preventDefault();
+      Alert.alert(
+        'Descartar cambios',
+        'Tienes cambios sin guardar en esta rutina. Si sales ahora se pierden.',
+        [
+          { text: 'Seguir editando', style: 'cancel' },
+          { text: 'Descartar', style: 'destructive', onPress: () => navigation.dispatch(e.data.action) },
+        ],
+      );
+    });
+    return unsubscribe;
+  }, [navigation, hayCambios]);
 
   const set = (cambio: Partial<RutinaPropia>) => setR(prev => ({ ...prev, ...cambio }));
 
@@ -78,6 +99,7 @@ export default function EditorRutina({ route, navigation }: any) {
   const guardar = () => {
     if (!r.nombre.trim()) return Alert.alert('Ponle nombre', 'Así la reconoces después en tu lista.');
     if (r.items.length === 0) return Alert.alert('Falta contenido', 'Agrega al menos un ejercicio.');
+    guardadoRef.current = true;
     guardarRutinaPropia({ ...r, nombre: r.nombre.trim() });
     navigation.goBack();
   };
@@ -89,7 +111,7 @@ export default function EditorRutina({ route, navigation }: any) {
         keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false}>
 
         <Text style={[tipo.h1, { color: color.texto }]}>
-          {original ? 'Editar rutina' : 'Nueva rutina'}
+          {original ? 'Editar rutina' : 'Crear rutina'}
         </Text>
 
         <TextInput
@@ -205,7 +227,7 @@ export default function EditorRutina({ route, navigation }: any) {
 
       <View style={[s.barra, { paddingBottom: Math.max(esp.md, abajo - 60) }]}>
         <Boton texto="Cancelar" variante="texto" onPress={() => navigation.goBack()} />
-        <Boton texto="Guardar" onPress={guardar} estilo={{ flex: 1 }} />
+        <Boton texto={original ? 'Guardar cambios' : 'Crear rutina'} onPress={guardar} estilo={{ flex: 1 }} />
       </View>
       </KeyboardAvoidingView>
 

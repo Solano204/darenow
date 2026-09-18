@@ -10,7 +10,7 @@
 import React, { useMemo } from 'react';
 import { View, Text, StyleSheet, ScrollView, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { color, tipo, esp, radio, peso } from '../theme';
+import { color, tipo, esp, radio, peso, TOQUE } from '../theme';
 import {
   Boton, Chip, Toque, Nota, Favorito, Aparece, useHuecoAbajo,
 } from '../components/ui';
@@ -88,7 +88,16 @@ export default function RutinaPropia({ route, navigation }: any) {
         </View>
 
         <View style={{ padding: esp.md }}>
-          <Text style={[tipo.h1, { color: color.texto }]}>{r.nombre}</Text>
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: esp.xs }}>
+            <Text style={[tipo.h1, { color: color.texto, flex: 1 }]}>{r.nombre}</Text>
+            <Toque
+              onPress={() => navigation.navigate('EditorRutina', { id: r.id })}
+              etiqueta="Editar rutina"
+              estilo={{ width: TOQUE, height: TOQUE, alignItems: 'center', justifyContent: 'center' } as never}
+            >
+              <Text style={{ fontSize: 20, color: color.textoSuave }}>✎</Text>
+            </Toque>
+          </View>
           <View style={{ flexDirection: 'row', gap: esp.xs, flexWrap: 'wrap', marginTop: esp.sm }}>
             <Chip texto={nombreGoal(r.objetivo)} activo pequeno />
             <Chip texto={`${minutos} min`} pequeno />
@@ -135,11 +144,8 @@ export default function RutinaPropia({ route, navigation }: any) {
             );
           })}
 
-          <View style={{ flexDirection: 'row', gap: esp.sm, marginTop: esp.lg }}>
-            <Boton texto="Editar" variante="contorno" estilo={{ flex: 1 }}
-              onPress={() => navigation.navigate('EditorRutina', { id: r.id })} />
-            <Boton texto="Duplicar" variante="contorno" estilo={{ flex: 1 }} onPress={duplicar} />
-          </View>
+          <Boton texto="Duplicar" variante="contorno" ancho onPress={duplicar}
+            estilo={{ marginTop: esp.lg }} />
           <Boton texto="Borrar rutina" variante="texto" onPress={borrar} />
         </View>
       </ScrollView>

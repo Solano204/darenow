@@ -26,6 +26,10 @@ export interface SerieGuardada {
 
 export interface SesionGuardada {
   id: string; fecha: string; iniciada: string; duracionS: number;
+  /** Solo referencia (para "sesiones de esta rutina"). El contenido real de
+   *  lo hecho vive en `series`, capturado en el momento: editar o borrar la
+   *  rutina despues NO cambia sesiones ya guardadas. No uses `rutinaId` para
+   *  reconstruir que se hizo. */
   rutinaId: string | null; programaId: string | null;
   estado: 'completada' | 'abandonada';
   kcal: number | null; rpe: number | null; motivoAbandono: string | null;

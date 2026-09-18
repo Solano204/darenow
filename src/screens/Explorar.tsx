@@ -14,7 +14,7 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import { View, Text, StyleSheet, FlatList, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { color, tipo, esp, radio, peso } from '../theme';
+import { color, tipo, esp, radio, peso, TOQUE } from '../theme';
 import {
   Chip, Buscador, Vacio, Toque, Favorito, Aparece, Boton, Nota,
   useHuecoAbajo,
@@ -205,6 +205,13 @@ export default function Explorar({ navigation, route }: any) {
                           {mr.items.length} ejercicios · {minutosPropios(mr.items)} min
                         </Text>
                       </View>
+                      <Toque
+                        onPress={() => navigation.navigate('EditorRutina', { id: mr.id })}
+                        etiqueta="Editar rutina"
+                        estilo={{ width: TOQUE, height: TOQUE, alignItems: 'center', justifyContent: 'center' } as never}
+                      >
+                        <Text style={{ fontSize: 18, color: color.textoSuave }}>✎</Text>
+                      </Toque>
                       <Text style={{ color: color.textoTenue }}>›</Text>
                     </Toque>
                   ))}

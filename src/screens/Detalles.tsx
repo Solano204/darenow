@@ -26,7 +26,7 @@ import {
   evidenciaDe, insigniaDe, nombreEquipo, nombreGoal,
 } from '../data/catalog';
 import { useEstado } from '../store/store';
-import { sesionDeRutina } from '../engine/session';
+import { sesionDeRutina, itemPropioPorDefecto } from '../engine/session';
 
 /* ============================================================ EJERCICIO */
 
@@ -286,12 +286,27 @@ export function DetalleMusculo({ route, navigation }: any) {
 export function DetalleRutina({ route, navigation }: any) {
   const abajo = useHuecoAbajo();
   const r = rutinaPorId.get(route.params.id);
-  const { estado, ultimaVezDe, alternarFavorito, esFavorito } = useEstado();
+  const {
+    estado, ultimaVezDe, alternarFavorito, esFavorito, nuevaRutinaPropia, guardarRutinaPropia,
+  } = useEstado();
   if (!r) return null;
 
   const empezar = () => {
     const sesion = sesionDeRutina(r.id, estado.perfil, r, ultimaVezDe);
     navigation.navigate('Reproductor', { sesion });
+  };
+
+  // Las rutinas del catalogo no se editan directamente: se copian a una
+  // rutina propia y esa copia sí se puede editar.
+  const duplicarYEditar = () => {
+    const items = r.bloques
+      .flatMap(b => b.items)
+      .map(id => porId.get(id))
+      .filter((e): e is NonNullable<typeof e> => !!e)
+      .map(itemPropioPorDefecto);
+    const copia = nuevaRutinaPropia({ nombre: `${r.name} (copia)`, objetivo: r.goal, items, origen: r.id });
+    guardarRutinaPropia(copia);
+    navigation.navigate('EditorRutina', { id: copia.id });
   };
 
   return (
@@ -344,6 +359,9 @@ export function DetalleRutina({ route, navigation }: any) {
               <Nota texto={`Gasto aproximado para 70 kg: ~${r.kcal_aprox_70kg} kcal. Es una estimación poblacional, no una medida de tu cuerpo.`} />
             </View>
           )}
+
+          <Boton texto="Duplicar y editar" variante="contorno" onPress={duplicarYEditar}
+            estilo={{ marginTop: esp.lg }} />
         </View>
       </ScrollView>
 

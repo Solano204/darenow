@@ -98,7 +98,7 @@ function Sello({ activo, estatico, espera }: { activo: boolean; estatico: boolea
   }));
 
   return (
-    <Animated.View style={[s.sello, estilo]}>
+    <Animated.View style={[s.sello, estilo]} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>
       <Text style={s.selloTexto}>Mito</Text>
     </Animated.View>
   );

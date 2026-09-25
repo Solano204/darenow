@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Animated, {
-  runOnJS, useAnimatedStyle, useSharedValue, withDelay, withSequence, withSpring, withTiming,
+  runOnJS, useAnimatedStyle, useSharedValue, withDelay, withSequence, withSpring, withTiming, type SharedValue,
 } from 'react-native-reanimated';
 import { paleta, PLACAS, resortePlaca, resorteTap, haptico } from '../../theme';
 import { useReducedMotion } from '../../hooks/useReducedMotion';
@@ -41,32 +41,35 @@ export function BarraPlacas({ paso, total = PLACAS.length }: { paso: number; tot
     ));
   }, [paso, reducido]);
 
-  const estiloBarra = useAnimatedStyle(() => ({ transform: [{ translateY: temblor.value * TEMBLOR_PX }] }));
+  const temblorVarilla = useAnimatedStyle(() => ({ transform: [{ translateY: temblor.value * TEMBLOR_PX }] }));
+  const temblorHombroIzq = useAnimatedStyle(() => ({ transform: [{ translateY: temblor.value * TEMBLOR_PX }] }));
+  const temblorHombroDer = useAnimatedStyle(() => ({ transform: [{ translateY: temblor.value * TEMBLOR_PX }] }));
 
   return (
     <View
       style={s.caja}
+      accessible
       accessibilityRole="progressbar"
       accessibilityLabel={`Paso ${paso + 1} de ${total}`}
       accessibilityValue={{ min: 1, max: total, now: paso + 1 }}
     >
-      <Animated.View style={[s.barra, estiloBarra]}>
-        <View style={s.varilla} />
-        <View style={[s.hombro, { left: HOMBRO - 3 }]} />
-        <View style={[s.hombro, { left: ANCHO - HOMBRO }]} />
+      <View style={s.barra}>
+        <Animated.View style={[s.varilla, temblorVarilla]} />
+        <Animated.View style={[s.hombro, { left: HOMBRO - 3 }, temblorHombroIzq]} />
+        <Animated.View style={[s.hombro, { left: ANCHO - HOMBRO }, temblorHombroDer]} />
         {PLACAS.map((c, k) => (
           <React.Fragment key={k}>
-            <Placa lado="izq" k={k} color={c} presente={k <= paso} reducido={reducido} />
-            <Placa lado="der" k={k} color={c} presente={k <= paso} reducido={reducido} />
+            <Placa lado="izq" k={k} color={c} presente={k <= paso} reducido={reducido} temblor={temblor} />
+            <Placa lado="der" k={k} color={c} presente={k <= paso} reducido={reducido} temblor={temblor} />
           </React.Fragment>
         ))}
-      </Animated.View>
+      </View>
     </View>
   );
 }
 
-function Placa({ lado, k, color, presente, reducido }: {
-  lado: 'izq' | 'der'; k: number; color: string; presente: boolean; reducido: boolean;
+function Placa({ lado, k, color, presente, reducido, temblor }: {
+  lado: 'izq' | 'der'; k: number; color: string; presente: boolean; reducido: boolean; temblor: SharedValue<number>;
 }) {
   const t = useSharedValue(0);
   const sentido = lado === 'izq' ? -1 : 1;
@@ -79,7 +82,7 @@ function Placa({ lado, k, color, presente, reducido }: {
 
   const estilo = useAnimatedStyle(() => ({
     opacity: Math.min(1, t.value * 4),
-    transform: [{ translateX: (1 - t.value) * DISTANCIA_ENTRADA * sentido }],
+    transform: [{ translateX: (1 - t.value) * DISTANCIA_ENTRADA * sentido }, { translateY: temblor.value * TEMBLOR_PX }],
   }));
 
   const alto = ALTOS[Math.min(k, ALTOS.length - 1)];

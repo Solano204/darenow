@@ -158,3 +158,5 @@ Se rellena al cerrar cada fase. ✅ = verificado sin dispositivo: lectura de có
 | Las 4 pestañas y sus saltos | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | |
 | Persistencia (onboarding no reaparece) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | |
 | Ajuste de háptica respetado | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | |
+
+F6 queda sin marcar a propósito: se rellena tras la corrida final (`tsc`, suites, bundle, `expo-doctor`) y la prueba en dispositivo. En el emulador (Android 35, build de desarrollo) se comprobó el arranque, los cuatro pasos de la presentación y la ausencia de errores de JS; quedó pendiente volver a comprobar el paso 4 tras la última corrección de las capas de texto.

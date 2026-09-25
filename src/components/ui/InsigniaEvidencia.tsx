@@ -55,7 +55,7 @@ export function InsigniaEvidencia({ tipo, pequena, estampar, estilo }: {
       style={[s.caja, pequena && s.pequena, { backgroundColor: d.fondo }, estilo, animado]}
     >
       <View style={[s.punto, { backgroundColor: d.punto }]} />
-      <Text style={[s.texto, { color: d.texto }]}>{d.etiqueta}</Text>
+      <Text style={[s.texto, { color: d.texto }]} importantForAccessibility="no" accessibilityElementsHidden>{d.etiqueta}</Text>
     </Animated.View>
   );
 }

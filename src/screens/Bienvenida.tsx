@@ -58,7 +58,7 @@ export default function Bienvenida({ navigation }: { navigation: { replace: (rut
   const reducido = useReducedMotion();
   const { width, height } = useWindowDimensions();
   const bg = fuente('fondo', 'bienvenida');
-  const alturaFoto = height * FRACCION_FOTO;
+  const alturaFoto = Math.round(height * FRACCION_FOTO);
   const altoImagen = height < PANTALLA_COMPACTA ? ALTO_IMAGEN_COMPACTO : ALTO_IMAGEN;
 
   const escala = useSharedValue(reducido ? 1 : ESCALA_INICIAL_FOTO);
@@ -127,8 +127,10 @@ export default function Bienvenida({ navigation }: { navigation: { replace: (rut
 function Dato({ n, t }: { n: number; t: string }) {
   return (
     <View style={s.dato} accessible accessibilityLabel={`${n} ${t}`}>
-      <Odometro valor={n} retraso={T_NUMEROS} estilo={[tipo.numero, s.numero]} />
-      <Text style={[tipo.etiqueta, s.etiquetaDato]}>{t}</Text>
+      <View style={s.datoInterior} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>
+        <Odometro valor={n} retraso={T_NUMEROS} estilo={[tipo.numero, s.numero]} />
+        <Text style={[tipo.etiqueta, s.etiquetaDato]}>{t}</Text>
+      </View>
     </View>
   );
 }
@@ -145,7 +147,8 @@ const s = StyleSheet.create({
   mensaje: { color: paleta.magnesia2, marginTop: esp.sm - 4 },
   estadisticas: { flexDirection: 'row', alignItems: 'flex-start', marginTop: esp.md },
   separador: { width: 1, alignSelf: 'stretch', backgroundColor: paleta.gomaBorde },
-  dato: { flex: 1, alignItems: 'center' },
+  dato: { flex: 1 },
+  datoInterior: { alignItems: 'center' },
   numero: { color: paleta.magnesia },
   etiquetaDato: { color: paleta.magnesia2, textAlign: 'center' },
   pie: { paddingHorizontal: MARGEN_PANTALLA, paddingTop: esp.md, paddingBottom: MARGEN_PANTALLA },

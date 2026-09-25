@@ -48,10 +48,14 @@ export function TituloLetras({ lineas, estilo, activo, animar = true, retraso = 
     <View accessible accessibilityRole="header" accessibilityLabel={lineas.join(' ')}>
       {lineas.map(linea => (
         <View key={linea} style={s.fila}>
-          {linea.split('').map((c, k) => (
-            <Mascara key={k} alto={alto} activo={activo} animar={animar} espera={retraso + indice++ * ESCALONADO_LETRAS_MS}>
-              <Text style={estilo}>{c}</Text>
-            </Mascara>
+          {(linea.match(/\S+\s*/g) ?? [linea]).map((palabra, w) => (
+            <View key={w} style={s.palabra}>
+              {palabra.split('').map((c, k) => (
+                <Mascara key={k} alto={alto} activo={activo} animar={animar} espera={retraso + indice++ * ESCALONADO_LETRAS_MS}>
+                  <Text style={estilo}>{c}</Text>
+                </Mascara>
+              ))}
+            </View>
           ))}
         </View>
       ))}
@@ -83,5 +87,6 @@ function Mascara({ alto, activo, animar, espera, children }: {
 }
 
 const s = StyleSheet.create({
-  fila: { flexDirection: 'row' },
+  fila: { flexDirection: 'row', flexWrap: 'wrap' },
+  palabra: { flexDirection: 'row' },
 });

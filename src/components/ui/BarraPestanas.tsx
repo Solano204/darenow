@@ -52,7 +52,7 @@ export function BarraPestanas({ state, descriptors, navigation }: BottomTabBarPr
         : null}
       <View style={[StyleSheet.absoluteFill, { backgroundColor: Platform.OS === 'ios' ? color.barraPestanasBlur : color.barraPestanas }]} />
 
-      <View style={s.fila}>
+      <View style={s.fila} accessibilityRole="tablist">
         {state.routes.map((ruta, i) => {
           const activa = state.index === i;
           const { options } = descriptors[ruta.key];

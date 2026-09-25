@@ -5,8 +5,11 @@
  * solo hay presentacion. Cada lamina anima su entrada una sola vez.
  */
 
-import React, { useEffect, useMemo, useState } from 'react';
-import { View, Text, StyleSheet, Pressable, useWindowDimensions, type StyleProp, type TextStyle } from 'react-native';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import {
+  View, Text, ScrollView, StyleSheet, Pressable, AccessibilityInfo, useWindowDimensions,
+  type StyleProp, type TextStyle,
+} from 'react-native';
 import Animated, {
   LinearTransition, useAnimatedStyle, useSharedValue, withTiming, type SharedValue,
 } from 'react-native-reanimated';
@@ -48,6 +51,7 @@ const TIEMPOS = [
 const INTERVALO_INSIGNIAS_MS = 150;
 const INTERVALO_ETIQUETAS_MS = 40;
 const RETRASO_NOTA_CIFRA_MS = 200;
+const ESCALA_CIFRA = 1.2;
 
 /** «Gratis. Todo. Sin trucos» se lee en tres golpes; el resto de titulos va en un solo bloque. */
 export function lineasDeTitulo(titulo: string): string[] {
@@ -60,13 +64,17 @@ export default function Presentacion({ onTerminar }: { onTerminar: () => void })
   const { i, laminas, esUltima, avanzar, saltar } = usePresentacion(onTerminar);
   const { debeAnimar, marcarVisto, soltar } = useFirstView();
   const progreso = useSharedValue(0);
-  const alturaFoto = height * FRACCION_FOTO;
+  const alturaFoto = Math.round(height * FRACCION_FOTO);
 
   const fotos = useMemo(() => laminas.map(l => fuente('fondo', l.id)), [laminas]);
   const recortes = useMemo(() => {
     const r = laminas.map(l => fuente('fondo', `${l.id}_recorte`));
     return r.some(x => x !== null) ? r : undefined;
   }, [laminas]);
+
+  useEffect(() => {
+    if (i > 0) AccessibilityInfo.announceForAccessibility(`Paso ${i + 1} de ${laminas.length}. ${laminas[i].titulo}`);
+  }, [i]);
 
   useEffect(() => {
     progreso.value = withTiming(i, { duration: reducido ? FUNDIDO_REDUCIDO_MS : dur.lento, easing: easing.salida });
@@ -131,19 +139,12 @@ function LaminaTexto({ lamina: l, k, activo, progreso, ancho, animar, reducido }
   const movimiento = reducido ? 0 : 1;
 
   // El titulo viaja a 1.0x; cuerpo y nota, a 1.15x: llegan un poco despues.
-  const capa = (factor: number) => () => {
-    'worklet';
-    const d = k - progreso.value;
-    return {
-      opacity: Math.max(0, Math.min(1, 1 - Math.abs(d) * 1.3)),
-      transform: [{ translateX: d * ancho * factor * movimiento }],
-    };
-  };
-  const estiloTitulo = useAnimatedStyle(capa(1));
-  const estiloCuerpo = useAnimatedStyle(capa(FACTOR_CUERPO));
-  const estiloDial = useAnimatedStyle(capa(1));
+  const estiloTitulo = useCapa(k, progreso, ancho, 1, movimiento);
+  const estiloCuerpo = useCapa(k, progreso, ancho, FACTOR_CUERPO, movimiento);
+  const estiloDial = useCapa(k, progreso, ancho, 1, movimiento);
 
-  const dial = Math.max(DIAL_MIN, Math.min(DIAL_MAX, altoZona - altoTexto - esp.md));
+  const libre = altoZona - altoTexto - esp.md;
+  const dial = Math.min(DIAL_MAX, libre);
   const arribaDial = Math.max(0, (altoZona - altoTexto - dial) / 2);
 
   return (
@@ -154,12 +155,16 @@ function LaminaTexto({ lamina: l, k, activo, progreso, ancho, animar, reducido }
       importantForAccessibility={activo ? 'auto' : 'no-hide-descendants'}
       onLayout={e => setAltoZona(e.nativeEvent.layout.height)}
     >
-      {k === 2 && altoZona > 0 && altoTexto > 0 && (
+      {k === 2 && altoZona > 0 && altoTexto > 0 && libre >= DIAL_MIN && (
         <Animated.View style={[s.dial, { top: arribaDial }, estiloDial]}>
           <DialTiempo tamano={dial} activo={activo} animar={animar} retraso={t.extra} />
         </Animated.View>
       )}
 
+      <ScrollView
+        style={s.scrollLamina} contentContainerStyle={s.contenidoLamina}
+        showsVerticalScrollIndicator={false} scrollEnabled={activo}
+      >
       <View onLayout={e => setAltoTexto(e.nativeEvent.layout.height)}>
         <Animated.View style={estiloTitulo}>
           {k === 0 ? (
@@ -216,8 +221,29 @@ function LaminaTexto({ lamina: l, k, activo, progreso, ancho, animar, reducido }
           )}
         </Animated.View>
       </View>
+      </ScrollView>
     </View>
   );
+}
+
+/**
+ * Estilo animado de una capa de texto: se desplaza a `factor` veces la
+ * velocidad del avance y se desvanece al alejarse. El worklet es inline y
+ * depende solo de valores primitivos, asi un re-render del padre no recrea
+ * el estilo ni lo reinicia a un valor viejo.
+ */
+function useCapa(k: number, progreso: SharedValue<number>, ancho: number, factor: number, movimiento: number) {
+  // Reanimated congela el estilo inicial al montar y un commit de React puede reaplicarlo. Contar
+  // los renders fuerza a reevaluar el mapper despues de cada commit y devuelve la capa a su sitio.
+  const renders = useRef(0);
+  renders.current += 1;
+  return useAnimatedStyle(() => {
+    const d = k - progreso.value;
+    return {
+      opacity: Math.max(0, Math.min(1, 1 - Math.abs(d) * 1.3)),
+      transform: [{ translateX: d * ancho * factor * movimiento }],
+    };
+  }, [k, ancho, factor, movimiento, renders.current]);
 }
 
 /** Texto donde una cifra rueda en un odometro; el resto va como texto normal, en la misma linea base. */
@@ -230,10 +256,12 @@ function TextoConCifra({ texto, cifra, estilo, activo, animar, retraso }: {
   const despues = texto.slice(corte + String(cifra).length);
 
   return (
-    <View style={s.filaCifra} accessible accessibilityLabel={texto}>
-      {antes !== '' && <Text style={estilo}>{antes}</Text>}
-      <Odometro valor={cifra} estilo={estilo} activo={activo} animar={animar} retraso={retraso} />
-      {despues !== '' && <Text style={estilo}>{despues}</Text>}
+    <View accessible accessibilityLabel={texto}>
+      <View style={s.filaCifra} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>
+        {antes !== '' && <Text style={estilo} maxFontSizeMultiplier={ESCALA_CIFRA}>{antes}</Text>}
+        <Odometro valor={cifra} estilo={estilo} activo={activo} animar={animar} retraso={retraso} />
+        {despues !== '' && <Text style={[estilo, s.resto]} maxFontSizeMultiplier={ESCALA_CIFRA}>{despues}</Text>}
+      </View>
     </View>
   );
 }
@@ -249,13 +277,13 @@ const s = StyleSheet.create({
   saltar: { minWidth: AREA_TACTIL_MIN, minHeight: AREA_TACTIL_MIN, alignItems: 'flex-end', justifyContent: 'center' },
   saltarTexto: { fontFamily: peso.semibold, fontSize: 15, lineHeight: 20, color: paleta.magnesia2 },
   zonaTexto: { flex: 1 },
-  lamina: {
-    position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
-    justifyContent: 'flex-end', paddingHorizontal: MARGEN_PANTALLA,
-  },
+  lamina: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 },
+  scrollLamina: { flex: 1 },
+  contenidoLamina: { flexGrow: 1, justifyContent: 'flex-end', paddingHorizontal: MARGEN_PANTALLA },
   dial: { position: 'absolute', left: 0, right: 0, alignItems: 'center' },
   cuerpo: { marginTop: esp.md - 4 },
-  filaCifra: { flexDirection: 'row', flexWrap: 'wrap', alignItems: 'baseline' },
+  filaCifra: { flexDirection: 'row', alignItems: 'baseline' },
+  resto: { flexShrink: 1 },
   etiquetas: { flexDirection: 'row', flexWrap: 'wrap', gap: esp.sm, marginTop: esp.md - 4 },
   etiqueta: {
     backgroundColor: paleta.gomaAlta, borderWidth: 1, borderColor: paleta.gomaBorde,
@@ -269,7 +297,7 @@ const s = StyleSheet.create({
     flexDirection: 'row', alignItems: 'center', gap: esp.md,
     paddingHorizontal: MARGEN_PANTALLA, paddingTop: MARGEN_PANTALLA, paddingBottom: MARGEN_PANTALLA,
   },
-  botonCompacto: { marginLeft: 'auto', minWidth: 160 },
+  botonCompacto: { marginLeft: 'auto', minWidth: 120, flexShrink: 1 },
   botonAncho: { flex: 1 },
   boton: { alignSelf: 'stretch' },
 });

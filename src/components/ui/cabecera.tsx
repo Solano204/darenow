@@ -4,6 +4,7 @@ import Animated, {
   Extrapolation, interpolate, useAnimatedScrollHandler, useAnimatedStyle, useSharedValue, type SharedValue,
 } from 'react-native-reanimated';
 import { paleta, tipo, MARGEN_PANTALLA } from '../../theme';
+import { useReducedMotion } from '../../hooks/useReducedMotion';
 
 const RECORRIDO_TITULO = 56;
 const APARICION_COMPACTA: [number, number] = [40, 72];
@@ -22,9 +23,11 @@ export function useScrollCabecera() {
 /** Titulo grande de pantalla: al bajar se encoge y se desvanece, y toma su lugar la barra compacta. */
 export function TituloGrande({ children, estilo }: { children: string; estilo?: StyleProp<TextStyle> }) {
   const y = useContext(ContextoScroll);
+  const reducido = useReducedMotion();
   const animado = useAnimatedStyle(() => {
     if (y === null) return {};
     const p = interpolate(y.value, [0, RECORRIDO_TITULO], [0, 1], Extrapolation.CLAMP);
+    if (reducido) return { opacity: 1 - p };
     return {
       opacity: 1 - p,
       transform: [{ translateY: -8 * p }, { scale: 1 - (1 - ENCOGIMIENTO) * p }],
@@ -40,9 +43,10 @@ export function TituloGrande({ children, estilo }: { children: string; estilo?: 
 
 /** Barra superior compacta que aparece cuando el titulo grande ya salio de la vista. */
 export function BarraCompacta({ titulo, y }: { titulo: string; y: SharedValue<number> }) {
+  const reducido = useReducedMotion();
   const animado = useAnimatedStyle(() => {
     const p = interpolate(y.value, APARICION_COMPACTA, [0, 1], Extrapolation.CLAMP);
-    return { opacity: p, transform: [{ translateY: 6 * (1 - p) }] };
+    return reducido ? { opacity: p } : { opacity: p, transform: [{ translateY: 6 * (1 - p) }] };
   });
 
   return (

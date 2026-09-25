@@ -88,7 +88,7 @@ Respeta el ajuste existente de Ajustes (`forja:haptics`). Toque: Light. Aplauso:
 
 ## Fotos
 
-Las fotos actuales son claras y de baja resolución (447x800 y 800x423). Mientras no lleguen las nuevas (ver la lista de imágenes al cierre), `FotoTratada` las dibuja con Skia `ColorMatrix`: -35 % de saturación, exposición 0.72 y sombras un poco hacia azul frío. Sobre eso, un degradado transparente → `goma` (anclas 0.2, 0.5, 0.78, 1) y un scrim oscuro de 120 px arriba para que se lea el encabezado. `tratar={false}` desactiva el tratamiento cuando la foto ya viene oscura. El sobrante del recorte se alinea con `foco` (arriba en el onboarding, 55 %/30 % en la bienvenida) para no cortar cabezas.
+Las fotos actuales son claras y de baja resolución (447x800 y 800x423). Mientras no lleguen las nuevas (`docs/IMAGENES.md`), `FotoTratada` las dibuja con Skia `ColorMatrix`: -35 % de saturación, exposición 0.72 y sombras un poco hacia azul frío. Sobre eso, un degradado transparente → `goma` (anclas 0.2, 0.5, 0.78, 1) y un scrim oscuro de 120 px arriba para que se lea el encabezado. `TRATAR_FOTOS = false` (en `FotoTratada.tsx`) desactiva el tratamiento cuando llegan las fotos nuevas, ya oscuras. El sobrante del recorte se alinea con `foco` (arriba en el onboarding, 55 %/30 % en la bienvenida) para no cortar cabezas.
 
 ## Resto de la app
 
@@ -111,9 +111,18 @@ Desviación del brief: pedía Skia. Un `Canvas` de Skia por pantalla son N super
 
 | Carpeta | Piezas |
 |---|---|
-| `components/ui` | `BotonPlaca`, `NotaEntrenador`, `InsigniaEvidencia`, `TarjetaGoma` |
-| `components/fx` | `GomaTexture`, `MagnesiaParticles`, `MagnesiaOverlay`, `Odometro`, `TituloEstampado`, `TituloMascara`, `BarraPlacas`, `DialTiempo`, `FotoParallax`, `TachadoMito` |
+| `components/ui` | `BotonPlaca`, `NotaEntrenador`, `InsigniaEvidencia`, `TarjetaGoma`, `BarraPestanas`, `cabecera` (`TituloGrande`, `BarraCompacta`) |
+| `components/fx` | `GomaTexture`, `FotoTratada`, `FotoParallax`, `MagnesiaParticles`, `MagnesiaOverlay` (`ProveedorMagnesia`, `useMagnesia`), `Odometro`, `TituloEstampado`, `TituloMascara` (y `TituloLetras`), `BarraPlacas`, `DialTiempo`, `TachadoMito`, `Entrada` |
 | `hooks` | `useReducedMotion`, `useFirstView`, `useWelcomeData`, `usePresentacion` |
+
+Las imágenes nuevas, con nombre, tamaño y prompt, están en `docs/IMAGENES.md`.
+
+## Reanimated 4 en este proyecto
+
+- Todo estilo animado se escribe con un worklet inline que depende de valores primitivos. Un worklet creado por una función (`useAnimatedStyle(factoria(1))`) se recrea en cada render.
+- `useAnimatedStyle` congela el estilo inicial al montar y un commit de React puede volver a aplicarlo. Donde una capa depende de un valor compartido que cambia fuera de su propio ciclo (`useCapa` en `Presentacion`), se cuentan los renders y se pasa el contador como dependencia: el mapper se reevalúa tras cada commit y la capa vuelve a su sitio.
+- No se anidan vistas animadas cuando el padre solo aporta un desplazamiento: la barra de placas aplica el temblor a cada elemento, no a un contenedor.
+- Un callback de UI que toca JS (`haptico`) se pasa por una función suelta y `runOnJS`, nunca un método de un objeto capturado.
 
 ## Dependencias añadidas
 

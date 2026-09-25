@@ -35,21 +35,17 @@ export function DialTiempo({ tamano, activo, animar = true, retraso = 0 }: {
   const radioMarcas = c - 2;
 
   const marcas = useMemo(() => {
-    const p = Skia.Path.Make();
+    const p = Skia.PathBuilder.Make();
     for (let i = 0; i < MARCAS; i++) {
       const a = (i * 2 * Math.PI) / MARCAS;
       const largo = i % 5 === 0 ? 10 : 5;
       p.moveTo(c + Math.sin(a) * (radioMarcas - largo), c - Math.cos(a) * (radioMarcas - largo));
       p.lineTo(c + Math.sin(a) * radioMarcas, c - Math.cos(a) * radioMarcas);
     }
-    return p;
+    return p.detach();
   }, [tamano]);
 
-  const aro = useMemo(() => {
-    const p = Skia.Path.Make();
-    p.addCircle(c, c, radioMarcas - MARGEN_ARO);
-    return p;
-  }, [tamano]);
+  const aro = useMemo(() => Skia.PathBuilder.Make().addCircle(c, c, radioMarcas - MARGEN_ARO).detach(), [tamano]);
 
   const fin = useSharedValue(estatico ? MIN_FIN / MIN_POR_VUELTA : MIN_INICIO / MIN_POR_VUELTA);
   const azul = useSharedValue(estatico ? 1 : 0);

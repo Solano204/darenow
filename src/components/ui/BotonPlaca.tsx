@@ -1,17 +1,22 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { PixelRatio, Pressable, Platform, StyleSheet, type StyleProp, type View, type ViewStyle } from 'react-native';
 import Animated, {
-  cancelAnimation, interpolateColor, runOnJS, useAnimatedStyle, useSharedValue,
-  withRepeat, withSequence, withSpring, withTiming,
+  cancelAnimation, interpolate, interpolateColor, runOnJS, useAnimatedStyle, useSharedValue,
+  withDelay, withRepeat, withSequence, withSpring, withTiming, type SharedValue,
 } from 'react-native-reanimated';
-import { paleta, tipo, radio, sombra, esp, ALTO_BOTON, resorteTap, dur, easing, haptico } from '../../theme';
+import { LinearGradient } from 'expo-linear-gradient';
+import { paleta, tipo, radio, sombra, esp, degradado, ALTO_BOTON, resorteTap, dur, easing, haptico } from '../../theme';
 import { useReducedMotion } from '../../hooks/useReducedMotion';
+import { useTick } from '../../hooks/useTick';
 import { useMagnesia } from '../fx/MagnesiaOverlay';
 
 const ALTO_TEXTO = 22;
 const ESCALA_MAX = 1.15;
 const ESCALA_PRESIONADO = 0.03;
 const PULSO_OCUPADO_MS = 900;
+const LLENADO_MS = 320;
+const BRILLO_MS = 600;
+const ANCHO_BRILLO = 70;
 
 export interface BotonPlacaProps {
   texto: string;
@@ -22,11 +27,14 @@ export interface BotonPlacaProps {
   textoOcupado?: string;
   /** Dispara el aplauso de magnesia (nube, velo y haptica) al soltar, sin retrasar `onPress`. */
   aplauso?: boolean;
+  /** Un unico barrido de luz en diagonal, con este retraso en ms. Sin el, no hay brillo. */
+  brillo?: number;
   estilo?: StyleProp<ViewStyle>;
 }
 
-export function BotonPlaca({ texto, onPress, deshabilitado, ocupado, textoOcupado, aplauso, estilo }: BotonPlacaProps) {
+export function BotonPlaca({ texto, onPress, deshabilitado, ocupado, textoOcupado, aplauso, brillo, estilo }: BotonPlacaProps) {
   const reducido = useReducedMotion();
+  const tick = useTick();
   const magnesia = useMagnesia();
   const ref = useRef<View>(null);
   const centro = useRef<{ x: number; y: number } | null>(null);
@@ -34,9 +42,42 @@ export function BotonPlaca({ texto, onPress, deshabilitado, ocupado, textoOcupad
   const inactivo = !!deshabilitado || !!ocupado;
   const visible = ocupado && reducido ? (textoOcupado ?? texto) : texto;
 
+  // Bloqueado se ve como una superficie vacia; al habilitarse el azul la llena de izquierda a derecha.
+  const llenado = useSharedValue(deshabilitado ? 0 : 1);
+  const previoDeshabilitado = useRef(!!deshabilitado);
+  const [ancho, setAncho] = useState(0);
+  const barrido = useSharedValue(0);
+  const brilloHecho = useRef(false);
+
+  useEffect(() => {
+    const habilitando = previoDeshabilitado.current && !deshabilitado;
+    previoDeshabilitado.current = !!deshabilitado;
+    if (habilitando) haptico.toque();
+    llenado.value = withTiming(deshabilitado ? 0 : 1, {
+      duration: reducido ? 150 : LLENADO_MS,
+      easing: deshabilitado ? easing.entrada : easing.salida,
+    });
+  }, [deshabilitado, reducido]);
+
+  useEffect(() => {
+    if (brillo === undefined || brilloHecho.current || ancho === 0 || reducido || deshabilitado) return;
+    brilloHecho.current = true;
+    barrido.value = withDelay(brillo, withTiming(1, { duration: BRILLO_MS, easing: easing.salida }));
+  }, [brillo, ancho, reducido, deshabilitado]);
+
   const cuerpo = useAnimatedStyle(() => ({
     transform: [{ scale: 1 - ESCALA_PRESIONADO * presion.value }],
+  }));
+  const marco = useAnimatedStyle(() => ({
+    borderColor: interpolateColor(llenado.value, [0, 1], [paleta.gomaBorde, paleta.placaAzul]),
+  }), [tick]);
+  const relleno = useAnimatedStyle(() => ({
     backgroundColor: interpolateColor(presion.value, [0, 1], [paleta.placaAzul, paleta.placaAzulPresionado]),
+    ...(reducido ? { opacity: llenado.value } : { transform: [{ scaleX: llenado.value }] }),
+  }), [reducido, tick]);
+  const luz = useAnimatedStyle(() => ({
+    opacity: interpolate(barrido.value, [0, 0.1, 0.9, 1], [0, 1, 1, 0]),
+    transform: [{ translateX: -ANCHO_BRILLO + barrido.value * (ancho + ANCHO_BRILLO * 2) }, { rotate: '18deg' }],
   }));
 
   return (
@@ -62,8 +103,16 @@ export function BotonPlaca({ texto, onPress, deshabilitado, ocupado, textoOcupad
       accessibilityState={{ disabled: !!deshabilitado, busy: !!ocupado }}
       style={estilo}
     >
-      <Animated.View style={[s.cuerpo, Platform.OS === 'ios' && sombra.brasa, deshabilitado && s.apagado, cuerpo]}>
-        <TextoRueda texto={visible} ocupado={!!ocupado && !reducido} reducido={reducido} />
+      <Animated.View style={[s.sombra, Platform.OS === 'ios' && !deshabilitado && sombra.brasa, cuerpo]}>
+        <Animated.View style={[s.cuerpo, marco]} onLayout={e => setAncho(e.nativeEvent.layout.width)}>
+          <Animated.View style={[StyleSheet.absoluteFill, s.relleno, relleno]} />
+          {brillo !== undefined && (
+            <Animated.View pointerEvents="none" style={[s.luz, luz]}>
+              <LinearGradient colors={degradado.brillo} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={StyleSheet.absoluteFill} />
+            </Animated.View>
+          )}
+          <TextoRueda texto={visible} ocupado={!!ocupado && !reducido} reducido={reducido} llenado={llenado} />
+        </Animated.View>
       </Animated.View>
     </Pressable>
   );
@@ -73,8 +122,11 @@ export function BotonPlaca({ texto, onPress, deshabilitado, ocupado, textoOcupad
  * Etiqueta con cambio vertical: la vieja sube y sale, la nueva entra desde
  * abajo. Con movimiento reducido solo hay fundido.
  */
-function TextoRueda({ texto, ocupado, reducido }: { texto: string; ocupado: boolean; reducido: boolean }) {
+function TextoRueda({ texto, ocupado, reducido, llenado }: {
+  texto: string; ocupado: boolean; reducido: boolean; llenado: SharedValue<number>;
+}) {
   const alto = Math.round(ALTO_TEXTO * Math.min(PixelRatio.getFontScale(), ESCALA_MAX));
+  const tick = useTick();
   const [actual, setActual] = useState(texto);
   const [previo, setPrevio] = useState<string | null>(null);
   const t = useSharedValue(1);
@@ -104,12 +156,14 @@ function TextoRueda({ texto, ocupado, reducido }: { texto: string; ocupado: bool
   const distancia = reducido ? 0 : alto;
   const entrante = useAnimatedStyle(() => ({
     opacity: t.value * pulso.value,
+    color: interpolateColor(llenado.value, [0, 1], [paleta.magnesia3Texto, paleta.blanco]),
     transform: [{ translateY: (1 - t.value) * distancia }],
-  }));
+  }), [distancia, tick]);
   const saliente = useAnimatedStyle(() => ({
     opacity: 1 - t.value,
+    color: interpolateColor(llenado.value, [0, 1], [paleta.magnesia3Texto, paleta.blanco]),
     transform: [{ translateY: -t.value * distancia }],
-  }));
+  }), [distancia, tick]);
 
   return (
     <Animated.View style={[s.ventana, { height: alto }]}>
@@ -122,11 +176,14 @@ function TextoRueda({ texto, ocupado, reducido }: { texto: string; ocupado: bool
 }
 
 const s = StyleSheet.create({
+  sombra: { borderRadius: radio.pastilla },
   cuerpo: {
     minHeight: ALTO_BOTON, borderRadius: radio.pastilla, paddingHorizontal: esp.lg + esp.sm,
-    alignItems: 'center', justifyContent: 'center', backgroundColor: paleta.placaAzul,
+    alignItems: 'center', justifyContent: 'center', backgroundColor: paleta.gomaAlta,
+    borderWidth: 1, overflow: 'hidden',
   },
-  apagado: { opacity: 0.35 },
+  relleno: { transformOrigin: 'left center' },
+  luz: { position: 'absolute', top: -20, bottom: -20, left: 0, width: ANCHO_BRILLO },
   ventana: { justifyContent: 'center', overflow: 'hidden' },
   texto: { ...tipo.cuerpoEnfasis, color: paleta.blanco, textAlign: 'center' },
   encima: { position: 'absolute', left: 0, right: 0 },

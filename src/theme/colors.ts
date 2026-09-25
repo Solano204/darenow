@@ -10,6 +10,8 @@ export const paleta = {
   goma: '#1B1C1E',
   gomaAlta: '#242528',
   gomaBorde: '#34363A',
+  /** `gomaAlta` con un 12 % del azul de accion: fondo de una opcion marcada. */
+  gomaAltaAzul: '#242B3F',
   magnesia: '#F2F1EC',
   magnesia2: '#B9B7B0',
   magnesia3: '#7E7C77',
@@ -36,7 +38,19 @@ export const polvo = {
   particula: 'rgba(242,241,236,1)',
 };
 
+/** Boton de Google en su variante oscura y logo oficial: colores de marca, no se tocan. */
+export const google = {
+  fondo: '#131314',
+  borde: '#8E918F',
+  texto: '#E3E3E3',
+  rojo: '#EA4335',
+  azul: '#4285F4',
+  amarillo: '#FBBC05',
+  verde: '#34A853',
+};
+
 export const tinte = {
+  azul: 'rgba(37,83,232,0.12)',
   verde: 'rgba(31,164,99,0.16)',
   amarilla: 'rgba(242,194,48,0.16)',
   roja: 'rgba(224,65,47,0.16)',
@@ -167,6 +181,9 @@ export const degradado = {
   vidrioLuz: ['rgba(255,255,255,0.13)', 'rgba(255,255,255,0.02)', 'rgba(255,255,255,0)'] as const,
   especular: ['rgba(255,255,255,0.10)', 'rgba(255,255,255,0.01)', 'rgba(255,255,255,0.04)'] as const,
   resplandor: [GOMA_0, GOMA_0, GOMA_0] as const,
+  /** Desvanece una lista bajo el borde superior o sobre los botones. */
+  desdeGoma: [paleta.goma, GOMA_0] as const,
+  haciaGoma: [GOMA_0, paleta.goma] as const,
   /** Oscurece el borde superior de una foto para que se lea el encabezado. */
   veloArriba: ['rgba(27,28,30,0.78)', GOMA_0] as const,
   /** Funde una foto hacia goma. Sin velo blanco. Locations sugeridas: 0.2, 0.5, 0.78, 1. */

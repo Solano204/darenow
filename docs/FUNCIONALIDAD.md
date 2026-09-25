@@ -103,6 +103,41 @@ Pasos (los que tienen `saltarSi` se omiten): `objetivo` (obligatorio), `experien
 
 Los avisos del resumen salen de `derivar(r)` (`data/perfil.ts`). `Onboarding.tsx` también reexporta `derivar`, `derivarNivel`, `elegirPrograma`, `avisosDe`: se conserva.
 
+### 6.1 Parte 2: cuestionario paso por paso
+
+Se definen 14 pasos. El conteo visible arranca en **13** porque `pesoObjetivoKg` se omite mientras `pesoKg` no tenga respuesta (`saltarSi: r.pesoKg === undefined`); si el usuario responde el peso pasa a 14, y con `lugar === gym` se omiten `equipo`, `espacio` y `ruido` (11). La cifra sale siempre de `pasos.length`, nunca fija.
+
+| # | Campo | Tipo | Obligatorio | Defecto | Límites o valores | Se omite si |
+|---|---|---|---|---|---|---|
+| 1 | `objetivo` | opción única | sí | ninguno | los 8 de `GOALS` | nunca |
+| 2 | `experiencia` | opción única | no | `nada` | nada, pausa, algo, constante | nunca |
+| 3 | `diasPorSemana` | contador | no | 3 | 2 a 6, sufijo «días por semana» | nunca |
+| 4 | `minPorSesion` | opción única (guarda número) | no | 20 | 10, 20, 30, 45, 60 | nunca |
+| 5 | `lugar` | opción única | no | `casa` | casa, gym, exterior, mixto | nunca |
+| 6 | `equipo` | opción múltiple | no | `[]` | `EQUIPO` con `onboarding` | `lugar === gym` |
+| 7 | `espacio` | opción única | no | `colchoneta` | minimo, colchoneta, amplio | `lugar === gym` |
+| 8 | `ruido` | opción única | no | `si` | si, no | `lugar === gym` |
+| 9 | `contra` | opción múltiple | no | `[]` | 10 zonas | nunca |
+| 10 | `situacion` | opción múltiple | no | `[]` | embarazo, postparto, hipertensión, vértigo | nunca |
+| 11 | `alturaCm` | contador con número escrito | no (saltable) | 170 | 120 a 220, «cm» | nunca |
+| 12 | `pesoKg` | contador con número escrito | no (saltable) | 70 | 35 a 200, «kg ahora» | nunca |
+| 13 | `pesoObjetivoKg` | contador con número escrito | no (saltable) | 70 | 35 a 200, «kg objetivo» | `pesoKg` sin respuesta |
+| 14 | `nombre` | texto | sí | vacío | no vacío tras recortar | nunca |
+
+Reglas que no cambian:
+
+- **Seguir** se habilita si `!paso.obligatorio || respondido`. `respondido` es «hay valor guardado y, si es texto, no está vacío». Solo `objetivo` y `nombre` pueden bloquearlo.
+- Al pulsar Seguir sin haber respondido, se guarda el valor por defecto salvo en `alturaCm`, `pesoKg` y `pesoObjetivoKg` (medidas de salud: quedan sin responder).
+- Escribir o cambiar una medida pasa por `pedirConsentimientoMedidas` antes de guardarse.
+- **Atrás** (visible si `i > 0`) hace `i - 1` con la transición inversa y no toca `r`: las respuestas se conservan.
+- «Prefiero no decirlo» (solo pasos saltables) borra la respuesta y avanza (o abre el resumen si era el último).
+- En el último paso el botón dice «Ver mi plan»: pantalla «Preparando» de 1100 ms y después el resumen.
+- Contador: − y + acotan a `min` y `max`; el número escrito se confirma al terminar de editar y se acota igual; `onCambio` solo se llama si el valor cambia al escribir.
+
+### 6.2 Parte 2: plan listo
+
+Sale de `derivar(r)` (`data/perfil.ts`): `perfil.diasPorSemana` («N por semana»), `perfil.minPorSesion` («N minutos»), `perfil.nivel` («N de 3»), y condicionales: `perfil.modoSinSaltos` → «Sin saltos ni ruido», `perfil.contra.length > 0` → «Zonas protegidas: N». `avisos` se muestran como notas. **Empezar** → `onTerminar(perfil)`; **Cambiar algo** → `setResumen(false)` (vuelve al último paso del cuestionario).
+
 ## 7. Bienvenida
 
 Archivo `src/screens/Bienvenida.tsx`. Se ve una vez al día.
@@ -160,3 +195,21 @@ Se rellena al cerrar cada fase. ✅ = verificado sin dispositivo: lectura de có
 | Ajuste de háptica respetado | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | |
 
 F6 queda sin marcar a propósito: se rellena tras la corrida final (`tsc`, suites, bundle, `expo-doctor`) y la prueba en dispositivo. En el emulador (Android 35, build de desarrollo) se comprobó el arranque, los cuatro pasos de la presentación y la ausencia de errores de JS; quedó pendiente volver a comprobar el paso 4 tras la última corrección de las capas de texto.
+
+## 11. Registro de la Parte 2 (cuenta, cuestionario, plan listo)
+
+Verificado sin dispositivo: lectura de código contra las secciones 5, 6, 6.1 y 6.2, `tsc` y `lint:color`. Pendiente de la prueba en dispositivo lo que va marcado.
+
+| Punto | Estado |
+|---|---|
+| Google e invitado: mismos handlers, `onListo` igual | ✅ código |
+| Términos y Aviso de privacidad abren las mismas URL | ✅ código |
+| Los pasos y sus omisiones salen de `PASOS` (movidos sin cambios a `useOnboarding`) | ✅ código |
+| Seguir se habilita con la misma regla (`obligatorio` y `respondido`) | ✅ código |
+| Atrás conserva las respuestas | ✅ código |
+| Límites del contador y acotado al escribir iguales | ✅ código |
+| Consentimiento de medidas antes de guardar | ✅ código |
+| Nombre precargado desde la cuenta | ✅ código |
+| Plan listo: mismos valores, Empezar y Cambiar algo iguales | ✅ código |
+| Sacudida, odómetro continuo, placas y aplauso | pendiente en dispositivo |
+| Botón visible sobre el teclado en Android e iOS | pendiente en dispositivo |

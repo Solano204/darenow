@@ -20,4 +20,16 @@ export const haptico = {
     if (!hapticosActivos()) return;
     Haptics.selectionAsync().catch(() => {});
   },
+  seleccion: () => {
+    if (!hapticosActivos()) return;
+    Haptics.selectionAsync().catch(() => {});
+  },
+  aviso: () => {
+    if (!hapticosActivos()) return;
+    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning).catch(() => {});
+  },
+  error: () => {
+    if (!hapticosActivos()) return;
+    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error).catch(() => {});
+  },
 };

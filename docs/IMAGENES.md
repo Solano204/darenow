@@ -25,7 +25,10 @@ Gym oscuro, piso de goma negro con motas de color, una sola luz dura lateral que
 | `assets/img/fondos/intro_02.jpg` | Paso 3 «La sesión cabe en tu tiempo» | 1080×1920 | El mismo hombre, mirando su reloj, sensación de «tengo poco tiempo» |
 | `assets/img/fondos/intro_03.jpg` | Paso 4 «Te decimos lo que sí funciona…» | 1080×1920 | El mismo hombre, leyendo una tableta con gesto escéptico |
 | `assets/img/fondos/bienvenida.jpg` | Bienvenida, mitad superior a sangre | 1080×1300 | Mano abierta levantada cubierta de magnesia, polvo cayendo, fondo negro, luz dura |
+| `assets/img/fondos/plan-listo.jpg` | Plan listo, mitad superior (38 % del alto) | 1080×1920 | Primer plano de manos con magnesia sujetando una barra olímpica, polvo en el aire, fondo negro, vertical 9:16, parte baja oscura |
 | `assets/img/motivacion/mot_18.jpg` | Tarjeta «Bien vuelto» | 1080×600 | Tenis y tapete junto a una puerta, luz de mañana, en tonos oscuros y cálidos, sin blancos quemados |
+
+Sin `plan-listo.jpg` la pantalla del plan usa la foto de la bienvenida tratada. Tras copiarla, correr `python generar_registry.py`. La imagen opcional de «Tu cuenta» (casillero con candado) no se usa: el diseño funciona sin ella.
 
 Recortes opcionales (PNG sin fondo del atleta, mismo lienzo que su foto): `intro_04_recorte.png`, `intro_01_recorte.png`, `intro_02_recorte.png`, `intro_03_recorte.png`, todos en `assets/img/fondos/`.
 

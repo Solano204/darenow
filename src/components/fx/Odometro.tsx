@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { PixelRatio, StyleSheet, Text, View, type StyleProp, type TextStyle } from 'react-native';
 import Animated, {
-  cancelAnimation, useAnimatedStyle, useSharedValue, withDelay, withSequence, withTiming,
+  cancelAnimation, useAnimatedStyle, useSharedValue, withDelay, withSequence, withSpring, withTiming,
 } from 'react-native-reanimated';
-import { easing } from '../../theme';
+import { easing, resortePlaca } from '../../theme';
 import { useReducedMotion } from '../../hooks/useReducedMotion';
 
 const CELDAS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
@@ -39,6 +39,11 @@ interface Props {
   duracionColumna?: number;
   /** Con `desde`, oculta los ceros a la izquierda del valor final y recentra (45 -> 5). */
   ocultarCerosIzq?: boolean;
+  /**
+   * Contador: tras la primera entrada, cada cambio de `valor` mueve solo las columnas
+   * que cambian, hacia arriba si el valor sube y hacia abajo si baja, con `resortePlaca`.
+   */
+  continuo?: boolean;
   estilo: StyleProp<TextStyle>;
 }
 
@@ -50,7 +55,7 @@ interface Props {
  */
 export function Odometro({
   valor, desde, activo = true, animar = true, retraso = 0,
-  duracionColumna = DURACION_COLUMNA, ocultarCerosIzq, estilo,
+  duracionColumna = DURACION_COLUMNA, ocultarCerosIzq, continuo, estilo,
 }: Props) {
   const reducido = useReducedMotion();
   const plano = StyleSheet.flatten(estilo) ?? {};
@@ -64,6 +69,9 @@ export function Odometro({
   const ceros = ocultarCerosIzq ? fin.findIndex(d => d !== 0) : 0;
   const cerosIzq = ceros < 0 ? columnas - 1 : ceros;
   const estatico = reducido || !animar;
+  const previo = useRef(valor);
+  const sentido = valor >= previo.current ? 1 : -1;
+  useEffect(() => { previo.current = valor; });
 
   const desplazamiento = useSharedValue(0);
   useEffect(() => {
@@ -96,7 +104,7 @@ export function Odometro({
         <Animated.View style={[s.fila, estiloFila]} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>
           {fin.map((d, c) => (
             <Columna
-              key={c}
+              key={continuo ? `${columnas}-${c}` : c}
               indice={c}
               inicio={inicio[c]}
               fin={d}
@@ -108,6 +116,8 @@ export function Odometro({
               duracion={duracionColumna}
               alto={alto}
               ancho={celda}
+              continuo={!!continuo}
+              sentido={sentido}
               estilo={estilo}
             />
           ))}
@@ -117,14 +127,19 @@ export function Odometro({
   );
 }
 
-function Columna({ inicio, fin, destino, oculta, activo, estatico, retraso, duracion, alto, ancho, estilo }: {
+function Columna({ inicio, fin, destino, oculta, activo, estatico, retraso, duracion, alto, ancho, continuo, sentido, estilo }: {
   indice: number; inicio: number; fin: number; destino: number; oculta: boolean; activo: boolean;
-  estatico: boolean; retraso: number; duracion: number; alto: number; ancho: number; estilo: StyleProp<TextStyle>;
+  estatico: boolean; retraso: number; duracion: number; alto: number; ancho: number;
+  continuo: boolean; sentido: number; estilo: StyleProp<TextStyle>;
 }) {
   const pos = useSharedValue(estatico ? fin : inicio);
   const visible = useSharedValue(1);
+  const objetivo = useRef(estatico ? fin : destino);
+  const finPrevio = useRef(fin);
+  const primera = useRef(true);
 
   useEffect(() => {
+    objetivo.current = estatico ? fin : destino;
     if (estatico) { pos.value = fin; visible.value = oculta ? 0 : 1; return; }
     pos.value = inicio;
     visible.value = 1;
@@ -136,7 +151,17 @@ function Columna({ inicio, fin, destino, oculta, activo, estatico, retraso, dura
     ));
     if (oculta) visible.value = withDelay(retraso + duracion + ASENTAMIENTO_MS, withTiming(0, { duration: DESVANECER_MS }));
     return () => { cancelAnimation(pos); cancelAnimation(visible); };
-  }, [estatico, activo, destino, inicio, fin, oculta]);
+  }, continuo ? [estatico, activo] : [estatico, activo, destino, inicio, fin, oculta]);
+
+  useEffect(() => {
+    if (!continuo) return;
+    if (primera.current) { primera.current = false; finPrevio.current = fin; return; }
+    const delta = sentido >= 0 ? (fin - finPrevio.current + 10) % 10 : -((finPrevio.current - fin + 10) % 10);
+    finPrevio.current = fin;
+    if (delta === 0) return;
+    objetivo.current += delta;
+    pos.value = estatico ? objetivo.current : withSpring(objetivo.current, { ...resortePlaca, overshootClamping: true });
+  }, [fin]);
 
   const columna = useAnimatedStyle(() => {
     const p = ((pos.value % 10) + 10) % 10;

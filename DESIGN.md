@@ -107,6 +107,18 @@ Las fotos actuales son claras y de baja resolución (447x800 y 800x423). Mientra
 
 Desviación del brief: pedía Skia. Un `Canvas` de Skia por pantalla son N superficies GPU vivas a la vez, porque el Stack nativo mantiene montadas las de abajo; un tile compartido cuesta un bitmap y se ve igual.
 
+## Cuenta, cuestionario y plan listo (Parte 2)
+
+- **Botón de Google** (`BotonGoogle`): variante oscura de la marca (`#131314`, borde `#8E918F`, texto `#E3E3E3`, tokens `google` en `colors.ts`), logo «G» oficial dibujado con Skia desde su ruta SVG, cápsula de 58. El texto va en Figtree, no en Roboto que sugiere la guía. Mientras espera, tres puntos de magnesia reemplazan al texto y el botón no cambia de tamaño.
+- **Botón bloqueado** (`BotonPlaca`): superficie vacía (`gomaAlta` con borde) y texto `magnesia3Texto`. Al habilitarse, el azul lo llena de izquierda a derecha en 320 ms y da un toque Light; al bloquearse, se vacía al revés. Aplica a todos los botones primarios, no solo al del cuestionario. Con `brillo` da un único barrido de luz (solo lo usa «Empezar» del plan).
+- **Barra de carga** (`BarraCarga13`): una placa por paso, con el total dinámico. El cuestionario tiene 14 pasos definidos y arranca contando 13 porque el peso objetivo se omite hasta responder el peso; con «gym» se omiten tres. Háptica Medium solo en los pasos 5, 9 y el último.
+- **Transición**: `useTransicionPaso` saca el contenido actual (24 px y opacidad 0, 180 ms), cambia el paso y el contenido nuevo entra con sus propias animaciones (título por máscara, zona de respuesta desde 24 px). La barra y los botones no se mueven. Ignora toques mientras corre.
+- **Opciones** (`OpcionCuestionario`): se hunden, borde y fondo pasan al azul, el indicador se llena, la palomita se dibuja de trazo (`PalomitaTrazo`, Skia) y sale una nube de 10 partículas. Esa nube reutiliza el motor de `MagnesiaOverlay` (`mini`); no hay un Canvas por fila. Íconos de objetivo: Ionicons de línea.
+- **Contador** (`ContadorPlacas`): número de 120 que rueda hacia arriba o hacia abajo (`Odometro continuo`), botones de 64, sacudida y háptica de aviso en los límites, y la semana de siete placas solo para los días por semana. El número se sigue pudiendo tocar y escribir, con el mismo acotado de antes.
+- **Nombre**: `SaludoPreview` muestra el saludo real (`saludo()` de `mensajes.ts`) mientras se escribe.
+- **Plan listo** (`PlanListo`): tres `PlacaDato` que caen con su golpe. El filo verde, amarillo y azul es una excepción a la regla del color: representan las tres «cargas» del plan. Las etiquetas de «Sin saltos ni ruido», «Zonas protegidas» y los avisos se conservan bajo las placas; el contenido hace scroll si no cabe. El destello de magnesia (`destello()`) sustituye a la barra que se comprime.
+- **Errores de Google**: el texto usa `placaRojaTexto` (AA), no el rojo puro.
+
 ## Componentes
 
 | Carpeta | Piezas |

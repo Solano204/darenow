@@ -10,7 +10,7 @@
 import React from 'react';
 import { View, Text, ScrollView, StyleSheet, type ViewStyle } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { color, tipo, esp, radio, sombra, degradado } from '../theme';
+import { color, tipo, esp, radio, sombra, degradado, MARGEN_PANTALLA } from '../theme';
 import { Toque, Aparece, Favorito } from './ui';
 import Foto from './Foto';
 import { VidrioPastilla } from './Vidrio';
@@ -52,14 +52,14 @@ export default function Carrusel({
     <ScrollView
       horizontal
       showsHorizontalScrollIndicator={false}
-      contentContainerStyle={{ gap: esp.sm, paddingRight: esp.md, paddingVertical: 4 }}
+      contentContainerStyle={{ gap: esp.sm, paddingRight: MARGEN_PANTALLA, paddingVertical: 4 }}
       decelerationRate="fast"
       snapToInterval={w + esp.sm}
       snapToAlignment="start"
     >
       {items.map((it, i) => (
         <Aparece key={it.id} retraso={i * 55}>
-          <Toque onPress={() => onItem(it.id)} estilo={{ width: w } as ViewStyle}>
+          <Toque onPress={() => onItem(it.id)} escala={0.98} oscurecer={radio.tarjeta} estilo={{ width: w } as ViewStyle}>
             <View style={forma === 'circulo' ? s.circulo : undefined}>
               <Foto
                 tipo={tipoFoto} id={it.imagenId ?? it.id} nombre={it.titulo}
@@ -75,7 +75,7 @@ export default function Carrusel({
                 <View style={s.etiqueta}>
                   <VidrioPastilla>
                     <View style={{ paddingVertical: 5, paddingHorizontal: 10 }}>
-                      <Text style={[tipo.micro, { color: color.carbon }]}>{it.etiqueta}</Text>
+                      <Text style={[tipo.micro, { color: color.texto }]}>{it.etiqueta}</Text>
                     </View>
                   </VidrioPastilla>
                 </View>
@@ -83,8 +83,8 @@ export default function Carrusel({
             </View>
 
             <Text
-              style={[tipo.h3, {
-                color: color.texto, marginTop: esp.sm,
+              style={[tipo.h2, {
+                fontSize: 20, lineHeight: 22, color: color.texto, marginTop: esp.sm,
                 textAlign: forma === 'circulo' ? 'center' : 'left',
               }]}
               numberOfLines={2}

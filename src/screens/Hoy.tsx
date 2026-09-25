@@ -11,12 +11,13 @@
 
 import React, { useMemo } from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import Animated from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
-import { color, tipo, esp, radio, degradado, sol } from '../theme';
+import { color, paleta, tipo, esp, radio, degradado, sol, MARGEN_PANTALLA } from '../theme';
 import {
   Boton, Seccion, Chip, Aparece, Toque, Nota, BarrasSemana, BotonRedondo,
-  useHuecoAbajo, NumeroAnimado, Resplandor, Vidrio3D,
+  useHuecoAbajo, NumeroAnimado, Vidrio3D, TituloGrande, BarraCompacta, ContextoScroll, useScrollCabecera,
 } from '../components/ui';
 import Carrusel from '../components/Carrusel';
 import Foto from '../components/Foto';
@@ -31,6 +32,7 @@ import { saludo } from '../data/mensajes';
 
 export default function Hoy({ navigation }: any) {
   const abajo = useHuecoAbajo();
+  const { y, onScroll } = useScrollCabecera();
   const { estado, ultimaVezDe, alternarFavorito, esFavorito } = useEstado();
   const { perfil, sesiones, racha } = estado;
 
@@ -112,19 +114,20 @@ export default function Hoy({ navigation }: any) {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: color.fondo }} edges={['top']}>
-      <Resplandor />
-
-      <ScrollView
+      <Animated.ScrollView
+        onScroll={onScroll}
+        scrollEventThrottle={16}
         contentContainerStyle={{ paddingBottom: abajo + (ANUNCIOS_ACTIVOS ? 62 : 0) }}
         showsVerticalScrollIndicator={false}
       >
+      <ContextoScroll.Provider value={y}>
         {/* Cabecera */}
         <View style={s.cabecera}>
           <View style={{ flex: 1 }}>
             <Text style={[tipo.pie, { color: color.textoSuave }]}>{saludo(perfil.nombre || undefined)}</Text>
-            <Text style={[tipo.h1, { color: color.texto, marginTop: 2 }]}>
+            <TituloGrande estilo={{ marginTop: 2 }}>
               {entrenoHoy ? 'Ya entrenaste hoy' : 'Tu sesión de hoy'}
-            </Text>
+            </TituloGrande>
           </View>
           <BotonRedondo glifo="⌕" etiqueta="Buscar" onPress={() => navigation.navigate('Tabs', { screen: 'Explorar' })} />
         </View>
@@ -139,10 +142,9 @@ export default function Hoy({ navigation }: any) {
         <Aparece>
           <Vidrio3D
             tono="carbon"
-            brillo
             desenfoque
             elevacion="alta"
-            estilo={{ marginHorizontal: esp.md }}
+            estilo={{ marginHorizontal: MARGEN_PANTALLA }}
           >
             {/* Toda esta tarjeta va sobre degradado.carbon (azul vivo), no
                 sobre el fondo claro de la pantalla: el texto usa
@@ -214,16 +216,15 @@ export default function Hoy({ navigation }: any) {
         {ejercicios.length > 0 && (
           <Aparece retraso={70}>
             <View style={{ marginTop: esp.lg }}>
-              <Text style={[tipo.h2, { color: color.texto, paddingHorizontal: esp.md, marginBottom: esp.sm }]}>
+              <Text style={[tipo.h2, { color: color.texto, paddingHorizontal: MARGEN_PANTALLA, marginBottom: esp.sm }]}>
                 Elige tu enfoque
               </Text>
               <ScrollView horizontal showsHorizontalScrollIndicator={false}
-                contentContainerStyle={{ gap: esp.sm, paddingHorizontal: esp.md }}>
+                contentContainerStyle={{ gap: esp.sm, paddingHorizontal: MARGEN_PANTALLA }}>
                 {ejercicios.slice(0, 3).map((e, i) => (
                   <TarjetaColor
                     key={e.id}
-                    tono={(['acento', 'purpuraClaro', 'verdeClaro'] as const)[i % 3]}
-                    titulo={e.name}
+                                        titulo={e.name}
                     sub={`Nivel ${e.level}`}
                     tipoFoto="ejercicio"
                     id={e.id}
@@ -238,7 +239,7 @@ export default function Hoy({ navigation }: any) {
         {/* Por si la sesion de arriba no convence: otras rutinas a mano,
             aqui mismo, sin bajar hasta el descubrimiento de mas abajo. */}
         <Aparece retraso={90}>
-          <Seccion titulo="¿Prefieres otra rutina?" accion="Ver todas" estilo={{ paddingLeft: esp.md }}
+          <Seccion titulo="¿Prefieres otra rutina?" accion="Ver todas" estilo={{ paddingLeft: MARGEN_PANTALLA }}
             onAccion={() => navigation.navigate('Tabs', { screen: 'Explorar', merge: true, params: { tab: 'rutinas' } })}>
             <Carrusel
               items={rutinas.map(r => ({
@@ -257,7 +258,7 @@ export default function Hoy({ navigation }: any) {
 
         {/* Racha */}
         <Aparece retraso={120}>
-          <View style={{ paddingHorizontal: esp.md, marginTop: esp.lg }}>
+          <View style={{ paddingHorizontal: MARGEN_PANTALLA, marginTop: esp.lg }}>
             <DiaPicker semana={semana} />
           </View>
           <View style={s.racha}>
@@ -270,7 +271,7 @@ export default function Hoy({ navigation }: any) {
             <View style={{ flex: 1 }}><BarrasSemana datos={semana} /></View>
           </View>
           {racha.enPausa && (
-            <View style={{ paddingHorizontal: esp.md }}>
+            <View style={{ paddingHorizontal: MARGEN_PANTALLA }}>
               <Nota texto="Tu racha está en pausa, no perdida. Entrena hoy y sigue desde donde estaba." tono="cuidado" />
             </View>
           )}
@@ -278,7 +279,7 @@ export default function Hoy({ navigation }: any) {
 
         {/* Explorar todo */}
         <Aparece retraso={140}>
-          <View style={{ paddingHorizontal: esp.md, marginTop: esp.md }}>
+          <View style={{ paddingHorizontal: MARGEN_PANTALLA, marginTop: esp.md }}>
             <Toque onPress={() => navigation.navigate('Tabs', { screen: 'Explorar' })}>
               <Vidrio3D tono="acento" desenfoque estilo={s.explorarFilo}>
                 <View style={s.explorar}>
@@ -300,10 +301,10 @@ export default function Hoy({ navigation }: any) {
         {/* Programa activo */}
         {programa && (
           <Aparece retraso={180}>
-            <Seccion titulo="Tu programa" accion="Ver" estilo={{ paddingLeft: esp.md }}
+            <Seccion titulo="Tu programa" accion="Ver" estilo={{ paddingLeft: MARGEN_PANTALLA }}
               onAccion={() => navigation.navigate('Programa', { id: programa.id })}>
               <Toque onPress={() => navigation.navigate('Programa', { id: programa.id })}
-                estilo={{ marginRight: esp.md } as never}>
+                estilo={{ marginRight: MARGEN_PANTALLA } as never}>
                 <View style={s.programaFila}>
                   <Foto tipo="programa" id={programa.id} nombre={programa.name} alto={72} ancho={72} />
                   <View style={{ flex: 1 }}>
@@ -321,7 +322,7 @@ export default function Hoy({ navigation }: any) {
 
         {/* Carruseles */}
         <Aparece retraso={220}>
-          <Seccion titulo="Programas" accion="Ver todos" estilo={{ paddingLeft: esp.md }}
+          <Seccion titulo="Programas" accion="Ver todos" estilo={{ paddingLeft: MARGEN_PANTALLA }}
             onAccion={() => navigation.navigate('Tabs', { screen: 'Explorar', merge: true, params: { tab: 'programas' } })}>
             <Carrusel
               items={programas.map(p => ({
@@ -337,7 +338,7 @@ export default function Hoy({ navigation }: any) {
         </Aparece>
 
         <Aparece retraso={280}>
-          <Seccion titulo="Ejercicios para ti" accion="Ver todos" estilo={{ paddingLeft: esp.md }}
+          <Seccion titulo="Ejercicios para ti" accion="Ver todos" estilo={{ paddingLeft: MARGEN_PANTALLA }}
             onAccion={() => navigation.navigate('Tabs', { screen: 'Explorar', merge: true, params: { tab: 'ejercicios' } })}>
             <Carrusel
               items={ejercicios.map(e => ({
@@ -352,7 +353,7 @@ export default function Hoy({ navigation }: any) {
         </Aparece>
 
         <Aparece retraso={310}>
-          <Seccion titulo="Músculos de hoy" accion="Ver todos" estilo={{ paddingLeft: esp.md }}
+          <Seccion titulo="Músculos de hoy" accion="Ver todos" estilo={{ paddingLeft: MARGEN_PANTALLA }}
             onAccion={() => navigation.navigate('Tabs', { screen: 'Explorar', merge: true, params: { tab: 'musculos' } })}>
             <Carrusel
               items={musculos.map(m => ({ id: m.id, titulo: m.name }))}
@@ -364,7 +365,7 @@ export default function Hoy({ navigation }: any) {
         </Aparece>
 
         <Aparece retraso={340}>
-          <Seccion titulo="Para leer hoy" accion="Ver más" estilo={{ paddingLeft: esp.md }}
+          <Seccion titulo="Para leer hoy" accion="Ver más" estilo={{ paddingLeft: MARGEN_PANTALLA }}
             onAccion={() => navigation.navigate('Tabs', { screen: 'Aprender' })}>
             <Carrusel
               items={tips.map(t => ({
@@ -382,7 +383,7 @@ export default function Hoy({ navigation }: any) {
 
         {stats.total > 0 && (
           <Aparece retraso={370}>
-            <View style={{ paddingHorizontal: esp.md, marginTop: esp.lg }}>
+            <View style={{ paddingHorizontal: MARGEN_PANTALLA, marginTop: esp.lg }}>
               <View style={s.stats}>
                 <Stat n={String(stats.total)} t="sesiones" />
                 <View style={s.sep} />
@@ -395,7 +396,9 @@ export default function Hoy({ navigation }: any) {
             </View>
           </Aparece>
         )}
-      </ScrollView>
+      </ContextoScroll.Provider>
+      </Animated.ScrollView>
+      <BarraCompacta titulo="Hoy" y={y} />
 
       {/* Banner fijo abajo, la unica publicidad de esta pantalla. Va sobre
           vidrio para que el contenido siga viendose al pasar por detras.
@@ -430,15 +433,14 @@ function Stat({ n, t }: { n: string; t: string }) {
  * arriba con texto BLANCO, y aclararlos ahi rompe ese contraste. Estas
  * versiones "Claro" son tokens aparte en theme.ts, no un aclarado local.
  */
-function TarjetaColor({ tono, titulo, sub, tipoFoto, id, onPress }: {
-  tono: 'acento' | 'purpuraClaro' | 'verdeClaro';
+function TarjetaColor({ titulo, sub, tipoFoto, id, onPress }: {
   titulo: string; sub: string;
   tipoFoto: 'ejercicio' | 'rutina'; id: string;
   onPress: () => void;
 }) {
   return (
     <Toque onPress={onPress} estilo={{ width: 400 } }>
-      <LinearGradient colors={degradado[tono]} start={sol.start} end={sol.end} style={s.tarjetaColor}>
+      <LinearGradient colors={degradado.crema} start={sol.start} end={sol.end} style={s.tarjetaColor}>
         <View style={{ flex: 1, justifyContent: 'space-between' }}>
           <View style={{ paddingRight: esp.sm }}>
             <Text style={[tipo.h3, { color: color.texto }]} numberOfLines={3}>{titulo}</Text>
@@ -469,7 +471,7 @@ function DiaPicker({ semana }: { semana: { fecha: string; min: number }[] }) {
         return (
           <View key={d.fecha} style={{ alignItems: 'center', gap: 5 }}>
             <View style={[s.diaCirculo, esHoy && s.diaCirculoActivo]}>
-              <Text style={[tipo.dato, { color: esHoy ? color.sobreOscuro : color.textoTenue }]}>
+              <Text style={[tipo.dato, { color: esHoy ? color.fondo : color.textoTenue }]}>
                 {numero}
               </Text>
             </View>
@@ -484,12 +486,12 @@ function DiaPicker({ semana }: { semana: { fecha: string; min: number }[] }) {
 const s = StyleSheet.create({
   cabecera: {
     flexDirection: 'row', alignItems: 'center', gap: esp.sm,
-    paddingHorizontal: esp.md, paddingTop: esp.sm, paddingBottom: esp.md,
+    paddingHorizontal: MARGEN_PANTALLA, paddingTop: esp.sm, paddingBottom: esp.md,
   },
 
   racha: {
     flexDirection: 'row', alignItems: 'center', gap: esp.md,
-    paddingHorizontal: esp.md, marginTop: esp.lg,
+    paddingHorizontal: MARGEN_PANTALLA, marginTop: esp.lg,
   },
   explorarFilo: { marginBottom: 0 },
   explorar: { flexDirection: 'row', alignItems: 'center', gap: esp.md },
@@ -508,19 +510,19 @@ const s = StyleSheet.create({
     borderWidth: 1, borderColor: color.borde,
   },
   sep: { width: 1, height: 28, backgroundColor: color.borde },
-  bannerAbajo: { position: 'absolute', left: esp.md, right: esp.md },
+  bannerAbajo: { position: 'absolute', left: MARGEN_PANTALLA, right: MARGEN_PANTALLA },
   diaCirculo: {
     width: 36, height: 36, borderRadius: 18, backgroundColor: color.cremaHonda,
     alignItems: 'center', justifyContent: 'center',
   },
-  diaCirculoActivo: { backgroundColor: color.texto },
+  diaCirculoActivo: { backgroundColor: paleta.magnesia },
   diaPunto: { width: 5, height: 5, borderRadius: 2.5, backgroundColor: 'transparent' },
   tarjetaColor: {
     height: 190, borderRadius: radio.tarjeta, padding: esp.md,
-    overflow: 'hidden',
+    overflow: 'hidden', borderWidth: 1, borderColor: color.borde,
   },
   pildoraInicio: {
     alignSelf: 'flex-start', backgroundColor: color.carbon,
-    borderRadius: radio.pastilla, paddingVertical: esp.xs, paddingHorizontal: esp.md,
+    borderRadius: radio.pastilla, paddingVertical: esp.xs, paddingHorizontal: MARGEN_PANTALLA,
   },
 });

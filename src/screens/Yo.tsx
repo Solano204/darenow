@@ -1,11 +1,11 @@
 import React, { useMemo, useState } from 'react';
 import { View, Text, Pressable, StyleSheet, Alert, TextInput, Linking } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { color, tipo, esp, radio } from '../theme';
+import { color, tipo, esp, radio, MARGEN_PANTALLA } from '../theme';
 import {
   Pantalla, Tarjeta, Fila, Chip, Boton, Seccion, Nota, BarrasSemana,
   Interruptor, Opcion, Contador, Vacio, Toque, Aparece, Favorito,
-  Progreso, NumeroAnimado, Pulso,
+  Progreso, NumeroAnimado, Pulso, TituloGrande,
 } from '../components/ui';
 import Calendario from '../components/Calendario';
 import Carrusel from '../components/Carrusel';
@@ -39,8 +39,8 @@ export default function Yo({ navigation }: any) {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: color.fondo }} edges={['top']}>
-      <Pantalla>
-        <Text style={[tipo.h1, { color: color.texto }]}>{perfil.nombre || 'Tu progreso'}</Text>
+      <Pantalla titulo={perfil.nombre || 'Tu progreso'}>
+        <TituloGrande>{perfil.nombre || 'Tu progreso'}</TituloGrande>
         <Text style={[tipo.pie, { color: color.textoSuave }]}>
           {nombreGoal(perfil.objetivo)} · {programa?.name ?? 'sin programa'}
         </Text>
@@ -521,7 +521,7 @@ export function Ajustes({ navigation }: any) {
             ayuda="Tres tonos que suben al final de cada fase, y uno distinto al empezar, al terminar la serie y al acabarse el descanso. Sirve para entrenar sin mirar la pantalla."
             onCambio={v => guardarPerfil({ sonido: v })} />
           <Interruptor etiqueta="Voz" valor={vozOn}
-            ayuda="Dice el nombre del ejercicio y sus claves al empezar, la cuenta 3-2-1, y cada cambio de fase. Mientras habla, el boton para avanzar se desactiva un instante."
+            ayuda="Dice el nombre del ejercicio y sus claves al empezar, la cuenta 3-2-1, y cada cambio de fase. Mientras habla, el botón para avanzar se desactiva un instante."
             onCambio={setVozOn} />
           <Interruptor etiqueta="Vibracion" valor={hapticosOn}
             ayuda="Un toque corto al completar una serie, uno largo al terminar la sesión. Útil con música puesta, cuando el sonido no llega."
@@ -685,6 +685,6 @@ const s = StyleSheet.create({
   caja: { flex: 1, alignItems: 'center' },
   input: {
     flex: 1, minHeight: 46, borderWidth: 1, borderColor: color.borde,
-    borderRadius: radio.tarjeta, paddingHorizontal: esp.md, color: color.texto, fontSize: 16,
+    borderRadius: radio.tarjeta, paddingHorizontal: MARGEN_PANTALLA, color: color.texto, fontSize: 16,
   },
 });

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, type StyleProp, type TextStyle } from 'react-native';
+import { PixelRatio, StyleSheet, Text, View, type StyleProp, type TextStyle } from 'react-native';
 import Animated, { cancelAnimation, useAnimatedStyle, useSharedValue, withDelay, withSpring } from 'react-native-reanimated';
 import { resortePlaca } from '../../theme';
 import { useReducedMotion } from '../../hooks/useReducedMotion';
@@ -17,22 +17,21 @@ interface Comun {
 
 /** Cada linea del titulo sube desde una mascara inferior. Las lineas se miden del propio texto, asi se respeta el salto real. */
 export function TituloMascara({ texto, estilo, activo, animar = true, retraso = 0 }: Comun & { texto: string }) {
-  const [lineas, setLineas] = useState<string[] | null>(null);
-  const alto = StyleSheet.flatten(estilo)?.lineHeight ?? 0;
+  const [lineas, setLineas] = useState<{ texto: string; alto: number }[] | null>(null);
 
   return (
     <View accessible accessibilityRole="header" accessibilityLabel={texto}>
       {lineas === null ? (
         <Text
           style={[estilo, { opacity: 0 }]}
-          onTextLayout={e => setLineas(e.nativeEvent.lines.map(l => l.text.trim()))}
+          onTextLayout={e => setLineas(e.nativeEvent.lines.map(l => ({ texto: l.text.trim(), alto: l.height })))}
         >
           {texto}
         </Text>
       ) : (
         lineas.map((l, k) => (
-          <Mascara key={k} alto={alto} activo={activo} animar={animar} espera={retraso + k * ESCALONADO_LINEAS_MS}>
-            <Text style={estilo}>{l}</Text>
+          <Mascara key={k} alto={l.alto} activo={activo} animar={animar} espera={retraso + k * ESCALONADO_LINEAS_MS}>
+            <Text style={estilo}>{l.texto}</Text>
           </Mascara>
         ))
       )}
@@ -42,7 +41,7 @@ export function TituloMascara({ texto, estilo, activo, animar = true, retraso = 
 
 /** Igual, pero letra por letra: cada caracter sube 100 % de su alto, escalonado 18 ms. */
 export function TituloLetras({ lineas, estilo, activo, animar = true, retraso = 0 }: Comun & { lineas: string[] }) {
-  const alto = StyleSheet.flatten(estilo)?.lineHeight ?? 0;
+  const alto = (StyleSheet.flatten(estilo)?.lineHeight ?? 0) * PixelRatio.getFontScale();
   let indice = 0;
 
   return (

@@ -21,4 +21,5 @@ export const sombra = {
 
 export const TOQUE = 52;
 export const ALTO_BOTON = 58;
+export const ALTO_BARRA = 68;
 export const AREA_TACTIL_MIN = 44;

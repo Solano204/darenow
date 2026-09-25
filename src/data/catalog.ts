@@ -190,12 +190,12 @@ export function nombreEquipo(ids: string[]): string {
 
 export const GOALS: { id: string; nombre: string; sub: string }[] = [
   { id: 'bajar_peso', nombre: 'Bajar peso',        sub: 'Circuitos y cardio' },
-  { id: 'musculo',    nombre: 'Ganar musculo',     sub: 'Fuerza y volumen' },
-  { id: 'mandibula',  nombre: 'Mandibula y rostro',sub: 'Tono facial y postura' },
-  { id: 'postura',    nombre: 'Postura y altura',  sub: 'Movilidad y descompresion' },
-  { id: 'cardio',     nombre: 'Condicion fisica',  sub: 'Resistencia general' },
-  { id: 'running',    nombre: 'Correr',            sub: 'De cero a 5K, o mas' },
-  { id: 'gym',        nombre: 'Fuerza en gym',     sub: 'Barra y maquinas' },
+  { id: 'musculo',    nombre: 'Ganar músculo',     sub: 'Fuerza y volumen' },
+  { id: 'mandibula',  nombre: 'Mandíbula y rostro',sub: 'Tono facial y postura' },
+  { id: 'postura',    nombre: 'Postura y altura',  sub: 'Movilidad y descompresión' },
+  { id: 'cardio',     nombre: 'Condición física',  sub: 'Resistencia general' },
+  { id: 'running',    nombre: 'Correr',            sub: 'De cero a 5K, o más' },
+  { id: 'gym',        nombre: 'Fuerza en gym',     sub: 'Barra y máquinas' },
   { id: 'calistenia', nombre: 'Calistenia',        sub: 'Peso corporal' },
 ];
 
@@ -207,7 +207,7 @@ export const CATEGORIAS = [
   { id: 'movilidad', nombre: 'Movilidad' },
   { id: 'facial', nombre: 'Facial' },
   { id: 'estiramiento', nombre: 'Estiramiento' },
-  { id: 'tecnica_carrera', nombre: 'Tecnica de carrera' },
+  { id: 'tecnica_carrera', nombre: 'Técnica de carrera' },
 ];
 
 export const ESTADISTICAS = {

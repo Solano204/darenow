@@ -14,7 +14,7 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import { View, Text, StyleSheet, FlatList, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { color, tipo, esp, radio, peso, TOQUE } from '../theme';
+import { color, tipo, esp, radio, peso, TOQUE, MARGEN_PANTALLA } from '../theme';
 import {
   Chip, Buscador, Vacio, Toque, Favorito, Aparece, Boton, Nota,
   useHuecoAbajo,
@@ -107,7 +107,7 @@ export default function Explorar({ navigation, route }: any) {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: color.fondo }} edges={['top']}>
-      <View style={{ paddingHorizontal: esp.md, paddingBottom: esp.sm }}>
+      <View style={{ paddingHorizontal: MARGEN_PANTALLA, paddingBottom: esp.sm }}>
         <Text style={[tipo.h1, { color: color.texto, marginBottom: esp.sm }]}>Explorar</Text>
         <Buscador valor={q} onCambio={setQ} placeholder="Buscar ejercicio, rutina, músculo" />
 
@@ -161,7 +161,7 @@ export default function Explorar({ navigation, route }: any) {
         <FlatList
           data={ejercicios}
           keyExtractor={e => e.id}
-          contentContainerStyle={{ paddingHorizontal: esp.md, paddingBottom: abajo }}
+          contentContainerStyle={{ paddingHorizontal: MARGEN_PANTALLA, paddingBottom: abajo }}
           ListEmptyComponent={<Vacio texto="Nada con esos filtros. Prueba a quitar alguno." />}
           initialNumToRender={12}
           renderItem={({ item, index }) => (
@@ -181,7 +181,7 @@ export default function Explorar({ navigation, route }: any) {
         <FlatList
           data={rutinas}
           keyExtractor={r => r.id}
-          contentContainerStyle={{ paddingHorizontal: esp.md, paddingBottom: abajo }}
+          contentContainerStyle={{ paddingHorizontal: MARGEN_PANTALLA, paddingBottom: abajo }}
           ListEmptyComponent={<Vacio texto="Sin rutinas con ese filtro." />}
           ListHeaderComponent={
             <View style={{ marginBottom: esp.md }}>
@@ -231,7 +231,7 @@ export default function Explorar({ navigation, route }: any) {
                     onPress={() => alternarFavorito('rutinas', item.id)} sobreFoto tamano={34} />
                 </View>
                 <View style={{ padding: esp.sm, gap: 4 }}>
-                  <Text style={[tipo.h3, { color: color.texto }]}>{item.name}</Text>
+                  <Text style={[tipo.h2, { color: color.texto }]}>{item.name}</Text>
                   <View style={{ flexDirection: 'row', gap: esp.xs, flexWrap: 'wrap' }}>
                     <Chip texto={`${item.min} min`} pequeno />
                     <Chip texto={nombreGoal(item.goal)} pequeno />
@@ -249,7 +249,7 @@ export default function Explorar({ navigation, route }: any) {
         <FlatList
           data={programas}
           keyExtractor={p => p.id}
-          contentContainerStyle={{ paddingHorizontal: esp.md, paddingBottom: abajo }}
+          contentContainerStyle={{ paddingHorizontal: MARGEN_PANTALLA, paddingBottom: abajo }}
           renderItem={({ item, index }) => (
             <Aparece retraso={Math.min(index, 8) * 25}>
               <Toque onPress={() => navigation.navigate('Programa', { id: item.id })} estilo={s.tarjetaAncha as never}>
@@ -259,7 +259,7 @@ export default function Explorar({ navigation, route }: any) {
                     onPress={() => alternarFavorito('programas', item.id)} sobreFoto tamano={34} />
                 </View>
                 <View style={{ padding: esp.sm, gap: 4 }}>
-                  <Text style={[tipo.h3, { color: color.texto }]}>{item.name}</Text>
+                  <Text style={[tipo.h2, { color: color.texto }]}>{item.name}</Text>
                   <Text style={[tipo.pie, { color: color.textoSuave }]} numberOfLines={2}>{item.desc}</Text>
                   <View style={{ flexDirection: 'row', gap: esp.xs, flexWrap: 'wrap' }}>
                     <Chip texto={`${item.semanas} semanas`} pequeno />
@@ -279,7 +279,7 @@ export default function Explorar({ navigation, route }: any) {
           keyExtractor={m => m.id}
           numColumns={3}
           columnWrapperStyle={{ gap: esp.sm }}
-          contentContainerStyle={{ paddingHorizontal: esp.md, paddingBottom: esp.xl * 2.4, gap: esp.md }}
+          contentContainerStyle={{ paddingHorizontal: MARGEN_PANTALLA, paddingBottom: esp.xl * 2.4, gap: esp.md }}
           renderItem={({ item, index }) => (
             <Aparece retraso={Math.min(index, 9) * 25} estilo={{ flex: 1 }}>
               <Toque onPress={() => navigation.navigate('Musculo', { id: item.id })}
@@ -351,7 +351,7 @@ const s = StyleSheet.create({
     paddingVertical: esp.sm, borderBottomWidth: 1, borderBottomColor: color.borde,
   },
   tarjetaAncha: {
-    backgroundColor: color.fondo, borderRadius: radio.tarjeta,
+    backgroundColor: color.lienzo, borderRadius: radio.tarjeta,
     borderWidth: 1, borderColor: color.borde, overflow: 'hidden', marginBottom: esp.sm,
   },
   favSobre: { position: 'absolute', top: esp.sm, right: esp.sm },

@@ -15,9 +15,11 @@ import { useMovimientoReducido } from './movimiento';
 import { BotonPlaca } from './BotonPlaca';
 
 /** Pulsable que se hunde un poco al tocarlo. */
-export function Toque({ children, onPress, estilo, escala = 0.97, etiqueta, rol = 'button', estado }: {
+export function Toque({ children, onPress, estilo, escala = 0.97, etiqueta, rol = 'button', estado, oscurecer }: {
   children: React.ReactNode; onPress?: () => void; estilo?: ViewStyle; escala?: number;
   etiqueta?: string; rol?: AccessibilityRole; estado?: AccessibilityState;
+  /** Radio de esquina: oscurece un 5 % el contenido mientras esta presionado (tarjetas). */
+  oscurecer?: number;
 }) {
   const reducido = useMovimientoReducido();
   const v = useRef(new Animated.Value(1)).current;
@@ -43,6 +45,12 @@ export function Toque({ children, onPress, estilo, escala = 0.97, etiqueta, rol 
     >
       <Animated.View style={[estilo, { marginBottom: 0, marginRight: 0 }, { transform: [{ scale: v }] }]}>
         {children}
+        {oscurecer !== undefined && (
+          <Animated.View pointerEvents="none" style={[StyleSheet.absoluteFill, {
+            backgroundColor: color.presionado, borderRadius: oscurecer,
+            opacity: v.interpolate({ inputRange: [escala, 1], outputRange: [1, 0], extrapolate: 'clamp' }),
+          }]} />
+        )}
       </Animated.View>
     </Pressable>
   );

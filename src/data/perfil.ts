@@ -37,12 +37,12 @@ export function elegirPrograma(objetivo: string, exp: string): string {
 
 export function avisosDe(objetivo: string, contra: string[], situacion: string[]): string[] {
   const a: string[] = [];
-  if (objetivo === 'mandibula') a.push('Sobre el rostro: el trabajo facial sube el tono del musculo, y corregir la postura de la cabeza cambia el perfil de forma visible. Lo que no hace, y nadie puede hacer, es quemar grasa de una zona concreta ni mover el hueso.');
-  if (objetivo === 'postura') a.push('Sobre la altura: el hueso no crece despues de cerrarse las placas de crecimiento. Lo que si se recupera es la altura que la postura te quita, normalmente entre uno y tres centimetros en ocho a doce semanas.');
-  if (objetivo === 'bajar_peso') a.push('No vamos a ponerte una dieta ni a pedirte que cuentes calorias. El entrenamiento es una parte; la alimentacion la ve mejor un profesional que pueda verte.');
-  if (contra.includes('problema_atm')) a.push('Quitamos todo el bloque de masticacion. Si hay chasquido o dolor al abrir, eso lo ve un dentista.');
-  if (contra.includes('hernia_discal') || contra.includes('lesion_lumbar')) a.push('Cambiamos los abdominales clasicos por trabajo de estabilidad, que es lo que se tolera mejor con molestia lumbar.');
-  if (situacion.includes('embarazo') || situacion.includes('postparto')) a.push('Quitamos saltos e impacto. Aun asi, conviene que un profesional te de el visto bueno antes de empezar.');
+  if (objetivo === 'mandibula') a.push('Sobre el rostro: el trabajo facial sube el tono del músculo, y corregir la postura de la cabeza cambia el perfil de forma visible. Lo que no hace, y nadie puede hacer, es quemar grasa de una zona concreta ni mover el hueso.');
+  if (objetivo === 'postura') a.push('Sobre la altura: el hueso no crece después de cerrarse las placas de crecimiento. Lo que sí se recupera es la altura que la postura te quita, normalmente entre uno y tres centímetros en ocho a doce semanas.');
+  if (objetivo === 'bajar_peso') a.push('No vamos a ponerte una dieta ni a pedirte que cuentes calorías. El entrenamiento es una parte; la alimentación la ve mejor un profesional que pueda verte.');
+  if (contra.includes('problema_atm')) a.push('Quitamos todo el bloque de masticación. Si hay chasquido o dolor al abrir, eso lo ve un dentista.');
+  if (contra.includes('hernia_discal') || contra.includes('lesion_lumbar')) a.push('Cambiamos los abdominales clásicos por trabajo de estabilidad, que es lo que se tolera mejor con molestia lumbar.');
+  if (situacion.includes('embarazo') || situacion.includes('postparto')) a.push('Quitamos saltos e impacto. Aun así, conviene que un profesional te dé el visto bueno antes de empezar.');
   return a;
 }
 

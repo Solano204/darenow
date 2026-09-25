@@ -223,8 +223,8 @@ export function armarSesion(
     const { items: pool, relajado } = conRelajacion(p, { patron });
     if (relajado.length && !avisos.length) {
       avisos.push(relajado.includes('espacio')
-        ? 'Ampliamos el filtro de espacio para completar la sesion.'
-        : 'Incluimos algun ejercicio de otro nivel para completar la sesion.');
+        ? 'Ampliamos el filtro de espacio para completar la sesión.'
+        : 'Incluimos algún ejercicio de otro nivel para completar la sesión.');
     }
     const libre = pool.filter(e => !usados.has(e.id));
     if (!libre.length) continue;
@@ -288,7 +288,7 @@ export function armarSesion(
 
   return {
     rutinaId: null,
-    nombre: 'Tu sesion de hoy',
+    nombre: 'Tu sesión de hoy',
     items,
     minutosEstimados: Math.max(1, Math.round(totalFinal / 60)),
     kcalEstimadas: p.pesoKg ? Math.round(items.reduce((s, it) => s + kcal(it, p.pesoKg!), 0)) : null,
@@ -445,7 +445,7 @@ export function revisarPropia(items: ItemPropio[], p: Perfil): string[] {
     return e?.category === 'movilidad' || e?.category === 'estiramiento';
   });
   if (items.length >= 4 && sinCalentamiento) {
-    avisos.push('No hay movilidad ni estiramiento. Sugerencia, no obligacion.');
+    avisos.push('No hay movilidad ni estiramiento. Sugerencia, no obligación.');
   }
 
   return avisos;

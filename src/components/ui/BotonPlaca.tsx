@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Pressable, Platform, StyleSheet, type StyleProp, type View, type ViewStyle } from 'react-native';
+import { PixelRatio, Pressable, Platform, StyleSheet, type StyleProp, type View, type ViewStyle } from 'react-native';
 import Animated, {
   cancelAnimation, interpolateColor, runOnJS, useAnimatedStyle, useSharedValue,
   withRepeat, withSequence, withSpring, withTiming,
@@ -9,6 +9,7 @@ import { useReducedMotion } from '../../hooks/useReducedMotion';
 import { useMagnesia } from '../fx/MagnesiaOverlay';
 
 const ALTO_TEXTO = 22;
+const ESCALA_MAX = 1.15;
 const ESCALA_PRESIONADO = 0.03;
 const PULSO_OCUPADO_MS = 900;
 
@@ -73,6 +74,7 @@ export function BotonPlaca({ texto, onPress, deshabilitado, ocupado, textoOcupad
  * abajo. Con movimiento reducido solo hay fundido.
  */
 function TextoRueda({ texto, ocupado, reducido }: { texto: string; ocupado: boolean; reducido: boolean }) {
+  const alto = Math.round(ALTO_TEXTO * Math.min(PixelRatio.getFontScale(), ESCALA_MAX));
   const [actual, setActual] = useState(texto);
   const [previo, setPrevio] = useState<string | null>(null);
   const t = useSharedValue(1);
@@ -99,7 +101,7 @@ function TextoRueda({ texto, ocupado, reducido }: { texto: string; ocupado: bool
     return () => cancelAnimation(pulso);
   }, [ocupado]);
 
-  const distancia = reducido ? 0 : ALTO_TEXTO;
+  const distancia = reducido ? 0 : alto;
   const entrante = useAnimatedStyle(() => ({
     opacity: t.value * pulso.value,
     transform: [{ translateY: (1 - t.value) * distancia }],
@@ -110,10 +112,10 @@ function TextoRueda({ texto, ocupado, reducido }: { texto: string; ocupado: bool
   }));
 
   return (
-    <Animated.View style={s.ventana}>
-      <Animated.Text style={[s.texto, entrante]} numberOfLines={1}>{actual}</Animated.Text>
+    <Animated.View style={[s.ventana, { height: alto }]}>
+      <Animated.Text style={[s.texto, entrante]} numberOfLines={1} maxFontSizeMultiplier={ESCALA_MAX}>{actual}</Animated.Text>
       {previo !== null && (
-        <Animated.Text style={[s.texto, s.encima, saliente]} numberOfLines={1}>{previo}</Animated.Text>
+        <Animated.Text style={[s.texto, s.encima, saliente]} numberOfLines={1} maxFontSizeMultiplier={ESCALA_MAX}>{previo}</Animated.Text>
       )}
     </Animated.View>
   );
@@ -125,7 +127,7 @@ const s = StyleSheet.create({
     alignItems: 'center', justifyContent: 'center', backgroundColor: paleta.placaAzul,
   },
   apagado: { opacity: 0.35 },
-  ventana: { height: ALTO_TEXTO, justifyContent: 'center', overflow: 'hidden' },
+  ventana: { justifyContent: 'center', overflow: 'hidden' },
   texto: { ...tipo.cuerpoEnfasis, color: paleta.blanco, textAlign: 'center' },
   encima: { position: 'absolute', left: 0, right: 0 },
 });

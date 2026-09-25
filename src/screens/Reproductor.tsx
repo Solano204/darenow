@@ -208,7 +208,7 @@ function EditorAntesDeEmpezar({ items, onConfirmar }: {
   const cambiarEjercicio = (i: number) => {
     const it = lista[i];
     const nuevo = sustituir(app.perfil, it.id, lista.map(x => x.id));
-    if (!nuevo) { Alert.alert('Sin alternativa', 'No encontramos otro ejercicio que sirva aqui.'); return; }
+    if (!nuevo) { Alert.alert('Sin alternativa', 'No encontramos otro ejercicio que sirva aquí.'); return; }
     setLista(prev => prev.map((x, n) => (n === i ? { ...aItem(nuevo, x.bloque), seriesPlan: x.seriesPlan } : x)));
   };
 

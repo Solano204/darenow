@@ -12,3 +12,4 @@ export * from './movimiento';
 export * from './controles';
 export * from './superficies';
 export * from './datos';
+export * from './cabecera';

@@ -426,7 +426,7 @@ const s = StyleSheet.create({
   sep: { width: 1, height: 26, backgroundColor: color.borde },
   tarjeta: {
     borderWidth: 1, borderColor: color.borde, borderRadius: radio.tarjeta,
-    padding: esp.sm, gap: esp.sm, marginBottom: esp.sm, backgroundColor: color.fondo,
+    padding: esp.sm, gap: esp.sm, marginBottom: esp.sm, backgroundColor: color.lienzo,
   },
   controles: { flexDirection: 'row', gap: esp.xs },
   ajuste: {

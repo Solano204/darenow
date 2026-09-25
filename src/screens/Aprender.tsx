@@ -11,7 +11,7 @@
 import React, { useMemo, useState } from 'react';
 import { View, Text, StyleSheet, FlatList, ScrollView, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { color, tipo, esp, radio, insignia, peso } from '../theme';
+import { color, tipo, esp, radio, insignia, peso, MARGEN_PANTALLA } from '../theme';
 import {
   Tarjeta, Chip, Insignia, Buscador, Seccion, Nota, Vacio, Boton,
   Toque, Favorito, Aparece,
@@ -59,7 +59,7 @@ export default function Aprender({ navigation }: any) {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: color.fondo }} edges={['top']}>
-      <View style={{ paddingHorizontal: esp.md, paddingBottom: esp.sm }}>
+      <View style={{ paddingHorizontal: MARGEN_PANTALLA, paddingBottom: esp.sm }}>
         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
           <Text style={[tipo.h1, { color: color.texto, marginBottom: esp.sm }]}>Aprender</Text>
           {desbloqueada && <Chip texto="Sin conexión ✓" pequeno activo />}
@@ -77,7 +77,7 @@ export default function Aprender({ navigation }: any) {
         <FlatList
           data={tips}
           keyExtractor={t => t.id}
-          contentContainerStyle={{ paddingHorizontal: esp.md, paddingBottom: abajo }}
+          contentContainerStyle={{ paddingHorizontal: MARGEN_PANTALLA, paddingBottom: abajo }}
           ListHeaderComponent={
             <ScrollView horizontal showsHorizontalScrollIndicator={false}
               contentContainerStyle={{ gap: esp.xs, paddingBottom: esp.sm }}>
@@ -113,7 +113,7 @@ export default function Aprender({ navigation }: any) {
         <FlatList
           data={mitos}
           keyExtractor={m => m.id}
-          contentContainerStyle={{ paddingHorizontal: esp.md, paddingBottom: abajo }}
+          contentContainerStyle={{ paddingHorizontal: MARGEN_PANTALLA, paddingBottom: abajo }}
           ListHeaderComponent={
             <Nota texto="Saber qué no funciona vale tanto como saber qué sí. Cada afirmación lleva su veredicto." />
           }
@@ -197,7 +197,7 @@ export default function Aprender({ navigation }: any) {
         <FlatList
           data={glosario}
           keyExtractor={g => g.termino}
-          contentContainerStyle={{ paddingHorizontal: esp.md, paddingBottom: abajo }}
+          contentContainerStyle={{ paddingHorizontal: MARGEN_PANTALLA, paddingBottom: abajo }}
           ListFooterComponent={
             <Seccion titulo="Preguntas frecuentes">
               {FAQ.map((f, i) => <Pregunta key={i} p={f.p} r={f.r} />)}
@@ -368,7 +368,7 @@ export function DetalleMito({ route, navigation }: any) {
 
 const s = StyleSheet.create({
   tarjetaTip: {
-    backgroundColor: color.fondo, borderRadius: radio.tarjeta,
+    backgroundColor: color.lienzo, borderRadius: radio.tarjeta,
     borderWidth: 1, borderColor: color.borde, overflow: 'hidden', marginBottom: esp.sm,
   },
   filaMito: {

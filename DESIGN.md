@@ -90,6 +90,17 @@ Respeta el ajuste existente de Ajustes (`forja:haptics`). Toque: Light. Aplauso:
 
 Las fotos actuales son claras y de baja resolución (447x800 y 800x423). Mientras no lleguen las nuevas (ver la lista de imágenes al cierre), `FotoTratada` las dibuja con Skia `ColorMatrix`: -35 % de saturación, exposición 0.72 y sombras un poco hacia azul frío. Sobre eso, un degradado transparente → `goma` (anclas 0.2, 0.5, 0.78, 1) y un scrim oscuro de 120 px arriba para que se lea el encabezado. `tratar={false}` desactiva el tratamiento cuando la foto ya viene oscura. El sobrante del recorte se alinea con `foco` (arriba en el onboarding, 55 %/30 % en la bienvenida) para no cortar cabezas.
 
+## Resto de la app
+
+- **Barra de pestañas** (`BarraPestanas`): `gomaAlta` con desenfoque en iOS (color al 96 % en Android), borde superior de 1 px, íconos `magnesia` activos y `magnesia3` inactivos, y una barrita `placaAzul` de 16×3 que se desliza bajo la pestaña activa con `resortePlaca`. Toque de selección al cambiar. Va pegada al borde inferior y a todo lo ancho, como pidió una revisión anterior («ya no flotante»); el brief actual dice «flotante». Se resolvió pegada porque un cambio a tarjeta flotante con esquinas y margen es una decisión de producto, no de piel.
+- **Tarjetas**: `gomaAlta`, borde de 1 px, radio 24, sin sombra. Al presionar, escala 0.98 y 5 % más oscura (`Toque` con `oscurecer`).
+- **Insignias**: un solo componente, `InsigniaEvidencia`. `Insignia` (la de las fichas) lo envuelve.
+- **Notas**: `Nota` ya no usa amarillo ni rojo; solo sube el borde. Los colores de veredicto quedan para las insignias.
+- **Transiciones**: las pantallas del Stack entran con fundido y escala 0.98 → 1 (`screenLayout` en `App.tsx`); `Tabs` con 1.02 → 1. Reproductor, Resumen, Bienvenida y EditorRutina conservan la suya. No hay transición de elemento compartido: en Reanimated 4 con el Stack nativo todavía es experimental.
+- **Cabeceras que se encogen**: Hoy y Yo. El título grande se encoge y se desvanece (0 a 56 px de scroll) y aparece una barra compacta (40 a 72 px). Explorar y Aprender tienen su cabecera fija con buscador y pestañas internas, así que no se encoge.
+- **Margen lateral** 24 en todas las pantallas de pestaña.
+- Se quitó el barrido de luz (`Brillo`) y el resplandor de fondo: brillos falsos.
+
 ## Piso de goma
 
 `GomaTexture` tesela `assets/img/goma-tile.png`: grano fino al 10 % de alfa máximo y 18 motas de color al 6 %. Un solo bitmap para todas las pantallas, sin trabajo por fotograma. Se regenera con `npm run goma` (semilla fija).

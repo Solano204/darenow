@@ -1,23 +1,23 @@
-import React, { useEffect, useRef } from 'react';
-import { View, Text, ActivityIndicator, StyleSheet, Animated, Easing, Platform } from 'react-native';
+import React, { useEffect } from 'react';
+import { View, ActivityIndicator, StyleSheet, Platform } from 'react-native';
 import { NavigationContainer, DarkTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
 import * as SplashScreen from 'expo-splash-screen';
 import { NavigationBar } from 'expo-navigation-bar';
-import { Ionicons } from '@expo/vector-icons';
 import { useFonts } from 'expo-font';
 import { BigShouldersDisplay_700Bold, BigShouldersDisplay_800ExtraBold } from '@expo-google-fonts/big-shoulders-display';
 import { Figtree_400Regular, Figtree_500Medium, Figtree_600SemiBold, Figtree_700Bold } from '@expo-google-fonts/figtree';
 
-import { color, colorSesion, tipo, anim, peso } from './src/theme';
+import { color, colorSesion, peso } from './src/theme';
 import { ProveedorEstado, useEstado, hoy } from './src/store/store';
 import { ProveedorCuenta, useCuenta } from './src/store/cuenta';
 import { ProveedorAnuncios } from './src/components/RelojAnuncios';
 import { ProveedorMagnesia } from './src/components/fx/MagnesiaOverlay';
 import { Entrada } from './src/components/fx/Entrada';
+import { BarraPestanas } from './src/components/ui/BarraPestanas';
 import { resorteTap } from './src/theme';
 
 // Se queda visible hasta que las fuentes resuelvan (cargadas o no): nada
@@ -62,99 +62,28 @@ const tema = {
   },
 };
 
-/**
- * Icono de pestana.
- *
- * Iconos reales de `@expo/vector-icons` (Ionicons): casa, brujula, libro y
- * persona no se leen bien como glifo de texto plano en todos los telefonos.
- * Relleno cuando esta activo, contorno cuando no; la pastilla de brasa
- * prende detras. El icono mismo no salta ni escala: un salto en la barra
- * de pestanas es el tic mas comun de app generica.
- */
-function Icono({ nombre, activo }: { nombre: keyof typeof Ionicons.glyphMap; activo: boolean }) {
-  const v = useRef(new Animated.Value(activo ? 1 : 0)).current;
-
-  useEffect(() => {
-    Animated.timing(v, {
-      toValue: activo ? 1 : 0, duration: anim.rapida,
-      easing: Easing.bezier(0.2, 0.7, 0.3, 1), useNativeDriver: true,
-    }).start();
-  }, [activo]);
-
-  return (
-    <View style={s.icono}>
-      <Animated.View style={[
-        s.pastillaActiva,
-        {
-          opacity: v,
-          transform: [{ scale: v.interpolate({ inputRange: [0, 1], outputRange: [0.6, 1] }) }],
-        },
-      ]} />
-      <Ionicons name={nombre} size={20} color={activo ? color.texto : color.textoTenue} />
-    </View>
-  );
-}
-
-/**
- * Fondo de la barra de pestanas.
- *
- * Solida, no transparente y ya no flotante (pedido explicito): toca el
- * borde de abajo, ocupa todo el ancho. `cremaHonda` es la superficie mas
- * elevada del tema, la misma de hojas y modales.
- */
-function FondoPestanas() {
-  return <View style={[StyleSheet.absoluteFill, { backgroundColor: color.cremaHonda }]} />;
-}
-
 function Pestanas() {
-  // Pegada al fondo, no flotante. La barra de gestos de Android tapaba
-  // los iconos cuando la altura era fija, asi que el inset del telefono
-  // se suma como padding de ABAJO (dentro de la barra), no como hueco
-  // flotante: `Math.max(inset.bottom - 10, 0)` deja el icono a la misma
-  // altura de siempre y solo agranda la barra hacia abajo lo que haga
-  // falta. `useHuecoAbajo` (ui/superficies.tsx) usa este mismo calculo.
-  const inset = useSafeAreaInsets();
-
   return (
     <Entrada activo escala={1.02} resorte={resorteTap} estilo={{ flex: 1 }}>
-    <Tab.Navigator
-      // sceneStyle: el contenedor de cada pestana. Sin esto queda blanco
-      // por debajo y asoma un instante al cambiar de pestana.
-      // sceneContainerStyle={{ backgroundColor: color.fondo }}
-      screenOptions={{
-        headerShown: false,
-        // Sin esto el cambio de pestana es un corte seco. 'fade' es sutil
-        // a proposito: la pestana no es una pantalla nueva, es la misma
-        // app mirando otro lado.
-        animation: 'fade',
-        sceneStyle: { backgroundColor: color.fondo },
-        tabBarActiveTintColor: color.texto,
-        tabBarInactiveTintColor: color.textoTenue,
-        tabBarStyle: {
-          position: 'absolute',
-          left: 0, right: 0, bottom: 0,
-          height: 68 + Math.max(inset.bottom - 10, 0),
-          borderTopWidth: 1, borderTopColor: color.borde, borderRadius: 0,
-          backgroundColor: 'transparent', elevation: 0,
-          paddingTop: 10, paddingBottom: Math.max(inset.bottom, 10),
-        },
-        tabBarBackground: () => <FondoPestanas />,
-        tabBarLabelStyle: { fontSize: 11, fontFamily: peso.bold, marginTop: 2 },
-        tabBarItemStyle: { paddingTop: 2 },
-      }}
-    >
-      <Tab.Screen name="Hoy" component={Hoy}
-        options={{ tabBarIcon: ({ focused }) => <Icono nombre={focused ? 'home' : 'home-outline'} activo={focused} /> }} />
-      <Tab.Screen name="Explorar" component={Explorar}
-        options={{ tabBarIcon: ({ focused }) => <Icono nombre={focused ? 'compass' : 'compass-outline'} activo={focused} /> }} />
-      <Tab.Screen name="Aprender" component={Aprender}
-        options={{ tabBarIcon: ({ focused }) => <Icono nombre={focused ? 'book' : 'book-outline'} activo={focused} /> }} />
-      <Tab.Screen name="Yo" component={Yo}
-        options={{ tabBarIcon: ({ focused }) => <Icono nombre={focused ? 'person' : 'person-outline'} activo={focused} /> }} />
-    </Tab.Navigator>
+      <Tab.Navigator
+        tabBar={props => <BarraPestanas {...props} />}
+        screenOptions={{
+          headerShown: false,
+          animation: 'fade',
+          sceneStyle: { backgroundColor: color.fondo },
+        }}
+      >
+        <Tab.Screen name="Hoy" component={Hoy} />
+        <Tab.Screen name="Explorar" component={Explorar} />
+        <Tab.Screen name="Aprender" component={Aprender} />
+        <Tab.Screen name="Yo" component={Yo} />
+      </Tab.Navigator>
     </Entrada>
   );
 }
+
+/** Pantallas que ya traen su propia entrada o su propia transicion: no llevan la de escala. */
+const SIN_ENTRADA = new Set(['Bienvenida', 'Tabs', 'Reproductor', 'Resumen', 'EditorRutina']);
 
 function Raiz() {
   const { estado, cargando, terminarOnboarding, marcarPresentacion } = useEstado();
@@ -189,13 +118,18 @@ function Raiz() {
   return (
     <Stack.Navigator
       initialRouteName={inicial}
+      screenLayout={({ route, children }) => (
+        SIN_ENTRADA.has(route.name)
+          ? <>{children}</>
+          : <Entrada activo escala={0.98} resorte={resorteTap} estilo={{ flex: 1 }}>{children}</Entrada>
+      )}
       screenOptions={{
         headerStyle: { backgroundColor: color.fondo },
         headerTitleStyle: { color: color.texto, fontSize: 16, fontFamily: peso.semibold },
         headerTintColor: color.texto,
         headerShadowVisible: false,
         contentStyle: { backgroundColor: color.fondo },
-        animation: 'slide_from_right',
+        animation: 'fade',
       }}
     >
       <Stack.Screen name="Bienvenida" component={Bienvenida}
@@ -284,10 +218,4 @@ export default function App() {
 
 const s = StyleSheet.create({
   cargando: { flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: color.fondo },
-  icono: { width: 54, height: 30, alignItems: 'center', justifyContent: 'center' },
-  pastillaActiva: {
-    position: 'absolute', width: 54, height: 30, borderRadius: 15,
-    backgroundColor: color.acentoTinte,
-    borderWidth: 1, borderColor: color.acentoBorde,
-  },
 });

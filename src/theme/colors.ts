@@ -40,6 +40,7 @@ export const tinte = {
   verde: 'rgba(31,164,99,0.16)',
   amarilla: 'rgba(242,194,48,0.16)',
   roja: 'rgba(224,65,47,0.16)',
+  neutra: 'rgba(242,241,236,0.06)',
   notaEntrenador: 'rgba(36,37,40,0.85)',
 };
 
@@ -87,6 +88,10 @@ export const color = {
   okBorde: 'rgba(31,164,99,0.35)',
   parcialBorde: 'rgba(242,194,48,0.35)',
 
+  barraPestanas: 'rgba(36,37,40,0.96)',
+  barraPestanasBlur: 'rgba(36,37,40,0.72)',
+  /** Oscurece un 5 % una tarjeta mientras se presiona. */
+  presionado: 'rgba(0,0,0,0.05)',
   filo: 'rgba(255,255,255,0.16)',
   velo: 'rgba(242,241,236,0.04)',
   acentoTenue: 'rgba(37,83,232,0.10)',

@@ -4,12 +4,13 @@ import Animated, { cancelAnimation, useAnimatedStyle, useSharedValue, withDelay,
 import { paleta, tinte, radio, familia, resortePlaca, haptico } from '../../theme';
 import { useReducedMotion } from '../../hooks/useReducedMotion';
 
-export type TipoEvidencia = 'ok' | 'parcial' | 'mito';
+export type TipoEvidencia = 'ok' | 'parcial' | 'mito' | 'cuidado';
 
 const DATOS: Record<TipoEvidencia, { fondo: string; punto: string; texto: string; etiqueta: string }> = {
   ok: { fondo: tinte.verde, punto: paleta.placaVerde, texto: paleta.placaVerdeTexto, etiqueta: 'Comprobado' },
   parcial: { fondo: tinte.amarilla, punto: paleta.placaAmarilla, texto: paleta.placaAmarilla, etiqueta: 'Parcial' },
   mito: { fondo: tinte.roja, punto: paleta.placaRoja, texto: paleta.placaRojaTexto, etiqueta: 'Mito' },
+  cuidado: { fondo: tinte.neutra, punto: paleta.magnesia2, texto: paleta.magnesia2, etiqueta: 'Cuidado' },
 };
 
 const IMPACTO_MS = 120;
@@ -22,8 +23,9 @@ export interface Estampado {
 }
 
 /** Insignia de evidencia: el punto lleva el color de la placa; el texto, su variante legible (AA). */
-export function InsigniaEvidencia({ tipo, estampar, estilo }: {
+export function InsigniaEvidencia({ tipo, pequena, estampar, estilo }: {
   tipo: TipoEvidencia;
+  pequena?: boolean;
   /** Si se pasa, la insignia se estampa (escala 1.3 a 1, golpe Rigid) cuando `activo`. */
   estampar?: Estampado;
   estilo?: StyleProp<ViewStyle>;
@@ -50,7 +52,7 @@ export function InsigniaEvidencia({ tipo, estampar, estilo }: {
     <Animated.View
       accessible
       accessibilityLabel={d.etiqueta}
-      style={[s.caja, { backgroundColor: d.fondo }, estilo, animado]}
+      style={[s.caja, pequena && s.pequena, { backgroundColor: d.fondo }, estilo, animado]}
     >
       <View style={[s.punto, { backgroundColor: d.punto }]} />
       <Text style={[s.texto, { color: d.texto }]}>{d.etiqueta}</Text>
@@ -63,6 +65,7 @@ const s = StyleSheet.create({
     flexDirection: 'row', alignItems: 'center', gap: 6, alignSelf: 'flex-start',
     borderRadius: radio.insignia, paddingVertical: 6, paddingHorizontal: 10,
   },
+  pequena: { paddingVertical: 3, paddingHorizontal: 8 },
   punto: { width: 6, height: 6, borderRadius: 3 },
   texto: { fontFamily: familia.enfasis, fontSize: 13, lineHeight: 18 },
 });

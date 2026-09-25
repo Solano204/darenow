@@ -7,7 +7,8 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import { View, Text, TextInput, StyleSheet, Animated, Easing } from 'react-native';
-import { color, tipo, esp, radio, insignia, anim, peso } from '../../theme';
+import { color, tipo, esp, radio, anim, peso } from '../../theme';
+import { InsigniaEvidencia } from './InsigniaEvidencia';
 import type { Evidencia } from '../../data/catalog';
 import { useMovimientoReducido } from './movimiento';
 
@@ -33,16 +34,7 @@ export function Fila({ etiqueta, valor, tenue, oscuro, apilado }: {
 /* ═════════════════════════════════════════ insignias */
 
 export function Insignia({ tipo: t, pequena }: { tipo: Evidencia; pequena?: boolean }) {
-  const i = insignia[t];
-  return (
-    <View style={[
-      s.insignia,
-      { backgroundColor: i.bg, borderColor: i.fg + '44' },
-      pequena && { paddingVertical: 3, paddingHorizontal: 8 },
-    ]}>
-      <Text style={[pequena ? tipo.micro : tipo.dato, { color: i.fg }]}>{i.texto}</Text>
-    </View>
-  );
+  return <InsigniaEvidencia tipo={t} pequena={pequena} />;
 }
 
 /**
@@ -123,22 +115,16 @@ export function BarrasSemana({ datos, oscuro }: {
 }
 
 /**
- * Bloque destacado. Fondo tenido y forma redondeada; nada de barras
- * gruesas de color pegadas al margen izquierdo.
- *
- * El titulo va en mayusculas por herencia de la version anterior, pero se
- * pinta en tamaño micro y color tenue para que sea una etiqueta de dato y
- * no un encabezado que compita con los de seccion.
+ * Bloque destacado sobre superficie `gomaAlta`. El tono `cuidado` solo sube el
+ * borde y el texto: el amarillo y el rojo quedan para las insignias de evidencia.
  */
 export function Nota({ texto, titulo, tono = 'neutro' }: {
   texto: string; titulo?: string; tono?: 'neutro' | 'cuidado' | 'bueno';
 }) {
-  const bg = tono === 'cuidado' ? color.parcialFondo : tono === 'bueno' ? color.okFondo : color.lienzo;
-  const bd = tono === 'cuidado' ? color.parcialBorde : tono === 'bueno' ? color.okBorde : color.borde;
-  const fg = tono === 'cuidado' ? color.parcial : tono === 'bueno' ? color.ok : color.textoSuave;
+  const enfasis = tono !== 'neutro';
   return (
-    <View style={[s.nota, { backgroundColor: bg, borderColor: bd }]}>
-      {titulo && <Text style={[tipo.micro, { color: fg, marginBottom: 4 }]}>{titulo}</Text>}
+    <View style={[s.nota, { backgroundColor: color.lienzo, borderColor: enfasis ? color.bordeFuerte : color.borde }]}>
+      {titulo && <Text style={[tipo.micro, { color: enfasis ? color.texto : color.textoSuave, marginBottom: 4 }]}>{titulo}</Text>}
       <Text style={[tipo.pie, { color: color.texto }]}>{texto}</Text>
     </View>
   );
@@ -156,7 +142,7 @@ export function Buscador({ valor, onCambio, placeholder }: {
         placeholderTextColor={color.textoTenue} style={s.buscador}
         onFocus={() => setFoco(true)} onBlur={() => setFoco(false)}
         clearButtonMode="while-editing"
-        keyboardAppearance="light"
+        keyboardAppearance="dark"
       />
     </View>
   );
@@ -215,10 +201,6 @@ export function Titulo({ children, sub }: { children: string; sub?: string }) {
 const s = StyleSheet.create({
   fila: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', gap: esp.sm },
   filaApilada: { gap: 2 },
-  insignia: {
-    alignSelf: 'flex-start', paddingVertical: 5, paddingHorizontal: 11,
-    borderRadius: radio.chip, borderWidth: 1,
-  },
   nota: {
     borderRadius: radio.tarjeta, padding: esp.md, marginBottom: esp.sm, borderWidth: 1,
   },

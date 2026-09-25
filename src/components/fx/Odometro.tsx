@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, type StyleProp, type TextStyle } from 'react-native';
+import { PixelRatio, StyleSheet, Text, View, type StyleProp, type TextStyle } from 'react-native';
 import Animated, {
   cancelAnimation, useAnimatedStyle, useSharedValue, withDelay, withSequence, withTiming,
 } from 'react-native-reanimated';
@@ -12,6 +12,7 @@ const ESCALONADO = 80;
 const ASENTAMIENTO_MS = 90;
 const SOBREIMPULSO = 0.06;
 const DESVANECER_MS = 220;
+const ESCALA_MAX = 1.2;
 
 const digitosDe = (n: number, columnas: number): number[] =>
   String(Math.max(0, Math.round(n))).padStart(columnas, '0').split('').map(Number);
@@ -53,7 +54,8 @@ export function Odometro({
 }: Props) {
   const reducido = useReducedMotion();
   const plano = StyleSheet.flatten(estilo) ?? {};
-  const alto = plano.lineHeight ?? Math.round((plano.fontSize ?? 16) * 1.25);
+  const escalaFuente = Math.min(PixelRatio.getFontScale(), ESCALA_MAX);
+  const alto = Math.round((plano.lineHeight ?? (plano.fontSize ?? 16) * 1.25) * escalaFuente);
   const [celda, setCelda] = useState(0);
 
   const columnas = Math.max(String(valor).length, desde !== undefined ? String(desde).length : 0);
@@ -84,6 +86,7 @@ export function Odometro({
     >
       <Text
         style={[estilo, s.medidor]}
+        maxFontSizeMultiplier={ESCALA_MAX}
         onLayout={e => setCelda(Math.ceil(e.nativeEvent.layout.width))}
         importantForAccessibility="no-hide-descendants"
       >
@@ -144,7 +147,7 @@ function Columna({ inicio, fin, destino, oculta, activo, estatico, retraso, dura
     <View style={{ width: ancho, height: alto, overflow: 'hidden' }}>
       <Animated.View style={columna}>
         {CELDAS.map((n, i) => (
-          <Text key={i} style={[estilo, { width: ancho, height: alto, textAlign: 'center' }]} maxFontSizeMultiplier={1.2}>{n}</Text>
+          <Text key={i} style={[estilo, { width: ancho, height: alto, textAlign: 'center' }]} maxFontSizeMultiplier={ESCALA_MAX}>{n}</Text>
         ))}
       </Animated.View>
     </View>

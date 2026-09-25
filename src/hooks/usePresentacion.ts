@@ -6,6 +6,13 @@ export interface Lamina {
   titulo: string;
   cuerpo: string;
   pie?: string;
+  /** Numero del cuerpo que rueda en el odometro. Debe aparecer literal en `cuerpo`. */
+  cifraCuerpo?: number;
+  cifraPie?: number;
+  /** Los ocho objetivos, como etiquetas debajo del cuerpo. */
+  objetivos?: string[];
+  /** Afirmacion falsa que se tacha, con las tres insignias encima. */
+  mito?: string;
 }
 
 export const LAMINAS: Lamina[] = [
@@ -18,8 +25,11 @@ export const LAMINAS: Lamina[] = [
   {
     id: 'intro_01',
     titulo: 'Entrena lo que tú quieras trabajar',
-    cuerpo: `${ESTADISTICAS.ejercicios} ejercicios en ocho objetivos: bajar peso, músculo, mandíbula, postura, cardio, correr, gym y calistenia.`,
+    cuerpo: `${ESTADISTICAS.ejercicios} ejercicios en ocho objetivos:`,
+    cifraCuerpo: ESTADISTICAS.ejercicios,
+    objetivos: ['Bajar peso', 'Músculo', 'Mandíbula', 'Postura', 'Cardio', 'Correr', 'Gym', 'Calistenia'],
     pie: `${ESTADISTICAS.sinEquipo} de ellos no necesitan nada de equipo.`,
+    cifraPie: ESTADISTICAS.sinEquipo,
   },
   {
     id: 'intro_02',
@@ -31,7 +41,9 @@ export const LAMINAS: Lamina[] = [
     id: 'intro_03',
     titulo: 'Te decimos lo que sí funciona, y lo que no',
     cuerpo: 'Cada ejercicio lleva su insignia: Comprobado, Parcial o Mito. No te vamos a prometer que los abdominales queman la panza.',
+    mito: 'Los abdominales queman la panza',
     pie: `${ESTADISTICAS.mitos} mitos explicados con su razón.`,
+    cifraPie: ESTADISTICAS.mitos,
   },
 ];
 

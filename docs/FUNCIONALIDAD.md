@@ -71,9 +71,9 @@ Archivo `src/screens/Presentacion.tsx`. Estado propio: índice `i` de lámina (0
 Láminas, en orden (`id` de la foto de fondo → texto):
 
 1. `intro_04`: «Gratis. Todo. Sin trucos». Cuerpo con `ESTADISTICAS.rutinas` y `ESTADISTICAS.programas`. Pie: «Sin tarjeta, sin suscripción, sin compras dentro de la app.»
-2. `intro_01`: «Entrena lo que tú quieras trabajar». Cuerpo con `ESTADISTICAS.ejercicios`. Pie con `ESTADISTICAS.sinEquipo`.
+2. `intro_01`: «Entrena lo que tú quieras trabajar». Cuerpo con `ESTADISTICAS.ejercicios`; los ocho objetivos que antes iban dentro de la frase ahora son ocho etiquetas debajo (mismas palabras, capitalizadas). Pie con `ESTADISTICAS.sinEquipo`.
 3. `intro_02`: «La sesión cabe en tu tiempo». Pie: «Nada de rachas que se rompen y castigan.»
-4. `intro_03`: «Te decimos lo que sí funciona, y lo que no». Pie con `ESTADISTICAS.mitos`.
+4. `intro_03`: «Te decimos lo que sí funciona, y lo que no». Pie con `ESTADISTICAS.mitos`. Se añaden tres insignias y la afirmación «Los abdominales queman la panza» tachada (visual, tomada del propio cuerpo).
 
 Los números salen de `data/catalog.ts` (`ESTADISTICAS`), no están escritos a mano en la vista.
 
@@ -148,13 +148,13 @@ Se rellena al cerrar cada fase. ✅ = verificado sin dispositivo: lectura de có
 
 | Punto | F0 | F1 | F2 | F3 | F4 | F5 | F6 |
 |---|---|---|---|---|---|---|---|
-| Arranque y orden Presentacion → Acceso → Onboarding → Bienvenida/Tabs | ✅ | ✅ | ✅ | | | | |
-| Seguir / Empezar / Saltar de Presentacion | ✅ | ✅ | ✅ | | | | |
-| Acceso (Google, invitado, enlaces legales) | ✅ | ✅ | ✅ | | | | |
-| Onboarding: pasos, omisiones, obligatorios, consentimiento, resumen | ✅ | ✅ | ✅ | | | | |
-| Entrar en Bienvenida (marca y navega a `Tabs`) | ✅ | ✅ | ✅ | | | | |
-| Nombre, fecha, racha, sesiones, días entrenados | ✅ | ✅ | ✅ | | | | |
-| Mensaje del día y su imagen | ✅ | ✅ | ✅ | | | | |
-| Las 4 pestañas y sus saltos | ✅ | ✅ | ✅ | | | | |
-| Persistencia (onboarding no reaparece) | ✅ | ✅ | ✅ | | | | |
-| Ajuste de háptica respetado | ✅ | ✅ | ✅ | | | | |
+| Arranque y orden Presentacion → Acceso → Onboarding → Bienvenida/Tabs | ✅ | ✅ | ✅ | ✅ | | | |
+| Seguir / Empezar / Saltar de Presentacion | ✅ | ✅ | ✅ | ✅ | | | |
+| Acceso (Google, invitado, enlaces legales) | ✅ | ✅ | ✅ | ✅ | | | |
+| Onboarding: pasos, omisiones, obligatorios, consentimiento, resumen | ✅ | ✅ | ✅ | ✅ | | | |
+| Entrar en Bienvenida (marca y navega a `Tabs`) | ✅ | ✅ | ✅ | ✅ | | | |
+| Nombre, fecha, racha, sesiones, días entrenados | ✅ | ✅ | ✅ | ✅ | | | |
+| Mensaje del día y su imagen | ✅ | ✅ | ✅ | ✅ | | | |
+| Las 4 pestañas y sus saltos | ✅ | ✅ | ✅ | ✅ | | | |
+| Persistencia (onboarding no reaparece) | ✅ | ✅ | ✅ | ✅ | | | |
+| Ajuste de háptica respetado | ✅ | ✅ | ✅ | ✅ | | | |

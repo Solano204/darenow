@@ -29,6 +29,13 @@ function matrizTratamiento(): number[] {
 
 export const MATRIZ_TRATAMIENTO = matrizTratamiento();
 
+/** Anclas del degradado foto a goma y alto del scrim superior. Comunes a toda foto a sangre. */
+export const ANCLAS_VELO = [0.2, 0.5, 0.78, 1] as const;
+export const ALTO_VELO_ARRIBA = 120;
+
+/** Poner en false cuando las fotos nuevas (oscuras, de luz dura) reemplacen a las actuales. */
+export const TRATAR_FOTOS = true;
+
 export interface Foco { x: number; y: number }
 export const FOCO_ARRIBA: Foco = { x: 0.5, y: 0 };
 
@@ -40,7 +47,7 @@ function rectanguloCover(imagen: SkImage, ancho: number, alto: number, foco: Foc
   return { x: (ancho - w) * foco.x, y: (alto - h) * foco.y, width: w, height: h };
 }
 
-export function ImagenTratada({ imagen, ancho, alto, tratar = true, foco = FOCO_ARRIBA, opacidad }: {
+export function ImagenTratada({ imagen, ancho, alto, tratar = TRATAR_FOTOS, foco = FOCO_ARRIBA, opacidad }: {
   imagen: SkImage | null;
   ancho: number;
   alto: number;
@@ -57,7 +64,7 @@ export function ImagenTratada({ imagen, ancho, alto, tratar = true, foco = FOCO_
   );
 }
 
-export function FotoTratada({ fuente, ancho, alto, tratar = true, foco, escala }: {
+export function FotoTratada({ fuente, ancho, alto, tratar = TRATAR_FOTOS, foco, escala }: {
   fuente: number;
   ancho: number;
   alto: number;

@@ -264,7 +264,7 @@ export default function Hoy({ navigation }: any) {
             <View style={{ minWidth: 72 }}>
               <NumeroAnimado valor={racha.dias} estilo={[tipo.display, { color: color.acento }]} />
               <Text style={[tipo.micro, { color: color.textoSuave }]}>
-                {racha.dias === 1 ? 'DÍA SEGUIDO' : 'DÍAS SEGUIDOS'}
+                {racha.dias === 1 ? 'Día seguido' : 'Días seguidos'}
               </Text>
             </View>
             <View style={{ flex: 1 }}><BarrasSemana datos={semana} /></View>

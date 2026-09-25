@@ -270,7 +270,7 @@ export default function Onboarding({ onTerminar }: { onTerminar: (p: PerfilUsuar
             showsVerticalScrollIndicator={false}
           >
             <Text style={[tipo.micro, { color: color.textoTenue }]}>
-              PASO {i + 1} DE {pasos.length}
+              Paso {i + 1} de {pasos.length}
             </Text>
             <Text style={[tipo.h1, { color: color.texto, marginTop: esp.xs }]}>{paso.pregunta}</Text>
             {paso.ayuda && (

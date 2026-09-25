@@ -12,14 +12,24 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const CLAVE = 'forja:haptics';
 
+// Lectura sincrona para los golpes que se disparan fuera de React (theme/haptics.ts).
+let activos = true;
+AsyncStorage.getItem(CLAVE).then(v => { if (v != null) activos = v === '1'; }).catch(() => {});
+export const hapticosActivos = () => activos;
+
 export function useHapticosActivos(): [boolean, (v: boolean) => void] {
   const [activo, setActivo] = useState(true);
 
   useEffect(() => {
-    AsyncStorage.getItem(CLAVE).then(v => { if (v != null) setActivo(v === '1'); }).catch(() => {});
+    AsyncStorage.getItem(CLAVE).then(v => {
+      if (v == null) return;
+      activos = v === '1';
+      setActivo(activos);
+    }).catch(() => {});
   }, []);
 
   const cambiar = useCallback((v: boolean) => {
+    activos = v;
     setActivo(v);
     AsyncStorage.setItem(CLAVE, v ? '1' : '0').catch(() => {});
   }, []);

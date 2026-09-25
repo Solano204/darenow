@@ -138,7 +138,7 @@ export function Nota({ texto, titulo, tono = 'neutro' }: {
   const fg = tono === 'cuidado' ? color.parcial : tono === 'bueno' ? color.ok : color.textoSuave;
   return (
     <View style={[s.nota, { backgroundColor: bg, borderColor: bd }]}>
-      {titulo && <Text style={[tipo.micro, { color: fg, marginBottom: 4 }]}>{titulo.toUpperCase()}</Text>}
+      {titulo && <Text style={[tipo.micro, { color: fg, marginBottom: 4 }]}>{titulo}</Text>}
       <Text style={[tipo.pie, { color: color.texto }]}>{texto}</Text>
     </View>
   );

@@ -98,7 +98,7 @@ export default function Aprender({ navigation }: any) {
                 </View>
                 <View style={{ padding: esp.sm, gap: 4 }}>
                   <Text style={[tipo.micro, { color: color.textoSuave }]}>
-                    {salaPorId.get(item.sala)?.name.toUpperCase()}
+                    {salaPorId.get(item.sala)?.name}
                   </Text>
                   <Text style={[tipo.h3, { color: color.texto }]}>{item.titulo}</Text>
                   <Text style={[tipo.pie, { color: color.textoSuave }]} numberOfLines={2}>{item.cuerpo}</Text>
@@ -263,7 +263,7 @@ export function DetalleTip({ route, navigation }: any) {
 
         <View style={{ padding: esp.md }}>
           <Text style={[tipo.micro, { color: color.textoSuave }]}>
-            {salaPorId.get(t.sala)?.name.toUpperCase()}
+            {salaPorId.get(t.sala)?.name}
           </Text>
           <Text style={[tipo.h1, { color: color.texto, marginTop: esp.xs }]}>{t.titulo}</Text>
           <Text style={[tipo.cuerpo, { color: color.texto, marginTop: esp.md, lineHeight: 25 }]}>

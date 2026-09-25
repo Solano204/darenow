@@ -6,26 +6,13 @@
  */
 
 import React, { useEffect, useRef, useState } from 'react';
-import { View, Text, StyleSheet, Animated, Easing, AccessibilityInfo, type ViewStyle } from 'react-native';
+import { View, Text, StyleSheet, Animated, Easing, type ViewStyle } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useIsFocused } from '@react-navigation/native';
 import { color, anim, degradado } from '../../theme';
 
-/**
- * Si el sistema pide movimiento reducido, toda animacion de este archivo
- * aplica el valor final de inmediato: sin transicion y sin loops. `Brillo`
- * se apaga por completo porque no tiene un "valor final" que mostrar.
- */
-export function useMovimientoReducido(): boolean {
-  const [reducido, setReducido] = useState(false);
-  useEffect(() => {
-    let vivo = true;
-    AccessibilityInfo.isReduceMotionEnabled().then(v => { if (vivo) setReducido(v); });
-    const sub = AccessibilityInfo.addEventListener('reduceMotionChanged', setReducido);
-    return () => { vivo = false; sub.remove(); };
-  }, []);
-  return reducido;
-}
+export { useReducedMotion as useMovimientoReducido } from '../../hooks/useReducedMotion';
+import { useReducedMotion as useMovimientoReducido } from '../../hooks/useReducedMotion';
 
 /** Entrada suave: aparece y sube unos pixeles. */
 export function Aparece({ children, retraso = 0, estilo }: {

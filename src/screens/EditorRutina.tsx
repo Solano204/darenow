@@ -379,7 +379,7 @@ function Ajuste({ etiqueta, valor, min, max, paso = 1, onCambio }: {
 
   return (
     <View style={s.ajuste}>
-      <Text style={[tipo.micro, { color: color.textoSuave }]}>{etiqueta.toUpperCase()}</Text>
+      <Text style={[tipo.micro, { color: color.textoSuave }]}>{etiqueta}</Text>
       <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
         <Mini glifo="−" etiqueta={`Restar ${etiqueta}`} onPress={() => onCambio(Math.max(min, valor - paso))} />
         <TextInput

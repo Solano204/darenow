@@ -10,9 +10,9 @@ import {
   View, Text, Pressable, TextInput, StyleSheet, Animated, Easing,
   type ViewStyle, type AccessibilityRole, type AccessibilityState,
 } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
-import { color, colorSesion, tipo, esp, radio, TOQUE, degradado, sombra, anim, peso } from '../../theme';
+import { color, colorSesion, tipo, esp, radio, TOQUE, ALTO_BOTON, anim, peso } from '../../theme';
 import { useMovimientoReducido } from './movimiento';
+import { BotonPlaca } from './BotonPlaca';
 
 /** Pulsable que se hunde un poco al tocarlo. */
 export function Toque({ children, onPress, estilo, escala = 0.97, etiqueta, rol = 'button', estado }: {
@@ -72,46 +72,26 @@ export function Boton({
   oscuro?: boolean;
 }) {
   const reducido = useMovimientoReducido();
-  const relleno = variante === 'principal' || variante === 'acento';
   const inactivo = deshabilitado || ocupado;
-  const c = oscuro ? colorSesion : color;
-  const txt =
-    relleno ? color.sobreOscuro :
-    variante === 'peligro' ? color.peligro : c.texto;
 
-  const textoVisible = ocupado && reducido ? (textoOcupado ?? texto) : texto;
-  const etiqueta = (
-    <Text style={[tipo.cuerpo, { color: txt, fontFamily: peso.bold }]}>{textoVisible}</Text>
-  );
-
-  // La accion principal es una pastilla de brasa con halo propio y un
-  // filo claro arriba, para que se lea como un objeto con volumen.
-  if (relleno) {
+  if (variante === 'principal' || variante === 'acento') {
     return (
-      <Toque onPress={inactivo ? undefined : onPress} estilo={[
-        s.boton, s.botonBrasa,
-        deshabilitado && { opacity: 0.35 },
-        ancho && { alignSelf: 'stretch' },
-        estilo,
-      ] as unknown as ViewStyle}
-        etiqueta={textoVisible} estado={{ disabled: !!deshabilitado, busy: !!ocupado }}
-      >
-        <LinearGradient
-          colors={degradado.brasa} start={{ x: 0, y: 0 }} end={{ x: 0, y: 1 }}
-          style={StyleSheet.absoluteFill}
-        />
-        <View style={s.filoBoton} />
-        {ocupado && !reducido && <BandaOcupado />}
-        {etiqueta}
-      </Toque>
+      <BotonPlaca
+        texto={texto} onPress={onPress} deshabilitado={deshabilitado}
+        ocupado={ocupado} textoOcupado={textoOcupado}
+        estilo={[ancho && { alignSelf: 'stretch' as const }, estilo]}
+      />
     );
   }
+
+  const c = oscuro ? colorSesion : color;
+  const textoVisible = ocupado && reducido ? (textoOcupado ?? texto) : texto;
 
   return (
     <Toque onPress={inactivo ? undefined : onPress} estilo={[
       s.boton,
       variante === 'contorno' && { borderWidth: 1, borderColor: c.bordeFuerte, backgroundColor: c.velo },
-      variante === 'peligro' && { borderWidth: 1, borderColor: color.peligroBorde },
+      variante === 'peligro' && { borderWidth: 1, borderColor: c.bordeFuerte },
       variante === 'texto' && { minHeight: 44 },
       deshabilitado && { opacity: 0.35 },
       ancho && { alignSelf: 'stretch' },
@@ -120,43 +100,8 @@ export function Boton({
       etiqueta={textoVisible} estado={{ disabled: !!deshabilitado, busy: !!ocupado }}
     >
       {variante === 'contorno' && ocupado && !reducido && <PuntoOcupado />}
-      {etiqueta}
+      <Text style={[tipo.cuerpoEnfasis, { color: c.texto }]}>{textoVisible}</Text>
     </Toque>
-  );
-}
-
-/**
- * Banda de brasa translucida que recorre el boton relleno cada 900 ms,
- * mientras espera. Reusa `degradado.brillo` (el mismo barrido de luz que
- * `Brillo`): es el mismo lenguaje visual, un contexto distinto.
- */
-function BandaOcupado() {
-  const v = useRef(new Animated.Value(0)).current;
-  const [ancho, setAncho] = useState(0);
-  useEffect(() => {
-    if (ancho === 0) return;
-    const bucle = Animated.loop(
-      Animated.timing(v, { toValue: 1, duration: 900, easing: Easing.linear, useNativeDriver: true }),
-    );
-    bucle.start();
-    return () => bucle.stop();
-  }, [ancho]);
-  const bandaAncho = 60;
-  return (
-    <View pointerEvents="none" style={StyleSheet.absoluteFill}
-      onLayout={e => setAncho(e.nativeEvent.layout.width)}>
-      {ancho > 0 && (
-        <Animated.View style={{
-          position: 'absolute', top: 0, bottom: 0, width: bandaAncho,
-          transform: [{ translateX: v.interpolate({ inputRange: [0, 1], outputRange: [-bandaAncho, ancho] }) }],
-        }}>
-          <LinearGradient
-            colors={degradado.brillo} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
-            style={{ flex: 1 }}
-          />
-        </Animated.View>
-      )}
-    </View>
   );
 }
 
@@ -203,7 +148,7 @@ export function BotonRedondo({ glifo, etiqueta, onPress, oscuro }: {
     <Toque onPress={onPress} estilo={[
       s.redondo,
       oscuro
-        ? { backgroundColor: color.carbon, borderColor: color.carbon, ...sombra.brasa }
+        ? { backgroundColor: color.carbon, borderColor: color.carbon }
         : { backgroundColor: color.crema, borderColor: color.borde },
     ] as unknown as ViewStyle}
       etiqueta={etiqueta}
@@ -240,7 +185,6 @@ export function Chip({ texto, activo, onPress, pequeno, oscuro }: {
         backgroundColor: v.interpolate({ inputRange: [0, 1], outputRange: [fondoApagado, color.carbon] }),
         borderColor: v.interpolate({ inputRange: [0, 1], outputRange: [bordeApagado, color.carbon] }),
       },
-      activo && sombra.brasa,
     ]}>
       <Text style={[pequeno ? tipo.micro : tipo.pie, {
         // "oscuro" es para chips sobre foto o degradado de acento: el
@@ -389,14 +333,8 @@ export function Interruptor({ etiqueta, ayuda, valor, onCambio }: {
 
 const s = StyleSheet.create({
   boton: {
-    minHeight: TOQUE, borderRadius: radio.pastilla, paddingHorizontal: esp.lg,
+    minHeight: ALTO_BOTON, borderRadius: radio.pastilla, paddingHorizontal: esp.lg,
     alignItems: 'center', justifyContent: 'center', overflow: 'hidden',
-  },
-  botonBrasa: { ...sombra.brasa },
-  // Filo claro en el canto de arriba del boton: le da volumen.
-  filoBoton: {
-    position: 'absolute', top: 0, left: 16, right: 16, height: 1,
-    backgroundColor: color.filoBoton,
   },
   redondo: {
     width: 42, height: 42, borderRadius: 21, alignItems: 'center', justifyContent: 'center',
@@ -404,7 +342,7 @@ const s = StyleSheet.create({
   },
   chip: {
     borderWidth: 1, borderColor: color.borde, backgroundColor: color.velo,
-    borderRadius: radio.pastilla, paddingVertical: 7, paddingHorizontal: 14,
+    borderRadius: radio.chip, paddingVertical: 7, paddingHorizontal: 14,
   },
   opcion: {
     flexDirection: 'row', alignItems: 'center', gap: esp.sm, minHeight: TOQUE,

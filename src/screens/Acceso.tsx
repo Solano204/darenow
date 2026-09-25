@@ -58,7 +58,7 @@ export default function Acceso({ onListo }: { onListo: () => void }) {
 
         <Aparece retraso={120}>
           <LinearGradient colors={degradado.paso} style={s.tarjeta}>
-            <Text style={[tipo.micro, { color: color.textoTenue }]}>QUÉ GUARDAMOS</Text>
+            <Text style={[tipo.micro, { color: color.textoTenue }]}>Qué guardamos</Text>
             <Punto texto="Tu nombre y tu correo, solo en este teléfono." />
             <Punto texto="Tu rutina, tu historial y tus medidas." />
             <Punto texto='Todo vive en este teléfono. Para pasarlo a otro, usa "Exportar mi progreso" en Ajustes.' />

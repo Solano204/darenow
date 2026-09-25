@@ -39,7 +39,7 @@ export function BannerAnuncio({ flotante }: { flotante?: boolean }) {
   if (!ANUNCIOS_ACTIVOS) return null;
   const cuerpo = (
     <View style={s.bannerInterior} accessibilityLabel="Anuncio">
-      <Text style={[tipo.micro, { color: color.textoTenue }]}>ESPACIO PUBLICITARIO</Text>
+      <Text style={[tipo.micro, { color: color.textoTenue }]}>Espacio publicitario</Text>
       <Text style={[tipo.micro, { color: color.textoTenue }]}>320 × 50</Text>
     </View>
   );
@@ -68,7 +68,7 @@ export function Intersticial({ visible, onCerrar, segundos = 5, motivo }: {
       <View style={s.interFondo}>
         <View style={s.interCabecera}>
           <Text style={[tipo.micro, { color: color.textoTenue }]}>
-            {motivo ? motivo.toUpperCase() : 'PUBLICIDAD'}
+            {motivo ?? 'Publicidad'}
           </Text>
           {quedan > 0 ? (
             <View style={s.cuenta}>

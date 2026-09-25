@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { View, Text, ActivityIndicator, StyleSheet, Animated, Easing, Platform } from 'react-native';
-import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
+import { NavigationContainer, DarkTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -9,9 +9,8 @@ import * as SplashScreen from 'expo-splash-screen';
 import { NavigationBar } from 'expo-navigation-bar';
 import { Ionicons } from '@expo/vector-icons';
 import { useFonts } from 'expo-font';
-import { ArchivoBlack_400Regular } from '@expo-google-fonts/archivo-black';
-import { Inter_400Regular, Inter_600SemiBold, Inter_700Bold } from '@expo-google-fonts/inter';
-import { Baloo2_700Bold, Baloo2_800ExtraBold } from '@expo-google-fonts/baloo-2';
+import { BigShouldersDisplay_700Bold, BigShouldersDisplay_800ExtraBold } from '@expo-google-fonts/big-shoulders-display';
+import { Figtree_400Regular, Figtree_500Medium, Figtree_600SemiBold, Figtree_700Bold } from '@expo-google-fonts/figtree';
 
 import { color, colorSesion, tipo, anim, peso } from './src/theme';
 import { ProveedorEstado, useEstado, hoy } from './src/store/store';
@@ -44,23 +43,19 @@ const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
 /**
- * Tema de navegacion.
- *
- * Construido sobre DefaultTheme (la app es clara). React Navigation pinta
- * el fondo de la pantalla que entra usando este tema mientras corre la
- * animacion de transicion, asi que estos colores tienen que coincidir con
- * los de `Pantalla`/las pantallas propias o se ve un destello.
+ * Tema de navegacion. React Navigation pinta el fondo de la pantalla que
+ * entra con este tema mientras corre la transicion: tiene que coincidir con
+ * `color.fondo` o se ve un destello.
  */
 const tema = {
-  ...DefaultTheme,
-  dark: false,
+  ...DarkTheme,
   colors: {
-    ...DefaultTheme.colors,
+    ...DarkTheme.colors,
     background: color.fondo,
     card: color.fondo,
     text: color.texto,
     border: color.borde,
-    primary: color.carbon,
+    primary: color.texto,
   },
 };
 
@@ -92,7 +87,7 @@ function Icono({ nombre, activo }: { nombre: keyof typeof Ionicons.glyphMap; act
           transform: [{ scale: v.interpolate({ inputRange: [0, 1], outputRange: [0.6, 1] }) }],
         },
       ]} />
-      <Ionicons name={nombre} size={20} color={activo ? color.carbon : color.textoTenue} />
+      <Ionicons name={nombre} size={20} color={activo ? color.texto : color.textoTenue} />
     </View>
   );
 }
@@ -129,7 +124,7 @@ function Pestanas() {
         // app mirando otro lado.
         animation: 'fade',
         sceneStyle: { backgroundColor: color.fondo },
-        tabBarActiveTintColor: color.carbon,
+        tabBarActiveTintColor: color.texto,
         tabBarInactiveTintColor: color.textoTenue,
         tabBarStyle: {
           position: 'absolute',
@@ -163,7 +158,7 @@ function Raiz() {
   if (cargando || cargandoCuenta) {
     return (
       <View style={s.cargando}>
-        <ActivityIndicator color={color.carbon} />
+        <ActivityIndicator color={color.texto} />
       </View>
     );
   }
@@ -235,8 +230,8 @@ function Raiz() {
 
 export default function App() {
   const [fontsLoaded, fontError] = useFonts({
-    ArchivoBlack_400Regular, Inter_400Regular, Inter_600SemiBold, Inter_700Bold,
-    Baloo2_700Bold, Baloo2_800ExtraBold,
+    BigShouldersDisplay_700Bold, BigShouldersDisplay_800ExtraBold,
+    Figtree_400Regular, Figtree_500Medium, Figtree_600SemiBold, Figtree_700Bold,
   });
 
   useEffect(() => {
@@ -267,11 +262,7 @@ export default function App() {
       <ProveedorEstado>
       <ProveedorCuenta>
         <NavigationContainer theme={tema}>
-          {/* Iconos oscuros por defecto (fondo claro). La sesion activa del
-              reproductor sigue oscura y monta su propio <StatusBar style="light">
-              mientras esta en pantalla — expo-status-bar respeta el mas
-              reciente montado y vuelve a este al desmontarse. */}
-          <StatusBar style="dark" />
+          <StatusBar style="light" />
           {/* El reloj de anuncios envuelve toda la app: un intersticial cada
               10 minutos, en cualquier pantalla salvo mientras se entrena. */}
           <ProveedorAnuncios>

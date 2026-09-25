@@ -15,13 +15,15 @@ type Resorte = { damping: number; stiffness: number; mass?: number };
  * Con movimiento reducido solo hay un fundido de 150 ms; con `animar=false`
  * aparece ya puesta.
  */
-export function Entrada({ children, activo, animar = true, retraso = 0, x = 0, y = 0, resorte = resorteMagnesia, estilo }: {
+export function Entrada({ children, activo, animar = true, retraso = 0, x = 0, y = 0, escala = 1, resorte = resorteMagnesia, estilo }: {
   children: React.ReactNode;
   activo: boolean;
   animar?: boolean;
   retraso?: number;
   x?: number;
   y?: number;
+  /** Escala inicial (0.96 crece a 1; 1.02 baja a 1). */
+  escala?: number;
   resorte?: Resorte;
   estilo?: StyleProp<ViewStyle>;
 }) {
@@ -44,6 +46,7 @@ export function Entrada({ children, activo, animar = true, retraso = 0, x = 0, y
     transform: [
       { translateX: reducido ? 0 : (1 - t.value) * x },
       { translateY: reducido ? 0 : (1 - t.value) * y },
+      { scale: reducido ? 1 : escala + (1 - escala) * t.value },
     ],
   }));
 

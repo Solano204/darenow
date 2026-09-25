@@ -113,7 +113,7 @@ export default function Presentacion({ onTerminar }: { onTerminar: () => void })
             layout={reducido ? undefined : ensancha}
             style={esUltima ? s.botonAncho : s.botonCompacto}
           >
-            <BotonPlaca texto={esUltima ? 'Empezar' : 'Seguir'} onPress={avanzar} estilo={s.boton} />
+            <BotonPlaca texto={esUltima ? 'Empezar' : 'Seguir'} onPress={avanzar} aplauso={esUltima} estilo={s.boton} />
           </Animated.View>
         </View>
       </SafeAreaView>

@@ -16,6 +16,9 @@ import { color, colorSesion, tipo, anim, peso } from './src/theme';
 import { ProveedorEstado, useEstado, hoy } from './src/store/store';
 import { ProveedorCuenta, useCuenta } from './src/store/cuenta';
 import { ProveedorAnuncios } from './src/components/RelojAnuncios';
+import { ProveedorMagnesia } from './src/components/fx/MagnesiaOverlay';
+import { Entrada } from './src/components/fx/Entrada';
+import { resorteTap } from './src/theme';
 
 // Se queda visible hasta que las fuentes resuelvan (cargadas o no): nada
 // de texto invisible esperando fuente, ni un flash de la fuente del
@@ -113,6 +116,7 @@ function Pestanas() {
   const inset = useSafeAreaInsets();
 
   return (
+    <Entrada activo escala={1.02} resorte={resorteTap} estilo={{ flex: 1 }}>
     <Tab.Navigator
       // sceneStyle: el contenedor de cada pestana. Sin esto queda blanco
       // por debajo y asoma un instante al cambiar de pestana.
@@ -148,6 +152,7 @@ function Pestanas() {
       <Tab.Screen name="Yo" component={Yo}
         options={{ tabBarIcon: ({ focused }) => <Icono nombre={focused ? 'person' : 'person-outline'} activo={focused} /> }} />
     </Tab.Navigator>
+    </Entrada>
   );
 }
 
@@ -266,7 +271,9 @@ export default function App() {
           {/* El reloj de anuncios envuelve toda la app: un intersticial cada
               10 minutos, en cualquier pantalla salvo mientras se entrena. */}
           <ProveedorAnuncios>
-            <Raiz />
+            <ProveedorMagnesia>
+              <Raiz />
+            </ProveedorMagnesia>
           </ProveedorAnuncios>
         </NavigationContainer>
       </ProveedorCuenta>

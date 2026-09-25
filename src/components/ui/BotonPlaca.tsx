@@ -1,11 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Pressable, Platform, StyleSheet, type StyleProp, type ViewStyle } from 'react-native';
+import { Pressable, Platform, StyleSheet, type StyleProp, type View, type ViewStyle } from 'react-native';
 import Animated, {
   cancelAnimation, interpolateColor, runOnJS, useAnimatedStyle, useSharedValue,
   withRepeat, withSequence, withSpring, withTiming,
 } from 'react-native-reanimated';
 import { paleta, tipo, radio, sombra, esp, ALTO_BOTON, resorteTap, dur, easing, haptico } from '../../theme';
 import { useReducedMotion } from '../../hooks/useReducedMotion';
+import { useMagnesia } from '../fx/MagnesiaOverlay';
 
 const ALTO_TEXTO = 22;
 const ESCALA_PRESIONADO = 0.03;
@@ -18,11 +19,16 @@ export interface BotonPlacaProps {
   ocupado?: boolean;
   /** Gerundio para cuando el movimiento reducido apaga el pulso y el texto es lo unico que dice "espera". */
   textoOcupado?: string;
+  /** Dispara el aplauso de magnesia (nube, velo y haptica) al soltar, sin retrasar `onPress`. */
+  aplauso?: boolean;
   estilo?: StyleProp<ViewStyle>;
 }
 
-export function BotonPlaca({ texto, onPress, deshabilitado, ocupado, textoOcupado, estilo }: BotonPlacaProps) {
+export function BotonPlaca({ texto, onPress, deshabilitado, ocupado, textoOcupado, aplauso, estilo }: BotonPlacaProps) {
   const reducido = useReducedMotion();
+  const magnesia = useMagnesia();
+  const ref = useRef<View>(null);
+  const centro = useRef<{ x: number; y: number } | null>(null);
   const presion = useSharedValue(0);
   const inactivo = !!deshabilitado || !!ocupado;
   const visible = ocupado && reducido ? (textoOcupado ?? texto) : texto;
@@ -34,9 +40,22 @@ export function BotonPlaca({ texto, onPress, deshabilitado, ocupado, textoOcupad
 
   return (
     <Pressable
-      onPressIn={() => { if (inactivo) return; presion.value = withSpring(1, resorteTap); haptico.toque(); }}
+      ref={ref}
+      onPressIn={() => {
+        if (inactivo) return;
+        presion.value = withSpring(1, resorteTap);
+        haptico.toque();
+        if (aplauso) ref.current?.measureInWindow((x, y, w, h) => { centro.current = { x: x + w / 2, y: y + h / 2 }; });
+      }}
       onPressOut={() => { presion.value = withSpring(0, resorteTap); }}
-      onPress={inactivo ? undefined : onPress}
+      onPress={inactivo ? undefined : e => {
+        if (aplauso) {
+          const c = centro.current ?? { x: e.nativeEvent.pageX, y: e.nativeEvent.pageY };
+          haptico.aplauso();
+          magnesia.aplaudir(c.x, c.y);
+        }
+        onPress();
+      }}
       accessibilityRole="button"
       accessibilityLabel={visible}
       accessibilityState={{ disabled: !!deshabilitado, busy: !!ocupado }}

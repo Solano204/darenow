@@ -122,7 +122,7 @@ Lógica condicional de `mensajeDelDia` (orden): 0 sesiones → «Bienvenido» (`
 
 `diasSin` = días entre `racha.ultimoDia` y hoy (0 si no hay `ultimoDia`).
 
-Único control: **Entrar** → `marcarBienvenida()` (guarda `bienvenidaVista = hoy()`) y luego `navigation.replace('Tabs')`.
+Único control: **Entrar** → `marcarBienvenida()` (guarda `bienvenidaVista = hoy()`) y luego `navigation.replace('Tabs')`. Con el aplauso de magnesia la acción sigue siendo la misma y se dispara en el mismo instante; la nube vive en un overlay global (`ProveedorMagnesia` en `App.tsx`). El «Empezar» de Presentacion y el del resumen del cuestionario disparan el mismo aplauso con su acción actual.
 
 ## 8. Persistencia (AsyncStorage, todas bajo `forja:`)
 
@@ -148,13 +148,13 @@ Se rellena al cerrar cada fase. ✅ = verificado sin dispositivo: lectura de có
 
 | Punto | F0 | F1 | F2 | F3 | F4 | F5 | F6 |
 |---|---|---|---|---|---|---|---|
-| Arranque y orden Presentacion → Acceso → Onboarding → Bienvenida/Tabs | ✅ | ✅ | ✅ | ✅ | | | |
-| Seguir / Empezar / Saltar de Presentacion | ✅ | ✅ | ✅ | ✅ | | | |
-| Acceso (Google, invitado, enlaces legales) | ✅ | ✅ | ✅ | ✅ | | | |
-| Onboarding: pasos, omisiones, obligatorios, consentimiento, resumen | ✅ | ✅ | ✅ | ✅ | | | |
-| Entrar en Bienvenida (marca y navega a `Tabs`) | ✅ | ✅ | ✅ | ✅ | | | |
-| Nombre, fecha, racha, sesiones, días entrenados | ✅ | ✅ | ✅ | ✅ | | | |
-| Mensaje del día y su imagen | ✅ | ✅ | ✅ | ✅ | | | |
-| Las 4 pestañas y sus saltos | ✅ | ✅ | ✅ | ✅ | | | |
-| Persistencia (onboarding no reaparece) | ✅ | ✅ | ✅ | ✅ | | | |
-| Ajuste de háptica respetado | ✅ | ✅ | ✅ | ✅ | | | |
+| Arranque y orden Presentacion → Acceso → Onboarding → Bienvenida/Tabs | ✅ | ✅ | ✅ | ✅ | ✅ | | |
+| Seguir / Empezar / Saltar de Presentacion | ✅ | ✅ | ✅ | ✅ | ✅ | | |
+| Acceso (Google, invitado, enlaces legales) | ✅ | ✅ | ✅ | ✅ | ✅ | | |
+| Onboarding: pasos, omisiones, obligatorios, consentimiento, resumen | ✅ | ✅ | ✅ | ✅ | ✅ | | |
+| Entrar en Bienvenida (marca y navega a `Tabs`) | ✅ | ✅ | ✅ | ✅ | ✅ | | |
+| Nombre, fecha, racha, sesiones, días entrenados | ✅ | ✅ | ✅ | ✅ | ✅ | | |
+| Mensaje del día y su imagen | ✅ | ✅ | ✅ | ✅ | ✅ | | |
+| Las 4 pestañas y sus saltos | ✅ | ✅ | ✅ | ✅ | ✅ | | |
+| Persistencia (onboarding no reaparece) | ✅ | ✅ | ✅ | ✅ | ✅ | | |
+| Ajuste de háptica respetado | ✅ | ✅ | ✅ | ✅ | ✅ | | |

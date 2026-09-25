@@ -242,7 +242,7 @@ export default function Onboarding({ onTerminar }: { onTerminar: (p: PerfilUsuar
             <Text style={[tipo.pie, { color: color.textoTenue, marginTop: esp.md }]}>
               Puedes cambiar cualquiera de estas respuestas en Ajustes, sin perder tu historial.
             </Text>
-            <Boton texto="Empezar" onPress={() => onTerminar(perfil)} estilo={{ marginTop: esp.lg }} />
+            <Boton texto="Empezar" aplauso onPress={() => onTerminar(perfil)} estilo={{ marginTop: esp.lg }} />
             <Boton texto="Cambiar algo" variante="texto" onPress={() => setResumen(false)} />
           </Aparece>
         </ScrollView>

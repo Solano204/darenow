@@ -51,7 +51,7 @@ export function Toque({ children, onPress, estilo, escala = 0.97, etiqueta, rol 
 /* ═══════════════════════════════════════════════════ botones */
 
 export function Boton({
-  texto, onPress, variante = 'principal', deshabilitado, estilo, ancho, ocupado, textoOcupado, oscuro,
+  texto, onPress, variante = 'principal', deshabilitado, estilo, ancho, ocupado, textoOcupado, oscuro, aplauso,
 }: {
   texto: string;
   onPress: () => void;
@@ -70,6 +70,8 @@ export function Boton({
    *  sigan siendo legibles sobre su fondo oscuro. No afecta "principal"/
    *  "acento": esas ya llevan su propio relleno y quedan legibles igual. */
   oscuro?: boolean;
+  /** Aplauso de magnesia al soltar (solo en el boton principal). */
+  aplauso?: boolean;
 }) {
   const reducido = useMovimientoReducido();
   const inactivo = deshabilitado || ocupado;
@@ -78,7 +80,7 @@ export function Boton({
     return (
       <BotonPlaca
         texto={texto} onPress={onPress} deshabilitado={deshabilitado}
-        ocupado={ocupado} textoOcupado={textoOcupado}
+        ocupado={ocupado} textoOcupado={textoOcupado} aplauso={aplauso}
         estilo={[ancho && { alignSelf: 'stretch' as const }, estilo]}
       />
     );

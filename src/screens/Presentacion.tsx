@@ -12,7 +12,7 @@
  * vuelve; no se gasta en publicidad.
  */
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import {
   View, Text, StyleSheet, Animated, Easing, Dimensions, Pressable,
 } from 'react-native';
@@ -21,46 +21,12 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { color, tipo, esp, radio, degradado, anim, peso } from '../theme';
 import { Boton } from '../components/ui';
 import Foto from '../components/Foto';
-import { ESTADISTICAS } from '../data/catalog';
+import { usePresentacion } from '../hooks/usePresentacion';
 
 const { width, height } = Dimensions.get('window');
 
-interface Lamina {
-  id: string;
-  titulo: string;
-  cuerpo: string;
-  pie?: string;
-}
-
-const LAMINAS: Lamina[] = [
-  {
-    id: 'intro_04',
-    titulo: 'Gratis. Todo. Sin trucos',
-    cuerpo: `${ESTADISTICAS.rutinas} rutinas y ${ESTADISTICAS.programas} programas completos, sin versión de prueba ni funciones bloqueadas.`,
-    pie: 'Sin tarjeta, sin suscripción, sin compras dentro de la app.',
-  },
-  {
-    id: 'intro_01',
-    titulo: 'Entrena lo que tú quieras trabajar',
-    cuerpo: `${ESTADISTICAS.ejercicios} ejercicios en ocho objetivos: bajar peso, músculo, mandíbula, postura, cardio, correr, gym y calistenia.`,
-    pie: `${ESTADISTICAS.sinEquipo} de ellos no necesitan nada de equipo.`,
-  },
-  {
-    id: 'intro_02',
-    titulo: 'La sesión cabe en tu tiempo',
-    cuerpo: 'Dinos cuántos minutos tienes y el plan se ajusta a eso. Si un día no los tienes, hay una sesión de cinco minutos que cuenta igual.',
-    pie: 'Nada de rachas que se rompen y castigan.',
-  },
-  {
-    id: 'intro_03',
-    titulo: 'Te decimos lo que sí funciona, y lo que no',
-    cuerpo: 'Cada ejercicio lleva su insignia: Comprobado, Parcial o Mito. No te vamos a prometer que los abdominales queman la panza.',
-    pie: `${ESTADISTICAS.mitos} mitos explicados con su razón.`,
-  },
-];
-
 export default function Presentacion({ onTerminar }: { onTerminar: () => void }) {
-  const [i, setI] = useState(0);
+  const { i, laminas, esUltima, avanzar, saltar } = usePresentacion(onTerminar);
 
   const desliz = useRef(new Animated.Value(0)).current;
   const opacidad = useRef(new Animated.Value(0)).current;
@@ -72,13 +38,13 @@ export default function Presentacion({ onTerminar }: { onTerminar: () => void })
     }).start();
   }, []);
 
-  const avanzar = () => {
-    if (i === LAMINAS.length - 1) return onTerminar();
+  const siguiente = () => {
+    if (esUltima) return avanzar();
     Animated.parallel([
       Animated.timing(desliz, { toValue: -width * 0.3, duration: anim.rapida, useNativeDriver: true }),
       Animated.timing(opacidad, { toValue: 0, duration: anim.rapida, useNativeDriver: true }),
     ]).start(() => {
-      setI(n => n + 1);
+      avanzar();
       desliz.setValue(width * 0.3);
       Animated.parallel([
         Animated.timing(desliz, { toValue: 0, duration: anim.normal, useNativeDriver: true, easing: Easing.out(Easing.cubic) }),
@@ -87,7 +53,7 @@ export default function Presentacion({ onTerminar }: { onTerminar: () => void })
     });
   };
 
-  const l = LAMINAS[i];
+  const l = laminas[i];
 
   return (
     <View style={{ flex: 1, backgroundColor: color.fondo }}>
@@ -103,7 +69,7 @@ export default function Presentacion({ onTerminar }: { onTerminar: () => void })
         <SafeAreaView style={{ flex: 1 }}>
           <View style={s.barraSuperior}>
             <Text style={[tipo.h3, { color: color.texto, letterSpacing: 2 }]}>DARENOW</Text>
-            <Pressable onPress={onTerminar} hitSlop={12} accessibilityRole="button" accessibilityLabel="Saltar">
+            <Pressable onPress={saltar} hitSlop={12} accessibilityRole="button" accessibilityLabel="Saltar">
               <Text style={[tipo.dato, { color: color.textoSuave }]}>Saltar</Text>
             </Pressable>
           </View>
@@ -123,13 +89,13 @@ export default function Presentacion({ onTerminar }: { onTerminar: () => void })
 
           <View style={s.pie}>
             <View style={s.puntos}>
-              {LAMINAS.map((_, n) => (
+              {laminas.map((_, n) => (
                 <View key={n} style={[s.punto, n === i && s.puntoActivo]} />
               ))}
             </View>
             <Boton
-              texto={i === LAMINAS.length - 1 ? 'Empezar' : 'Seguir'}
-              onPress={avanzar}
+              texto={esUltima ? 'Empezar' : 'Seguir'}
+              onPress={siguiente}
               estilo={{ flex: 1 }}
             />
           </View>

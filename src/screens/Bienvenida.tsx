@@ -9,35 +9,19 @@
  * misma jornada, entra directo a Hoy.
  */
 
-import React, { useMemo, useRef, useEffect } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { View, Text, StyleSheet, Animated, ImageBackground } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { color, tipo, esp, radio, anim, degradado } from '../theme';
 import { Boton } from '../components/ui';
 import { BannerAnuncio, ANUNCIOS_ACTIVOS } from '../components/Anuncio';
-import { useEstado, estadisticas, hoy } from '../store/store';
-import { saludo, mensajeDelDia } from '../data/mensajes';
+import { useWelcomeData } from '../hooks/useWelcomeData';
 import { fuente } from '../media/registry';
 import Foto from '../components/Foto';
 
 export default function Bienvenida({ navigation }: any) {
-  const { estado, marcarBienvenida } = useEstado();
-  const { perfil, sesiones, racha } = estado;
-
-  const stats = useMemo(() => estadisticas(sesiones), [sesiones]);
-
-  const diasSin = useMemo(() => {
-    if (!racha.ultimoDia) return 0;
-    const a = new Date(racha.ultimoDia + 'T00:00:00').getTime();
-    const b = new Date(hoy() + 'T00:00:00').getTime();
-    return Math.round((b - a) / 86400000);
-  }, [racha.ultimoDia]);
-
-  const msg = useMemo(
-    () => mensajeDelDia({ sesiones: stats.total, diasRacha: racha.dias, diasSinEntrenar: diasSin }),
-    [stats.total, racha.dias, diasSin],
-  );
+  const w = useWelcomeData(navigation);
 
   // Entrada escalonada: fondo, saludo, mensaje, boton.
   const v = useRef(new Animated.Value(0)).current;
@@ -49,11 +33,6 @@ export default function Bienvenida({ navigation }: any) {
     ]).start();
   }, []);
 
-  const entrar = () => {
-    marcarBienvenida();
-    navigation.replace('Tabs');
-  };
-
   const bg = fuente('fondo', 'bienvenida');
 
   const contenido = (
@@ -64,10 +43,10 @@ export default function Bienvenida({ navigation }: any) {
           transform: [{ translateY: v.interpolate({ inputRange: [0, 1], outputRange: [24, 0] }) }],
         }}>
           <Text style={[tipo.pie, { color: color.textoSuave }]}>
-            {new Date().toLocaleDateString('es-MX', { weekday: 'long', day: 'numeric', month: 'long' })}
+            {w.fecha}
           </Text>
           <Text style={[tipo.display, { color: color.texto, marginTop: esp.xs }]}>
-            {saludo(perfil.nombre || undefined)}
+            {w.saludo}
           </Text>
         </Animated.View>
 
@@ -79,23 +58,23 @@ export default function Bienvenida({ navigation }: any) {
           <LinearGradient colors={degradado.paso} style={s.tarjeta}>
             {/* Imagen de motivacion del dia. Como todo el resto, si no
                 esta el archivo se dibuja su marcador y no se rompe nada. */}
-            <Foto tipo="motivacion" id={msg.id} nombre={msg.titulo}
+            <Foto tipo="motivacion" id={w.msg.id} nombre={w.msg.titulo}
               alto={190} ancho="100%" forma="tarjeta" />
-            <Text style={[tipo.h2, { color: color.texto, marginTop: esp.sm }]}>{msg.titulo}</Text>
-            <Text style={[tipo.cuerpo, { color: color.textoSuave }]}>{msg.cuerpo}</Text>
+            <Text style={[tipo.h2, { color: color.texto, marginTop: esp.sm }]}>{w.msg.titulo}</Text>
+            <Text style={[tipo.cuerpo, { color: color.textoSuave }]}>{w.msg.cuerpo}</Text>
 
             <View style={s.linea} />
 
             <View style={s.resumen}>
-              <Dato n={String(racha.dias)} t={racha.dias === 1 ? 'día seguido' : 'días seguidos'} />
+              <Dato n={String(w.racha)} t={w.racha === 1 ? 'día seguido' : 'días seguidos'} />
               <View style={s.sep} />
-              <Dato n={String(stats.total)} t="sesiones" />
+              <Dato n={String(w.sesiones)} t="sesiones" />
               <View style={s.sep} />
-              <Dato n={String(stats.dias)} t="días entrenados" />
+              <Dato n={String(w.diasEntrenados)} t="días entrenados" />
             </View>
           </LinearGradient>
 
-          <Boton texto="Entrar" onPress={entrar} estilo={{ marginTop: esp.md }} />
+          <Boton texto="Entrar" onPress={w.entrar} estilo={{ marginTop: esp.md }} />
         </Animated.View>
 
         {ANUNCIOS_ACTIVOS && (

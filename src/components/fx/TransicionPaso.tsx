@@ -23,6 +23,7 @@ export function useTransicionPaso() {
   const direccion = useSharedValue(1);
   const ocupado = useRef(false);
   const ultima = useRef<1 | -1>(1);
+  const epoca = useRef(0);
   const tick = useTick();
 
   const reponer = useCallback(() => {
@@ -35,9 +36,12 @@ export function useTransicionPaso() {
     ocupado.current = true;
     ultima.current = dir;
     direccion.value = dir;
+    epoca.current += 1;
+    const miEpoca = epoca.current;
     const salir = () => {
       despues();
-      setTimeout(reponer, RESPALDO_MS);
+      // Respaldo por si el paso nuevo no llega a montarse; una transicion posterior lo anula.
+      setTimeout(() => { if (epoca.current === miEpoca) reponer(); }, RESPALDO_MS);
     };
     t.value = withTiming(1, { duration: reducido ? REDUCIDO_MS : SALIDA_MS, easing: easing.entrada }, terminado => {
       if (terminado) runOnJS(salir)();

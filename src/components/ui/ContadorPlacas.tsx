@@ -90,7 +90,9 @@ export function ContadorPlacas({ valor, min, max, sufijo, onCambio, semana }: {
             accessibilityActions={[{ name: 'increment' }, { name: 'decrement' }]}
             onAccessibilityAction={alAccesibilidad}
           >
-            <Odometro valor={valor} continuo estilo={ESTILO_NUMERO} />
+            <View importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>
+              <Odometro valor={valor} continuo estilo={ESTILO_NUMERO} />
+            </View>
           </Pressable>
         )}
       </Animated.View>

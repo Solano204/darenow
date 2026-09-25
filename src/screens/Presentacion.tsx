@@ -1,126 +1,92 @@
 /**
- * FORJA · presentacion
- *
- * Lo primero que ve alguien que abre la app por primera vez. Tres pantallas
- * que se deslizan, con una animacion continua de fondo.
- *
- * Dura lo que el usuario quiera: hay un boton para saltar desde el primer
- * segundo. Una intro que no se puede saltar es una intro que se odia a la
- * segunda vez que se ve.
- *
- * Aqui no hay anuncios. El primer minuto de alguien en la app decide si
- * vuelve; no se gasta en publicidad.
+ * Presentacion: las cuatro laminas que ve quien abre la app por primera vez.
+ * Foto a sangre arriba, texto anclado abajo y la zona de control fija.
+ * La logica (indice, avanzar, saltar) vive en `usePresentacion`.
  */
 
-import React, { useEffect, useRef } from 'react';
-import {
-  View, Text, StyleSheet, Animated, Easing, Dimensions, Pressable,
-} from 'react-native';
+import React from 'react';
+import { View, Text, StyleSheet, Pressable, useWindowDimensions } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
-import { color, tipo, esp, radio, degradado, anim, peso } from '../theme';
-import { Boton } from '../components/ui';
-import Foto from '../components/Foto';
+import { paleta, color, tipo, esp, degradado, MARGEN_PANTALLA, AREA_TACTIL_MIN, peso } from '../theme';
+import { BotonPlaca } from '../components/ui/BotonPlaca';
+import { NotaEntrenador } from '../components/ui/NotaEntrenador';
+import { BarraPlacas } from '../components/fx/BarraPlacas';
+import { GomaTexture } from '../components/fx/GomaTexture';
+import { FotoTratada } from '../components/fx/FotoTratada';
+import { fuente } from '../media/registry';
 import { usePresentacion } from '../hooks/usePresentacion';
 
-const { width, height } = Dimensions.get('window');
+const FRACCION_FOTO = 0.62;
+const ANCLAS_VELO = [0.2, 0.5, 0.78, 1] as const;
+const ALTO_VELO_ARRIBA = 120;
+
+/** «Gratis. Todo. Sin trucos» se lee en tres golpes; el resto de titulos va en un solo bloque. */
+export function lineasDeTitulo(titulo: string): string[] {
+  return titulo.includes('. ') ? titulo.split('. ').map((t, n, todas) => (n < todas.length - 1 ? `${t}.` : t)) : [titulo];
+}
 
 export default function Presentacion({ onTerminar }: { onTerminar: () => void }) {
+  const { width, height } = useWindowDimensions();
   const { i, laminas, esUltima, avanzar, saltar } = usePresentacion(onTerminar);
-
-  const desliz = useRef(new Animated.Value(0)).current;
-  const opacidad = useRef(new Animated.Value(0)).current;
-
-  // Entrada de la primera lamina.
-  useEffect(() => {
-    Animated.timing(opacidad, {
-      toValue: 1, duration: anim.lenta, useNativeDriver: true,
-    }).start();
-  }, []);
-
-  const siguiente = () => {
-    if (esUltima) return avanzar();
-    Animated.parallel([
-      Animated.timing(desliz, { toValue: -width * 0.3, duration: anim.rapida, useNativeDriver: true }),
-      Animated.timing(opacidad, { toValue: 0, duration: anim.rapida, useNativeDriver: true }),
-    ]).start(() => {
-      avanzar();
-      desliz.setValue(width * 0.3);
-      Animated.parallel([
-        Animated.timing(desliz, { toValue: 0, duration: anim.normal, useNativeDriver: true, easing: Easing.out(Easing.cubic) }),
-        Animated.timing(opacidad, { toValue: 1, duration: anim.normal, useNativeDriver: true }),
-      ]).start();
-    });
-  };
-
   const l = laminas[i];
+  const foto = fuente('fondo', l.id);
+  const alturaFoto = height * FRACCION_FOTO;
 
   return (
-    <View style={{ flex: 1, backgroundColor: color.fondo }}>
-      {/* La foto de cada lamina es el fondo completo, no una tarjeta
-          adentro. Cambia de golpe con `l.id`; si hace falta un cruce
-          suave entre laminas, es el siguiente paso. */}
-      <Foto tipo="fondo" id={l.id} nombre={l.titulo} alto={height} ancho={width}
-        estilo={{ position: 'absolute', top: 0, left: 0, borderRadius: 0 }} />
+    <View style={s.raiz}>
+      <View style={[s.foto, { width, height: alturaFoto }]} pointerEvents="none">
+        {foto !== null && <FotoTratada fuente={foto} ancho={width} alto={alturaFoto} />}
+        <LinearGradient colors={degradado.velo} locations={ANCLAS_VELO} style={StyleSheet.absoluteFill} />
+        <LinearGradient colors={degradado.veloArriba} style={s.veloArriba} />
+      </View>
+      <GomaTexture />
 
-      {/* Vela hacia `fondo`: mismo degradado que usa Bienvenida para leer
-          texto encima de una foto cualquiera. */}
-      <LinearGradient colors={degradado.velo} locations={[0, 0.45, 1]} style={{ flex: 1 }}>
-        <SafeAreaView style={{ flex: 1 }}>
-          <View style={s.barraSuperior}>
-            <Text style={[tipo.h3, { color: color.texto, letterSpacing: 2 }]}>DARENOW</Text>
-            <Pressable onPress={saltar} hitSlop={12} accessibilityRole="button" accessibilityLabel="Saltar">
-              <Text style={[tipo.dato, { color: color.textoSuave }]}>Saltar</Text>
-            </Pressable>
-          </View>
+      <SafeAreaView style={s.contenido}>
+        <View style={s.barraSuperior}>
+          <Text style={[tipo.wordmark, { color: paleta.magnesia }]} maxFontSizeMultiplier={1.1}>DARENOW</Text>
+          <Pressable
+            onPress={saltar} hitSlop={12} style={s.saltar}
+            accessibilityRole="button" accessibilityLabel="Saltar"
+          >
+            <Text style={s.saltarTexto}>Saltar</Text>
+          </Pressable>
+        </View>
 
-          <Animated.View style={[
-            s.centro,
-            { opacity: opacidad, transform: [{ translateX: desliz }] },
-          ]}>
-            <Text style={[tipo.display, { color: color.texto }]}>{l.titulo}</Text>
-            <Text style={[tipo.cuerpo, { color: color.textoSuave, marginTop: esp.sm }]}>{l.cuerpo}</Text>
-            {l.pie && (
-              <View style={s.pastilla}>
-                <Text style={[tipo.pie, { color: color.acento, fontFamily: peso.semibold }]}>{l.pie}</Text>
-              </View>
-            )}
-          </Animated.View>
+        <View style={s.zonaTexto}>
+          {lineasDeTitulo(l.titulo).map(linea => (
+            <Text key={linea} style={[tipo.display, { color: color.texto }]}>{linea}</Text>
+          ))}
+          <Text style={[tipo.cuerpo, s.cuerpo]}>{l.cuerpo}</Text>
+          {l.pie && <NotaEntrenador estilo={s.nota}>{l.pie}</NotaEntrenador>}
+        </View>
 
-          <View style={s.pie}>
-            <View style={s.puntos}>
-              {laminas.map((_, n) => (
-                <View key={n} style={[s.punto, n === i && s.puntoActivo]} />
-              ))}
-            </View>
-            <Boton
-              texto={esUltima ? 'Empezar' : 'Seguir'}
-              onPress={siguiente}
-              estilo={{ flex: 1 }}
-            />
-          </View>
-        </SafeAreaView>
-      </LinearGradient>
+        <View style={s.control}>
+          <BarraPlacas paso={i} total={laminas.length} />
+          <BotonPlaca texto={esUltima ? 'Empezar' : 'Seguir'} onPress={avanzar} estilo={s.boton} />
+        </View>
+      </SafeAreaView>
     </View>
   );
 }
 
 const s = StyleSheet.create({
+  raiz: { flex: 1, backgroundColor: paleta.goma },
+  foto: { position: 'absolute', top: 0, left: 0 },
+  veloArriba: { position: 'absolute', top: 0, left: 0, right: 0, height: ALTO_VELO_ARRIBA },
+  contenido: { flex: 1 },
   barraSuperior: {
     flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',
-    paddingHorizontal: esp.md, paddingTop: esp.sm,
+    paddingHorizontal: MARGEN_PANTALLA, paddingTop: esp.sm,
   },
-  centro: { flex: 1, justifyContent: 'center', paddingHorizontal: esp.md },
-  pastilla: {
-    alignSelf: 'flex-start', marginTop: esp.md,
-    backgroundColor: color.acentoTinte, borderRadius: radio.pastilla,
-    paddingVertical: 7, paddingHorizontal: 14,
-  },
-  pie: {
+  saltar: { minWidth: AREA_TACTIL_MIN, minHeight: AREA_TACTIL_MIN, alignItems: 'flex-end', justifyContent: 'center' },
+  saltarTexto: { fontFamily: peso.semibold, fontSize: 15, lineHeight: 20, color: paleta.magnesia2 },
+  zonaTexto: { flex: 1, justifyContent: 'flex-end', paddingHorizontal: MARGEN_PANTALLA },
+  cuerpo: { color: paleta.magnesia2, marginTop: esp.md - 4 },
+  nota: { marginTop: esp.md },
+  control: {
     flexDirection: 'row', alignItems: 'center', gap: esp.md,
-    padding: esp.md,
+    paddingHorizontal: MARGEN_PANTALLA, paddingTop: MARGEN_PANTALLA, paddingBottom: MARGEN_PANTALLA,
   },
-  puntos: { flexDirection: 'row', gap: 6 },
-  punto: { width: 7, height: 7, borderRadius: 4, backgroundColor: color.bordeFuerte },
-  puntoActivo: { width: 22, backgroundColor: color.carbon },
+  boton: { flex: 1 },
 });

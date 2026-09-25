@@ -148,13 +148,13 @@ Se rellena al cerrar cada fase. ✅ = verificado sin dispositivo: lectura de có
 
 | Punto | F0 | F1 | F2 | F3 | F4 | F5 | F6 |
 |---|---|---|---|---|---|---|---|
-| Arranque y orden Presentacion → Acceso → Onboarding → Bienvenida/Tabs | ✅ | ✅ | | | | | |
-| Seguir / Empezar / Saltar de Presentacion | ✅ | ✅ | | | | | |
-| Acceso (Google, invitado, enlaces legales) | ✅ | ✅ | | | | | |
-| Onboarding: pasos, omisiones, obligatorios, consentimiento, resumen | ✅ | ✅ | | | | | |
-| Entrar en Bienvenida (marca y navega a `Tabs`) | ✅ | ✅ | | | | | |
-| Nombre, fecha, racha, sesiones, días entrenados | ✅ | ✅ | | | | | |
-| Mensaje del día y su imagen | ✅ | ✅ | | | | | |
-| Las 4 pestañas y sus saltos | ✅ | ✅ | | | | | |
-| Persistencia (onboarding no reaparece) | ✅ | ✅ | | | | | |
-| Ajuste de háptica respetado | ✅ | ✅ | | | | | |
+| Arranque y orden Presentacion → Acceso → Onboarding → Bienvenida/Tabs | ✅ | ✅ | ✅ | | | | |
+| Seguir / Empezar / Saltar de Presentacion | ✅ | ✅ | ✅ | | | | |
+| Acceso (Google, invitado, enlaces legales) | ✅ | ✅ | ✅ | | | | |
+| Onboarding: pasos, omisiones, obligatorios, consentimiento, resumen | ✅ | ✅ | ✅ | | | | |
+| Entrar en Bienvenida (marca y navega a `Tabs`) | ✅ | ✅ | ✅ | | | | |
+| Nombre, fecha, racha, sesiones, días entrenados | ✅ | ✅ | ✅ | | | | |
+| Mensaje del día y su imagen | ✅ | ✅ | ✅ | | | | |
+| Las 4 pestañas y sus saltos | ✅ | ✅ | ✅ | | | | |
+| Persistencia (onboarding no reaparece) | ✅ | ✅ | ✅ | | | | |
+| Ajuste de háptica respetado | ✅ | ✅ | ✅ | | | | |

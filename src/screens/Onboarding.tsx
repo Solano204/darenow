@@ -14,12 +14,12 @@ import {
   KeyboardAvoidingView, Platform,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { LinearGradient } from 'expo-linear-gradient';
-import { color, tipo, esp, radio, TOQUE, anim, degradado, peso } from '../theme';
+import { color, tipo, esp, radio, TOQUE, anim, peso, MARGEN_PANTALLA } from '../theme';
 import { Boton, Opcion, Contador, Nota, Aparece } from '../components/ui';
+import { TarjetaGoma } from '../components/ui/TarjetaGoma';
+import { GomaTexture } from '../components/fx/GomaTexture';
 import { EQUIPO, GOALS } from '../data/catalog';
 import { derivar, derivarNivel, elegirPrograma, avisosDe, type Rs } from '../data/perfil';
-import { fuente } from '../media/registry';
 import type { PerfilUsuario } from '../store/store';
 import { useCuenta } from '../store/cuenta';
 import { useConsentimientoMedidas, pedirConsentimientoMedidas } from '../store/consentimientoMedidas';
@@ -210,8 +210,10 @@ export default function Onboarding({ onTerminar }: { onTerminar: (p: PerfilUsuar
   if (resumen) {
     const { perfil, avisos } = derivar(r);
     return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: color.fondo }}>
-        <ScrollView contentContainerStyle={{ padding: esp.md, paddingBottom: esp.xl }}>
+      <View style={{ flex: 1, backgroundColor: color.fondo }}>
+      <GomaTexture />
+      <SafeAreaView style={{ flex: 1 }}>
+        <ScrollView contentContainerStyle={{ paddingHorizontal: MARGEN_PANTALLA, paddingBottom: esp.xl }}>
           <Aparece>
             <Text style={[tipo.display, { color: color.texto, marginTop: esp.lg }]}>
               {perfil.nombre ? `Listo, ${perfil.nombre}` : 'Tu plan'}
@@ -219,13 +221,15 @@ export default function Onboarding({ onTerminar }: { onTerminar: (p: PerfilUsuar
           </Aparece>
 
           <Aparece retraso={120}>
-            <LinearGradient colors={degradado.paso} style={s.tarjeta}>
+            <TarjetaGoma estilo={s.tarjeta} relleno={esp.lg}>
+              <View style={{ gap: esp.sm }}>
               <D e="Sesiones" v={`${perfil.diasPorSemana} por semana`} />
               <D e="Duración" v={`${perfil.minPorSesion} minutos`} />
               <D e="Nivel de arranque" v={`${perfil.nivel} de 3`} />
               {perfil.modoSinSaltos && <D e="Modo" v="Sin saltos ni ruido" />}
               {perfil.contra.length > 0 && <D e="Zonas protegidas" v={String(perfil.contra.length)} />}
-            </LinearGradient>
+              </View>
+            </TarjetaGoma>
           </Aparece>
 
           {avisos.map((a, n) => (
@@ -243,17 +247,13 @@ export default function Onboarding({ onTerminar }: { onTerminar: (p: PerfilUsuar
           </Aparece>
         </ScrollView>
       </SafeAreaView>
+      </View>
     );
   }
 
-  const bg = fuente('fondo', 'onboarding');
-
   return (
-    <LinearGradient
-      colors={bg ? ['transparent', 'transparent'] : degradado.portada}
-      locations={[0, 0.4, 1]}
-      style={{ flex: 1 }}
-    >
+    <View style={{ flex: 1, backgroundColor: color.fondo }}>
+      <GomaTexture />
       <SafeAreaView style={{ flex: 1 }}>
       <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
         {/* Progreso por segmentos: se ve cuanto falta de verdad. */}
@@ -265,7 +265,7 @@ export default function Onboarding({ onTerminar }: { onTerminar: (p: PerfilUsuar
 
         <Animated.View style={{ flex: 1, opacity: opacidad, transform: [{ translateX: desliz }] }}>
           <ScrollView
-            contentContainerStyle={{ padding: esp.md, paddingTop: esp.lg }}
+            contentContainerStyle={{ paddingHorizontal: MARGEN_PANTALLA, paddingTop: esp.lg }}
             keyboardShouldPersistTaps="handled"
             showsVerticalScrollIndicator={false}
           >
@@ -346,7 +346,7 @@ export default function Onboarding({ onTerminar }: { onTerminar: (p: PerfilUsuar
         </View>
       </KeyboardAvoidingView>
       </SafeAreaView>
-    </LinearGradient>
+    </View>
   );
 }
 
@@ -365,13 +365,14 @@ function Preparando() {
   }, []);
 
   return (
-    <LinearGradient colors={[degradado.portada[0], degradado.portada[2]]} style={s.preparando}>
+    <View style={s.preparando}>
+      <GomaTexture />
       <Animated.View style={[s.aro, {
         transform: [{ rotate: giro.interpolate({ inputRange: [0, 1], outputRange: ['0deg', '360deg'] }) }],
       }]} />
       <Text style={[tipo.h3, { color: color.texto, marginTop: esp.lg }]}>{texto}</Text>
       <Text style={[tipo.pie, { color: color.textoSuave, marginTop: esp.xs }]}>Un momento</Text>
-    </LinearGradient>
+    </View>
   );
 }
 
@@ -385,15 +386,15 @@ function D({ e, v }: { e: string; v: string }) {
 }
 
 const s = StyleSheet.create({
-  segmentos: { flexDirection: 'row', gap: 4, paddingHorizontal: esp.md, paddingTop: esp.sm },
+  segmentos: { flexDirection: 'row', gap: 4, paddingHorizontal: MARGEN_PANTALLA, paddingTop: esp.sm },
   segmento: { flex: 1, height: 3, borderRadius: 2, backgroundColor: color.borde },
-  pie: { flexDirection: 'row', alignItems: 'center', gap: esp.sm, padding: esp.md },
+  pie: { flexDirection: 'row', alignItems: 'center', gap: esp.sm, paddingHorizontal: MARGEN_PANTALLA, paddingVertical: esp.md },
   input: {
     minHeight: TOQUE, borderWidth: 1, borderColor: color.borde,
     borderRadius: radio.tarjeta, paddingHorizontal: esp.md,
-    color: color.texto, fontSize: 16, backgroundColor: color.fondo,
+    color: color.texto, fontFamily: peso.regular, fontSize: 16, backgroundColor: color.lienzo,
   },
-  tarjeta: { borderRadius: radio.tarjeta, padding: esp.lg, marginTop: esp.lg, gap: esp.sm },
+  tarjeta: { marginTop: esp.lg },
   preparando: { flex: 1, alignItems: 'center', justifyContent: 'center' },
   aro: {
     width: 46, height: 46, borderRadius: 23, borderWidth: 3,

@@ -1,126 +1,115 @@
 /**
- * FORJA · bienvenida
- *
- * Primera pantalla del dia. Fondo con imagen, saludo, mensaje del dia y un
- * resumen de una linea. El banner pequeño va abajo, lejos del boton, para
- * que nadie lo toque sin querer.
- *
- * Se muestra una vez al dia. Si el usuario vuelve a abrir la app en la
- * misma jornada, entra directo a Hoy.
+ * Bienvenida del dia: foto a sangre arriba fundida a goma, saludo, tarjeta con
+ * el mensaje y tres numeros, y el boton Entrar fijo abajo. Se muestra una vez
+ * al dia. Los datos y la accion de entrar viven en `useWelcomeData`.
  */
 
-import React, { useRef, useEffect } from 'react';
-import { View, Text, StyleSheet, Animated, ImageBackground } from 'react-native';
+import React from 'react';
+import { View, Text, StyleSheet, ScrollView, useWindowDimensions } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
-import { color, tipo, esp, radio, anim, degradado } from '../theme';
-import { Boton } from '../components/ui';
+import { paleta, tipo, esp, degradado, MARGEN_PANTALLA } from '../theme';
+import { BotonPlaca } from '../components/ui/BotonPlaca';
+import { TarjetaGoma } from '../components/ui/TarjetaGoma';
+import { GomaTexture } from '../components/fx/GomaTexture';
+import { FotoTratada } from '../components/fx/FotoTratada';
 import { BannerAnuncio, ANUNCIOS_ACTIVOS } from '../components/Anuncio';
 import { useWelcomeData } from '../hooks/useWelcomeData';
 import { fuente } from '../media/registry';
 import Foto from '../components/Foto';
 
-export default function Bienvenida({ navigation }: any) {
+const FRACCION_FOTO = 0.55;
+const ANCLAS_VELO = [0.2, 0.5, 0.78, 1] as const;
+const FOCO_BIENVENIDA = { x: 0.55, y: 0.3 };
+const ALTO_IMAGEN = 180;
+const ALTO_IMAGEN_COMPACTO = 132;
+const PANTALLA_COMPACTA = 700;
+const SALUDO_LARGO = 14;
+
+/** «Arriba, Carlos Josue» se parte en dos lineas cuando es largo. */
+export function partirSaludo(saludo: string): string[] {
+  const corte = saludo.indexOf(', ');
+  return corte > 0 && saludo.length > SALUDO_LARGO ? [saludo.slice(0, corte + 1), saludo.slice(corte + 2)] : [saludo];
+}
+
+export default function Bienvenida({ navigation }: { navigation: { replace: (ruta: string) => void } }) {
   const w = useWelcomeData(navigation);
-
-  // Entrada escalonada: fondo, saludo, mensaje, boton.
-  const v = useRef(new Animated.Value(0)).current;
-  const v2 = useRef(new Animated.Value(0)).current;
-  useEffect(() => {
-    Animated.stagger(140, [
-      Animated.timing(v, { toValue: 1, duration: anim.lenta, useNativeDriver: true }),
-      Animated.timing(v2, { toValue: 1, duration: anim.lenta, useNativeDriver: true }),
-    ]).start();
-  }, []);
-
+  const { width, height } = useWindowDimensions();
   const bg = fuente('fondo', 'bienvenida');
+  const alturaFoto = height * FRACCION_FOTO;
+  const altoImagen = height < PANTALLA_COMPACTA ? ALTO_IMAGEN_COMPACTO : ALTO_IMAGEN;
 
-  const contenido = (
-    <SafeAreaView style={s.raiz}>
-      <View style={{ flex: 1, justifyContent: 'flex-end', padding: esp.md }}>
-        <Animated.View style={{
-          opacity: v,
-          transform: [{ translateY: v.interpolate({ inputRange: [0, 1], outputRange: [24, 0] }) }],
-        }}>
-          <Text style={[tipo.pie, { color: color.textoSuave }]}>
-            {w.fecha}
-          </Text>
-          <Text style={[tipo.display, { color: color.texto, marginTop: esp.xs }]}>
-            {w.saludo}
-          </Text>
-        </Animated.View>
-
-        <Animated.View style={{
-          opacity: v2,
-          transform: [{ translateY: v2.interpolate({ inputRange: [0, 1], outputRange: [28, 0] }) }],
-          marginTop: esp.lg,
-        }}>
-          <LinearGradient colors={degradado.paso} style={s.tarjeta}>
-            {/* Imagen de motivacion del dia. Como todo el resto, si no
-                esta el archivo se dibuja su marcador y no se rompe nada. */}
-            <Foto tipo="motivacion" id={w.msg.id} nombre={w.msg.titulo}
-              alto={190} ancho="100%" forma="tarjeta" />
-            <Text style={[tipo.h2, { color: color.texto, marginTop: esp.sm }]}>{w.msg.titulo}</Text>
-            <Text style={[tipo.cuerpo, { color: color.textoSuave }]}>{w.msg.cuerpo}</Text>
-
-            <View style={s.linea} />
-
-            <View style={s.resumen}>
-              <Dato n={String(w.racha)} t={w.racha === 1 ? 'día seguido' : 'días seguidos'} />
-              <View style={s.sep} />
-              <Dato n={String(w.sesiones)} t="sesiones" />
-              <View style={s.sep} />
-              <Dato n={String(w.diasEntrenados)} t="días entrenados" />
-            </View>
-          </LinearGradient>
-
-          <Boton texto="Entrar" onPress={w.entrar} estilo={{ marginTop: esp.md }} />
-        </Animated.View>
-
-        {ANUNCIOS_ACTIVOS && (
-          <View style={{ marginTop: esp.md }}>
-            <BannerAnuncio />
-          </View>
-        )}
-      </View>
-    </SafeAreaView>
-  );
-
-  if (bg) {
-    return (
-      <ImageBackground source={bg} style={{ flex: 1 }} resizeMode="cover">
-        <LinearGradient
-          colors={degradado.velo}
-          locations={[0, 0.45, 1]}
-          style={{ flex: 1 }}
-        >
-          {contenido}
-        </LinearGradient>
-      </ImageBackground>
-    );
-  }
-
-  // Sin imagen todavia: degradado calido que ocupa el mismo sitio.
   return (
-    <LinearGradient colors={degradado.portada} locations={[0, 0.5, 1]} style={{ flex: 1 }}>
-      {contenido}
-    </LinearGradient>
+    <View style={s.raiz}>
+      <View style={[s.foto, { width, height: alturaFoto }]} pointerEvents="none">
+        {bg !== null && <FotoTratada fuente={bg} ancho={width} alto={alturaFoto} foco={FOCO_BIENVENIDA} />}
+        <LinearGradient colors={degradado.velo} locations={ANCLAS_VELO} style={StyleSheet.absoluteFill} />
+      </View>
+      <GomaTexture />
+
+      <SafeAreaView style={s.contenido}>
+        <ScrollView
+          contentContainerStyle={s.scroll}
+          showsVerticalScrollIndicator={false}
+          bounces={false}
+        >
+          <Text style={[tipo.etiqueta, s.fecha]}>{w.fecha}</Text>
+          {partirSaludo(w.saludo).map(linea => (
+            <Text key={linea} style={[tipo.display, s.saludo]} maxFontSizeMultiplier={1.2}>{linea}</Text>
+          ))}
+
+          <TarjetaGoma estilo={s.tarjeta}>
+            <Foto tipo="motivacion" id={w.msg.id} nombre={w.msg.titulo} alto={altoImagen} ancho="100%" />
+            <Text style={[tipo.h1, s.tituloTarjeta]}>{w.msg.titulo}</Text>
+            <Text style={[tipo.cuerpo, s.mensaje]}>{w.msg.cuerpo}</Text>
+
+            <View style={s.estadisticas}>
+              <Dato n={w.racha} t={w.racha === 1 ? 'día seguido' : 'días seguidos'} />
+              <View style={s.separador} />
+              <Dato n={w.sesiones} t="sesiones" />
+              <View style={s.separador} />
+              <Dato n={w.diasEntrenados} t="días entrenados" />
+            </View>
+          </TarjetaGoma>
+        </ScrollView>
+
+        <View style={s.pie}>
+          <BotonPlaca texto="Entrar" onPress={w.entrar} estilo={s.boton} />
+          {ANUNCIOS_ACTIVOS && (
+            <View style={{ marginTop: esp.md }}>
+              <BannerAnuncio />
+            </View>
+          )}
+        </View>
+      </SafeAreaView>
+    </View>
   );
 }
 
-function Dato({ n, t }: { n: string; t: string }) {
+function Dato({ n, t }: { n: number; t: string }) {
   return (
-    <View style={{ flex: 1, alignItems: 'center' }}>
-      <Text style={[tipo.h2, { color: color.texto }]}>{n}</Text>
-      <Text style={[tipo.micro, { color: color.textoSuave, textAlign: 'center' }]}>{t}</Text>
+    <View style={s.dato} accessible accessibilityLabel={`${n} ${t}`}>
+      <Text style={[tipo.numero, s.numero]} maxFontSizeMultiplier={1.2}>{n}</Text>
+      <Text style={[tipo.etiqueta, s.etiquetaDato]}>{t}</Text>
     </View>
   );
 }
 
 const s = StyleSheet.create({
-  raiz: { flex: 1 },
-  tarjeta: { borderRadius: radio.tarjeta, padding: esp.lg, gap: esp.sm },
-  linea: { height: 1, backgroundColor: color.borde, marginVertical: esp.sm },
-  resumen: { flexDirection: 'row', alignItems: 'center' },
-  sep: { width: 1, height: 26, backgroundColor: color.borde },
+  raiz: { flex: 1, backgroundColor: paleta.goma },
+  foto: { position: 'absolute', top: 0, left: 0 },
+  contenido: { flex: 1 },
+  scroll: { flexGrow: 1, justifyContent: 'flex-end', paddingHorizontal: MARGEN_PANTALLA, paddingTop: esp.lg },
+  fecha: { fontSize: 14, color: paleta.magnesia2 },
+  saludo: { fontSize: 48, lineHeight: 46, color: paleta.magnesia },
+  tarjeta: { marginTop: esp.md },
+  tituloTarjeta: { color: paleta.magnesia, marginTop: esp.md - 4 },
+  mensaje: { color: paleta.magnesia2, marginTop: esp.sm - 4 },
+  estadisticas: { flexDirection: 'row', alignItems: 'flex-start', marginTop: esp.md },
+  separador: { width: 1, alignSelf: 'stretch', backgroundColor: paleta.gomaBorde },
+  dato: { flex: 1, alignItems: 'center' },
+  numero: { color: paleta.magnesia },
+  etiquetaDato: { color: paleta.magnesia2, textAlign: 'center' },
+  pie: { paddingHorizontal: MARGEN_PANTALLA, paddingTop: esp.md, paddingBottom: MARGEN_PANTALLA },
+  boton: { alignSelf: 'stretch' },
 });

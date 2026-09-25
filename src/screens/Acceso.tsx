@@ -15,10 +15,11 @@
 import React, { useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, Linking } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { LinearGradient } from 'expo-linear-gradient';
 
-import { color, tipo, esp, radio, degradado } from '../theme';
+import { color, tipo, esp, MARGEN_PANTALLA } from '../theme';
 import { Boton, Aparece, Nota } from '../components/ui';
+import { TarjetaGoma } from '../components/ui/TarjetaGoma';
+import { GomaTexture } from '../components/fx/GomaTexture';
 import { useGoogleSignIn, mensajeError } from '../store/googleAuth';
 import { useCuenta } from '../store/cuenta';
 import { URL_PRIVACIDAD, URL_TERMINOS } from '../legal';
@@ -44,9 +45,11 @@ export default function Acceso({ onListo }: { onListo: () => void }) {
   const aviso = mensajeError(google.error);
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: color.fondo }}>
+    <View style={{ flex: 1, backgroundColor: color.fondo }}>
+    <GomaTexture />
+    <SafeAreaView style={{ flex: 1 }}>
       <ScrollView
-        contentContainerStyle={{ flexGrow: 1, padding: esp.md, justifyContent: 'center' }}
+        contentContainerStyle={{ flexGrow: 1, paddingHorizontal: MARGEN_PANTALLA, paddingVertical: esp.md, justifyContent: 'center' }}
         keyboardShouldPersistTaps="handled"
       >
         <Aparece>
@@ -57,12 +60,14 @@ export default function Acceso({ onListo }: { onListo: () => void }) {
         </Aparece>
 
         <Aparece retraso={120}>
-          <LinearGradient colors={degradado.paso} style={s.tarjeta}>
+          <TarjetaGoma estilo={s.tarjeta} relleno={esp.md}>
+            <View style={{ gap: esp.sm }}>
             <Text style={[tipo.micro, { color: color.textoTenue }]}>Qué guardamos</Text>
             <Punto texto="Tu nombre y tu correo, solo en este teléfono." />
             <Punto texto="Tu rutina, tu historial y tus medidas." />
             <Punto texto='Todo vive en este teléfono. Para pasarlo a otro, usa "Exportar mi progreso" en Ajustes.' />
-          </LinearGradient>
+            </View>
+          </TarjetaGoma>
         </Aparece>
 
         {aviso && (
@@ -106,6 +111,7 @@ export default function Acceso({ onListo }: { onListo: () => void }) {
         </Aparece>
       </ScrollView>
     </SafeAreaView>
+    </View>
   );
 }
 
@@ -119,14 +125,7 @@ function Punto({ texto }: { texto: string }) {
 }
 
 const s = StyleSheet.create({
-  tarjeta: {
-    marginTop: esp.lg,
-    padding: esp.md,
-    borderRadius: radio.tarjeta,
-    borderWidth: 1,
-    borderColor: color.borde,
-    gap: esp.sm,
-  },
+  tarjeta: { marginTop: esp.lg },
   punto: { flexDirection: 'row', alignItems: 'flex-start', gap: esp.sm, marginTop: esp.xs },
   vineta: {
     width: 6, height: 6, borderRadius: 3, marginTop: 8,

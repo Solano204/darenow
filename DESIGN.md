@@ -41,6 +41,8 @@ Medido con `node scripts/contraste.js`. Cuatro tokens del brief no pasan 4.5:1 c
 | Verde sobre su tinte al 16 % | `#1FA463` | 3.83 | `placaVerdeTexto` `#3DBE7A` | 5.18 |
 | Rojo sobre su tinte al 16 % | `#E0412F` | 3.13 | `placaRojaTexto` `#FF6F5E` | 4.84 |
 
+«Saltar» va en `magnesia2`, no en `magnesia3Texto`: cae sobre una foto y, con el scrim superior, `magnesia3Texto` mide ~3.5:1 y `magnesia2` ~5.2:1.
+
 Blanco sobre `placaAzul`: 6.03. Sobre `placaAzulPresionado`: 7.93. Amarillo sobre su tinte: 6.34.
 
 ### Nombres antiguos
@@ -83,6 +85,10 @@ Todo corre en el hilo de UI con Reanimated. Solo se anima `transform` y `opacity
 ## Háptica (`haptics.ts`)
 
 Respeta el ajuste existente de Ajustes (`forja:haptics`). Toque: Light. Aplauso: Heavy y, 90 ms después, Soft. Placa: Medium. Sello: Rigid. Pestaña: selección. Los dígitos del odómetro no vibran.
+
+## Fotos
+
+Las fotos actuales son claras y de baja resolución (447x800 y 800x423). Mientras no lleguen las nuevas (ver la lista de imágenes al cierre), `FotoTratada` las dibuja con Skia `ColorMatrix`: -35 % de saturación, exposición 0.72 y sombras un poco hacia azul frío. Sobre eso, un degradado transparente → `goma` (anclas 0.2, 0.5, 0.78, 1) y un scrim oscuro de 120 px arriba para que se lea el encabezado. `tratar={false}` desactiva el tratamiento cuando la foto ya viene oscura. El sobrante del recorte se alinea con `foco` (arriba en el onboarding, 55 %/30 % en la bienvenida) para no cortar cabezas.
 
 ## Piso de goma
 

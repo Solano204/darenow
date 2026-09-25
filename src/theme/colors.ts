@@ -162,8 +162,10 @@ export const degradado = {
   vidrioLuz: ['rgba(255,255,255,0.13)', 'rgba(255,255,255,0.02)', 'rgba(255,255,255,0)'] as const,
   especular: ['rgba(255,255,255,0.10)', 'rgba(255,255,255,0.01)', 'rgba(255,255,255,0.04)'] as const,
   resplandor: [GOMA_0, GOMA_0, GOMA_0] as const,
-  /** Funde una foto hacia goma. Sin velo blanco. */
-  velo: [GOMA_0, 'rgba(27,28,30,0.80)', paleta.goma] as const,
+  /** Oscurece el borde superior de una foto para que se lea el encabezado. */
+  veloArriba: ['rgba(27,28,30,0.78)', GOMA_0] as const,
+  /** Funde una foto hacia goma. Sin velo blanco. Locations sugeridas: 0.2, 0.5, 0.78, 1. */
+  velo: [GOMA_0, 'rgba(27,28,30,0.55)', 'rgba(27,28,30,0.94)', paleta.goma] as const,
 };
 
 export const sol = { start: { x: 0, y: 0 }, end: { x: 0.9, y: 1 } } as const;

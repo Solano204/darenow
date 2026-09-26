@@ -32,4 +32,16 @@ Sin `plan-listo.jpg` la pantalla del plan usa la foto de la bienvenida tratada. 
 
 Recortes opcionales (PNG sin fondo del atleta, mismo lienzo que su foto): `intro_04_recorte.png`, `intro_01_recorte.png`, `intro_02_recorte.png`, `intro_03_recorte.png`, todos en `assets/img/fondos/`.
 
+## Pestaña Hoy (Parte 3)
+
+Todo lo de esta sección es opcional: sin estos archivos Hoy usa las fotos actuales con el tratamiento de `FotoOscura` (exposición 0.8 sobre `gomaAlta` y velo a goma).
+
+| Archivo | Uso | Formato | Prompt |
+|---|---|---|---|
+| `assets/img/ejercicios/ex_XXXX_recorte.png` | «Elige tu enfoque»: el atleta rompe el marco 44 px por arriba | PNG con transparencia, 600×720, cuerpo completo, pies en el borde inferior, sin sombra proyectada | El mismo modelo de la receta común ejecutando el ejercicio `ex_XXXX`, fondo transparente, luz dura lateral |
+| `assets/img/musculos/<id>_hoy.jpg` | «Músculos de hoy»: versión con el músculo resaltado, cuando la sesión lo trabaja | JPG 800×430, mismo encuadre que `<id>.jpg` | La foto anatómica del músculo, en gris oscuro, con el músculo en `magnesia` brillante y el resto apagado |
+| `assets/img/rutinas/rt_001.jpg` … `rt_030.jpg`, `assets/img/programas/pg_001.jpg` … | Tarjetas de rutina (240×150) y de programa (200×250, pila) | JPG oscuro, sujeto en el tercio superior; la parte baja debe quedar libre para el nombre | Receta común, un ejercicio por rutina |
+
+Cualquier `ex_XXXX` puede tener recorte; los que no lo tengan usan la foto dentro de la tarjeta. Tras copiarlos, `python generar_registry.py` los registra solos (escanea cada carpeta por nombre de archivo, con o sin sufijo). `TarjetaEnfoque` busca `ex_XXXX_recorte` y `FichaMusculo` busca `<id>_hoy`; ningún código cambia.
+
 Las demás tarjetas de mensaje (`mot_01` a `mot_21`) siguen siendo las actuales. `mot_18` a `mot_20` son las que salen al volver tras días sin entrenar; conviene renovarlas con la misma receta cuando se pueda.

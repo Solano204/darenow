@@ -92,12 +92,12 @@ Las fotos actuales son claras y de baja resolución (447x800 y 800x423). Mientra
 
 ## Resto de la app
 
-- **Barra de pestañas** (`BarraPestanas`): `gomaAlta` con desenfoque en iOS (color al 96 % en Android), borde superior de 1 px, íconos `magnesia` activos y `magnesia3` inactivos, y una barrita `placaAzul` de 16×3 que se desliza bajo la pestaña activa con `resortePlaca`. Toque de selección al cambiar. Va pegada al borde inferior y a todo lo ancho, como pidió una revisión anterior («ya no flotante»); el brief actual dice «flotante». Se resolvió pegada porque un cambio a tarjeta flotante con esquinas y margen es una decisión de producto, no de piel.
+- **Barra de pestañas** (`TabBarGoma`): flotante, con margen de 12 a los lados y sobre el borde inferior (`separacionBarra`), radio 24, borde de 1 px, `gomaAlta` con desenfoque en iOS (color al 96 % en Android), íconos `magnesia` activos y `magnesia3` inactivos, y una barrita `placaAzul` de 16×3 que se desliza bajo la pestaña activa con `resortePlaca`. El ícono que se activa entra de 0.9 a 1 con un toque de selección. Mientras se baja por una lista baja 8 px y se vuelve un 10 % más transparente: `useScrollCabecera` escribe la dirección en `barraBajada` (`hooks/useBarraFlotante`) y la barra la lee. `useHuecoAbajo` cuenta el alto de la barra más su separación. Una revisión anterior había pedido «ya no flotante» y se resolvió pegada; la Parte 3 pide explícitamente la flotante, así que ese punto queda superado.
 - **Tarjetas**: `gomaAlta`, borde de 1 px, radio 24, sin sombra. Al presionar, escala 0.98 y 5 % más oscura (`Toque` con `oscurecer`).
 - **Insignias**: un solo componente, `InsigniaEvidencia`. `Insignia` (la de las fichas) lo envuelve.
 - **Notas**: `Nota` ya no usa amarillo ni rojo; solo sube el borde. Los colores de veredicto quedan para las insignias.
 - **Transiciones**: las pantallas del Stack entran con fundido y escala 0.98 → 1 (`screenLayout` en `App.tsx`); `Tabs` con 1.02 → 1. Reproductor, Resumen, Bienvenida y EditorRutina conservan la suya. No hay transición de elemento compartido: en Reanimated 4 con el Stack nativo todavía es experimental.
-- **Cabeceras que se encogen**: Hoy y Yo. El título grande se encoge y se desvanece (0 a 56 px de scroll) y aparece una barra compacta (40 a 72 px). Explorar y Aprender tienen su cabecera fija con buscador y pestañas internas, así que no se encoge.
+- **Cabeceras que se encogen**: Yo usa `TituloGrande` + `BarraCompacta`: el título grande se encoge y se desvanece (0 a 56 px de scroll) y aparece una barra compacta (40 a 72 px). Hoy usa `HeaderColapsable` (ver más abajo). Explorar y Aprender tienen su cabecera fija con buscador y pestañas internas, así que no se encoge.
 - **Margen lateral** 24 en todas las pantallas de pestaña.
 - Se quitó el barrido de luz (`Brillo`) y el resplandor de fondo: brillos falsos.
 
@@ -119,13 +119,31 @@ Desviación del brief: pedía Skia. Un `Canvas` de Skia por pantalla son N super
 - **Plan listo** (`PlanListo`): tres `PlacaDato` que caen con su golpe. El filo verde, amarillo y azul es una excepción a la regla del color: representan las tres «cargas» del plan. Las etiquetas de «Sin saltos ni ruido», «Zonas protegidas» y los avisos se conservan bajo las placas; el contenido hace scroll si no cabe. El destello de magnesia (`destello()`) sustituye a la barra que se comprime.
 - **Errores de Google**: el texto usa `placaRojaTexto` (AA), no el rojo puro.
 
+## Hoy (Parte 3)
+
+Un solo azul por vista en la tarjeta de la sesión: «Empezar». Lo demás es `goma`, `gomaAlta` y `magnesia`. Entre módulos hay 48 px.
+
+- **`HeaderColapsable`**: encabezado fijo con saludo, título en Big Shoulders 38 y botón de búsqueda. Con 44 px de scroll el saludo se desvanece, el título se encoge a 0.62 anclado abajo a la izquierda y todo el bloque sube hasta una barra de 52 px con borde inferior. Todo va ligado al scroll con worklets (`interpolate`, sin estado de React). Con movimiento reducido no se encoge: se va con el contenido.
+- **`TarjetaSesionHoy`** («la barra de hoy»): `TarjetaGoma` de radio 28. Cabecera con el objetivo y dos cifras de 56 (`Odometro continuo`: minutos y ejercicios); a la derecha una barra olímpica de seis placas que se deslizan a su sitio («cargar la barra»), solo la primera vez en la sesión de la app (`barraCargadaEnEstaSesion` a nivel de módulo, no de pantalla). Debajo, los ejercicios (`MiniaturaEjercicio`, 112×112, número de orden, nombre completo a 2 líneas como mínimo) en un `FlatList` con `getItemLayout`; la foto interior va al 85 % de la velocidad del carrusel (escala 1.3, desplazamiento del 15 %, tope 16 px). Los avisos del motor van como `NotaEntrenador`. `BotonPlaca` con aplauso es el único azul; `BotonFilaSecundario` (superficie sólida, dial de 30 px que marca 45 min y gira hasta 5 al tocar). Al subir con el scroll (0 a 260 px) la tarjeta baja a 0.95 y 65 % de opacidad.
+- **Hecho hoy**: la barra se cambia por una huella de mano de 120 px (`Huella`, hecha con vistas, no imagen) y la etiqueta «Hecho hoy»; «Entrenar otra vez» pasa a `BotonSecundario`. Al volver a Hoy con una sesión nueva terminada hoy, la huella se estampa (1.4 → 1, `resortePlaca`) con háptica Medium. Se detecta con `useFocusEffect`, no al montar.
+- **`TarjetaEnfoque`** 280×300 con `CarruselProfundidad`: el enfocado a escala 1 y opacidad 1, los vecinos a 0.92 y 0.6 con 3° de giro hacia fuera, y la foto y el atleta a otra velocidad. Si existe `<id>_recorte` el atleta rompe el marco 44 px por arriba; si no, la foto va dentro. `NivelPlacas` (verde, amarilla, roja; las que faltan en contorno) y `BotonCompacto` «Inicio».
+- **`TarjetaRutina`** de 240 px: foto de 150 con tratamiento, duración una sola vez en la insignia, `EstrellaFavorito` con relleno de resorte y nube de magnesia pequeña. Las rutinas propias llevan `BarraRutina` (un segmento por ejercicio) y, si ya se hicieron, una `Huella`.
+- **Tu semana** (`FilaSemana` + `TuSemana`): siete columnas; una huella en el día con sesión; hoy, un anillo azul dibujado con Skia (único `Canvas` de la fila); los días sin sesión son un círculo apagado, sin cruces ni rojos. Debajo, la racha en 72 y siete barras de minutos.
+- **Solo tres bloques bajo el pliegue se animan** (`BloqueRevela`): Tu semana, Explorar todo y Tu programa. Se revelan una vez, cuando el scroll los trae, y arrancan sus cifras y barras en ese momento. El resto es estático. `PilaProgramas` es un efecto ligado al scroll, no de entrada.
+- **Fotos de lista** (`FotoOscura`): `expo-image` con `cachePolicy="memory-disk"`, exposición 0.8 sobre `gomaAlta`, velo a goma y `Esqueleto` mientras decodifica. El tratamiento con Skia se reserva para las fotos grandes: un `Canvas` por tarjeta no escala.
+- **Arrastrar para actualizar**: `RefreshControl` nativo, con nube de magnesia. Los datos son locales; solo se vuelve a leer la fecha.
+- **Movimiento reducido**: sin encogimiento del encabezado, sin parallax ni giro, sin escala al subir; la barra de pestañas no baja. Quedan los fundidos.
+
+Faltan en el repo las Partes 6 a 12 que el brief cita: `BarraRutina`, `Huella`, `SieteDias`, `AccionSeccion`, `NivelPlacas`, `FichaMusculo` y `TarjetaArticulo` se crearon aquí en su versión mínima. `TextoDesvanecido`, el medidor de evidencia y el elemento compartido no se crearon: no hay texto que desvanecer, los tips no tienen evidencia y el Stack nativo no soporta el elemento compartido (ver arriba).
+
 ## Componentes
 
 | Carpeta | Piezas |
 |---|---|
-| `components/ui` | `BotonPlaca`, `NotaEntrenador`, `InsigniaEvidencia`, `TarjetaGoma`, `BarraPestanas`, `cabecera` (`TituloGrande`, `BarraCompacta`) |
-| `components/fx` | `GomaTexture`, `FotoTratada`, `FotoParallax`, `MagnesiaParticles`, `MagnesiaOverlay` (`ProveedorMagnesia`, `useMagnesia`), `Odometro`, `TituloEstampado`, `TituloMascara` (y `TituloLetras`), `BarraPlacas`, `DialTiempo`, `TachadoMito`, `Entrada` |
-| `hooks` | `useReducedMotion`, `useFirstView`, `useWelcomeData`, `usePresentacion` |
+| `components/ui` | `BotonPlaca`, `BotonCompacto`, `BotonFilaSecundario`, `NotaEntrenador`, `InsigniaEvidencia`, `TarjetaGoma`, `TabBarGoma`, `HeaderColapsable`, `Esqueleto`, `FotoOscura`, `NivelPlacas`, `Presionable`, `AccionSeccion` (y `CabeceraSeccion`), `cabecera` (`TituloGrande`, `BarraCompacta`) |
+| `components/fx` | `GomaTexture`, `FotoTratada`, `FotoParallax`, `MagnesiaParticles`, `MagnesiaOverlay` (`ProveedorMagnesia`, `useMagnesia`), `Odometro`, `TituloEstampado`, `TituloMascara` (y `TituloLetras`), `BarraPlacas`, `DialTiempo`, `TachadoMito`, `Entrada`, `Huella` |
+| `components/hoy` | `TarjetaSesionHoy`, `MiniaturaEjercicio`, `TarjetaEnfoque`, `CarruselProfundidad`, `CarruselHoy`, `TarjetaRutina`, `BarraRutina`, `EstrellaFavorito`, `FilaSemana`, `TuSemana`, `BloqueRevela`, `FilaExplorar`, `TuPrograma`, `PilaProgramas`, `TarjetasHoy` (`TarjetaEjercicioMini`, `FichaMusculo`, `TarjetaArticulo`), `EstadisticasHoy` |
+| `hooks` | `useReducedMotion`, `useFirstView`, `useWelcomeData`, `usePresentacion`, `useOnboarding`, `useTick`, `useBarraFlotante` |
 
 Las imágenes nuevas, con nombre, tamaño y prompt, están en `docs/IMAGENES.md`.
 
@@ -135,6 +153,7 @@ Las imágenes nuevas, con nombre, tamaño y prompt, están en `docs/IMAGENES.md`
 - `useAnimatedStyle` congela el estilo inicial al montar y un commit de React puede volver a aplicarlo. Donde una capa depende de un valor compartido que cambia fuera de su propio ciclo (`useCapa` en `Presentacion`), se cuentan los renders y se pasa el contador como dependencia: el mapper se reevalúa tras cada commit y la capa vuelve a su sitio.
 - No se anidan vistas animadas cuando el padre solo aporta un desplazamiento: la barra de placas aplica el temblor a cada elemento, no a un contenedor.
 - Un callback de UI que toca JS (`haptico`) se pasa por una función suelta y `runOnJS`, nunca un método de un objeto capturado.
+- Un worklet no debe capturar el objeto de props completo: se desestructura antes (`const { y } = p`), o Reanimated intenta serializar las funciones y los datos de la sesión.
 
 ## Dependencias añadidas
 

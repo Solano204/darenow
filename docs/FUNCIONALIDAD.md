@@ -46,7 +46,7 @@ Tabs (`bottom-tabs`, animación fade): `Hoy`, `Explorar`, `Aprender`, `Yo`.
 Saltos entre pantallas (origen → destino, con parámetros):
 
 - Bienvenida: Entrar → `replace('Tabs')`.
-- Hoy: buscar → `Tabs/Explorar`; avatar → `Tabs/Yo`; sesión del día y rutina rápida → `Reproductor {sesion}`; ejercicio → `Ejercicio {id}`; programa → `Programa {id}`; «ver más» → `Tabs/Explorar {tab: rutinas|programas|ejercicios|musculos}` (merge); `Musculo {id}`; `Tip {id}`; `Tabs/Aprender`.
+- Hoy: buscar → `Tabs/Explorar`; «Revisar mis lesiones en Ajustes» (solo sin ejercicios seguros) → `Tabs/Yo`; sesión del día y rutina rápida → `Reproductor {sesion}`; ejercicio → `Ejercicio {id}`; programa → `Programa {id}`; «ver más» → `Tabs/Explorar {tab: rutinas|programas|ejercicios|musculos}` (merge); `Musculo {id}`; `Tip {id}`; `Tabs/Aprender`.
 - Explorar: `Ejercicio`, `Rutina`, `Programa`, `Musculo`, `RutinaPropia`, `EditorRutina` (nueva o con `id`), `volver → Hoy`.
 - Aprender: `Tip`, `Mito`, `Ejercicio`, `Rutina`, `Programa`, `volver → Hoy`.
 - Yo: `Favoritos`, `Logros`, `Retos`, `Mediciones`, `Historial`, `Ajustes`, `Ejercicio`.
@@ -213,3 +213,112 @@ Verificado sin dispositivo: lectura de código contra las secciones 5, 6, 6.1 y 
 | Plan listo: mismos valores, Empezar y Cambiar algo iguales | ✅ código |
 | Sacudida, odómetro continuo, placas y aplauso | pendiente en dispositivo |
 | Botón visible sobre el teclado en Android e iOS | pendiente en dispositivo |
+
+## 12. Parte 3: pestaña Hoy (auditoría previa al rediseño)
+
+Archivo `src/screens/Hoy.tsx`. Ruta `Tabs/Hoy`. Se documenta lo que existe hoy; ese comportamiento no cambia. Las cifras y los orígenes salen de leer el código, no de suponer.
+
+### 12.1 Cabecera y sesión del día
+
+| Dato en pantalla | Origen |
+|---|---|
+| Saludo | `saludo(perfil.nombre \|\| undefined)` |
+| Título | `entrenoHoy ? 'Ya entrenaste hoy' : 'Tu sesión de hoy'`. `entrenoHoy = sesiones.some(s => s.fecha === hoy())`: cualquier sesión guardada hoy, completada o no |
+| Objetivo | `nombreGoal(perfil.objetivo)` |
+| Duración | `sesion.minutosEstimados`: suma de `duracion(it)` tras el ajuste al tiempo, mínimo 1 |
+| N ejercicios | `sesion.items.length`: incluye calentamiento y enfriamiento |
+| «Sin saltos» | solo si `perfil.modoSinSaltos` |
+| Miniaturas | `sesion.items.slice(0, 6)`, en el orden del motor (calentamiento, principal, enfriamiento). Foto `Foto tipo="ejercicio" id={it.id}`, nombre `it.name` a 2 líneas |
+| Sesión | `armarSesion(perfil, semilla, ultimaVezDe)`. `semilla` = FNV-1a de `hoy() + perfil.objetivo`, memorizada solo por `perfil.objetivo`: con la app abierta al cruzar medianoche no se recalcula. Mismo día y mismo perfil dan la misma sesión |
+
+**Aviso «Incluimos algún ejercicio de otro nivel para completar la sesión.»** Sale de `sesion.avisos` y el motor (`engine/session.ts`, bloque principal) lo añade cuando, para algún patrón, hay menos de 6 ejercicios válidos y relajar el nivel amplía el conjunto. Solo se añade el primer aviso del motor: si esa primera relajación incluyó también el espacio, el texto es «Ampliamos el filtro de espacio para completar la sesión.» y no el de nivel. Aparece, por tanto, solo el día en que ocurre. La pantalla añade además «Ajustamos tu sesión a los N minutos que tienes.» cuando `sesion.minutosEstimados < perfil.minPorSesion - 1`. Los tres se muestran como líneas de texto bajo las miniaturas, en ese orden.
+
+| Control | Efecto |
+|---|---|
+| Empezar (o «Entrenar otra vez» si `entrenoHoy`) | `navigate('Reproductor', { sesion })`. Mismo handler con los dos textos |
+| «Hoy no tengo tiempo · sesión de 5 minutos» | `sesionDeRutina('rt_030', perfil, RUTINAS.find(id === 'rt_030'), ultimaVezDe)` → `navigate('Reproductor', { sesion })` |
+| Miniatura | no responde al toque (no es tocable) |
+| Buscar (⌕) | `navigate('Tabs', { screen: 'Explorar' })`. No enfoca el campo de búsqueda |
+| Sin ejercicios seguros (`sesion.items.length === 0`) | La tarjeta muestra «Tu filtro de lesión está activo» y su explicación; único control: «Revisar mis lesiones en Ajustes» → `navigate('Tabs', { screen: 'Yo' })`. Ni Empezar ni la sesión de 5 minutos se muestran |
+
+### 12.2 «Elige tu enfoque» y «¿Prefieres otra rutina?»
+
+**Elige tu enfoque.** Solo si `ejercicios.length > 0`. Origen: `EJERCICIOS` filtrados por `goals` que incluya el objetivo, equipo ⊆ `perfil.equipo` + `ninguno`, `pared`, `silla`, y sin `contra` en común con `perfil.contra`; `slice(semilla % 8, +4)` y aquí se enseñan los 3 primeros. No aplica nivel, espacio ni vetos (a diferencia del motor). Es una fila horizontal libre (sin ajuste al deslizar). Subtítulo `Nivel {e.level}`. Tocar la tarjeta → `navigate('Ejercicio', { id })`. La píldora «Inicio» es decorativa: no tiene toque propio. Los mismos 4 ejercicios alimentan «Ejercicios para ti».
+
+**¿Prefieres otra rutina?** Origen: `estado.rutinasPropias` primero (id con prefijo `mi_`, imagen `imagenRutina(id, imagenId)`, minutos `minutosPropios(items)`), luego `RUTINAS` con `goal === objetivo || min <= 15` y, con `modoSinSaltos`, solo `modo_sin_saltos`; se cortan a 4 en total.
+
+| Control | Efecto |
+|---|---|
+| Tarjeta | `id` con `mi_` → `navigate('RutinaPropia', { id })`; si no → `navigate('Rutina', { id })` |
+| Estrella | `alternarFavorito('rutinas', id)`; estado con `esFavorito('rutinas', id)` |
+| «Ver todas» y última tarjeta | `navigate('Tabs', { screen: 'Explorar', merge: true, params: { tab: 'rutinas' } })` |
+
+Hoy la duración sale dos veces en las rutinas del catálogo (subtítulo y etiqueta con `min`); en las propias, subtítulo «Mi rutina» y etiqueta con `min`.
+
+### 12.3 Resto del feed
+
+| Bloque | Origen y controles |
+|---|---|
+| Fila de 7 días | `ultimos7(sesiones)`: minutos por día; punto si `min > 0`; el día actual se marca con `fecha === hoy()`. Sin controles |
+| Racha | `racha.dias` («Día seguido» / «Días seguidos») y `BarrasSemana` con los mismos 7 días. Si `racha.enPausa`: «Tu racha está en pausa, no perdida. Entrena hoy y sigue desde donde estaba.» |
+| Explorar todo | Toca la fila → `navigate('Tabs', { screen: 'Explorar' })`. Cifras escritas a mano «190 ejercicios, 30 rutinas, 12 programas»; coinciden con `ESTADISTICAS` (190, 30, 12) |
+| Tu programa | Solo si `programaPorId.get(perfil.programaId)`. «Semana {estado.semanaPrograma} de {programa.semanas}». Fila y «Ver» → `navigate('Programa', { id })` |
+| Programas | `PROGRAMAS` con los del objetivo primero, sin repetir, 4. Tarjeta → `Programa { id }`; estrella `alternarFavorito('programas', id)`; «Ver todos» y última tarjeta → `Tabs/Explorar { tab: 'programas' }` |
+| Ejercicios para ti | Los 4 de `ejercicios`. Tarjeta → `Ejercicio { id }`; estrella `'ejercicios'`; «Ver todos» → `Tabs/Explorar { tab: 'ejercicios' }` |
+| Músculos de hoy | Músculos `primary` de `sesion.items` primero, luego el resto, 4. Tarjeta → `Musculo { id }`; sin estrella; «Ver todos» → `Tabs/Explorar { tab: 'musculos' }` |
+| Para leer hoy | `TIPS.slice(semilla % 20, +4)`, subtítulo `salaPorId.get(t.sala)?.name`. Tarjeta → `Tip { id }`; estrella `'tips'`; «Ver más» y última tarjeta → `navigate('Tabs', { screen: 'Aprender' })` |
+| Estadísticas | Solo si `stats.total > 0`: sesiones, minutos, series (`estadisticas(sesiones)`) y `racha.mejor` |
+| Banner | Solo con `ANUNCIOS_ACTIVOS` (hoy `false`): no se dibuja |
+
+### 12.4 Estados y observaciones
+
+| Estado | Hoy |
+|---|---|
+| Cargando | Hoy no tiene estado de carga propio: `Raiz` muestra el spinner hasta que el estado carga |
+| Arrastrar para actualizar | No existe. Los datos son locales: no hay nada que pedir. Lo que se añade (sección 8 del brief) solo vuelve a leer la fecha; el mismo día da la misma sesión |
+| Vacío | Sin ejercicios seguros (ver 12.1). No hay estado vacío en los carruseles: cada uno se llena siempre |
+| Completado hoy | `entrenoHoy`: título «Ya entrenaste hoy» y botón «Entrenar otra vez»; la sesión y su lista siguen siendo las de hoy |
+| Error | No hay ruta de error en Hoy |
+
+Observaciones que **no** se corrigen (funcionalidad congelada):
+
+- `ultimos7` calcula las fechas con `toISOString()` (UTC) y `hoy()` usa la fecha local. Al pasar de las 18:00 en UTC−6 la fila termina un día en el futuro y el día actual queda penúltimo. Es anterior al rediseño; `ultimos7` también alimenta la gráfica de `Yo`.
+- «Elige tu enfoque» no aplica los filtros de nivel, espacio y vetos del motor.
+- `semilla` se memoriza por `perfil.objetivo`: no se refresca sola al cruzar medianoche.
+
+### 12.5 Registro de la Parte 3
+
+Se rellena al cerrar cada fase. «código» = lectura de código, `tsc` y `lint:color`; nada se ha corrido en dispositivo.
+
+| Punto | Estado |
+|---|---|
+| Saludo, título, objetivo, duración y N ejercicios de la misma fuente | ✅ código |
+| Miniaturas: mismos 6 ejercicios y orden | ✅ código |
+| Aviso de «otro nivel» solo cuando `sesion.avisos` lo trae | ✅ código |
+| Empezar y «sesión de 5 minutos» abren `Reproductor { sesion }` con la misma sesión | ✅ código |
+| Buscar abre `Tabs/Explorar`; sin ejercicios seguros abre `Tabs/Yo` | ✅ código |
+| Elige tu enfoque: mismos 3 ejercicios, toque → `Ejercicio { id }` | ✅ código |
+| ¿Prefieres otra rutina?: mismas 4, `mi_` → `RutinaPropia`, estrella y «Ver todas» | ✅ código |
+| Fila de 7 días, racha, pausa y estadísticas con los mismos datos | ✅ código |
+| Programa activo, Programas, Ejercicios, Músculos, Tips: mismas fuentes y rutas | ✅ código |
+| Pestañas: las 4 rutas y su salto | ✅ código |
+| Cifras de «Explorar todo» = 190, 30, 12 | ✅ código (las cifras salen ahora de `ESTADISTICAS`; se contó el catálogo: 190, 30, 12) |
+| Barra flotante, encabezado que se encoge, parallax, huella, arrastrar para actualizar | pendiente en dispositivo |
+| Barra de pestañas flotante no tapa el último módulo ni el banner | pendiente en dispositivo |
+| Rendimiento del scroll en una build de release | pendiente en dispositivo |
+
+Suites tras la fase: `test:ui` 21, `test:player` 63, `test:engine` 74, `test:rutinas` 31, `test:borrarTodo` 14, todas en verde; `tsc` solo con los 4 errores previos de `tests/`; `lint:color` sin fugas; `expo export` de Android sin errores.
+
+### 12.6 Cambios de presentación que tocan un texto mostrado
+
+No cambian ningún dato, filtro ni ruta.
+
+- «Explorar todo»: las cifras salen de `ESTADISTICAS` en vez de estar escritas a mano. Mismos valores hoy.
+- Categoría bajo un ejercicio de «Ejercicios para ti»: se muestra el nombre de `CATEGORIAS` («Fuerza») en vez del id («fuerza»).
+- Duración de las rutinas del catálogo: se muestra una vez (insignia), ya no también como subtítulo. Las propias siguen con «Mi rutina».
+- Tarjetas nuevas: la de rutina propia muestra una barra con un segmento por ejercicio y una huella si ya se hizo alguna sesión con ella (`sesiones.some(rutinaId === id)`); un músculo que trabaja la sesión de hoy lleva la insignia «Hoy».
+- Títulos de módulo nuevos: «Tu semana» y «Tu progreso» (antes esos bloques no tenían título).
+- «Inicio» en «Elige tu enfoque» ahora es un botón; hace lo mismo que tocar la tarjeta.
+- Arrastrar para actualizar: nuevo, sin datos que pedir; solo relee la fecha.
+
+**Ortografía de los nombres de ejercicio (sección 10 del brief).** Se revisaron los 190. 71 llevan una palabra sin tilde. No se tocó el dato: `name` es la clave de búsqueda de Explorar y del editor de rutinas (`name.toLowerCase().includes(...)`), y corregirlo haría que quien escribe «flexion» dejara de encontrarlo. La tilde se pone en la capa de presentación, `src/data/nombresVisibles.ts` (`nombreVisible`), y solo Hoy la usa hoy. Reproductor, Explorar, EditorRutina y los detalles siguen mostrando el nombre del dato. Palabras corregidas (antes → después): abduccion → abducción, activacion → activación, alineacion → alineación, balon → balón, biceps → bíceps, bulgara → búlgara, cajon → cajón, circulos → círculos, cuadriceps → cuádriceps, deglucion → deglución, descompresion → descompresión, dias → días, dinamica → dinámica, elevacion → elevación, eliptica → elíptica, estatica → estática, extension → extensión, flexion → flexión, gluteo → glúteo, isometrica → isométrica, isometrico → isométrico, jalon → jalón, liberacion → liberación, maquina → máquina, menton → mentón, metodo → método, nordico → nórdico, pajaro → pájaro, posicion → posición, presion → presión, progresion → progresión, rapida → rápida, respiracion → respiración, retraccion → retracción, rotacion → rotación, suspension → suspensión, talon → talón, tension → tensión, toracica → torácica, torsion → torsión, triceps → tríceps. Los textos «Ganar musculo» y «Incluimos algun ejercicio…» del brief ya estaban con tilde en el repo (`GOALS` y `engine/session.ts`); las frases habladas de `textos_voz.json` («Flexion diamante…») no se tocaron.

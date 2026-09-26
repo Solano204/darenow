@@ -11,6 +11,7 @@ import * as Speech from 'expo-speech';
 import { createAudioPlayer, type AudioPlayer } from 'expo-audio';
 import { color, colorSesion, paleta, tipo, esp, radio, TOQUE, anim, sombra, haptico } from '../theme';
 import { PantallaListo } from '../components/session/PantallaListo';
+import { EditorAntesDeEmpezar } from '../components/session/EditorAntesDeEmpezar';
 import { useMagnesia } from '../components/fx/MagnesiaOverlay';
 
 const DURACION_LISTO_MS = 3000;
@@ -184,146 +185,6 @@ export default function Reproductor({ route, navigation }: any) {
 
   const sesionFinal: Sesion = itemsConfirmados ? { ...sesionInicial, items: itemsConfirmados } : sesionInicial;
   return <ReproductorActivo sesionInicial={sesionFinal} restaurar={restaurar} navigation={navigation} />;
-}
-
-/**
- * Revisar y ajustar la rutina antes de empezar.
- *
- * Series, repeticiones (o tiempo si el ejercicio es por tiempo) y
- * descanso quedan fijos aqui, una sola vez: el reproductor ya no pregunta
- * nada de esto durante la sesion, asi que la vista de cada ejercicio se
- * queda solo con el nombre, el numero y el video.
- */
-function EditorAntesDeEmpezar({ items, onConfirmar }: {
-  items: ItemSesion[]; onConfirmar: (items: ItemSesion[]) => void;
-}) {
-  const [lista, setLista] = useState<ItemSesion[]>(items);
-  const [ajustesMaquina, guardarAjusteMaquina] = useAjustesMaquina();
-  const { estado: app } = useEstado();
-
-  const actualizar = (i: number, cambio: Partial<ItemSesion>) =>
-    setLista(prev => prev.map((it, n) => (n === i ? { ...it, ...cambio } : it)));
-
-  // Cambiar de ejercicio va aqui, antes de arrancar, no durante la sesion:
-  // es la unica pantalla donde el usuario ya esta ajustando numeros, tiene
-  // sentido que tambien decida aqui que ejercicio hace. Solo afecta a esta
-  // sesion, igual que los ajustes de series/reps/descanso de aqui arriba.
-  const cambiarEjercicio = (i: number) => {
-    const it = lista[i];
-    const nuevo = sustituir(app.perfil, it.id, lista.map(x => x.id));
-    if (!nuevo) { Alert.alert('Sin alternativa', 'No encontramos otro ejercicio que sirva aquí.'); return; }
-    setLista(prev => prev.map((x, n) => (n === i ? { ...aItem(nuevo, x.bloque), seriesPlan: x.seriesPlan } : x)));
-  };
-
-  // Se recalcula con cada ajuste: el usuario ve de inmediato como cambia
-  // la duracion total al mover series, tiempo/reps o descanso.
-  const minutos = useMemo(
-    () => Math.max(1, Math.round(lista.reduce((s, it) => s + duracion(it), 0) / 60)),
-    [lista],
-  );
-
-  return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: color.fondo }}>
-      <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-      <Aparece estilo={{ flex: 1 }}>
-      <ScrollView style={{ flex: 1 }} contentContainerStyle={{ padding: esp.md, paddingBottom: esp.lg }}
-        showsVerticalScrollIndicator={false}>
-        <Text style={[tipo.h1, { color: color.texto }]}>Tu rutina de hoy</Text>
-        <Text style={[tipo.cuerpo, { color: color.textoSuave, marginTop: esp.xs }]}>
-          Ajusta series, {items.some(i => i.segPlan != null) ? 'tiempo' : 'repeticiones'} y descanso
-          de cada ejercicio antes de empezar.
-        </Text>
-        <View style={{ marginTop: esp.sm }}>
-          <Chip texto={`${minutos} minutos en total`} pequeno />
-        </View>
-
-        {lista.map((it, i) => (
-          <Tarjeta key={`${it.id}_${i}`} estilo={{ marginTop: esp.md, gap: esp.xs }}>
-            <Clip id={it.id} nombre={it.name} alto={220} ancho="100%" forma="tarjeta" />
-            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: esp.sm, marginTop: esp.xs }}>
-              <Text style={[tipo.h3, { color: color.texto, flex: 1 }]}>{it.name}</Text>
-              <Boton texto="Cambiar" variante="texto" onPress={() => cambiarEjercicio(i)} />
-            </View>
-
-            <FilaAjuste etiqueta="Series" valor={it.seriesPlan} min={1} max={10}
-              onCambio={v => actualizar(i, { seriesPlan: v })} />
-            {it.segPlan != null ? (
-              <FilaAjuste etiqueta="Tiempo" valor={it.segPlan} min={5} max={300} paso={5} sufijo=" s"
-                onCambio={v => actualizar(i, { segPlan: v })} />
-            ) : (
-              <FilaAjuste etiqueta="Repeticiones" valor={it.repsPlan ?? 10} min={1} max={50}
-                onCambio={v => actualizar(i, { repsPlan: v })} />
-            )}
-
-            <FilaAjuste etiqueta="Descanso" valor={it.descansoPlan} min={0} max={300} paso={5} sufijo=" s"
-              onCambio={v => actualizar(i, { descansoPlan: v })} />
-
-            {esMaquina(it) && (
-              <View style={{ marginTop: esp.xs }}>
-                <Text style={[tipo.pie, { color: color.textoSuave, marginBottom: 4 }]}>
-                  Ajuste de la maquina 
-                </Text>
-                <TextInput
-                  defaultValue={ajustesMaquina[it.id] ?? ''}
-                  onEndEditing={e => guardarAjusteMaquina(it.id, e.nativeEvent.text.trim())}
-                  placeholder="Asiento 4, respaldo 2, pin 8..."
-                  placeholderTextColor={color.textoTenue}
-                  style={s.inputMaquina}
-                />
-              </View>
-            )}
-          </Tarjeta>
-        ))}
-         <View style={s.pieEditor}>
-        <Boton texto="Empezar rutina" onPress={() => onConfirmar(lista)} estilo={{ flex: 1 }} />
-      </View>
-      </ScrollView>
-      </Aparece>
-      </KeyboardAvoidingView>
-    </SafeAreaView>
-  );
-}
-
-function FilaAjuste({ etiqueta, valor, min, max, paso = 1, sufijo = '', onCambio }: {
-  etiqueta: string; valor: number; min: number; max: number; paso?: number; sufijo?: string;
-  onCambio: (v: number) => void;
-}) {
-  const [texto, setTexto] = useState(String(valor));
-  useEffect(() => { setTexto(String(valor)); }, [valor]);
-
-  // Escribir el numero gana a apretar +/- muchas veces (ej. descanso de 20 a 70).
-  const confirmar = () => {
-    const n = parseInt(texto, 10);
-    const limpio = Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : valor;
-    setTexto(String(limpio));
-    if (limpio !== valor) onCambio(limpio);
-  };
-
-  return (
-    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-      <Text style={[tipo.pie, { color: color.textoSuave }]}>{etiqueta}</Text>
-      <View style={{ flexDirection: 'row', alignItems: 'center', gap: esp.sm }}>
-        <Pressable onPress={() => onCambio(Math.max(min, valor - paso))} style={s.mini}
-          accessibilityRole="button" accessibilityLabel={`Restar ${etiqueta.toLowerCase()}`}>
-          <Text style={s.miniTxt}>−</Text>
-        </Pressable>
-        <View style={{ flexDirection: 'row', alignItems: 'center', minWidth: 60, justifyContent: 'center' }}>
-          <TextInput
-            value={texto} onChangeText={t => setTexto(t.replace(/[^0-9]/g, ''))}
-            onEndEditing={confirmar} onSubmitEditing={confirmar}
-            keyboardType="number-pad" returnKeyType="done"
-            style={[tipo.dato, { color: color.texto, textAlign: 'center', padding: 0, minWidth: 24 }]}
-            accessibilityLabel={`Escribir ${etiqueta.toLowerCase()}`}
-          />
-          {!!sufijo && <Text style={[tipo.dato, { color: color.texto }]}>{sufijo}</Text>}
-        </View>
-        <Pressable onPress={() => onCambio(Math.min(max, valor + paso))} style={s.mini}
-          accessibilityRole="button" accessibilityLabel={`Sumar ${etiqueta.toLowerCase()}`}>
-          <Text style={s.miniTxt}>+</Text>
-        </Pressable>
-      </View>
-    </View>
-  );
 }
 
 function ReproductorActivo({ sesionInicial, restaurar, navigation }: {
@@ -785,11 +646,6 @@ function siguiente(items: ItemSesion[], i: number, serie: number): string {
   const it = items[i];
   if (serie < it.seriesPlan) return it.name;
   return items[i + 1]?.name ?? 'Último esfuerzo';
-}
-
-function esMaquina(e: ItemSesion): boolean {
-  return e.equipment.some(q =>
-    ['polea', 'maquina_jalon', 'prensa', 'maquina_pecho', 'maquina_femoral', 'remo_maquina'].includes(q));
 }
 
 const s = StyleSheet.create({

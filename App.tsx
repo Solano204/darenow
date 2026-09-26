@@ -31,17 +31,23 @@ import Bienvenida from './src/screens/Bienvenida';
 import Onboarding from './src/screens/Onboarding';
 import Hoy from './src/screens/Hoy';
 import Explorar from './src/screens/Explorar';
-import Aprender, { DetalleTip, DetalleMito } from './src/screens/Aprender';
-import Yo, { Logros, Retos, Mediciones, Historial, Ajustes } from './src/screens/Yo';
+import Aprender from './src/screens/Aprender';
+import DetalleTip from './src/screens/DetalleTip';
+import DetalleMito from './src/screens/DetalleMito';
+import Yo, { Logros } from './src/screens/Yo';
+import Ajustes from './src/screens/Ajustes';
+import Retos from './src/screens/Retos';
+import Mediciones from './src/screens/Mediciones';
+import Historial from './src/screens/Historial';
 import Favoritos from './src/screens/Favoritos';
 import EditorRutina from './src/screens/EditorRutina';
 import RutinaPropia from './src/screens/RutinaPropia';
 import Reproductor from './src/screens/Reproductor';
 import Resumen from './src/screens/Resumen';
 import DetalleEjercicio from './src/screens/DetalleEjercicio';
-import {
-  DetalleMusculo, DetalleRutina, DetallePrograma,
-} from './src/screens/Detalles';
+import DetalleRutina from './src/screens/DetalleRutina';
+import DetallePrograma from './src/screens/DetallePrograma';
+import DetalleMusculo from './src/screens/DetalleMusculo';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -84,7 +90,7 @@ function Pestanas() {
 }
 
 /** Pantallas que ya traen su propia entrada o su propia transicion: no llevan la de escala. */
-const SIN_ENTRADA = new Set(['Bienvenida', 'Tabs', 'Reproductor', 'Resumen', 'EditorRutina', 'Ejercicio']);
+const SIN_ENTRADA = new Set(['Bienvenida', 'Tabs', 'Reproductor', 'Resumen', 'EditorRutina', 'Ejercicio', 'Rutina', 'RutinaPropia', 'Programa', 'Musculo', 'Tip', 'Mito', 'Retos', 'Mediciones', 'Historial', 'Ajustes']);
 
 function Raiz() {
   const { estado, cargando, terminarOnboarding, marcarPresentacion } = useEstado();
@@ -149,21 +155,21 @@ function Raiz() {
         options={{ headerShown: false, gestureEnabled: false, animation: 'fade' }} />
 
       <Stack.Screen name="Ejercicio" component={DetalleEjercicio} options={{ headerShown: false }} />
-      <Stack.Screen name="Musculo" component={DetalleMusculo} options={{ title: '' }} />
-      <Stack.Screen name="Rutina" component={DetalleRutina} options={{ title: '' }} />
-      <Stack.Screen name="RutinaPropia" component={RutinaPropia} options={{ title: '' }} />
+      <Stack.Screen name="Musculo" component={DetalleMusculo} options={{ headerShown: false }} />
+      <Stack.Screen name="Rutina" component={DetalleRutina} options={{ headerShown: false }} />
+      <Stack.Screen name="RutinaPropia" component={RutinaPropia} options={{ headerShown: false }} />
       <Stack.Screen name="EditorRutina" component={EditorRutina}
         options={{ title: '', animation: 'slide_from_bottom' }} />
-      <Stack.Screen name="Programa" component={DetallePrograma} options={{ title: '' }} />
-      <Stack.Screen name="Tip" component={DetalleTip} options={{ title: '' }} />
-      <Stack.Screen name="Mito" component={DetalleMito} options={{ title: '' }} />
+      <Stack.Screen name="Programa" component={DetallePrograma} options={{ headerShown: false }} />
+      <Stack.Screen name="Tip" component={DetalleTip} options={{ headerShown: false }} />
+      <Stack.Screen name="Mito" component={DetalleMito} options={{ headerShown: false }} />
 
       <Stack.Screen name="Favoritos" component={Favoritos} options={{ title: 'Favoritos' }} />
       <Stack.Screen name="Logros" component={Logros} options={{ title: 'Logros' }} />
-      <Stack.Screen name="Retos" component={Retos} options={{ title: 'Retos' }} />
-      <Stack.Screen name="Mediciones" component={Mediciones} options={{ title: 'Mediciones' }} />
-      <Stack.Screen name="Historial" component={Historial} options={{ title: 'Historial' }} />
-      <Stack.Screen name="Ajustes" component={Ajustes} options={{ title: 'Ajustes' }} />
+      <Stack.Screen name="Retos" component={Retos} options={{ headerShown: false }} />
+      <Stack.Screen name="Mediciones" component={Mediciones} options={{ headerShown: false }} />
+      <Stack.Screen name="Historial" component={Historial} options={{ headerShown: false }} />
+      <Stack.Screen name="Ajustes" component={Ajustes} options={{ headerShown: false }} />
     </Stack.Navigator>
   );
 }

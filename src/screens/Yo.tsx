@@ -1,151 +1,151 @@
-import React, { useMemo, useState } from 'react';
-import { View, Text, Pressable, StyleSheet, Alert, TextInput, Linking } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { color, tipo, esp, radio, MARGEN_PANTALLA } from '../theme';
+import React, { useCallback, useMemo } from 'react';
+import { View, Text, StyleSheet } from 'react-native';
+import Animated from 'react-native-reanimated';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
+import { color, tipo, esp, radio, paleta, familia, MARGEN_PANTALLA } from '../theme';
+import { Pantalla, Tarjeta, Chip, useHuecoAbajo, useScrollCabecera } from '../components/ui';
+import { CabeceraSeccion } from '../components/ui/AccionSeccion';
+import { GomaTexture } from '../components/fx/GomaTexture';
+import { BloqueRevela } from '../components/fx/BloqueRevela';
+import { EncabezadoPerfil } from '../components/profile/EncabezadoPerfil';
+import { EstadisticasPerfil } from '../components/profile/EstadisticasPerfil';
+import { SieteDias } from '../components/profile/SieteDias';
+import { CalendarioHuellas } from '../components/profile/CalendarioHuellas';
+import { FavoritosPerfil } from '../components/profile/FavoritosPerfil';
+import { VitrinaLogros } from '../components/profile/VitrinaLogros';
+import { TarjetaReto } from '../components/profile/TarjetaReto';
+import { FilaHistorial } from '../components/profile/FilaHistorial';
+import { FilaAjustes } from '../components/profile/FilaAjustes';
+import { textoVisible } from '../utils/presentacion';
+import type { TipoFavorito } from '../utils/perfil';
 import {
-  Pantalla, Tarjeta, Fila, Chip, Boton, Seccion, Nota, BarrasSemana,
-  Interruptor, Opcion, Contador, Vacio, Toque, Aparece, Favorito,
-  Progreso, NumeroAnimado, Pulso, TituloGrande,
-} from '../components/ui';
-import Calendario from '../components/Calendario';
-import Carrusel from '../components/Carrusel';
-import Foto from '../components/Foto';
-import {
-  useEstado, estadisticas, ultimos7, hoy, minutosPorDia, diasEntrenados,
+  useEstado, estadisticas, ultimos7, minutosPorDia, diasEntrenados,
 } from '../store/store';
-import { useHapticosActivos } from '../store/haptics';
-import { useVozActiva } from '../store/voz';
-import { useCuenta } from '../store/cuenta';
-import { useConsentimientoMedidas, pedirConsentimientoMedidas } from '../store/consentimientoMedidas';
-import { exportarProgreso, elegirRespaldo, aplicarRespaldo } from '../store/respaldo';
-import { URL_PRIVACIDAD, URL_TERMINOS, URL_BORRAR_CUENTA } from '../legal';
-import {
-  LOGROS, RETOS, MEDICIONES, EJERCICIOS, GOALS, EQUIPO, porId,
-  programaPorId, rutinaPorId, musculoPorId, nombreGoal, ESTADISTICAS,
-  TIPS, PROGRAMAS,
-} from '../data/catalog';
+import { LOGROS, RETOS, programaPorId, nombreGoal } from '../data/catalog';
 
 /* ==================================================================== YO */
 
+const SEPARACION_SECCIONES = 40;
+const SESIONES_RECIENTES = 3;
+const LOGROS_VISIBLES = 8;
+const RETOS_VISIBLES = 3;
+
+/**
+ * Yo: tu libreta de entrenamiento. Lo que cargaste, cuando apareciste y lo que llevas ganado, sin castigar lo
+ * que falta (ver `docs/FUNCIONALIDAD.md` §21). Los datos, los calculos y las rutas son los de siempre; cambia
+ * como se ven: cada seccion es un bloque que se revela una vez al entrar en pantalla y todas sus acciones
+ * («Ver todos», «Todos», «Ver», «Registrar», «Ver todo») son el mismo enlace de texto.
+ */
 export default function Yo({ navigation }: any) {
-  const { estado } = useEstado();
-  const { perfil, sesiones, racha, logros, favoritos } = estado;
-  const totalFav = Object.values(favoritos).reduce((n, a) => n + a.length, 0);
+  const inset = useSafeAreaInsets();
+  const abajo = useHuecoAbajo();
+  const { y, onScroll } = useScrollCabecera();
+  const { estado, alternarFavorito } = useEstado();
+  const { perfil, sesiones, racha, logros, favoritos, retos } = estado;
   const stats = useMemo(() => estadisticas(sesiones), [sesiones]);
   const semana = useMemo(() => ultimos7(sesiones), [sesiones]);
+  const entrenados = useMemo(() => diasEntrenados(sesiones), [sesiones]);
+  const minutosPor = useMemo(() => minutosPorDia(sesiones), [sesiones]);
   const programa = programaPorId.get(perfil.programaId);
-
-  const ganados = new Set(logros.map(l => l.id));
+  const ganados = useMemo(() => new Set(logros.map(l => l.id)), [logros]);
+  const recientes = useMemo(() => sesiones.slice(-SESIONES_RECIENTES).reverse(), [sesiones]);
+  const abrirFavorito = useCallback((ruta: string, id: string) => navigation.navigate(ruta, { id }), [navigation]);
+  const quitarFavorito = useCallback((tipo: TipoFavorito, id: string) => alternarFavorito(tipo, id), [alternarFavorito]);
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: color.fondo }} edges={['top']}>
-      <Pantalla titulo={perfil.nombre || 'Tu progreso'}>
-        <TituloGrande>{perfil.nombre || 'Tu progreso'}</TituloGrande>
-        <Text style={[tipo.pie, { color: color.textoSuave }]}>
-          {nombreGoal(perfil.objetivo)} · {programa?.name ?? 'sin programa'}
-        </Text>
+    <View style={s.raiz}>
+      <GomaTexture />
+      <Animated.ScrollView
+        onScroll={onScroll} scrollEventThrottle={16} showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingTop: inset.top + 24, paddingBottom: abajo + SEPARACION_SECCIONES }}
+      >
+        <EncabezadoPerfil
+          nombre={perfil.nombre || 'Tu progreso'} objetivoId={perfil.objetivo} objetivo={textoVisible(nombreGoal(perfil.objetivo))}
+          programa={programa} semanaActual={estado.semanaPrograma}
+        />
 
-        <View style={s.cuadricula}>
-          <Caja n={String(racha.dias)} t="racha" />
-          <Caja n={String(stats.total)} t="sesiones" />
-          <Caja n={String(stats.minutos)} t="minutos" />
-          <Caja n={String(stats.series)} t="series" />
+        <BloqueRevela y={y} sinMovimiento estilo={s.seccion}>
+          {activo => (
+            <EstadisticasPerfil racha={racha.dias} sesiones={stats.total} minutos={stats.minutos} series={stats.series} activo={activo} />
+          )}
+        </BloqueRevela>
+
+        <BloqueRevela y={y} sinMovimiento estilo={s.seccion}>
+          {activo => (
+            <>
+              <CabeceraSeccion titulo="Últimos 7 días" />
+              {stats.total > 0
+                ? <SieteDias semana={semana} activo={activo} />
+                : <Text style={s.suave}>Cuando entrenes, aquí vas a ver tu semana.</Text>}
+            </>
+          )}
+        </BloqueRevela>
+
+        <BloqueRevela y={y} sinMovimiento fraccion={0.3} estilo={s.seccion}>
+          {activo => (
+            <>
+              <CabeceraSeccion titulo="Tu calendario" />
+              <CalendarioHuellas entrenados={entrenados} minutosPor={minutosPor} activo={activo} />
+            </>
+          )}
+        </BloqueRevela>
+
+        <BloqueRevela y={y} sinMovimiento estilo={s.seccion}>
+          {activo => (
+            <>
+              <CabeceraSeccion titulo="Favoritos" accion="Ver todos" onAccion={() => navigation.navigate('Favoritos')} />
+              <FavoritosPerfil
+                favoritos={favoritos} propias={estado.rutinasPropias} activo={activo}
+                onAbrir={abrirFavorito} onQuitar={quitarFavorito}
+              />
+            </>
+          )}
+        </BloqueRevela>
+
+        <BloqueRevela y={y} sinMovimiento fraccion={0.3} estilo={s.seccion}>
+          {activo => (
+            <>
+              <CabeceraSeccion titulo="Logros" accion="Todos" onAccion={() => navigation.navigate('Logros')} />
+              <VitrinaLogros logros={LOGROS.slice(0, LOGROS_VISIBLES)} ganados={ganados} total={LOGROS.length} activo={activo} />
+            </>
+          )}
+        </BloqueRevela>
+
+        <BloqueRevela y={y} sinMovimiento estilo={s.seccion}>
+          {activo => (
+            <>
+              <CabeceraSeccion titulo="Retos" accion="Ver" onAccion={() => navigation.navigate('Retos')} />
+              {RETOS.slice(0, RETOS_VISIBLES).map((r, i) => (
+                <TarjetaReto
+                  key={r.id} reto={r} progreso={retos[r.id]?.progreso} indice={i} activo={activo}
+                  onPress={() => navigation.navigate('Retos')}
+                />
+              ))}
+            </>
+          )}
+        </BloqueRevela>
+
+        <View style={s.seccion}>
+          <CabeceraSeccion titulo="Mediciones" accion="Registrar" onAccion={() => navigation.navigate('Mediciones')} />
+          <Text style={s.suave}>
+            Protocolos repetibles para que las comparaciones signifiquen algo. Todas son opcionales.
+          </Text>
         </View>
 
-        <Seccion titulo="Últimos 7 días">
-          {stats.total > 0
-            ? <BarrasSemana datos={semana} />
-            : <Vacio texto="Cuando entrenes, aquí vas a ver tu semana." />}
-        </Seccion>
+        <View style={s.seccion}>
+          <CabeceraSeccion titulo="Historial" accion="Ver todo" onAccion={() => navigation.navigate('Historial')} />
+          {recientes.map(x => <FilaHistorial key={x.id} sesion={x} />)}
+          {sesiones.length === 0 && <Text style={s.suave}>Aún no hay sesiones.</Text>}
+        </View>
 
-        {/* Calendario mensual: los dias entrenados, mes a mes, con el total. */}
-        <Seccion titulo="Tu calendario">
-          <Calendario
-            entrenados={diasEntrenados(sesiones)}
-            minutosPor={minutosPorDia(sesiones)}
-          />
-        </Seccion>
-
-        <Seccion titulo="Favoritos" accion="Ver todos"
-          onAccion={() => navigation.navigate('Favoritos')}>
-          {totalFav === 0
-            ? <Vacio texto="Toca la estrella en cualquier ejercicio, rutina o tip para guardarlo aquí." />
-            : (
-              <View style={{ flexDirection: 'row', gap: esp.xs, flexWrap: 'wrap' }}>
-                <Chip texto={`${favoritos.ejercicios.length} ejercicios`} pequeno />
-                <Chip texto={`${favoritos.musculos.length} músculos`} pequeno />
-                <Chip texto={`${favoritos.rutinas.length} rutinas`} pequeno />
-                <Chip texto={`${favoritos.programas.length} programas`} pequeno />
-                <Chip texto={`${favoritos.tips.length} tips`} pequeno />
-              </View>
-            )}
-        </Seccion>
-
-        <Seccion titulo="Logros" accion="Todos" onAccion={() => navigation.navigate('Logros')}>
-          <View style={{ flexDirection: 'row', gap: esp.xs, flexWrap: 'wrap' }}>
-            {LOGROS.slice(0, 8).map(l => (
-              <Chip key={l.id} texto={l.name} activo={ganados.has(l.id)} pequeno />
-            ))}
-          </View>
-          <View style={{ marginTop: esp.md, gap: esp.sm }}>
-            <Progreso valor={LOGROS.length ? ganados.size / LOGROS.length : 0} />
-            <View style={{ flexDirection: 'row', alignItems: 'baseline', gap: 5 }}>
-              <NumeroAnimado valor={ganados.size} estilo={[tipo.h2, { color: color.acento }]} />
-              <Text style={[tipo.pie, { color: color.textoSuave }]}>
-                de {LOGROS.length} logros
-              </Text>
-            </View>
-            <Text style={[tipo.pie, { color: color.textoSuave }]}>
-              Ninguno depende de tu peso ni de una medida.
-            </Text>
-          </View>
-        </Seccion>
-
-        <Seccion titulo="Retos" accion="Ver" onAccion={() => navigation.navigate('Retos')}>
-          {RETOS.slice(0, 3).map(r => (
-            <Tarjeta key={r.id} onPress={() => navigation.navigate('Retos')}>
-              <Text style={[tipo.h3, { color: color.texto }]}>{r.name}</Text>
-              <Text style={[tipo.pie, { color: color.textoSuave }]}>{r.objetivo}</Text>
-            </Tarjeta>
-          ))}
-        </Seccion>
-
-        <Seccion titulo="Mediciones" accion="Registrar" onAccion={() => navigation.navigate('Mediciones')}>
-          <Text style={[tipo.pie, { color: color.textoSuave }]}>
-            Protocolos repetibles para que las comparaciones signifiquen algo.
-            Todas son opcionales.
-          </Text>
-        </Seccion>
-
-        <Seccion titulo="Historial" accion="Ver todo" onAccion={() => navigation.navigate('Historial')}>
-          {sesiones.slice(-3).reverse().map(x => (
-            <Tarjeta key={x.id}>
-              <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                <Text style={[tipo.cuerpo, { color: color.texto }]}>{x.fecha}</Text>
-                <Text style={[tipo.pie, { color: color.textoSuave }]}>
-                  {Math.round(x.duracionS / 60)} min · {x.series.filter(y => !y.omitida).length} series
-                </Text>
-              </View>
-            </Tarjeta>
-          ))}
-          {sesiones.length === 0 && <Vacio texto="Aún no hay sesiones." />}
-        </Seccion>
-
-        <Boton texto="Ajustes" variante="contorno" onPress={() => navigation.navigate('Ajustes')}
-          estilo={{ marginTop: esp.lg }} />
-      </Pantalla>
-    </SafeAreaView>
-  );
-}
-
-function Caja({ n, t }: { n: string; t: string }) {
-  return (
-    <View style={s.caja}>
-      <Text style={[tipo.h2, { color: color.texto }]}>{n}</Text>
-      <Text style={[tipo.micro, { color: color.textoSuave }]}>{t}</Text>
+        <View style={s.seccion}>
+          <FilaAjustes onPress={() => navigation.navigate('Ajustes')} />
+        </View>
+      </Animated.ScrollView>
     </View>
   );
 }
+
 
 /* =============================================================== LOGROS */
 
@@ -178,511 +178,10 @@ export function Logros() {
   );
 }
 
-/* ================================================================ RETOS */
-
-export function Retos({ navigation }: any) {
-  const { estado, iniciarReto } = useEstado();
-  return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: color.fondo }} edges={['bottom']}>
-      <Pantalla>
-        <Text style={[tipo.h1, { color: color.texto }]}>Retos</Text>
-        <Nota texto="Ningún reto empuja a entrenar más días seguidos de los razonables, y los de constancia cuentan los días de movilidad como válidos." />
-        {RETOS.map(r => {
-          const activo = !!estado.retos[r.id];
-          return (
-            <Tarjeta key={r.id}>
-              <View style={{ flexDirection: 'row', justifyContent: 'space-between', gap: esp.sm }}>
-                <Text style={[tipo.h3, { color: color.texto, flex: 1 }]}>{r.name}</Text>
-                <Chip texto={`Nivel ${r.dificultad}`} pequeno />
-              </View>
-              <Text style={[tipo.pie, { color: color.textoSuave }]}>{r.desc}</Text>
-              <Text style={[tipo.pie, { color: color.texto }]}>{r.objetivo}</Text>
-              <View style={{ flexDirection: 'row', gap: esp.xs, flexWrap: 'wrap' }}>
-                {r.duracion_dias && <Chip texto={`${r.duracion_dias} días`} pequeno />}
-                <Chip texto={r.tipo} pequeno />
-              </View>
-              {activo ? (
-                <View style={{ flexDirection: 'row', alignItems: 'center', gap: esp.xs }}>
-                  <Pulso tamano={7} />
-                  <Text style={[tipo.dato, { color: color.acento }]}>En curso</Text>
-                </View>
-              ) : (
-                <Boton
-                  texto="Empezar reto"
-                  variante="principal"
-                  onPress={() => iniciarReto(r.id)}
-                />
-              )}
-            </Tarjeta>
-          );
-        })}
-      </Pantalla>
-    </SafeAreaView>
-  );
-}
-
-/* =========================================================== MEDICIONES */
-
-export function Mediciones() {
-  const { estado, guardarMedicion } = useEstado();
-  const [abierto, setAbierto] = useState<string | null>(null);
-  const [valor, setValor] = useState('');
-  const [consentimientoMedidas, cambiarConsentimientoMedidas] = useConsentimientoMedidas();
-
-  return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: color.fondo }} edges={['bottom']}>
-      <Pantalla>
-        <Text style={[tipo.h1, { color: color.texto }]}>Mediciones</Text>
-        <Nota texto="Una medición sirve solo si es repetible. Cada protocolo fija las condiciones; si tomas una fuera de ellas, no entra en la tendencia." />
-
-        {MEDICIONES.map(p => {
-          const previas = estado.mediciones.filter(m => m.protocolo === p.id);
-          const abierta = abierto === p.id;
-          return (
-            <Tarjeta key={p.id}>
-              <Pressable onPress={() => setAbierto(abierta ? null : p.id)}
-                accessibilityRole="button" accessibilityLabel={p.name}
-                accessibilityState={{ expanded: abierta }}>
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                  <Text style={[tipo.h3, { color: color.texto }]}>{p.name}</Text>
-                  <Text style={[tipo.pie, { color: color.textoSuave }]}>{p.frecuencia}</Text>
-                </View>
-              </Pressable>
-
-              {abierta && (
-                <>
-                  <Text style={[tipo.dato, { color: color.texto, marginTop: esp.sm }]}>
-                    Condiciones fijas
-                  </Text>
-                  {p.condiciones_fijas.map((c, i) => (
-                    <Text key={i} style={[tipo.pie, { color: color.textoSuave }]}>· {c}</Text>
-                  ))}
-                  {p.pasos && (
-                    <>
-                      <Text style={[tipo.dato, { color: color.texto, marginTop: esp.sm }]}>Pasos</Text>
-                      {p.pasos.map((c, i) => (
-                        <Text key={i} style={[tipo.pie, { color: color.textoSuave }]}>{i + 1}. {c}</Text>
-                      ))}
-                    </>
-                  )}
-                  {p.advertencia && <Nota texto={p.advertencia} tono="cuidado" />}
-                  {p.interpretacion && (
-                    <Text style={[tipo.pie, { color: color.carbon }]}>{p.interpretacion}</Text>
-                  )}
-
-                  {p.id !== 'med_003' && p.id !== 'med_006' && (
-                    <View style={{ flexDirection: 'row', gap: esp.sm, alignItems: 'center', marginTop: esp.sm }}>
-                      <TextInput
-                        value={valor} onChangeText={setValor}
-                        placeholder="Valor" placeholderTextColor={color.textoTenue}
-                        keyboardType="decimal-pad" style={s.input}
-                      />
-                      <Boton
-                        texto="Guardar" estilo={{ flex: 1 }}
-                        onPress={() => {
-                          const n = parseFloat(valor.replace(',', '.'));
-                          if (!Number.isFinite(n)) return;
-                          pedirConsentimientoMedidas(consentimientoMedidas, cambiarConsentimientoMedidas, () => {
-                            guardarMedicion({ protocolo: p.id, fecha: hoy(), valor: n, unidad: '' });
-                            setValor('');
-                          });
-                        }}
-                      />
-                    </View>
-                  )}
-                </>
-              )}
-
-              {previas.length > 0 && (
-                <Text style={[tipo.pie, { color: color.textoTenue }]}>
-                  {previas.length} registro{previas.length > 1 ? 's' : ''} · último: {previas[previas.length - 1].valor}
-                </Text>
-              )}
-            </Tarjeta>
-          );
-        })}
-      </Pantalla>
-    </SafeAreaView>
-  );
-}
-
-/* ============================================================ HISTORIAL */
-
-export function Historial({ navigation }: any) {
-  const { estado } = useEstado();
-  const sesiones = [...estado.sesiones].reverse();
-  return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: color.fondo }} edges={['bottom']}>
-      <Pantalla>
-        <Text style={[tipo.h1, { color: color.texto }]}>Historial</Text>
-        {sesiones.length === 0 && <Vacio texto="Aún no hay sesiones registradas." />}
-        {sesiones.map(x => (
-          <Tarjeta key={x.id}>
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-              <Text style={[tipo.h3, { color: color.texto }]}>{x.fecha}</Text>
-              <Chip texto={x.estado === 'completada' ? 'Completa' : 'Parcial'} pequeno
-                activo={x.estado === 'completada'} />
-            </View>
-            <Fila etiqueta="Duración" valor={`${Math.round(x.duracionS / 60)} min`} />
-            <Fila etiqueta="Series" valor={String(x.series.filter(y => !y.omitida).length)} tenue />
-            {x.motivoAbandono && (
-              <Text style={[tipo.pie, { color: color.textoTenue }]}>Salió por: {x.motivoAbandono}</Text>
-            )}
-            <View style={{ flexDirection: 'row', gap: esp.xs, flexWrap: 'wrap' }}>
-              {[...new Set(x.series.map(y => y.ejercicioId))].slice(0, 6).map(id => (
-                <Chip key={id} texto={porId.get(id)?.name ?? id} pequeno
-                  onPress={() => navigation.navigate('Ejercicio', { id })} />
-              ))}
-            </View>
-          </Tarjeta>
-        ))}
-      </Pantalla>
-    </SafeAreaView>
-  );
-}
-
-/* ============================================================== AJUSTES */
-
-export function Ajustes({ navigation }: any) {
-  const { estado, guardarPerfil, borrarMedidas } = useEstado();
-  const { cuenta, salir, borrarTodosLosDatos } = useCuenta();
-  const p = estado.perfil;
-  const [seccion, setSeccion] = useState<string | null>(null);
-  const [hapticosOn, setHapticosOn] = useHapticosActivos();
-  const [vozOn, setVozOn] = useVozActiva();
-  const [consentimientoMedidas, cambiarConsentimientoMedidas] = useConsentimientoMedidas();
-  const [exportando, setExportando] = useState(false);
-  const [importando, setImportando] = useState(false);
-
-  // Revocar = dejar de tratar el dato: se borran peso, altura, peso
-  // objetivo y mediciones, no solo la bandera de consentimiento.
-  const retirarConsentimientoMedidas = () => {
-    Alert.alert(
-      'Retirar consentimiento',
-      'Al retirar tu consentimiento se borrarán tu peso, altura y medidas guardados. ¿Continuar?',
-      [
-        { text: 'Cancelar', style: 'cancel' },
-        {
-          text: 'Continuar', style: 'destructive',
-          onPress: () => { borrarMedidas(); cambiarConsentimientoMedidas(false); },
-        },
-      ],
-    );
-  };
-
-  const equipoOnb = EQUIPO.filter(e => e.onboarding && e.id !== 'ninguno');
-
-  const exportar = async () => {
-    setExportando(true);
-    const r = await exportarProgreso();
-    setExportando(false);
-    if (!r.ok) Alert.alert('No se pudo exportar', r.motivo);
-  };
-
-  // Mismo dialogo para "Eliminar mi cuenta" y "Borrar todos mis datos": las
-  // dos disparan el mismo borrado completo (borrarTodosLosDatos), asi que
-  // no puede haber un texto que prometa conservar el historial y otro que
-  // no. "Exportar respaldo primero" no borra nada: solo abre el compartir
-  // y deja el borrado para cuando el usuario confirme de nuevo.
-  const confirmarBorrarTodo = () => {
-    Alert.alert(
-      'Borrar mis datos',
-      'Se borrarán tu cuenta, tu progreso, rutinas, medidas y ajustes de este teléfono. No se puede deshacer.',
-      [
-        { text: 'Cancelar', style: 'cancel' },
-        { text: 'Exportar respaldo primero', onPress: exportar },
-        { text: 'Borrar todo', style: 'destructive', onPress: () => { borrarTodosLosDatos(); } },
-      ],
-    );
-  };
-
-  // Elegir y validar el archivo primero; recien si es valido se pide
-  // confirmacion (reemplaza todo, no se puede deshacer) antes de escribir.
-  const importar = async () => {
-    setImportando(true);
-    const elegido = await elegirRespaldo();
-    setImportando(false);
-    if (elegido.ok === 'cancelado') return;
-    if (!elegido.ok) { Alert.alert('Archivo no válido', elegido.motivo); return; }
-
-    Alert.alert(
-      'Importar progreso',
-      'Esto reemplaza tu progreso actual. No se puede deshacer.',
-      [
-        { text: 'Cancelar', style: 'cancel' },
-        {
-          text: 'Importar', style: 'destructive',
-          onPress: async () => {
-            try {
-              await aplicarRespaldo(elegido.respaldo);
-              Alert.alert(
-                'Progreso importado',
-                'Cierra la app por completo y vuelve a abrirla para verlo reflejado.',
-              );
-            } catch {
-              Alert.alert(
-                'No se pudo importar',
-                'Algo falló al escribir el progreso. Tus datos actuales no deberían haber cambiado; intenta otra vez.',
-              );
-            }
-          },
-        },
-      ],
-    );
-  };
-
-  return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: color.fondo }} edges={['bottom']}>
-      <Pantalla>
-        <Text style={[tipo.h1, { color: color.texto }]}>Ajustes</Text>
-
-        <Seccion titulo="Tu plan">
-          <Tarjeta desenfoque onPress={() => setSeccion(seccion === 'objetivo' ? null : 'objetivo')}>
-            <Fila etiqueta="Objetivo" valor={nombreGoal(p.objetivo)} />
-          </Tarjeta>
-          {seccion === 'objetivo' && GOALS.map(g => (
-            <Opcion key={g.id} texto={g.nombre} detalle={g.sub} activa={p.objetivo === g.id}
-              onPress={() => { guardarPerfil({ objetivo: g.id }); setSeccion(null); }} />
-          ))}
-
-          <Tarjeta desenfoque>
-            <Text style={[tipo.cuerpo, { color: color.textoSuave }]}>Minutos por sesión</Text>
-            <Contador valor={p.minPorSesion} min={5} max={90} sufijo="minutos"
-              onCambio={v => guardarPerfil({ minPorSesion: v })} />
-          </Tarjeta>
-
-          <Tarjeta desenfoque>
-            <Text style={[tipo.cuerpo, { color: color.textoSuave }]}>Días por semana</Text>
-            <Contador valor={p.diasPorSemana} min={1} max={7} sufijo="días"
-              onCambio={v => guardarPerfil({ diasPorSemana: v })} />
-          </Tarjeta>
-
-          <Tarjeta desenfoque>
-            <Text style={[tipo.cuerpo, { color: color.textoSuave, marginBottom: esp.sm }]}>Nivel</Text>
-            <View style={{ flexDirection: 'row', gap: esp.xs }}>
-              {[1, 2, 3].map(n => (
-                <Chip key={n} texto={`Nivel ${n}`} activo={p.nivel === n}
-                  onPress={() => guardarPerfil({ nivel: n as 1 | 2 | 3 })} />
-              ))}
-            </View>
-          </Tarjeta>
-        </Seccion>
-
-        <Seccion titulo="Dónde entrenas">
-          <Interruptor
-            etiqueta="Modo sin saltos" valor={p.modoSinSaltos}
-            ayuda="Quita impacto y ruido. Cada rutina tiene su versión silenciosa."
-            onCambio={v => guardarPerfil({ modoSinSaltos: v })}
-          />
-          <Text style={[tipo.cuerpo, { color: color.textoSuave, marginTop: esp.sm }]}>Espacio</Text>
-          <View style={{ flexDirection: 'row', gap: esp.xs, marginTop: esp.xs }}>
-            {(['minimo', 'colchoneta', 'amplio'] as const).map(e => (
-              <Chip key={e} texto={e} activo={p.espacio === e} onPress={() => guardarPerfil({ espacio: e })} />
-            ))}
-          </View>
-        </Seccion>
-
-        <Seccion titulo="Equipo">
-          <View style={{ gap: esp.xs }}>
-            {equipoOnb.map(e => (
-              <Opcion
-                key={e.id} texto={e.name} detalle={e.sustituto_casero ? `Si no tienes: ${e.sustituto_casero}` : undefined}
-                activa={p.equipo.includes(e.id)} multiple
-                onPress={() => guardarPerfil({
-                  equipo: p.equipo.includes(e.id)
-                    ? p.equipo.filter(x => x !== e.id)
-                    : [...p.equipo, e.id],
-                })}
-              />
-            ))}
-          </View>
-        </Seccion>
-
-        <Seccion titulo="Lesiones y condiciones">
-          <Nota texto="Este filtro nunca se relaja, aunque la app se quede sin ejercicios para un patrón." />
-          <View style={{ gap: esp.xs }}>
-            {[
-              ['lesion_cuello', 'Cuello'], ['lesion_hombro', 'Hombro'], ['lesion_codo', 'Codo'],
-              ['lesion_muneca', 'Muñeca'], ['lesion_lumbar', 'Espalda baja'], ['hernia_discal', 'Hernia discal'],
-              ['lesion_cadera', 'Cadera'], ['lesion_rodilla', 'Rodilla'], ['lesion_tobillo', 'Tobillo'],
-              ['problema_atm', 'Mandíbula (ATM)'], ['embarazo', 'Embarazo'], ['postparto', 'Postparto'],
-              ['hipertension', 'Tensión alta'], ['vertigo', 'Mareos'],
-            ].map(([id, txt]) => (
-              <Opcion key={id} texto={txt} activa={p.contra.includes(id)} multiple
-                onPress={() => guardarPerfil({
-                  contra: p.contra.includes(id) ? p.contra.filter(x => x !== id) : [...p.contra, id],
-                })} />
-            ))}
-          </View>
-        </Seccion>
-
-        <Seccion titulo="Sonido">
-          <Interruptor etiqueta="Tonos durante la sesión" valor={p.sonido}
-            ayuda="Tres tonos que suben al final de cada fase, y uno distinto al empezar, al terminar la serie y al acabarse el descanso. Sirve para entrenar sin mirar la pantalla."
-            onCambio={v => guardarPerfil({ sonido: v })} />
-          <Interruptor etiqueta="Voz" valor={vozOn}
-            ayuda="Dice el nombre del ejercicio y sus claves al empezar, la cuenta 3-2-1, y cada cambio de fase. Mientras habla, el botón para avanzar se desactiva un instante."
-            onCambio={setVozOn} />
-          <Interruptor etiqueta="Vibracion" valor={hapticosOn}
-            ayuda="Un toque corto al completar una serie, uno largo al terminar la sesión. Útil con música puesta, cuando el sonido no llega."
-            onCambio={setHapticosOn} />
-        </Seccion>
-
-        <Seccion titulo="Qué quieres ver">
-          <Interruptor etiqueta="Estimación de calorías" valor={p.mostrarKcal}
-            ayuda="Es una estimación poblacional, no una medida de tu cuerpo. Puedes apagarla."
-            onCambio={v => guardarPerfil({ mostrarKcal: v })} />
-          <Interruptor etiqueta="Peso y medidas corporales" valor={p.mostrarPeso}
-            ayuda="Si las apagas, desaparecen de toda la app. El plan funciona igual."
-            onCambio={v => guardarPerfil({ mostrarPeso: v })} />
-        </Seccion>
-
-        <Seccion titulo="Peso y medidas">
-          <Interruptor
-            etiqueta="Guardar peso y medidas" valor={consentimientoMedidas}
-            ayuda="Peso, altura y mediciones son datos de salud: solo se guardan en este teléfono con tu consentimiento expreso, según el aviso de privacidad."
-            onCambio={v => (v ? cambiarConsentimientoMedidas(true) : retirarConsentimientoMedidas())}
-          />
-        </Seccion>
-
-        {p.mostrarPeso && (
-          <Seccion titulo="Peso (opcional)">
-            <Text style={[tipo.pie, { color: color.textoSuave }]}>
-              Solo se usa para estimar el gasto de la sesión. Sin él, la app
-              funciona igual y no muestra kcal.
-            </Text>
-            <Contador valor={p.pesoKg ?? 70} min={30} max={200} sufijo="kg ahora"
-              onCambio={v => pedirConsentimientoMedidas(consentimientoMedidas, cambiarConsentimientoMedidas, () => guardarPerfil({ pesoKg: v }))} />
-
-            <Text style={[tipo.pie, { color: color.textoSuave, marginTop: esp.md }]}>
-              Peso de referencia. No cambia tu plan: no ponemos dietas, ni
-              fechas, ni objetivos de calorías.
-            </Text>
-            <Contador valor={p.pesoObjetivoKg ?? p.pesoKg ?? 70} min={30} max={200} sufijo="kg objetivo"
-              onCambio={v => pedirConsentimientoMedidas(consentimientoMedidas, cambiarConsentimientoMedidas, () => guardarPerfil({ pesoObjetivoKg: v }))} />
-          </Seccion>
-        )}
-
-        <Seccion titulo="Estatura (opcional)">
-          <Text style={[tipo.pie, { color: color.textoSuave }]}>
-            Dato de tu perfil. No se usa en ningún cálculo del plan.
-          </Text>
-          <Contador valor={p.alturaCm ?? 170} min={120} max={220} sufijo="cm"
-            onCambio={v => pedirConsentimientoMedidas(consentimientoMedidas, cambiarConsentimientoMedidas, () => guardarPerfil({ alturaCm: v }))} />
-        </Seccion>
-
-        {p.vetos.length > 0 && (
-          <Seccion titulo={`Ejercicios vetados (${p.vetos.length})`}>
-            <View style={{ flexDirection: 'row', gap: esp.xs, flexWrap: 'wrap' }}>
-              {p.vetos.map(id => (
-                <Chip key={id} texto={porId.get(id)?.name ?? id} pequeno
-                  onPress={() => guardarPerfil({ vetos: p.vetos.filter(x => x !== id) })} />
-              ))}
-            </View>
-            <Text style={[tipo.pie, { color: color.textoTenue }]}>Toca uno para volver a permitirlo.</Text>
-          </Seccion>
-        )}
-
-        <Seccion titulo="Catálogo">
-          <Tarjeta desenfoque>
-            <Fila etiqueta="Ejercicios" valor={String(ESTADISTICAS.ejercicios)} />
-            <Fila etiqueta="Sin equipo" valor={String(ESTADISTICAS.sinEquipo)} tenue />
-            <Fila etiqueta="Aptos sin saltos" valor={String(ESTADISTICAS.silenciosos)} tenue />
-            <Fila etiqueta="Músculos" valor={String(ESTADISTICAS.musculos)} tenue />
-            <Fila etiqueta="Rutinas" valor={String(ESTADISTICAS.rutinas)} tenue />
-            <Fila etiqueta="Programas" valor={String(ESTADISTICAS.programas)} tenue />
-            <Fila etiqueta="Tips" valor={String(ESTADISTICAS.tips)} tenue />
-            <Fila etiqueta="Mitos" valor={String(ESTADISTICAS.mitos)} tenue />
-          </Tarjeta>
-        </Seccion>
-
-        <Seccion titulo="Tu cuenta">
-          <Tarjeta desenfoque>
-            <Fila
-              etiqueta={cuenta?.proveedor === 'google' ? 'Google' : 'Sin cuenta'}
-              valor={cuenta?.email ?? cuenta?.nombre ?? 'Invitado'}
-              apilado
-            />
-          </Tarjeta>
-
-          {cuenta?.proveedor === 'google' && (
-            <Boton
-              texto="Cerrar sesión" variante="contorno"
-              estilo={{ marginTop: esp.sm }}
-              onPress={() => Alert.alert(
-                'Cerrar sesión',
-                'Tu historial de entrenamiento se queda en este teléfono.',
-                [
-                  { text: 'Cancelar', style: 'cancel' },
-                  { text: 'Cerrar sesión', onPress: () => { salir(); } },
-                ],
-              )}
-            />
-          )}
-
-          <Boton
-            texto="Eliminar mi cuenta" variante="peligro"
-            estilo={{ marginTop: esp.sm }}
-            onPress={confirmarBorrarTodo}
-          />
-        </Seccion>
-
-        <Seccion titulo="Tus datos">
-          <Text style={[tipo.pie, { color: color.textoSuave }]}>
-            Todo vive en este teléfono, sin copia en la nube. Exporta un
-            archivo para guardarlo tú o pasarlo a otro teléfono.
-          </Text>
-          <Boton
-            texto="Exportar mi progreso" variante="contorno"
-            estilo={{ marginTop: esp.sm }}
-            ocupado={exportando} textoOcupado="Exportando..."
-            onPress={exportar}
-          />
-          <Boton
-            texto="Importar progreso" variante="contorno"
-            estilo={{ marginTop: esp.sm }}
-            ocupado={importando} textoOcupado="Leyendo archivo..."
-            onPress={importar}
-          />
-        </Seccion>
-
-        <Seccion titulo="Legal">
-          <Boton
-            texto="Aviso de privacidad" variante="contorno"
-            onPress={() => { Linking.openURL(URL_PRIVACIDAD); }}
-          />
-          <Boton
-            texto="Términos y condiciones" variante="contorno"
-            estilo={{ marginTop: esp.sm }}
-            onPress={() => { Linking.openURL(URL_TERMINOS); }}
-          />
-          <Boton
-            texto="Borrar cuenta y datos" variante="contorno"
-            estilo={{ marginTop: esp.sm }}
-            onPress={() => { Linking.openURL(URL_BORRAR_CUENTA); }}
-          />
-        </Seccion>
-
-        <Boton
-          texto="Borrar todos mis datos" variante="peligro"
-          estilo={{ marginTop: esp.lg }}
-          onPress={confirmarBorrarTodo}
-        />
-        <Text style={[tipo.pie, { color: color.textoTenue, marginTop: esp.sm, textAlign: 'center' }]}>
-          Contenido educativo y de entrenamiento. No sustituye diagnóstico ni
-          consejo médico, fisioterapéutico o nutricional individual.
-        </Text>
-      </Pantalla>
-    </SafeAreaView>
-  );
-}
-
 const s = StyleSheet.create({
-  cuadricula: {
-    flexDirection: 'row', backgroundColor: color.lienzo,
-    borderRadius: radio.tarjeta, paddingVertical: esp.md, marginTop: esp.md,
-  },
-  caja: { flex: 1, alignItems: 'center' },
+  raiz: { flex: 1, backgroundColor: paleta.goma },
+  seccion: { marginTop: SEPARACION_SECCIONES },
+  suave: { marginHorizontal: MARGEN_PANTALLA, fontFamily: familia.cuerpo, fontSize: 15, lineHeight: 22, color: paleta.magnesia2 },
   input: {
     flex: 1, minHeight: 46, borderWidth: 1, borderColor: color.borde,
     borderRadius: radio.tarjeta, paddingHorizontal: MARGEN_PANTALLA, color: color.texto, fontSize: 16,

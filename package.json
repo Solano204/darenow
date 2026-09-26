@@ -16,7 +16,13 @@
     "test:engine": "esbuild --bundle --platform=node --format=cjs tests/engine.test.ts | node",
     "test:ui": "esbuild --bundle --platform=node --format=cjs tests/ui.test.ts | node",
     "test:rutinas": "esbuild --bundle --platform=node --format=cjs tests/rutinas.test.ts | node",
-    "test:borrarTodo": "esbuild --bundle --platform=node --format=cjs tests/borrarTodo.test.ts | node"
+    "test:borrarTodo": "esbuild --bundle --platform=node --format=cjs tests/borrarTodo.test.ts | node",
+    "test:detalleRutina": "esbuild --bundle --platform=node --format=cjs tests/detalleRutina.test.ts | node",
+    "test:detallePrograma": "esbuild --bundle --platform=node --format=cjs tests/detallePrograma.test.ts | node",
+    "test:musculos": "esbuild --bundle --platform=node --format=cjs tests/musculos.test.ts | node",
+    "test:aprender": "esbuild --bundle --platform=node --format=cjs tests/aprender.test.ts | node",
+    "test:perfil": "esbuild --bundle --platform=node --format=cjs tests/perfil.test.ts | node",
+    "test:ajustes": "esbuild --bundle --platform=node --format=cjs tests/ajustes.test.ts | node"
   },
   "dependencies": {
     "@expo-google-fonts/big-shoulders-display": "^0.2.3",

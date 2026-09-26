@@ -202,6 +202,7 @@ Los textos usan la variante medida para AA (la roja y la azul puras no llegan so
 - **Músculos** (`RejillaMusculos`): dos columnas de `FichaMusculo` a todo el ancho de la columna, con «N ejercicios» (principal o apoyo). El nombre baja hasta un 85 % antes de partirse por palabras.
 - **Listas**: `Animated.FlatList` con `itemLayoutAnimation` (reacomodo de 200 ms) y `entering`/`exiting` solo en las primeras 8 filas o 4 tarjetas, `removeClippedSubviews` apagado y `windowSize` 7. Al cambiar de segmento, la lista vieja sale 16 px hacia un lado y la nueva entra desde el otro.
 - **Sin resultados** (`TextoVacio`): una frase en Figtree 16 `magnesia2` que dice qué pasó y qué probar. No hay ilustración ni acción (no existe «limpiar filtros»).
+- **No se construyó**: el parallax de la foto de las tarjetas (pide medir la posición de cada celda de la lista y su rendimiento en Android de gama media no se puede comprobar sin dispositivo; el brief dice quitarlo si no es seguro), la transición de elemento compartido (ver Ficha de ejercicio), los esqueletos de tarjeta, el arrastrar para actualizar y la carga incremental (Explorar no espera nada: los datos son locales y esos estados no existen), y el botón «Cancelar» (nunca existió) ni un «limpiar filtros» en los estados vacíos.
 - **Movimiento reducido**: placeholder fijo, indicador y chips con un fundido de 150 ms, contador sin odómetro, listas sin escalonado (solo fundido), pila quieta, filas propias sin entrada y filtros que se pliegan sin animación.
 
 ## Componentes

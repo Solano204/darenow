@@ -450,3 +450,64 @@ No cambian la máquina, los tiempos, las series ni los datos guardados.
 - Reproductor: «Deshacer última serie» y «Omitir este ejercicio» comparten fila; «Sigue: nombre» pasa a una tarjeta con miniatura.
 - Textos con tilde: «Ajuste de la máquina» (antes «maquina») y los nombres de ejercicio en el editor, «Sigue» y el resumen, con `nombreVisible` (`Círculos de brazos`, `Respiración nasal consciente`, etc.; el dato no se toca, ver 12.6).
 
+## 14. Parte 5: ficha de ejercicio (auditoría previa)
+
+Archivos: `src/screens/DetalleEjercicio.tsx` (antes `DetalleEjercicio` dentro de `Detalles.tsx`, que sigue con músculo, rutina y programa). Ruta `Ejercicio`, parámetro `{ id }` (`ex_XXXX`); si el id no existe la ficha no dibuja nada. Lo que sigue es el comportamiento actual y no cambia.
+
+### 14.1 Desde dónde se abre
+
+`navigate('Ejercicio', { id })` desde Hoy («Elige tu enfoque» y «Ejercicios para ti»), Explorar (lista y búsqueda), Aprender (ejercicios relacionados de un tip o un mito), Favoritos, Yo (historial), EditorRutina, RutinaPropia y la rutina del catálogo (cada ejercicio de la lista). `push('Ejercicio', { id })` desde un músculo (ejercicios que lo trabajan) y desde la propia ficha (progresiones, regresiones y sustitutos). El reproductor no abre la ficha.
+
+### 14.2 Qué hace cada control
+
+| Control | Efecto |
+|---|---|
+| Flecha atrás | Era la del encabezado nativo del Stack (título vacío). Ahora es un botón propio que llama `goBack()`; el encabezado nativo se oculta en esta ruta |
+| Estrella | `alternarFavorito('ejercicios', id)`; estado con `esFavorito('ejercicios', id)` |
+| Tocar un músculo | Sí hace algo: `push('Musculo', { id })`. La última tarjeta («Todos») → `navigate('Tabs', { screen: 'Explorar', merge: true, params: { tab: 'musculos' } })` |
+| Tocar una progresión, regresión o sustituto | `push('Ejercicio', { id })`: abre su ficha encima; atrás vuelve a la anterior |
+| Botón inferior | «No me lo propongas más» / «Volver a proponérmelo» → `alternarVeto(id)`: añade o quita el id de `perfil.vetos`, que el motor de sesión excluye. Es una acción **secundaria** (era un botón de contorno; en la captura el texto salía cortado) |
+| Aviso «Fuera de tu plan» | Solo si alguna contraindicación del ejercicio (`contra`) coincide con `perfil.contra` |
+
+### 14.3 Datos del ejercicio y de dónde salen
+
+`Ejercicio` (`data/catalog.ts`): `name`, `name_en`, `level` (1 a 3), `category`, `unilateral` («Por lado»), `impact` y `noise` (≥ 2 → «Impacto alto» y «Ruidoso»), `desc`, `steps`, `breathing`, `cues` (claves), `errors`, `primary` y `secondary` (músculos), `default` (series, reps o seg, `rest_s`), `equipment`, `space`, `met`, `risk_zones`, `family`, `progressions`, `regressions`, `substitutes`.
+
+- **Evidencia**: `evidenciaDe(e)` devuelve el mapa `afirmación → veredicto` propio del ejercicio o, si no lo tiene, el de su familia (14 de los 190 tienen el suyo), y la nota (`evidence_note`, propia o de la familia). La afirmación es la clave del mapa con los guiones bajos cambiados por espacios (`fuerza_pierna`), en minúscula y sin tildes. Veredictos: `ok` (Comprobado), `parcial`, `mito`. En el catálogo hay de 1 a 4 afirmaciones por ejercicio y los 190 tienen nota; 103 tienen al menos un «mito».
+- **Músculos**: `[...primary, ...secondary]`, los primeros 4, con su foto (`musculo`). Bajo la fila, «Principales: …» con los nombres de `primary`.
+- **Detalles** (orden y etiquetas): «Series por defecto» (`series × seg s` o `series × reps`), «Descanso» (`rest_s s`), «Equipo» (`nombreEquipo`), «Espacio» (`space` tal cual), «MET», «Zonas de riesgo» (solo si hay) y «Familia» (solo si hay).
+- **Medio**: `Clip` (190 clips `.mp4` en bucle, sin audio); sin clip, la foto; sin nada, no se dibuja nada.
+
+### 14.4 Secciones opcionales
+
+Datos reales de los 190: sin regresiones 84, sin sustitutos 4, sin progresiones 111, sin zonas de riesgo 21. Todos tienen pasos, claves, errores, respiración, nombre en inglés, afirmaciones de evidencia y nota. Una lista vacía de progresiones, regresiones o sustitutos no dibuja la sección; una sin zonas de riesgo o sin familia no dibuja la fila. Antes, «Qué dice la evidencia» se dibujaba siempre, aunque estuviera vacía; ahora solo si hay afirmaciones o nota (no ocurre con los datos actuales).
+
+**La ficha tiene tres listas relacionadas, no dos**: además de «Regresiones» y «Sustitutos» está «Progresiones» (el brief no la menciona; se conserva con el mismo diseño).
+
+### 14.5 Registro de la Parte 5
+
+| Punto | Estado |
+|---|---|
+| Atrás, favorito, músculos, regresiones, sustitutos y botón inferior hacen lo mismo | ✅ código |
+| Todos los datos y el mismo orden de secciones (evidencia, cómo se hace, claves, errores, músculos, detalles, progresiones, regresiones, sustitutos) | ✅ código |
+| Ejercicios sin alguna sección opcional no dejan huecos | ✅ código |
+| Los 190 ejercicios se abren sin error (datos leídos: ninguno sin evidencia, nota, pasos, claves ni errores) | ✅ datos |
+| Abrir una regresión y volver (`push` y `goBack`) | ✅ código |
+| Hero, colapso, estiramiento, medidor, insignias con háptica, línea de tiempo, respiración, trazos, fichas y rejilla | pendiente en dispositivo |
+| Probar al menos 5 ejercicios (uno con «mito», uno sin regresiones, uno con músculos de nombre largo) | pendiente en dispositivo |
+| 60 fps al hacer scroll en Android de gama media | pendiente en dispositivo |
+| Lector de pantalla: afirmación con veredicto, pasos en orden, detalles con etiqueta | pendiente en dispositivo |
+
+### 14.6 Cambios de presentación que tocan un texto
+
+No cambian ningún dato ni ruta.
+
+- Nombre, descripción, pasos, claves, errores, respiración, afirmaciones y nota se muestran con tildes y con la primera letra en mayúscula (`textoVisible`, `utils/presentacion.ts`); el dato no se toca (es clave de búsqueda o identificador). La afirmación `correccion_asimetrias` se muestra «Corrección asimetrías»: es una clave, no un texto de visualización, así que se corrigen las tildes sin añadir palabras.
+- La categoría sale del nombre de `CATEGORIAS` («Fuerza», «Técnica de carrera») en vez del id; «Espacio» sale con mayúscula («Mínimo», «Amplio»); las zonas de riesgo, como frase («Rodilla, cadera»; `atm` → «ATM», `muneca` → «muñeca»).
+- Se añaden líneas de ayuda bajo los encabezados: «Una versión más fácil» (Regresiones), «Si no puedes hacer este» (Sustitutos) y, por coherencia, «Una versión más difícil» (Progresiones). Son texto nuevo; se quitan en una línea si se prefiere.
+- El resumen bajo el medidor («3 comprobados, 1 parcial») sale solo de los conteos; no hay calificación ni porcentaje nuevos.
+- Las claves ya no son chips y los errores llevan una X en lugar de «✕».
+- La palabra «Principal» marca en cada ficha los músculos de `primary`; antes solo salía la fila «Principales».
+
+**Ortografía de los textos de los 190 ejercicios.** El catálogo está escrito sin tildes (solo hay una palabra acentuada, «revés», y las ñ). Se inventariaron las 1 925 palabras distintas de descripción, pasos, claves, errores, respiración, afirmaciones, notas y nombres de familias y músculos, y `src/data/nombresVisibles.ts` corrige al mostrar las que no son ambiguas (264 palabras, entre ellas: más, también, después, así, atrás, según, músculo, glúteo, cuádriceps, tríceps, bíceps, talón, muñeca, respiración, posición, flexión, extensión, tensión, rotación, técnica, isométrica, rápida, máquina, círculos, búlgara, mantén, siéntate, sujétate, verás). **No se corrigen** las palabras cuyo significado cambia con la tilde: esta/está, si/sí, aun/aún, solo, continua/continúa, perdida/pérdida, como, cuando, que; en los textos largos pueden quedar sin tilde. Arreglarlas del todo exige corregir el dato con una revisión humana y hacer la búsqueda insensible a tildes.
+

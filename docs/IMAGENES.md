@@ -44,4 +44,15 @@ Todo lo de esta sección es opcional: sin estos archivos Hoy usa las fotos actua
 
 Cualquier `ex_XXXX` puede tener recorte; los que no lo tengan usan la foto dentro de la tarjeta. Tras copiarlos, `python generar_registry.py` los registra solos (escanea cada carpeta por nombre de archivo, con o sin sufijo). `TarjetaEnfoque` busca `ex_XXXX_recorte` y `FichaMusculo` busca `<id>_hoy`; ningún código cambia.
 
+## Ficha de ejercicio (Parte 5)
+
+También opcional: sin estos archivos la ficha usa el clip (o la foto) del ejercicio en una ficha `magnesia`.
+
+| Archivo | Uso | Formato |
+|---|---|---|
+| `assets/img/ejercicios/ex_XXXX_recorte.png` | Hero de la ficha (46 % del alto): el modelo directo sobre `goma` con un foco de `magnesia` y una elipse de piso. Es el mismo recorte que usa «Elige tu enfoque» en Hoy | PNG con transparencia, cuerpo completo, pies en el borde inferior, alto útil de al menos 800 px |
+| `assets/img/musculos/<id>_neutra.jpg` | «Músculos que trabaja»: la imagen del músculo **sin** resaltar. La imagen actual (`<id>.jpg`) ya trae el músculo resaltado; al entrar la ficha en pantalla se cruza de la neutra a la resaltada en 400 ms | JPG 800×430, mismo encuadre que `<id>.jpg` |
+
+Después de copiarlas, `python generar_registry.py` las registra solas.
+
 Las demás tarjetas de mensaje (`mot_01` a `mot_21`) siguen siendo las actuales. `mot_18` a `mot_20` son las que salen al volver tras días sin entrenar; conviene renovarlas con la misma receta cuando se pueda.

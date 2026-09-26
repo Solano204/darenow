@@ -107,7 +107,7 @@ export function TarjetaSesionHoy(p: TarjetaSesionHoyProps) {
           </View>
           <View style={s.numeros}>
             <Dato n={p.sesion.minutosEstimados} unidad="min" animar={animar} retraso={INICIO_CARGA_MS} />
-            <Dato n={p.sesion.items.length} unidad="ejercicios" animar={animar} retraso={INICIO_CARGA_MS + 120} />
+            <Dato n={p.sesion.items.length} unidad={p.sesion.items.length === 1 ? 'ejercicio' : 'ejercicios'} animar={animar} retraso={INICIO_CARGA_MS + 120} />
           </View>
           {p.sinSaltos && <View style={s.etiqueta}><Text style={s.etiquetaTexto}>Sin saltos</Text></View>}
 
@@ -171,7 +171,7 @@ export function TarjetaSesionVacia({ onRevisar }: { onRevisar: () => void }) {
 /** Numero de Big Shoulders 36 con su unidad al lado, en Figtree 14. */
 function Dato({ n, unidad, animar, retraso }: { n: number; unidad: string; animar: boolean; retraso: number }) {
   return (
-    <View style={s.dato} accessible accessibilityLabel={`${n} ${unidad}`}>
+    <View style={s.dato} accessible accessibilityLabel={`${n} ${unidad === 'min' ? (n === 1 ? 'minuto' : 'minutos') : unidad}`}>
       <View importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>
         <Odometro valor={n} continuo animar={animar} retraso={retraso} estilo={ESTILO_NUMERO} />
       </View>

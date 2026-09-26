@@ -7,12 +7,12 @@ import { resorteMagnesia } from '../../theme';
 import { useReducedMotion } from '../../hooks/useReducedMotion';
 import { useTick } from '../../hooks/useTick';
 
-const DESPLAZAMIENTO_PX = 24;
+const DESPLAZAMIENTO_PX = 12;
 const MARGEN_VISIBLE_PX = 80;
 
 /**
  * Modulo bajo el pliegue que se revela una sola vez, cuando el scroll lo trae
- * a la vista: sube 24 px y aparece con `resorteMagnesia`. `children` recibe
+ * a la vista: sube 12 px y aparece con `resorteMagnesia`. `children` recibe
  * `activo` para arrancar, en ese momento, las animaciones propias del modulo
  * (numeros que ruedan, barras que se llenan). Con movimiento reducido aparece
  * ya puesto y `activo` es verdadero desde el inicio. Debe ser hijo directo del

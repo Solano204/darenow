@@ -65,7 +65,7 @@ export function MiniaturaEjercicio({ item, indice, lado, letra, scrollX, animar,
 
   return (
     <Entrada activo animar={animar} retraso={retraso} x={DESDE_LA_DERECHA_PX} resorte={resortePlaca}>
-      <View style={[s.caja, { width: lado }]} accessible accessibilityLabel={`Ejercicio ${indice + 1}: ${nombre}`}>
+      <View style={[s.caja, { width: lado }]} accessible accessibilityLabel={`Ejercicio ${indice + 1}: ${nombre}, nivel ${item.level} de 3`}>
         <View importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>
           <FotoOscura
             tipo="ejercicio" id={item.id} ancho={lado} alto={lado}

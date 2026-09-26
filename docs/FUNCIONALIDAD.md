@@ -322,3 +322,105 @@ No cambian ningún dato, filtro ni ruta.
 - Arrastrar para actualizar: nuevo, sin datos que pedir; solo relee la fecha.
 
 **Ortografía de los nombres de ejercicio (sección 10 del brief).** Se revisaron los 190. 71 llevan una palabra sin tilde. No se tocó el dato: `name` es la clave de búsqueda de Explorar y del editor de rutinas (`name.toLowerCase().includes(...)`), y corregirlo haría que quien escribe «flexion» dejara de encontrarlo. La tilde se pone en la capa de presentación, `src/data/nombresVisibles.ts` (`nombreVisible`), y solo Hoy la usa hoy. Reproductor, Explorar, EditorRutina y los detalles siguen mostrando el nombre del dato. Palabras corregidas (antes → después): abduccion → abducción, activacion → activación, alineacion → alineación, balon → balón, biceps → bíceps, bulgara → búlgara, cajon → cajón, circulos → círculos, cuadriceps → cuádriceps, deglucion → deglución, descompresion → descompresión, dias → días, dinamica → dinámica, elevacion → elevación, eliptica → elíptica, estatica → estática, extension → extensión, flexion → flexión, gluteo → glúteo, isometrica → isométrica, isometrico → isométrico, jalon → jalón, liberacion → liberación, maquina → máquina, menton → mentón, metodo → método, nordico → nórdico, pajaro → pájaro, posicion → posición, presion → presión, progresion → progresión, rapida → rápida, respiracion → respiración, retraccion → retracción, rotacion → rotación, suspension → suspensión, talon → talón, tension → tensión, toracica → torácica, torsion → torsión, triceps → tríceps. Los textos «Ganar musculo» y «Incluimos algun ejercicio…» del brief ya estaban con tilde en el repo (`GOALS` y `engine/session.ts`); las frases habladas de `textos_voz.json` («Flexion diamante…») no se tocaron.
+
+## 13. Parte 4: la sesión de entrenamiento (auditoría previa)
+
+Archivos: `src/screens/Reproductor.tsx` (carga, «¿Listo?», editor, reproductor, salida), `src/session/playerMachine.ts` (máquina pura), `src/session/useSessionPlayer.ts` (reloj y sonidos), `src/screens/Resumen.tsx` y `guardarSesion` en `src/store/store.ts`. Lo que sigue es el comportamiento actual y no cambia. Los errores encontrados están en `docs/BUGS.md` y no se corrigen.
+
+### 13.1 Orden del flujo
+
+1. `Reproductor` recibe `route.params.sesion` (`Sesion`). Mientras `listo` es falso, una pantalla vacía de `color.fondo`. Al montarse llama a `prepararSonido()` (crea los reproductores de tonos) y lo libera al desmontarse.
+2. Lee `leerSesionGuardada()` (`forja:sesion_en_curso`). Si hay una guardada con ejercicios, un `Alert` nativo «Sesión sin terminar» con los minutos desde `guardadoEn`: **Empezar de nuevo** (borra la guardada, `listo = true`) o **Continuar** (`restaurar = guardada`, `listo = true`). Si no hay, `listo = true`.
+3. «¿Listo?» (`mostrarListo`): solo si no se restaura. Con `restaurar` se salta.
+4. Editor «Tu rutina de hoy»: si `!restaurar && !itemsConfirmados && !sesion.origenPropia`. Las rutinas propias lo saltan (ya traen series, tiempo y descanso).
+5. `ReproductorActivo` con la lista final (`itemsConfirmados` o la de la sesión).
+6. Al llegar a `fin` o al salir: `finalizar` guarda la sesión y hace `navigation.replace('Resumen', { estado, items, resultado, completada, kcal })`.
+
+### 13.2 «¿Listo? Empezamos en un momento»
+
+No se carga nada: dura **3000 ms fijos** (`setTimeout` que arranca cuando `listo` pasa a verdadero) y al vencer pone `mostrarListo = false`. No hay botón ni otro disparador. Esos 3 s son también el margen para que los tonos estén listos antes del primer 3-2-1. Texto: «¿Listo?» (`tipo.display`) y «Empezamos en un momento», con `Aparece`.
+
+### 13.3 «Tu rutina de hoy» (editor)
+
+| Dato | Comportamiento |
+|---|---|
+| Total | `minutos = max(1, round(Σ duracion(it) / 60))`; `duracion(it) = (trabajo × lados + descansoPlan) × seriesPlan`, con `trabajo = segPlan ?? (repsPlan ?? 10) × 3` y `lados = 2` si el ejercicio es unilateral o `reps_por_lado`. Se recalcula con cada cambio. Hoy dice «N minutos en total» |
+| Subtítulo | «Ajusta series, tiempo (o repeticiones si ninguno es por tiempo) y descanso de cada ejercicio antes de empezar.» |
+| Series | 1 a 10, paso 1 |
+| Tiempo | solo si `segPlan != null`: 5 a 300, paso 5, sufijo « s» |
+| Repeticiones | si no es por tiempo: 1 a 50, paso 1 |
+| Descanso | 0 a 300, paso 5, sufijo « s» |
+| Botones − y + | acotan a `min` y `max`. El número también se escribe: al terminar de editar se acota (no se redondea al paso) y solo se llama `onCambio` si cambió |
+| Ajuste de máquina | Solo para ejercicios con equipo de máquina: un campo de texto que guarda con `guardarAjusteMaquina(id, texto)` al terminar de editar (`forja:ajustes_maquina`) |
+| Cambiar | `sustituir(perfil, id, idsEnLista)`: primero un sustituto declarado (`substitutes`) válido y no repetido, si no el primero del mismo patrón. Sin alternativa: `Alert` «Sin alternativa» / «No encontramos otro ejercicio que sirva aquí.». Con alternativa: `aItem(nuevo, bloque)` conservando `seriesPlan`; tiempo, repeticiones y descanso vuelven a los del ejercicio nuevo |
+| Empezar rutina | Botón al final del contenido, dentro del scroll (no fijo). `onConfirmar(lista)`; no exige haber recorrido la lista |
+| Guardado | Los cambios **no** se guardan para la próxima vez: viven en el estado del editor, pasan a la sesión que arranca y a `forja:sesion_en_curso` si se interrumpe. Solo el ajuste de máquina persiste |
+| Miniatura | `Clip` de 220 px, no responde al toque |
+
+### 13.4 Reproductor
+
+**Máquina de estados** (`playerMachine.ts`, sin React). Fases: `preparado → trabajo → [cambio_lado → trabajo] → descanso → preparado …`, más `pausa` y `fin`.
+
+- `preparado`: 9 s (`PREPARACION_S`), cuenta atrás; a 0 pasa a `trabajo`.
+- `trabajo` por tiempo (`segPlan`): cuenta atrás; a 0 registra la serie (`segundos = segPlan`) y pasa a lo siguiente. Por repeticiones (`segPlan == null`): cuenta hacia arriba sin final y espera «Listo» (`registrar` con `repsPlan`).
+- Lo siguiente (`siguiente`): unilateral y lado izquierdo terminado → `cambio_lado` de 5 s con el lado derecho; última serie del último ejercicio → `fin`; tras `trabajo` → `descanso` (`descansoPlan`); tras `descanso` → `preparado` de la serie siguiente o del ejercicio siguiente (unilateral: empieza por la izquierda).
+- `descanso`: cuenta atrás; a 0 pasa a lo siguiente. «Ya estoy» (`avanzar`) lo corta.
+- `pausa`: guarda `faseAnterior` y detiene el reloj; `reanudar` vuelve a esa fase.
+- `deshacer`: vuelve a la foto anterior a la última serie marcada (un solo nivel).
+- Acciones de la máquina que la interfaz de hoy no usa: `masDescanso`, `irA`, `sustituido`.
+
+**Reloj.** Un solo `setInterval` de 1000 ms que envía `tick`. Se recrea con cada cambio de fase y no corre en `pausa` ni en `fin`. El tiempo es un entero (`restanteS`): no hay marcas de tiempo. **Segundo plano:** el listener de `AppState` guarda `forja:sesion_en_curso` al salir y, al volver, envía `avanzarReloj(segundos reales)`, que solo ajusta la fase actual (no encadena fases). **App cerrada:** al reabrir el reproductor se ofrece continuar y el estado avanza con el tiempo desde `guardadoEn`. Cada serie marcada también guarda.
+
+**Controles.**
+
+| Control | Efecto |
+|---|---|
+| Salir | `pausar()` y abre un `Modal` «Guardamos lo que llevas» con cinco motivos (`sin_tiempo`, `muy_dificil`, `muy_facil`, `molestia`, `sin_ganas`): cada uno llama `finalizar(false, motivo)`. «Mejor sigo» cierra y `reanudar()` |
+| Pausa / Seguir (cabecera) | Alterna `pausar` y `reanudar`. Con la voz hablando, «Seguir» está deshabilitado. En pausa también hay un botón grande «Seguir» |
+| Terminar antes (trabajo por tiempo) | `avanzar()`. Ver BUG-5 |
+| Listo (trabajo por repeticiones) | `registrar(repsPlan)` |
+| Ya estoy (descanso) | `avanzar()` |
+| Omitir este ejercicio | `omitir()`, con háptica Warning. Registra la serie actual como omitida. Ver BUG-6 |
+| Deshacer última serie | Solo si hay una foto previa (`puedeDeshacer`) |
+| Deshabilitados | Todos los anteriores mientras `hablando`; además Listo, Terminar antes y Ya estoy durante la cuenta final |
+
+**Lo que se ve hoy.** Barra superior de 3 px con chispa: `progreso = series hechas / series totales` (las unilaterales cuentan doble), cambia solo al marcar una serie. «Salir», «N de M» (índice del ejercicio) y «Pausa». Etiqueta de fase, número (`restanteS`, o las repeticiones del plan si el trabajo es por repeticiones), nombre (en descanso, el del siguiente: el mismo si quedan series, si no el siguiente o «Último esfuerzo»), «Serie N de M» y «lado izquierdo/derecho». «Sigue: nombre» si hay siguiente y la fase no es descanso ni fin. `Clip` de 280 px en bucle en `preparado`, `trabajo` y `cambio_lado`; congelado si se pausa desde ahí; oculto en descanso. El fondo cambia de tinte con la fase con un fundido de `anim.lenta`; en la cuenta 3-2-1 el número pulsa y el fondo sube de calor un instante.
+
+**Sonido** (`perfil.sonido`): tono al entrar a trabajo, a cambio de lado, a descanso, al terminar el descanso y al terminar la sesión; 3-2-1 en `preparado`, `cambio_lado` y trabajo por tiempo; un «toque» por segundo en espera; nada en pausa. En descanso no hay 3-2-1 sonoro (sí hablado).
+**Voz** (`useVozActiva`): al entrar a `preparado` la sesión se pausa mientras dice el nombre y las claves, y reanuda; las demás fases se anuncian; cuenta final hablada en 3-2-1 (descanso incluido). mp3 si existe; si no, `expo-speech` en es-MX.
+**Vibración** (`useHapticosActivos`): Light al registrar una serie que no es omitida, Warning al omitir, Success al terminar.
+**Pantalla:** `useKeepAwake()` mientras dura. `useSinAnuncios()`: ningún anuncio. **Orientación:** solo vertical (`orientation: portrait`).
+**Accesibilidad hoy:** la etiqueta de fase y el número tienen `accessibilityLiveRegion="polite"`; como el número cambia cada segundo, un lector de pantalla lo anuncia cada segundo.
+
+**Fin.** Al llegar a `fin`: háptica Success y `finalizar(true, null)`. `finalizar` borra `forja:sesion_en_curso`, llama `guardarSesion` con `duracionS = transcurridoS` (no cuenta el tiempo en pausa), las series hechas, `kcal` si hay peso y `rpe: null`, y navega a `Resumen` con `replace`.
+
+### 13.5 Resumen
+
+| Dato | Origen |
+|---|---|
+| Título | `completada ? 'Sesión completa' : 'Guardamos lo que hiciste'`. Si no está completada, además «Cuenta igual para tu racha. Lo que hiciste, hecho está.» (texto fijo) |
+| Días seguidos | `resultado.racha.dias`, devuelto por `guardarSesion`. La racha solo se actualiza si la sesión tiene al menos una serie no omitida (`cuenta = reales.length >= 1`); si no, queda como estaba. «Usaste un día de gracia. Te queda uno este mes.» si `resultado.graciaUsada` |
+| Duración | `round(transcurridoS / 60)` min |
+| Series | series hechas no omitidas |
+| Ejercicios | ids distintos entre las no omitidas |
+| Omitidas | solo si hay alguna |
+| Gasto aproximado | solo con `perfil.mostrarKcal` y `kcal > 0` |
+| Mejor que la vez pasada | reps, segundos o peso mayores que `ultimaVez` |
+| Nuevo logro | `resultado.logrosNuevos`, ids que otorga `guardarSesion`: `logro_007dias` (racha ≥ 7), `logro_100sesiones`, `logro_365sesiones`, `logro_030dias` (≥ 20 días distintos en 30), `logro_silenciosa` (≥ 5 completadas con modo sin saltos) y `logro_programa1` («Programa completo»: `sesiones.length >= 1`, ver BUG-1). Nombre y descripción de `logroPorId` |
+| Cómo se sintió | Cuatro opciones (3 Suave, 5 Bien, 7 Exigente, 9 Al límite), opcional y de una sola. Es estado local de la pantalla: **no se guarda en ningún sitio** (BUG-3) |
+| Cerrar | `navigate('Tabs', { screen: 'Hoy' })` |
+
+### 13.6 Registro de la Parte 4
+
+Se rellena al cerrar cada fase. «código» = lectura de código, `tsc`, suites y `lint:color`; nada se ha corrido en dispositivo.
+
+| Punto | Estado |
+|---|---|
+| «¿Listo?» dura 3000 ms y no depende de nada más | |
+| Editor: mismos límites, pasos, cálculo del total, Cambiar y Empezar | |
+| Ajuste de máquina se sigue guardando | |
+| Reproductor: mismas fases, tiempos y orden; mismos handlers | |
+| El anillo lee `restanteS` y no lleva reloj propio | |
+| Segundo plano y app cerrada igual que antes | |
+| Resumen: mismos datos y mismos casos de logro; «Cómo se sintió» igual (local) | |
+

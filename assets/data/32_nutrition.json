@@ -1,7 +1,7 @@
 {
   "coleccion": "nutricion",
   "version": "1.0.0",
-  "principio_de_diseno": "FORJA no prescribe dietas, no calcula calorias del usuario, no cuenta macros, no pide registrar comidas y no muestra 'calorias restantes'. Es una decision de producto, no una carencia. Las recomendaciones alimentarias individualizadas corresponden a profesionales de la nutricion que pueden valorar historial, analiticas, medicacion y contexto. Esta coleccion es material educativo general, escrito sin cifras dirigidas al usuario.",
+  "principio_de_diseno": "DARENOW no prescribe dietas, no calcula calorias del usuario, no cuenta macros, no pide registrar comidas y no muestra 'calorias restantes'. Es una decision de producto, no una carencia. Las recomendaciones alimentarias individualizadas corresponden a profesionales de la nutricion que pueden valorar historial, analiticas, medicacion y contexto. Esta coleccion es material educativo general, escrito sin cifras dirigidas al usuario.",
   "por_que_sin_dieta": {
     "razon_1": "Una recomendacion nutricional personalizada sin ver a la persona es, en el mejor caso, una suposicion.",
     "razon_2": "El conteo de calorias y el registro de comidas se asocian, en parte de la poblacion, con relaciones problematicas con la comida. Una app de uso masivo no puede filtrar quien esta en ese grupo.",

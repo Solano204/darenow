@@ -55,4 +55,6 @@ También opcional: sin estos archivos la ficha usa el clip (o la foto) del ejerc
 
 Después de copiarlas, `python generar_registry.py` las registra solas.
 
+Desde la Parte 10, `<id>_neutra.jpg` también la usan el catálogo de músculos, las fichas relacionadas y el hero de la ficha de músculo (`FichaRender`): con ella el músculo se enciende al entrar y el hero da un único brillo; sin ella, el render ya resaltado aparece tal cual.
+
 Las demás tarjetas de mensaje (`mot_01` a `mot_21`) siguen siendo las actuales. `mot_18` a `mot_20` son las que salen al volver tras días sin entrenar; conviene renovarlas con la misma receta cuando se pueda.

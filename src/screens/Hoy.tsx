@@ -42,7 +42,7 @@ import { EstadisticasHoy } from '../components/hoy/EstadisticasHoy';
 import { useEstado, estadisticas, ultimos7, hoy, imagenRutina } from '../store/store';
 import { armarSesion, sesionDeRutina, minutosPropios, type Perfil } from '../engine/session';
 import {
-  RUTINAS, PROGRAMAS, EJERCICIOS, MUSCULOS, TIPS, programaPorId, nombreGoal, salaPorId,
+  RUTINAS, PROGRAMAS, EJERCICIOS, MUSCULOS, TIPS, programaPorId, nombreGoal,
 } from '../data/catalog';
 import { saludo } from '../data/mensajes';
 
@@ -316,7 +316,7 @@ export default function Hoy({ navigation }: { navigation: NavigationProp<ParamLi
             data={tips} keyExtractor={t => t.id} ancho={ANCHO_ARTICULO} separacion={SEPARACION_CARRUSEL}
             renderItem={t => (
               <TarjetaArticulo
-                t={t} sala={salaPorId.get(t.sala)?.name} favorito={esFavorito('tips', t.id)}
+                t={t} favorito={esFavorito('tips', t.id)}
                 onPress={() => navigation.navigate('Tip', { id: t.id })}
                 onFavorito={() => alternarFavorito('tips', t.id)}
               />

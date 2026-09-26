@@ -38,8 +38,9 @@ import EditorRutina from './src/screens/EditorRutina';
 import RutinaPropia from './src/screens/RutinaPropia';
 import Reproductor from './src/screens/Reproductor';
 import Resumen from './src/screens/Resumen';
+import DetalleEjercicio from './src/screens/DetalleEjercicio';
 import {
-  DetalleEjercicio, DetalleMusculo, DetalleRutina, DetallePrograma,
+  DetalleMusculo, DetalleRutina, DetallePrograma,
 } from './src/screens/Detalles';
 
 const Tab = createBottomTabNavigator();
@@ -83,7 +84,7 @@ function Pestanas() {
 }
 
 /** Pantallas que ya traen su propia entrada o su propia transicion: no llevan la de escala. */
-const SIN_ENTRADA = new Set(['Bienvenida', 'Tabs', 'Reproductor', 'Resumen', 'EditorRutina']);
+const SIN_ENTRADA = new Set(['Bienvenida', 'Tabs', 'Reproductor', 'Resumen', 'EditorRutina', 'Ejercicio']);
 
 function Raiz() {
   const { estado, cargando, terminarOnboarding, marcarPresentacion } = useEstado();
@@ -147,7 +148,7 @@ function Raiz() {
       <Stack.Screen name="Resumen" component={Resumen}
         options={{ headerShown: false, gestureEnabled: false, animation: 'fade' }} />
 
-      <Stack.Screen name="Ejercicio" component={DetalleEjercicio} options={{ title: '' }} />
+      <Stack.Screen name="Ejercicio" component={DetalleEjercicio} options={{ headerShown: false }} />
       <Stack.Screen name="Musculo" component={DetalleMusculo} options={{ title: '' }} />
       <Stack.Screen name="Rutina" component={DetalleRutina} options={{ title: '' }} />
       <Stack.Screen name="RutinaPropia" component={RutinaPropia} options={{ title: '' }} />

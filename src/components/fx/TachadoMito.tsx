@@ -14,7 +14,7 @@ const ROTACION_INICIAL = -16;
 const ESCALA_SELLO = 1.7;
 const GROSOR_TACHON = 2;
 
-interface Linea { x: number; y: number; width: number; height: number }
+export interface Linea { x: number; y: number; width: number; height: number }
 
 /**
  * La afirmacion falsa se tacha con una linea roja de izquierda a derecha
@@ -53,7 +53,7 @@ export function TachadoMito({ texto, activo, animar = true, retraso = 0 }: {
   );
 }
 
-function Tachon({ linea, activo, estatico, duracion, espera }: {
+export function Tachon({ linea, activo, estatico, duracion, espera }: {
   linea: Linea; activo: boolean; estatico: boolean; duracion: number; espera: number;
 }) {
   const t = useSharedValue(estatico ? 1 : 0);

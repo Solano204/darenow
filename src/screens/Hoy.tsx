@@ -29,7 +29,7 @@ import { CarruselHoy, TarjetaVerMas } from '../components/hoy/CarruselHoy';
 import { TarjetaRutina, ANCHO_TARJETA_RUTINA, ALTO_FOTO_RUTINA, type RutinaHoy } from '../components/hoy/TarjetaRutina';
 import { NubeRefresco } from '../components/hoy/NubeRefresco';
 import { FilaSemana } from '../components/hoy/FilaSemana';
-import { BloqueRevela } from '../components/hoy/BloqueRevela';
+import { BloqueRevela } from '../components/fx/BloqueRevela';
 import { TuSemana } from '../components/hoy/TuSemana';
 import { FilaExplorar } from '../components/hoy/FilaExplorar';
 import { TuPrograma } from '../components/hoy/TuPrograma';

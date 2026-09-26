@@ -20,6 +20,12 @@ export interface Estampado {
   activo: boolean;
   animar?: boolean;
   retraso: number;
+  /** Escala con la que cae (1.3 por defecto). */
+  escala?: number;
+  /** Giro inicial en grados, que se deshace al asentarse (0 por defecto). */
+  giro?: number;
+  /** Golpe Rigid al asentarse (verdadero por defecto). */
+  haptica?: boolean;
 }
 
 /** Insignia de evidencia: el punto lleva el color de la placa; el texto, su variante legible (AA). */
@@ -39,14 +45,19 @@ export function InsigniaEvidencia({ tipo, pequena, estampar, estilo }: {
     if (estatico) { t.value = 1; return; }
     if (!estampar?.activo) { t.value = 0; return; }
     t.value = withDelay(estampar.retraso, withSpring(1, resortePlaca));
-    const golpe = setTimeout(haptico.sello, estampar.retraso + IMPACTO_MS);
-    return () => { clearTimeout(golpe); cancelAnimation(t); };
+    const golpe = estampar.haptica === false ? undefined : setTimeout(haptico.sello, estampar.retraso + IMPACTO_MS);
+    return () => { if (golpe) clearTimeout(golpe); cancelAnimation(t); };
   }, [estatico, estampar?.activo]);
 
+  const escalaIni = estampar?.escala ?? ESCALA_INICIAL;
+  const giroIni = estampar?.giro ?? 0;
   const animado = useAnimatedStyle(() => ({
     opacity: Math.min(1, t.value * 3),
-    transform: [{ scale: ESCALA_INICIAL - (ESCALA_INICIAL - 1) * t.value }],
-  }));
+    transform: [
+      { scale: escalaIni - (escalaIni - 1) * t.value },
+      { rotate: `${giroIni * (1 - t.value)}deg` },
+    ],
+  }), [escalaIni, giroIni]);
 
   return (
     <Animated.View

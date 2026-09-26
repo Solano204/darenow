@@ -1,7 +1,7 @@
 /**
  * FORJA · fichas de detalle
  *
- * Ejercicio, musculo, rutina y programa.
+ * Musculo, rutina y programa (la ficha de ejercicio vive en `DetalleEjercicio.tsx`).
  *
  * Cambios: foto de portada en todas, carrusel circular de musculos dentro
  * del ejercicio, listas de rutina y programa con la foto de cada ejercicio,
@@ -12,183 +12,18 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { LinearGradient } from 'expo-linear-gradient';
-import { color, tipo, esp, radio, insignia, degradado, sombra, peso } from '../theme';
+import { color, tipo, esp, peso } from '../theme';
 import {
-  Tarjeta, Chip, Insignia, Boton, Seccion, Nota, Fila, Toque, Favorito, Aparece,
-  useHuecoAbajo,
+  Tarjeta, Chip, Boton, Seccion, Nota, Toque, Favorito, useHuecoAbajo,
 } from '../components/ui';
 import Foto from '../components/Foto';
-import Clip from '../components/Clip';
 import Carrusel from '../components/Carrusel';
 import {
-  porId, musculoPorId, familiaPorId, rutinaPorId, programaPorId, EJERCICIOS,
-  evidenciaDe, insigniaDe, nombreEquipo, nombreGoal,
+  porId, musculoPorId, rutinaPorId, programaPorId, EJERCICIOS,
+  nombreEquipo, nombreGoal,
 } from '../data/catalog';
 import { useEstado } from '../store/store';
 import { sesionDeRutina, itemPropioPorDefecto } from '../engine/session';
-
-/* ============================================================ EJERCICIO */
-
-export function DetalleEjercicio({ route, navigation }: any) {
-  const abajo = useHuecoAbajo();
-  const e = porId.get(route.params.id);
-  const { estado, alternarVeto, alternarFavorito, esFavorito } = useEstado();
-  if (!e) return null;
-
-  const { mapa, nota } = evidenciaDe(e);
-  const fam = familiaPorId.get(e.family);
-  const vetado = estado.perfil.vetos.includes(e.id);
-  const bloqueado = e.contra.some(c => estado.perfil.contra.includes(c));
-  // Principales primero (el orden real: son los que mas carga el ejercicio),
-  // acotado a 4 como todo carrusel de la app — sin esto, un ejercicio con
-  // varios musculos secundarios desbordaba la fila sin limite ni "ver mas".
-  const musculos = [...e.primary, ...e.secondary]
-    .map(id => musculoPorId.get(id)).filter(Boolean).slice(0, 4);
-
-  return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: color.fondo }} edges={['bottom']}>
-      <ScrollView contentContainerStyle={{ paddingBottom: abajo }} showsVerticalScrollIndicator={false}>
-        {/* Portada */}
-        <View>
-          <Clip id={e.id} nombre={e.name} alto={230} ancho="100%" forma="tarjeta" mostrarRuta />
-          <View style={s.favPortada}>
-            <Favorito activo={esFavorito('ejercicios', e.id)}
-              onPress={() => alternarFavorito('ejercicios', e.id)} sobreFoto tamano={44} />
-          </View>
-        </View>
-
-        <View style={{ padding: esp.md }}>
-          <Aparece>
-            <Text style={[tipo.h1, { color: color.texto }]}>{e.name}</Text>
-            {e.name_en && <Text style={[tipo.pie, { color: color.textoTenue }]}>{e.name_en}</Text>}
-
-            <View style={{ flexDirection: 'row', gap: esp.xs, flexWrap: 'wrap', marginTop: esp.sm }}>
-              <Chip texto={`Nivel ${e.level}`} pequeno />
-              <Chip texto={e.category} pequeno />
-              {e.unilateral && <Chip texto="Por lado" pequeno />}
-              {e.impact >= 2 && <Chip texto="Impacto alto" pequeno />}
-              {e.noise >= 2 && <Chip texto="Ruidoso" pequeno />}
-            </View>
-
-            {bloqueado && (
-              <View style={{ marginTop: esp.md }}>
-                <Nota tono="cuidado" titulo="Fuera de tu plan"
-                  texto="Lo quitamos por las lesiones que declaraste. Puedes verlo, pero no te lo vamos a proponer." />
-              </View>
-            )}
-
-            <Text style={[tipo.cuerpo, { color: color.texto, marginTop: esp.md }]}>{e.desc}</Text>
-          </Aparece>
-
-          {/* La evidencia va aqui, con su nota al lado. Nunca suelta en una lista. */}
-          <Seccion titulo="Qué dice la evidencia">
-            <Tarjeta desenfoque>
-              {Object.entries(mapa).map(([claim, v]) => (
-                <View key={claim} style={s.claim}>
-                  <View style={[s.punto, { backgroundColor: insignia[v].fg }]} />
-                  <Text style={[tipo.pie, { color: color.texto, flex: 1 }]}>
-                    {claim.replace(/_/g, ' ')}
-                  </Text>
-                  <Text style={[tipo.micro, { color: insignia[v].fg }]}>{insignia[v].texto}</Text>
-                </View>
-              ))}
-              {nota && <Text style={[tipo.pie, { color: color.textoSuave, marginTop: esp.xs }]}>{nota}</Text>}
-            </Tarjeta>
-          </Seccion>
-
-          <Seccion titulo="Cómo se hace">
-            {e.steps.map((p, i) => (
-              <View key={i} style={s.paso}>
-                <View style={s.numero}>
-                  <Text style={[tipo.micro, { color: color.sobreOscuro }]}>{i + 1}</Text>
-                </View>
-                <Text style={[tipo.cuerpo, { color: color.texto, flex: 1 }]}>{p}</Text>
-              </View>
-            ))}
-            <Nota titulo="Respiración" texto={e.breathing} />
-          </Seccion>
-
-          <Seccion titulo="Claves">
-            <View style={{ flexDirection: 'row', gap: esp.xs, flexWrap: 'wrap' }}>
-              {e.cues.map((c, i) => <Chip key={i} texto={c} />)}
-            </View>
-          </Seccion>
-
-          <Seccion titulo="Errores comunes">
-            {e.errors.map((x, i) => (
-              <View key={i} style={s.error}>
-                <View style={s.cruz}><Text style={{ color: color.mito, fontSize: 11 }}>✕</Text></View>
-                <Text style={[tipo.cuerpo, { color: color.texto, flex: 1 }]}>{x}</Text>
-              </View>
-            ))}
-          </Seccion>
-        </View>
-
-        {/* Musculos en carrusel circular, con nombre e imagen. */}
-        <Seccion titulo="Músculos que trabaja" estilo={{ paddingLeft: esp.md }}>
-          <Carrusel
-            items={musculos.map(m => ({
-              id: m!.id, titulo: m!.name,
-              favorito: esFavorito('musculos', m!.id),
-            }))}
-            tipoFoto="musculo" forma="circulo" textoVerMas="Todos"
-            onItem={id => navigation.push('Musculo', { id })}
-            onVerMas={() => navigation.navigate('Tabs', { screen: 'Explorar', merge: true, params: { tab: 'musculos' } })}
-          />
-          <View style={{ paddingRight: esp.md, marginTop: esp.sm }}>
-            <Tarjeta desenfoque>
-              <Fila etiqueta="Principales" valor={e.primary.map(m => musculoPorId.get(m)?.name ?? m).join(', ')} />
-            </Tarjeta>
-          </View>
-        </Seccion>
-
-        <View style={{ padding: esp.md }}>
-          <Seccion titulo="Detalles">
-            <Tarjeta desenfoque>
-              <Fila etiqueta="Series por defecto" valor={
-                e.default.seg ? `${e.default.series} × ${e.default.seg} s` : `${e.default.series} × ${e.default.reps}`
-              } />
-              <Fila etiqueta="Descanso" valor={`${e.default.rest_s} s`} />
-              <Fila etiqueta="Equipo" valor={nombreEquipo(e.equipment)} />
-              <Fila etiqueta="Espacio" valor={e.space} />
-              <Fila etiqueta="MET" valor={String(e.met)} tenue />
-              {e.risk_zones.length > 0 && <Fila etiqueta="Zonas de riesgo" valor={e.risk_zones.join(', ')} tenue />}
-              {fam && <Fila etiqueta="Familia" valor={fam.name} tenue />}
-            </Tarjeta>
-          </Seccion>
-
-          <Relacionados titulo="Progresiones" ids={e.progressions} navigation={navigation} />
-          <Relacionados titulo="Regresiones" ids={e.regressions} navigation={navigation} />
-          <Relacionados titulo="Sustitutos" ids={e.substitutes} navigation={navigation} />
-
-          <Boton
-            texto={vetado ? 'Volver a proponérmelo' : 'No me lo propongas más'}
-            variante="contorno" onPress={() => alternarVeto(e.id)} estilo={{ marginTop: esp.lg }}
-          />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
-  );
-}
-
-function Relacionados({ titulo, ids, navigation }: { titulo: string; ids: string[]; navigation: any }) {
-  const items = ids.map(i => porId.get(i)).filter(Boolean);
-  if (!items.length) return null;
-  return (
-    <Seccion titulo={titulo}>
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: esp.sm }}>
-        {items.map(x => (
-          <Toque key={x!.id} onPress={() => navigation.push('Ejercicio', { id: x!.id })}
-            estilo={{ width: 116 } as never}>
-            <Foto tipo="ejercicio" id={x!.id} nombre={x!.name} alto={84} ancho={116} />
-            <Text style={[tipo.pie, { color: color.texto, marginTop: 5 }]} numberOfLines={2}>{x!.name}</Text>
-          </Toque>
-        ))}
-      </ScrollView>
-    </Seccion>
-  );
-}
 
 /* ============================================================== MUSCULO */
 

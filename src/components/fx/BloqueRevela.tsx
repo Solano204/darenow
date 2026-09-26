@@ -18,28 +18,31 @@ const MARGEN_VISIBLE_PX = 80;
  * ya puesto y `activo` es verdadero desde el inicio. Debe ser hijo directo del
  * contenido del scroll.
  */
-export function BloqueRevela({ y, estilo, sinMovimiento, children }: {
+export function BloqueRevela({ y, estilo, sinMovimiento, fraccion, children }: {
   y: SharedValue<number>;
   estilo?: StyleProp<ViewStyle>;
   /** Solo avisa a `children` cuando entra en pantalla (`activo`): no sube ni se desvanece. */
   sinMovimiento?: boolean;
+  /** Fraccion del bloque que debe estar en pantalla para activarlo (0.4 = el 40 %). Sin ella, cuando asoma 80 px. */
+  fraccion?: number;
   children: (activo: boolean) => React.ReactNode;
 }) {
   const reducido = useReducedMotion();
   const tick = useTick();
   const { height: alturaVentana } = useWindowDimensions();
   const arriba = useSharedValue(Number.POSITIVE_INFINITY);
+  const altoBloque = useSharedValue(0);
   const visto = useSharedValue(reducido || sinMovimiento ? 1 : 0);
   const [activo, setActivo] = useState(reducido);
 
   useAnimatedReaction(
-    () => y.value + alturaVentana - MARGEN_VISIBLE_PX > arriba.value,
+    () => y.value + alturaVentana - (fraccion === undefined ? MARGEN_VISIBLE_PX : fraccion * altoBloque.value) > arriba.value,
     (dentro, previo) => {
       if (!dentro || previo) return;
       if (!sinMovimiento) visto.value = withSpring(1, resorteMagnesia);
       runOnJS(setActivo)(true);
     },
-    [alturaVentana],
+    [alturaVentana, fraccion],
   );
 
   const animado = useAnimatedStyle(() => ({
@@ -48,7 +51,7 @@ export function BloqueRevela({ y, estilo, sinMovimiento, children }: {
   }), [reducido, tick]);
 
   return (
-    <Animated.View style={[estilo, animado]} onLayout={e => { arriba.value = e.nativeEvent.layout.y; }}>
+    <Animated.View style={[estilo, animado]} onLayout={e => { arriba.value = e.nativeEvent.layout.y; altoBloque.value = e.nativeEvent.layout.height; }}>
       {children(activo)}
     </Animated.View>
   );

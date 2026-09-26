@@ -1,6 +1,8 @@
 import React, { useEffect, useRef } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
-import Animated, { useAnimatedStyle, useSharedValue, withSequence, withSpring, withTiming } from 'react-native-reanimated';
+import Animated, {
+  useAnimatedStyle, useSharedValue, withSequence, withSpring, withTiming, type SharedValue,
+} from 'react-native-reanimated';
 import { Ionicons } from '@expo/vector-icons';
 import { paleta, conAlfa, resortePlaca, haptico } from '../../theme';
 import { useReducedMotion } from '../../hooks/useReducedMotion';
@@ -20,10 +22,14 @@ const SALIDA_MS = 140;
  * particulas. El estado y el efecto sobre los datos son los de siempre:
  * `onPress` alterna el favorito y `activo` viene del almacen.
  */
-export function EstrellaFavorito({ activo, onPress, nombre }: {
+export function EstrellaFavorito({ activo, onPress, nombre, lado = LADO, fondo }: {
   activo: boolean;
   onPress: () => void;
   nombre: string;
+  /** Diametro del boton (40 por defecto; 44 en la ficha del ejercicio). */
+  lado?: number;
+  /** Opacidad del fondo circular (0 a 1). Sin ella el fondo siempre se ve. */
+  fondo?: SharedValue<number>;
 }) {
   const reducido = useReducedMotion();
   const tick = useTick();
@@ -50,6 +56,7 @@ export function EstrellaFavorito({ activo, onPress, nombre }: {
     transform: [{ scale: reducido ? 1 : t.value }],
   }), [reducido, tick]);
   const disco = useAnimatedStyle(() => ({ transform: [{ scale: reducido ? 1 : icono.value }] }), [reducido, tick]);
+  const capaFondo = useAnimatedStyle(() => ({ opacity: fondo ? fondo.value : 1 }), [tick]);
 
   return (
     <Pressable
@@ -60,7 +67,8 @@ export function EstrellaFavorito({ activo, onPress, nombre }: {
       accessibilityState={{ selected: activo }}
     >
       <View ref={magnesia.ref} collapsable={false}>
-        <Animated.View style={[s.disco, disco]}>
+        <Animated.View style={[s.disco, { width: lado, height: lado, borderRadius: lado / 2 }, disco]}>
+          <Animated.View style={[s.fondo, { borderRadius: lado / 2 }, capaFondo]} />
           <Ionicons name="star-outline" size={TAMANO_ICONO} color={paleta.magnesia} />
           <Animated.View style={[s.relleno, relleno]} pointerEvents="none">
             <Ionicons name="star" size={TAMANO_ICONO} color={paleta.magnesia} />
@@ -74,7 +82,7 @@ export function EstrellaFavorito({ activo, onPress, nombre }: {
 const s = StyleSheet.create({
   disco: {
     width: LADO, height: LADO, borderRadius: LADO / 2, alignItems: 'center', justifyContent: 'center',
-    backgroundColor: conAlfa(paleta.goma, 0.7),
   },
+  fondo: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: conAlfa(paleta.goma, 0.7) },
   relleno: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, alignItems: 'center', justifyContent: 'center' },
 });

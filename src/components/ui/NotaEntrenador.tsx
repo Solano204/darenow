@@ -7,10 +7,15 @@ const ANCHO_BARRA = 3;
 export const estiloNota = { ...tipo.etiqueta, fontSize: 14, lineHeight: 20, color: paleta.magnesia };
 
 /** Reemplaza a las pastillas azules: una nota de entrenador con barra de acción a la izquierda. */
-export function NotaEntrenador({ children, estilo }: { children: React.ReactNode; estilo?: StyleProp<ViewStyle> }) {
+export function NotaEntrenador({ children, estilo, colorBarra = paleta.placaAzul }: {
+  children: React.ReactNode;
+  estilo?: StyleProp<ViewStyle>;
+  /** Color de la barra lateral (azul de accion por defecto). */
+  colorBarra?: string;
+}) {
   return (
     <View style={[s.caja, estilo]}>
-      <View style={s.barra} />
+      <View style={[s.barra, { backgroundColor: colorBarra }]} />
       {typeof children === 'string' ? <Text style={estiloNota}>{children}</Text> : children}
     </View>
   );

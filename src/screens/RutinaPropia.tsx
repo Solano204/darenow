@@ -1,47 +1,68 @@
 /**
  * FORJA · ficha de rutina propia
  *
- * Igual que la de una rutina del catalogo, pero con los numeros que puso el
- * usuario y con editar, duplicar y borrar.
+ * Igual que la de una rutina del catalogo (misma plantilla: `PlantillaRutina`), pero con los
+ * numeros que puso el usuario y con editar, duplicar y borrar. Una rutina propia no tiene
+ * bloques: es un solo bloque plano, y su perfil es una meseta.
  *
  * Los avisos aparecen arriba y no bloquean: la rutina es suya.
  */
 
 import React, { useMemo } from 'react';
-import { View, Text, StyleSheet, ScrollView, Alert } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { color, tipo, esp, radio, peso, TOQUE } from '../theme';
-import {
-  Boton, Chip, Toque, Nota, Favorito, Aparece, useHuecoAbajo,
-} from '../components/ui';
-import Foto from '../components/Foto';
-import { useEstado, imagenRutina } from '../store/store';
+import { Alert, Pressable, StyleSheet, Text, View } from 'react-native';
+import type { ParamListBase } from '@react-navigation/native';
+import type { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { Ionicons } from '@expo/vector-icons';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { paleta, familia, haptico, MARGEN_PANTALLA } from '../theme';
+import { Nota } from '../components/ui';
+import { BotonPlaca } from '../components/ui/BotonPlaca';
+import { BotonSecundario } from '../components/ui/BotonSecundario';
+import { PlantillaRutina } from '../components/routine-detail/PlantillaRutina';
+import { MetadatosRutina } from '../components/routine-detail/MetadatosRutina';
+import { BotonDuplicar } from '../components/routine-detail/BotonDuplicar';
+import type { BloqueVista } from '../components/routine-detail/RielBloques';
+import { useEstado, imagenRutina, type RutinaPropia as Propia } from '../store/store';
 import { sesionDePropia, minutosPropios, revisarPropia } from '../engine/session';
-import { porId, nombreGoal } from '../data/catalog';
+import { porId } from '../data/catalog';
+import { fuente } from '../media/registry';
 
-export default function RutinaPropia({ route, navigation }: any) {
-  const abajo = useHuecoAbajo();
+type Props = NativeStackScreenProps<ParamListBase, 'RutinaPropia'>;
+
+/** La rutina propia como un solo bloque plano; los ejercicios que ya no existen en el catalogo se omiten. */
+function vistaDePropia(r: Propia, minutos: number): BloqueVista {
+  const items = r.items.flatMap(it => {
+    const e = porId.get(it.ejercicioId);
+    if (!e) return [];
+    return [{
+      id: e.id, series: it.series, seg: it.seg, reps: it.seg ? undefined : it.reps,
+      porLado: !!(e.unilateral || e.measure === 'reps_por_lado'), descansoS: it.descansoS,
+    }];
+  });
+  return { tipo: 'plano', titulo: 'Ejercicios', min: minutos, items };
+}
+
+export default function RutinaPropia({ route, navigation }: Props) {
+  const inset = useSafeAreaInsets();
   const {
     estado, ultimaVezDe, borrarRutinaPropia, guardarRutinaPropia,
     nuevaRutinaPropia, alternarFavorito, esFavorito,
   } = useEstado();
 
-  const r = estado.rutinasPropias.find(x => x.id === route.params.id);
+  const r = estado.rutinasPropias.find(x => x.id === (route.params as { id: string }).id);
   const minutos = useMemo(() => (r ? minutosPropios(r.items) : 0), [r]);
   const avisos = useMemo(
     () => (r ? revisarPropia(r.items, estado.perfil) : []),
     [r, estado.perfil],
   );
+  const bloques = useMemo(() => (r ? [vistaDePropia(r, minutos)] : []), [r, minutos]);
 
   if (!r) {
     return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: color.fondo }}>
-        <View style={{ padding: esp.md }}>
-          <Text style={[tipo.cuerpo, { color: color.textoSuave }]}>
-            Esta rutina ya no existe.
-          </Text>
-        </View>
-      </SafeAreaView>
+      <View style={[s.vacio, { paddingTop: inset.top + 24 }]}>
+        <Text style={s.vacioTexto}>Esta rutina ya no existe.</Text>
+        <BotonSecundario texto="Volver" onPress={() => navigation.goBack()} />
+      </View>
     );
   }
 
@@ -73,103 +94,57 @@ export default function RutinaPropia({ route, navigation }: any) {
   const series = r.items.reduce((a, x) => a + x.series, 0);
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: color.fondo }} edges={['bottom']}>
-      <ScrollView contentContainerStyle={{ paddingBottom: abajo + 70 }}
-        showsVerticalScrollIndicator={false}>
-        <View>
-          <Foto tipo="rutina" id={imagenRutina(r.id, r.imagenId)} nombre={r.nombre} alto={200} ancho="100%" forma="tarjeta" />
-          <View style={s.favPortada}>
-            <Favorito activo={esFavorito('rutinas', r.id)}
-              onPress={() => alternarFavorito('rutinas', r.id)} tamano={44} sobreFoto />
-          </View>
-          <View style={s.etiquetaMia}>
-            <Text style={[tipo.micro, { color: color.sobreOscuro }]}>MÍA</Text>
-          </View>
-        </View>
-
-        <View style={{ padding: esp.md }}>
-          <View style={{ flexDirection: 'row', alignItems: 'center', gap: esp.xs }}>
-            <Text style={[tipo.h1, { color: color.texto, flex: 1 }]}>{r.nombre}</Text>
-            <Toque
-              onPress={() => navigation.navigate('EditorRutina', { id: r.id })}
-              etiqueta="Editar rutina"
-              estilo={{ width: TOQUE, height: TOQUE, alignItems: 'center', justifyContent: 'center' } as never}
-            >
-              <Text style={{ fontSize: 20, color: color.textoSuave }}>✎</Text>
-            </Toque>
-          </View>
-          <View style={{ flexDirection: 'row', gap: esp.xs, flexWrap: 'wrap', marginTop: esp.sm }}>
-            <Chip texto={nombreGoal(r.objetivo)} activo pequeno />
-            <Chip texto={`${minutos} min`} pequeno />
-            <Chip texto={`${r.items.length} ejercicios`} pequeno />
-            <Chip texto={`${series} series`} pequeno />
-          </View>
-          <Text style={[tipo.pie, { color: color.textoTenue, marginTop: esp.xs }]}>
+    <PlantillaRutina
+      nombre={r.nombre}
+      foto={fuente('rutina', imagenRutina(r.id, r.imagenId))}
+      favorito={esFavorito('rutinas', r.id)}
+      onFavorito={() => alternarFavorito('rutinas', r.id)}
+      onAtras={() => navigation.goBack()}
+      junto={(
+        <Pressable
+          onPress={() => { haptico.toque(); navigation.navigate('EditorRutina', { id: r.id }); }}
+          accessibilityRole="button" accessibilityLabel="Editar rutina" hitSlop={4} style={s.lapiz}
+        >
+          <Ionicons name="pencil-outline" size={20} color={paleta.magnesia2} />
+        </Pressable>
+      )}
+      meta={(
+        <View style={s.meta}>
+          <MetadatosRutina propia minutos={minutos} objetivo={r.objetivo} ejercicios={r.items.length} series={series} />
+          <Text style={s.fecha}>
             Creada el {r.creada}
             {r.editada !== r.creada ? ` · editada el ${r.editada}` : ''}
           </Text>
-
-          {avisos.map((a, i) => (
-            <View key={i} style={{ marginTop: esp.md }}>
-              <Nota texto={a} tono="cuidado" titulo={i === 0 ? 'Revisa' : undefined} />
-            </View>
-          ))}
-
-          <Text style={[tipo.h2, { color: color.texto, marginTop: esp.lg, marginBottom: esp.sm }]}>
-            Ejercicios
-          </Text>
-
-          {r.items.map((it, i) => {
-            const e = porId.get(it.ejercicioId);
-            if (!e) return null;
-            const porLado = e.unilateral || e.measure === 'reps_por_lado';
-            return (
-              <Aparece key={`${it.ejercicioId}-${i}`} retraso={Math.min(i, 6) * 25}>
-                <Toque onPress={() => navigation.navigate('Ejercicio', { id: e.id })}
-                  estilo={s.fila as never}>
-                  <Text style={[tipo.micro, { color: color.textoTenue, width: 18 }]}>{i + 1}</Text>
-                  <Foto tipo="ejercicio" id={e.id} nombre={e.name} alto={52} ancho={52} />
-                  <View style={{ flex: 1 }}>
-                    <Text style={[tipo.cuerpo, { color: color.texto, fontFamily: peso.semibold }]} numberOfLines={1}>
-                      {e.name}
-                    </Text>
-                    <Text style={[tipo.pie, { color: color.textoSuave }]}>
-                      {it.series} × {it.seg ? `${it.seg} s` : it.reps}
-                      {porLado ? ' por lado' : ''} · {it.descansoS} s de descanso
-                    </Text>
-                  </View>
-                  <Text style={{ color: color.textoTenue }}>›</Text>
-                </Toque>
-              </Aparece>
-            );
-          })}
-
-          <Boton texto="Duplicar" variante="contorno" ancho onPress={duplicar}
-            estilo={{ marginTop: esp.lg }} />
-          <Boton texto="Borrar rutina" variante="texto" onPress={borrar} />
         </View>
-      </ScrollView>
-
-      <View style={[s.barra, { paddingBottom: Math.max(esp.md, abajo - 60) }]}>
-        <Boton texto="Empezar" onPress={empezar} estilo={{ flex: 1 }} />
-      </View>
-    </SafeAreaView>
+      )}
+      antes={avisos.length > 0 ? avisos.map((a, i) => (
+        <Nota key={i} texto={a} tono="cuidado" titulo={i === 0 ? 'Revisa' : undefined} />
+      )) : undefined}
+      bloques={bloques}
+      onAbrir={id => navigation.navigate('Ejercicio', { id })}
+      despues={() => (
+        <View style={s.acciones}>
+          <BotonDuplicar texto="Duplicar" onPress={duplicar} />
+          <Pressable
+            onPress={() => { haptico.toque(); borrar(); }}
+            accessibilityRole="button" accessibilityLabel="Borrar rutina" style={s.borrar}
+          >
+            <Text style={s.borrarTexto} maxFontSizeMultiplier={1.15}>Borrar rutina</Text>
+          </Pressable>
+        </View>
+      )}
+      barraInferior={<BotonPlaca texto="Empezar" aplauso onPress={empezar} />}
+    />
   );
 }
 
 const s = StyleSheet.create({
-  favPortada: { position: 'absolute', top: esp.md, right: esp.md },
-  etiquetaMia: {
-    position: 'absolute', top: esp.md, left: esp.md,
-    backgroundColor: color.carbon, borderRadius: radio.pastilla,
-    paddingVertical: 5, paddingHorizontal: 11,
-  },
-  fila: {
-    flexDirection: 'row', alignItems: 'center', gap: esp.sm,
-    paddingVertical: esp.sm, borderBottomWidth: 1, borderBottomColor: color.borde,
-  },
-  barra: {
-    flexDirection: 'row', padding: esp.md,
-    borderTopWidth: 1, borderTopColor: color.borde, backgroundColor: color.fondo,
-  },
+  vacio: { flex: 1, backgroundColor: paleta.goma, paddingHorizontal: MARGEN_PANTALLA, gap: 24 },
+  vacioTexto: { fontFamily: familia.cuerpo, fontSize: 16, lineHeight: 24, color: paleta.magnesia2 },
+  lapiz: { width: 44, height: 44, alignItems: 'center', justifyContent: 'center' },
+  meta: { gap: 8 },
+  fecha: { fontFamily: familia.cuerpo, fontSize: 13, lineHeight: 18, color: paleta.magnesia3Texto },
+  acciones: { marginHorizontal: MARGEN_PANTALLA, marginTop: 24, gap: 8 },
+  borrar: { height: 44, alignItems: 'center', justifyContent: 'center' },
+  borrarTexto: { fontFamily: familia.enfasis, fontSize: 16, lineHeight: 22, color: paleta.placaRojaTexto },
 });

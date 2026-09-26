@@ -1,113 +1,42 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
-import {
-  View, Text, Pressable, StyleSheet, ScrollView, Modal, Alert, Animated, TextInput,
-  KeyboardAvoidingView, Platform, useWindowDimensions,
-} from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { StatusBar } from 'expo-status-bar';
+import React, { useEffect, useRef, useState } from 'react';
+import { Alert, View, useWindowDimensions } from 'react-native';
 import { useKeepAwake } from 'expo-keep-awake';
 import * as Haptics from 'expo-haptics';
 import * as Speech from 'expo-speech';
 import { createAudioPlayer, type AudioPlayer } from 'expo-audio';
-import { color, colorSesion, paleta, tipo, esp, radio, TOQUE, anim, sombra, haptico } from '../theme';
-import { PantallaListo } from '../components/session/PantallaListo';
-import { EditorAntesDeEmpezar } from '../components/session/EditorAntesDeEmpezar';
-import { useMagnesia } from '../components/fx/MagnesiaOverlay';
-
-const DURACION_LISTO_MS = 3000;
-const CENTRO_LISTO = 0.46;
+import type { ParamListBase } from '@react-navigation/native';
+import type { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { paleta, haptico, PALABRA_FASE } from '../theme';
 import {
   useSessionPlayer, leerSesionGuardada, borrarSesionGuardada, type SesionEnCurso,
 } from '../session/useSessionPlayer';
+import { esUnilateral } from '../session/playerMachine';
 import { useEstado, hoy } from '../store/store';
 import { useHapticosActivos } from '../store/haptics';
 import { useVozActiva } from '../store/voz';
-import { useAjustesMaquina } from '../store/maquina';
-import { sustituir, aItem, duracion, type Sesion, type ItemSesion } from '../engine/session';
-import { reproducir, prepararSonido, soltarSonido } from '../media/sonido';
+import type { Sesion, ItemSesion } from '../engine/session';
+import { prepararSonido, soltarSonido, reproducir } from '../media/sonido';
 import { fuenteVoz, type TipoVoz } from '../media/voz';
-import { Boton, Toque, Chip, Tarjeta, Aparece, useMovimientoReducido } from '../components/ui';
 import { useSinAnuncios } from '../components/RelojAnuncios';
-import Clip from '../components/Clip';
-import { VidrioFondo } from '../components/Vidrio';
+import { useMagnesia } from '../components/fx/MagnesiaOverlay';
+import { PantallaListo } from '../components/session/PantallaListo';
+import { EditorAntesDeEmpezar } from '../components/session/EditorAntesDeEmpezar';
+import { ReproductorLayout } from '../components/session/ReproductorLayout';
+import { HojaSalida } from '../components/session/HojaSalida';
 
 /**
  * Reproductor.
  *
- * El fondo entero cambia de tinte con la fase: rojo trabajando, azul
- * descansando, gris preparandote. Se lee desde el suelo sin enfocar texto.
- *
- * La pantalla no se apaga durante la sesion (useKeepAwake).
+ * Aqui vive la logica de la sesion (guardado, voz, sonido, vibracion, pantalla
+ * encendida) y el paso de una pantalla a otra; lo que se ve esta en
+ * `components/session`. El fondo es siempre `goma`: la fase se lee por el color
+ * de su placa (ver DESIGN.md, «Modo sesion»).
  */
 
-const TINTE = {
-  preparado: colorSesion.preparadoFondo,
-  trabajo: colorSesion.trabajoFondo,
-  cambio_lado: colorSesion.preparadoFondo,
-  descanso: colorSesion.descansoFondo,
-  pausa: colorSesion.lienzo,
-  fin: colorSesion.trabajoFondo,
-} as const;
+const DURACION_LISTO_MS = 3000;
+const CENTRO_LISTO = 0.46;
 
-const ACENTO = {
-  preparado: colorSesion.preparado,
-  trabajo: colorSesion.trabajo,
-  cambio_lado: colorSesion.preparado,
-  descanso: colorSesion.descanso,
-  pausa: colorSesion.textoSuave,
-  fin: colorSesion.trabajo,
-} as const;
-
-/** TINTE.trabajo/fin son blancos: el texto ahi usa la paleta clara (`color`)
- *  en vez de la oscura (`colorSesion`), que se ve invisible sobre blanco. */
-const TEXTO = {
-  preparado: colorSesion.texto,
-  trabajo: color.texto,
-  cambio_lado: colorSesion.texto,
-  descanso: colorSesion.texto,
-  pausa: colorSesion.texto,
-  fin: color.texto,
-} as const;
-
-const TEXTO_SUAVE = {
-  preparado: colorSesion.textoSuave,
-  trabajo: color.textoSuave,
-  cambio_lado: colorSesion.textoSuave,
-  descanso: colorSesion.textoSuave,
-  pausa: colorSesion.textoSuave,
-  fin: color.textoSuave,
-} as const;
-
-const TEXTO_TENUE = {
-  preparado: colorSesion.textoTenue,
-  trabajo: color.textoTenue,
-  cambio_lado: colorSesion.textoTenue,
-  descanso: colorSesion.textoTenue,
-  pausa: colorSesion.textoTenue,
-  fin: color.textoTenue,
-} as const;
-
-const ETIQUETA = {
-  preparado: 'Prepárate',
-  trabajo: 'Trabaja',
-  cambio_lado: 'Cambia de lado',
-  descanso: 'Descansa',
-  pausa: 'En pausa',
-  fin: 'Terminaste',
-} as const;
-
-const reloj = (s: number) => {
-  const m = Math.floor(s / 60), r = s % 60;
-  return m > 0 ? `${m}:${String(r).padStart(2, '0')}` : String(r);
-};
-
-/** "1 minuto 5 segundos", para que un lector de pantalla no deletree "1:05". */
-const segundosHablados = (s: number) => {
-  const m = Math.floor(s / 60), r = s % 60;
-  const min = m > 0 ? `${m} minuto${m === 1 ? '' : 's'}` : '';
-  const seg = r > 0 || m === 0 ? `${r} segundo${r === 1 ? '' : 's'}` : '';
-  return [min, seg].filter(Boolean).join(' ');
-};
+type Props = NativeStackScreenProps<ParamListBase, 'Reproductor'>;
 
 /**
  * Antes de montar el reproductor de verdad, revisa si quedo una sesion sin
@@ -115,8 +44,8 @@ const segundosHablados = (s: number) => {
  * hay una, pregunta; si no, o si el usuario prefiere empezar de nuevo, el
  * reproductor arranca con la sesion que llego por navegacion.
  */
-export default function Reproductor({ route, navigation }: any) {
-  const sesionInicial: Sesion = route.params.sesion;
+export default function Reproductor({ route, navigation }: Props) {
+  const sesionInicial = (route.params as { sesion: Sesion }).sesion;
   const [listo, setListo] = useState(false);
   const [restaurar, setRestaurar] = useState<SesionEnCurso | null>(null);
   const [mostrarListo, setMostrarListo] = useState(true);
@@ -188,86 +117,35 @@ export default function Reproductor({ route, navigation }: any) {
 }
 
 function ReproductorActivo({ sesionInicial, restaurar, navigation }: {
-  sesionInicial: Sesion; restaurar: SesionEnCurso | null; navigation: any;
+  sesionInicial: Sesion; restaurar: SesionEnCurso | null; navigation: Props['navigation'];
 }) {
   useKeepAwake();
   useSinAnuncios();   // mientras se entrena no aparece ni un anuncio
   const { estado: app, guardarSesion } = useEstado();
 
-  const [items, setItems] = useState<ItemSesion[]>(restaurar?.items ?? sesionInicial.items);
+  const [items] = useState<ItemSesion[]>(restaurar?.items ?? sesionInicial.items);
   const [salida, setSalida] = useState(false);
-  const [anchoBarra, setAnchoBarra] = useState(0);
 
   const p = useSessionPlayer(items, app.perfil.sonido, restaurar);
   const { estado, ejercicio } = p;
-  const acento = ACENTO[estado.fase];
   const [hapticosOn] = useHapticosActivos();
 
-  // Crossfade del tinte de fondo: dos capas, la de abajo con el color
-  // saliente (fijo) y la de arriba con el entrante, que sube de opacidad.
-  // RN no anima backgroundColor con native driver, pero si opacity, y dos
-  // capas solidas cruzando dan el mismo resultado sin tocar el hilo de JS.
-  const reducidoTinte = useMovimientoReducido();
-  const [tintePrevio, setTintePrevio] = useState(estado.fase);
-  const [tinteActual, setTinteActual] = useState(estado.fase);
-  const fundido = useRef(new Animated.Value(1)).current;
-  useEffect(() => {
-    if (estado.fase === tinteActual) return;
-    if (reducidoTinte) {
-      setTintePrevio(estado.fase); setTinteActual(estado.fase); fundido.setValue(1);
-      return;
-    }
-    setTintePrevio(tinteActual);
-    setTinteActual(estado.fase);
-    fundido.setValue(0);
-    Animated.timing(fundido, { toValue: 1, duration: anim.lenta, useNativeDriver: true }).start();
-  }, [estado.fase, reducidoTinte]);
-
-  // Un toque corto cuando se registra una serie de verdad (no una omitida).
-  useEffect(() => {
-    if (!hapticosOn) return;
-    const ultima = estado.hechas[estado.hechas.length - 1];
-    if (ultima && !ultima.omitida) Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-  }, [estado.hechas.length, hapticosOn]);
-
-  // Serie completa: prende y se apaga. El fondo de la fila sube de golpe
-  // (rapida) y baja despacio (lenta); el numero pulsa de escala y cruza a
-  // acento. Nada de confeti: la recompensa es que el numero se enciende.
-  const pulsoEscala = useRef(new Animated.Value(0)).current;
-  const pulsoFondo = useRef(new Animated.Value(0)).current;
+  // Un toque corto cuando se registra una serie de verdad (no una omitida); si
+  // esa serie cierra el ejercicio, un golpe medio: el «clank» de la placa.
   useEffect(() => {
     const ultima = estado.hechas[estado.hechas.length - 1];
     if (!ultima || ultima.omitida) return;
-    if (reducidoTinte) return;
-    pulsoEscala.setValue(0);
-    Animated.sequence([
-      Animated.timing(pulsoEscala, { toValue: 1, duration: 80, useNativeDriver: true }),
-      Animated.timing(pulsoEscala, { toValue: 0, duration: 80, useNativeDriver: true }),
-    ]).start();
-    pulsoFondo.setValue(0);
-    Animated.sequence([
-      Animated.timing(pulsoFondo, { toValue: 1, duration: anim.rapida, useNativeDriver: true }),
-      Animated.timing(pulsoFondo, { toValue: 0, duration: anim.lenta, useNativeDriver: true }),
-    ]).start();
-  }, [estado.hechas.length, reducidoTinte]);
+    const it = items[ultima.orden];
+    const huecos = it ? it.seriesPlan * (esUnilateral(it) ? 2 : 1) : Infinity;
+    const hechas = estado.hechas.filter(h => h.orden === ultima.orden).length;
+    if (hechas >= huecos) haptico.placa(); else haptico.toque();
+  }, [estado.hechas.length]);
 
   // Cuenta final 3-2-1: mismas condiciones que disparan cuenta_3/2/1 en
-  // useSessionPlayer. La cifra pulsa y el fondo sube de calor un instante,
-  // volviendo antes de que llegue el siguiente segundo. Es la unica
-  // animacion de la app que llama la atencion por si misma; no se replica
-  // en ningun otro sitio.
-  const pulsoCuenta = useRef(new Animated.Value(0)).current;
+  // useSessionPlayer. Aqui solo deshabilita los botones mientras dura.
   const cuentaFinal =
     (estado.fase === 'preparado' || estado.fase === 'cambio_lado' || (estado.fase === 'trabajo' && p.esPorTiempo)) &&
     estado.restanteS >= 1 && estado.restanteS <= 3;
-  useEffect(() => {
-    if (!cuentaFinal || reducidoTinte) return;
-    pulsoCuenta.setValue(0);
-    Animated.sequence([
-      Animated.timing(pulsoCuenta, { toValue: 1, duration: 100, useNativeDriver: true }),
-      Animated.timing(pulsoCuenta, { toValue: 0, duration: 100, useNativeDriver: true }),
-    ]).start();
-  }, [estado.restanteS, estado.fase, reducidoTinte]);
 
   /* ---------------------------------------------------------------- */
   /* Voz                                                               */
@@ -363,11 +241,11 @@ function ReproductorActivo({ sesionInicial, restaurar, navigation }: {
       hablar({ tipo: 'ejercicio', id: ejercicio.id, texto: `${ejercicio.name}.${claves}` }, () => p.reanudar());
       return;
     }
-    hablar({ tipo: 'fase', id: estado.fase, texto: ETIQUETA[estado.fase] });
+    hablar({ tipo: 'fase', id: estado.fase, texto: PALABRA_FASE[estado.fase] });
   }, [estado.fase, vozOn]);
 
-  // Cuenta final hablada: la pulsada (preparate/cambio de lado/trabajo por
-  // tiempo) mas el descanso, que no pulsa visualmente pero si se anuncia.
+  // Cuenta final hablada: la de siempre (preparate/cambio de lado/trabajo por
+  // tiempo) mas el descanso, que se anuncia igual.
   const cuentaHablada = cuentaFinal ||
     (estado.fase === 'descanso' && estado.restanteS >= 1 && estado.restanteS <= 3);
   useEffect(() => {
@@ -406,7 +284,7 @@ function ReproductorActivo({ sesionInicial, restaurar, navigation }: {
   const clipActivo = enEjercicio;
 
   // Al terminar, guarda y pasa al resumen.
-  React.useEffect(() => {
+  useEffect(() => {
     if (estado.fase !== 'fin') return;
     if (hapticosOn) Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
     finalizar(true, null);
@@ -435,250 +313,31 @@ function ReproductorActivo({ sesionInicial, restaurar, navigation }: {
     });
   }
 
+  const salir = () => { p.pausar(); setSalida(true); };
+
   return (
-    <View style={{ flex: 1 }}>
-      {/* Esta pantalla se queda oscura (ver colorSesion en theme.ts): iconos
-          claros mientras esta montada, vuelve solo al "dark" global al salir. */}
-      <StatusBar style="light" />
-      <View style={[StyleSheet.absoluteFill, { backgroundColor: TINTE[tintePrevio] }]} />
-      <Animated.View style={[StyleSheet.absoluteFill, { backgroundColor: TINTE[tinteActual], opacity: fundido }]} />
-      <Animated.View pointerEvents="none" style={[StyleSheet.absoluteFill, {
-        backgroundColor: colorSesion.trabajo,
-        opacity: pulsoCuenta.interpolate({ inputRange: [0, 1], outputRange: [0, 0.08] }),
-      }]} />
-      <SafeAreaView style={{ flex: 1 }}>
-      <Aparece estilo={{ flex: 1 }}>
-      <View style={{ position: 'relative' }}>
-        <View style={s.barra} onLayout={e => setAnchoBarra(e.nativeEvent.layout.width)}>
-          <View style={[s.barraLlena, { width: `${p.progreso * 100}%`, backgroundColor: acento }]} />
-        </View>
-        {/* La chispa marca la posicion exacta de un vistazo desde el
-            suelo. Fuera del View con overflow:hidden de la barra: su
-            halo (sombra.brasa) necesita espacio para pintarse. */}
-        {anchoBarra > 0 && p.progreso > 0 && p.progreso < 1 && (
-          <View pointerEvents="none" style={[s.chispa, {
-            left: esp.md + anchoBarra * p.progreso - 1.5,
-            backgroundColor: acento,
-          }]} />
-        )}
-      </View>
-
-      <View style={s.cabecera}>
-        <Pressable onPress={() => { p.pausar(); setSalida(true); }} hitSlop={12}
-          accessibilityRole="button" accessibilityLabel="Salir">
-          <Text style={[tipo.dato, { color: TEXTO_SUAVE[estado.fase] }]}>Salir</Text>
-        </Pressable>
-        <Text style={[tipo.micro, { color: TEXTO_TENUE[estado.fase] }]}>
-          {estado.indice + 1} de {items.length}
-        </Text>
-        <Pressable
-          onPress={() => {
-            if (estado.fase === 'pausa') { if (!hablando) p.reanudar(); return; }
-            p.pausar();
-          }}
-          hitSlop={12}
-          disabled={estado.fase === 'pausa' && hablando}
-          accessibilityRole="button" accessibilityLabel={estado.fase === 'pausa' ? 'Seguir' : 'Pausa'}
-          accessibilityState={{ disabled: estado.fase === 'pausa' && hablando }}
-        >
-          <Text style={[tipo.dato, { color: estado.fase === 'pausa' && hablando ? TEXTO_TENUE[estado.fase] : TEXTO_SUAVE[estado.fase] }]}>
-            {estado.fase === 'pausa' ? 'Seguir' : 'Pausa'}
-          </Text>
-        </Pressable>
-      </View>
-
-      <View style={s.centro}>
-      {/* Vuelve a entrar (fundido + deslizamiento) cada vez que cambia el
-          ejercicio: el `key` fuerza el remonte. No en cada serie del
-          mismo ejercicio, solo al pasar al siguiente. */}
-      <Aparece key={estado.indice} estilo={{ width: '100%', alignItems: 'center' }}>
-        <Text style={[tipo.dato, { color: acento, letterSpacing: 0.4 }]} accessibilityLiveRegion="polite">
-          {ETIQUETA[estado.fase]}
-        </Text>
-
-        <Animated.Text
-          style={[tipo.reloj, {
-            color: TEXTO[estado.fase],
-            transform: [{ scale: pulsoCuenta.interpolate({ inputRange: [0, 1], outputRange: [1, 1.12] }) }],
-          }]}
-          maxFontSizeMultiplier={1.2}
-          accessibilityLiveRegion="polite"
-          accessibilityLabel={
-            p.esPorTiempo || estado.fase !== 'trabajo'
-              ? `${ETIQUETA[estado.fase]}, ${segundosHablados(estado.restanteS)} restantes`
-              : `${ETIQUETA[estado.fase]}, ${ejercicio.repsPlan ?? 'sin definir'} repeticiones`
-          }
-        >
-          {p.esPorTiempo || estado.fase !== 'trabajo'
-            ? reloj(estado.restanteS)
-            : (ejercicio.repsPlan ?? '—')}
-        </Animated.Text>
-
-        <Text style={[tipo.h2, { color: TEXTO[estado.fase], textAlign: 'center' }]}>
-          {estado.fase === 'descanso' ? siguiente(items, estado.indice, estado.serieNum) : ejercicio.name}
-        </Text>
-
-        <View style={{ marginTop: esp.xs }}>
-          <Animated.View pointerEvents="none" style={[StyleSheet.absoluteFill, {
-            backgroundColor: colorSesion.acentoTinte, opacity: pulsoFondo, borderRadius: radio.chip,
-          }]} />
-          <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', paddingVertical: 2 }}>
-            <Text style={[tipo.pie, { color: TEXTO_SUAVE[estado.fase] }]}>Serie </Text>
-            <Animated.View style={{
-              transform: [{ scale: pulsoEscala.interpolate({ inputRange: [0, 1], outputRange: [1, 1.06] }) }],
-            }}>
-              <View>
-                <Text style={[tipo.pie, { color: TEXTO_SUAVE[estado.fase] }]}>{estado.serieNum}</Text>
-                <Animated.Text style={[tipo.pie, {
-                  color: colorSesion.acento, opacity: pulsoEscala,
-                  position: 'absolute', top: 0, left: 0,
-                }]}>
-                  {estado.serieNum}
-                </Animated.Text>
-              </View>
-            </Animated.View>
-            <Text style={[tipo.pie, { color: TEXTO_SUAVE[estado.fase] }]}>
-              {' '}de {ejercicio.seriesPlan}
-              {estado.lado ? ` · lado ${estado.lado === 'izq' ? 'izquierdo' : 'derecho'}` : ''}
-            </Text>
-          </View>
-        </View>
-
-        {/* Que sigue, siempre visible mientras se trabaja o se prepara
-            (en descanso ya ocupa el titulo de arriba): vale igual para el
-            primer ejercicio que para cualquier otro, no solo a partir del
-            segundo. */}
-        {estado.fase !== 'descanso' && estado.fase !== 'fin' && items[estado.indice + 1] && (
-          <Text style={[tipo.pie, { color: TEXTO_TENUE[estado.fase], marginTop: 2 }]}>
-            Sigue: {items[estado.indice + 1].name}
-          </Text>
-        )}
-
-        {p.puedeDeshacer && (
-          <Pressable onPress={p.deshacer} hitSlop={10} style={{ paddingVertical: esp.xs }}
-            accessibilityRole="button" accessibilityLabel="Deshacer la última serie marcada">
-            <Text style={[tipo.pie, { color: colorSesion.acento }]}>Deshacer última serie</Text>
-          </Pressable>
-        )}
-
-        {/* Clip del ejercicio en bucle. El video dura 6-10 s y la serie lo
-            que dure: se repite solo hasta que cambia la fase. En pausa se
-            congela, y en descanso desaparece porque ahi lo que importa es
-            el reloj y el nombre del que viene. Grande: es lo unico que
-            hay que ver aqui, series/reps/tiempo/descanso ya se fijaron
-            antes de empezar. */}
-        {verClip && (
-          <View style={{ marginTop: esp.md, width: '100%' }}>
-            <Clip
-              id={ejercicio.id} nombre={ejercicio.name}
-              alto={280} ancho="100%" forma="tarjeta"
-              activo={clipActivo}
-            />
-          </View>
-        )}
-      </Aparece>
-      </View>
-
-      <View style={s.acciones}>
-        {estado.fase === 'descanso' && (
-          <Boton texto="Ya estoy" onPress={p.avanzar} estilo={{ flex: 1 }} deshabilitado={hablando || cuentaHablada} />
-        )}
-
-        {estado.fase === 'trabajo' && !p.esPorTiempo && (
-          <Boton
-            texto="Listo"
-            onPress={() => p.registrar(ejercicio.repsPlan ?? undefined)}
-            estilo={{ flex: 1 }}
-            deshabilitado={hablando || cuentaFinal}
-          />
-        )}
-
-        {estado.fase === 'trabajo' && p.esPorTiempo && (
-          <Boton texto="Terminar antes" variante="texto"  onPress={p.avanzar} estilo={{ flex: 1 }} deshabilitado={hablando || cuentaFinal} />
-        )}
-
-        {estado.fase === 'pausa' && (
-          <Boton texto="Seguir" onPress={p.reanudar} estilo={{ flex: 1 }} deshabilitado={hablando} />
-        )}
-      </View>
-
-      <Pressable
-        onPress={() => { if (hablando) return; if (hapticosOn) Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning); p.omitir(); }}
-        disabled={hablando}
-        style={{ alignItems: 'center', paddingBottom: esp.sm, minHeight: 44, justifyContent: 'center', opacity: hablando ? 0.4 : 1 }}
-        accessibilityRole="button" accessibilityLabel="Omitir este ejercicio"
-        accessibilityState={{ disabled: hablando }}
-      >
-        <Text style={[tipo.pie, { color: TEXTO_TENUE[estado.fase] }]}>Omitir este ejercicio</Text>
-      </Pressable>
-
-      <Modal visible={salida} animationType="slide" transparent>
-        <VidrioFondo intensidad={24} />
-        <View style={s.modalFondo}>
-          <View style={s.modal}>
-            <Text style={[tipo.h2, { color: colorSesion.texto }]}>Guardamos lo que llevas</Text>
-            <Text style={[tipo.cuerpo, { color: colorSesion.textoSuave, marginBottom: esp.md }]}>
-              Cuéntanos qué pasó y ajustamos la próxima.
-            </Text>
-            {[
-              ['sin_tiempo', 'No tengo tiempo hoy'],
-              ['muy_dificil', 'Está muy difícil'],
-              ['muy_facil', 'Está muy fácil'],
-              ['molestia', 'Me molesta algo'],
-              ['sin_ganas', 'Hoy no'],
-            ].map(([id, txt]) => (
-              <Pressable key={id} onPress={() => { setSalida(false); finalizar(false, id); }} style={s.opcionSalida}
-                accessibilityRole="button" accessibilityLabel={txt}>
-                <Text style={[tipo.cuerpo, { color: colorSesion.texto }]}>{txt}</Text>
-              </Pressable>
-            ))}
-            <Boton texto="Mejor sigo" variante="texto" oscuro onPress={() => { setSalida(false); p.reanudar(); }} />
-          </View>
-        </View>
-      </Modal>
-      </Aparece>
-      </SafeAreaView>
-    </View>
+    <>
+      <ReproductorLayout
+        items={items} estado={estado} ejercicio={ejercicio} esPorTiempo={p.esPorTiempo}
+        puedeDeshacer={p.puedeDeshacer} hablando={hablando}
+        cuentaFinal={cuentaFinal} cuentaHablada={cuentaHablada}
+        verClip={verClip} clipActivo={clipActivo} salidaAbierta={salida}
+        onSalir={salir}
+        onPausa={() => {
+          if (estado.fase === 'pausa') { if (!hablando) p.reanudar(); return; }
+          p.pausar();
+        }}
+        onReanudar={() => { if (!hablando) p.reanudar(); }}
+        onAvanzar={p.avanzar}
+        onListo={() => p.registrar(ejercicio.repsPlan ?? undefined)}
+        onOmitir={() => { if (!hablando) p.omitir(); }}
+        onDeshacer={p.deshacer}
+      />
+      <HojaSalida
+        visible={salida}
+        onElegir={motivo => { setSalida(false); finalizar(false, motivo); }}
+        onCancelar={() => { setSalida(false); p.reanudar(); }}
+      />
+    </>
   );
 }
-
-function siguiente(items: ItemSesion[], i: number, serie: number): string {
-  const it = items[i];
-  if (serie < it.seriesPlan) return it.name;
-  return items[i + 1]?.name ?? 'Último esfuerzo';
-}
-
-const s = StyleSheet.create({
-  inputMaquina: {
-    minHeight: TOQUE, borderWidth: 1, borderColor: color.borde,
-    borderRadius: radio.tarjeta, paddingHorizontal: esp.md,
-    color: color.texto, fontSize: 15, backgroundColor: color.lienzo,
-  },
-  barra: { height: 3, backgroundColor: colorSesion.borde, marginHorizontal: esp.md, borderRadius: 2, overflow: 'hidden' },
-  barraLlena: { height: 3 },
-  chispa: { position: 'absolute', top: 0, width: 3, height: 3, borderRadius: 1.5, ...sombra.brasa },
-  cabecera: {
-    flexDirection: 'row', justifyContent: 'space-between',
-    alignItems: 'center', padding: esp.md,
-  },
-  centro: { flex: 1, alignItems: 'center', justifyContent: 'center', paddingHorizontal: esp.md },
-  acciones: { flexDirection: 'row', gap: esp.sm, paddingHorizontal: esp.md, paddingBottom: esp.sm },
-  pieEditor: {
-    padding: esp.md,
-    borderTopWidth: 1, borderTopColor: color.borde, backgroundColor: color.fondo,
-  },
-  mini: {
-    width: 44, height: 44, borderRadius: 22, borderWidth: 1, borderColor: color.bordeFuerte,
-    alignItems: 'center', justifyContent: 'center', backgroundColor: color.fondo,
-  },
-  miniTxt: { fontSize: 22, color: color.textoSuave },
-  modalFondo: { flex: 1, justifyContent: 'flex-end' },
-  modal: {
-    backgroundColor: colorSesion.fondo, borderTopLeftRadius: 28, borderTopRightRadius: 28,
-    padding: esp.lg, gap: esp.sm,
-  },
-  opcionSalida: {
-    minHeight: TOQUE, justifyContent: 'center', paddingHorizontal: esp.md,
-    borderWidth: 1, borderColor: colorSesion.borde, borderRadius: radio.tarjeta,
-  },
-});

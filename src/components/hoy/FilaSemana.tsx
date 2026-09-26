@@ -128,16 +128,19 @@ function HuellaDia({ animar, retraso, sello }: { animar: boolean; retraso: numbe
   );
 }
 
-/** Marco azul de hoy: se dibuja alrededor de la celda en 300 ms. Con movimiento reducido ya esta dibujado. */
-function MarcoHoy({ animar, retraso }: { animar: boolean; retraso: number }) {
+/**
+ * Marco azul de hoy: se dibuja alrededor de la celda en 300 ms. Con movimiento reducido ya esta dibujado.
+ * `alto` es el de la celda (56 en la franja de Hoy, 48 en el calendario de Yo).
+ */
+export function MarcoHoy({ animar, retraso, alto = ALTO_CELDA }: { animar: boolean; retraso: number; alto?: number }) {
   const reducido = useReducedMotion();
   const estatico = reducido || !animar;
   const fin = useSharedValue(estatico ? 1 : 0);
   const camino = useMemo(() => {
     const m = GROSOR_MARCO / 2;
-    const rect = Skia.XYWHRect(m, m, ANCHO_CELDA - GROSOR_MARCO, ALTO_CELDA - GROSOR_MARCO);
+    const rect = Skia.XYWHRect(m, m, ANCHO_CELDA - GROSOR_MARCO, alto - GROSOR_MARCO);
     return Skia.PathBuilder.Make().addRRect(Skia.RRectXY(rect, RADIO_CELDA, RADIO_CELDA)).detach();
-  }, []);
+  }, [alto]);
 
   useEffect(() => {
     if (estatico) { fin.value = 1; return; }
@@ -146,7 +149,7 @@ function MarcoHoy({ animar, retraso }: { animar: boolean; retraso: number }) {
   }, [estatico, retraso]);
 
   return (
-    <View style={s.marco} pointerEvents="none">
+    <View style={[s.marco, { height: alto }]} pointerEvents="none">
       <Canvas style={StyleSheet.absoluteFill}>
         <Path
           path={camino} style="stroke" strokeWidth={GROSOR_MARCO} strokeCap="round"

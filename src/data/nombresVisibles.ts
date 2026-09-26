@@ -69,6 +69,32 @@ veras:verás version:versión via:vía abrelos:ábrelos acompanando:acompañando
 alejandolos:alejándolos anade:añade arrancon:arrancón bajate:bájate caida:caída caido:caído
 caidos:caídos cruzala:crúzala cruzalos:crúzalos ahi:ahí aerea:aérea aerobica:aeróbica
 aerobico:aeróbico seccion:sección excentricas:excéntricas monotematico:monotemático
+acumulacion:acumulación adaptacion:adaptación basicos:básicos consolidacion:consolidación
+habia:había integracion:integración intensificacion:intensificación maximas:máximas
+medicion:medición puntuacion:puntuación reactivacion:reactivación superavit:superávit tipica:típica
+cronicamente:crónicamente debil:débil debiles:débiles distension:distensión insercion:inserción
+sindrome:síndrome teorico:teórico tipico:típico
+absorcion:absorción acordandose:acordándose ademas:además afirmacion:afirmación ambar:ámbar
+anabolica:anabólica anaden:añaden anadir:añadir anaerobicas:anaeróbicas analisis:análisis
+analiticas:analíticas aparicion:aparición autorizacion:autorización bascula:báscula cafeina:cafeína
+calorias:calorías caloria:caloría clinicos:clínicos coleccion:colección composicion:composición
+concentrica:concéntrica condicion:condición conexion:conexión conservacion:conservación
+consolacion:consolación conversion:conversión cuantas:cuántas cuantos:cuántos decision:decisión
+deberia:debería dermatologos:dermatólogos distribucion:distribución ecuacion:ecuación
+energetica:energética estabilizacion:estabilización excentrica:excéntrica excepcion:excepción
+friccion:fricción genetica:genética glucemico:glucémico guiate:guíate habitos:hábitos
+hidratacion:hidratación jerarquia:jerarquía informacion:información lacteos:lácteos
+medicacion:medicación metabolico:metabólico microdano:microdaño miercoles:miércoles
+momentaneo:momentáneo monotonia:monotonía nutricion:nutrición numeros:números oxigeno:oxígeno
+percepcion:percepción perdi:perdí planificacion:planificación poblacion:población podrias:podrías
+popularizo:popularizó produccion:producción programacion:programación proponertelo:proponértelo
+quizas:quizás recomendacion:recomendación rompio:rompió saltarmela:saltármela saltarsela:saltársela
+saltartela:saltártela seleccion:selección sintesis:síntesis simplificacion:simplificación
+simultaneos:simultáneos sirvio:sirvió sistematica:sistemática situacion:situación
+sudoracion:sudoración tardia:tardía tardio:tardío tabu:tabú termico:térmico
+termorregulacion:termorregulación utiles:útiles volvio:volvió sabian:sabían partias:partías anade:añade
+kilometros:kilómetros kilometro:kilómetro veintiun:veintiún critico:crítico fotografico:fotográfico perfeccion:perfección
+camara:cámara cardiaca:cardíaca estan:están guia:guía inhalacion:inhalación metrica:métrica superposicion:superposición
 `;
 
 const PALABRAS: Record<string, string> = Object.fromEntries(
@@ -81,6 +107,24 @@ const PALABRA = new RegExp(`\\b(${Object.keys(PALABRAS).join('|')})\\b`, 'gi');
 const FRASES: [RegExp, string][] = [
   [/^Cuando volver\b/, 'Cuándo volver'],
   [/^Que dice\b/, 'Qué dice'],
+  // «perdida» y «si» solo se acentuan en estas frases de los programas; sueltas cambian de sentido.
+  [/\bde perdida\b/g, 'de pérdida'],
+  [/\bperdida de grasa\b/g, 'pérdida de grasa'],
+  [/\bLo que si\b/g, 'Lo que sí'],
+  [/\blo que si\b/g, 'lo que sí'],
+  [/\b([Pp])erdida (de|temporal)\b/g, '$1érdida $2'],
+  // Titulos y frases de Aprender donde «que» y «cuando» son interrogativos.
+  [/^Por que\b/, 'Por qué'],
+  [/\by por que suelen\b/g, 'y por qué suelen'],
+  [/\bentiendes por que\b/g, 'entiendes por qué'],
+  [/\bde que se compone\b/g, 'de qué se compone'],
+  [/^Cuando esto deja\b/, 'Cuándo esto deja'],
+  // Interrogativos indirectos y un subjuntivo que en los textos de Aprender salen sin tilde.
+  [/\bque la espalda este tensa\b/g, 'que la espalda esté tensa'],
+  [/\bque foto era cual\b/g, 'qué foto era cuál'],
+  [/\ben cuanto (?=m[uú]sculo)/g, 'en cuánto '],
+  [/\bes cuanto tiempo\b/g, 'es cuánto tiempo'],
+  [/\ben como te sientes\b/g, 'en cómo te sientes'],
 ];
 
 /** El texto con su ortografia correcta. Solo para mostrar: no usar como clave de busqueda ni como identificador. */

@@ -25,13 +25,16 @@ const DESPLAZA_TITULO_PX = 8;
  * el nombre del ejercicio al centro (fundido y 8 px), y los botones pierden su
  * fondo circular. Con movimiento reducido la barra aparece en un solo paso.
  */
-export function BarraSuperiorColapsable({ y, alturaHero, nombre, favorito, onFavorito, onAtras }: {
+export function BarraSuperiorColapsable({ y, alturaHero, nombre, favorito = false, onFavorito, onAtras, children }: {
   y: SharedValue<number>;
   alturaHero: number;
   nombre: string;
-  favorito: boolean;
-  onFavorito: () => void;
+  favorito?: boolean;
+  /** Sin el, no hay estrella (un mito no se guarda en favoritos). */
+  onFavorito?: () => void;
   onAtras: () => void;
+  /** Lo que va pegado al borde inferior de la barra y aparece con ella (la linea de progreso de lectura). */
+  children?: React.ReactNode;
 }) {
   const { top } = useSafeAreaInsets();
   const reducido = useReducedMotion();
@@ -57,6 +60,7 @@ export function BarraSuperiorColapsable({ y, alturaHero, nombre, favorito, onFav
         {Platform.OS === 'ios' ? <BlurView intensity={40} tint="dark" style={s.llena} /> : null}
         <View style={[s.llena, s.velo]} />
         <View style={s.linea} />
+        {children}
       </Animated.View>
 
       <View style={[s.fila, { top: top + (ALTO_BARRA - LADO_BOTON) / 2 }]} pointerEvents="box-none">
@@ -75,7 +79,9 @@ export function BarraSuperiorColapsable({ y, alturaHero, nombre, favorito, onFav
           {nombre}
         </Animated.Text>
 
-        <EstrellaFavorito activo={favorito} onPress={onFavorito} nombre={nombre} lado={LADO_BOTON} fondo={sinFondo} />
+        {onFavorito ? (
+          <EstrellaFavorito activo={favorito} onPress={onFavorito} nombre={nombre} lado={LADO_BOTON} fondo={sinFondo} />
+        ) : <View style={s.boton} />}
       </View>
     </View>
   );

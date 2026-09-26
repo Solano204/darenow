@@ -30,6 +30,10 @@ export const haptico = {
     if (!hapticosActivos()) return;
     Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning).catch(() => {});
   },
+  exito: () => {
+    if (!hapticosActivos()) return;
+    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success).catch(() => {});
+  },
   error: () => {
     if (!hapticosActivos()) return;
     Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error).catch(() => {});

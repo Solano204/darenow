@@ -15,23 +15,37 @@ interface Comun {
   retraso?: number;
 }
 
-/** Cada linea del titulo sube desde una mascara inferior. Las lineas se miden del propio texto, asi se respeta el salto real. */
-export function TituloMascara({ texto, estilo, activo, animar = true, retraso = 0 }: Comun & { texto: string }) {
-  const [lineas, setLineas] = useState<{ texto: string; alto: number }[] | null>(null);
+/** Una linea ya medida del titulo, para dibujar algo encima de ella (`decorarLinea`). */
+export interface LineaMedida { texto: string; x: number; ancho: number; alto: number; indice: number; total: number }
+
+/**
+ * Cada linea del titulo sube desde una mascara inferior. Las lineas se miden del propio texto, asi se respeta el salto real.
+ * `decorarLinea` pone algo sobre cada linea (el tachon de un mito) dentro de su mascara, asi sube con ella; `estiloTexto`
+ * es un estilo animado extra del texto (el color que baja al quedar tachado).
+ */
+export function TituloMascara({ texto, estilo, activo, animar = true, retraso = 0, decorarLinea, estiloTexto }: Comun & {
+  texto: string;
+  decorarLinea?: (linea: LineaMedida) => React.ReactNode;
+  estiloTexto?: React.ComponentProps<typeof Animated.Text>['style'];
+}) {
+  const [lineas, setLineas] = useState<Omit<LineaMedida, 'indice' | 'total'>[] | null>(null);
 
   return (
     <View accessible accessibilityRole="header" accessibilityLabel={texto}>
       {lineas === null ? (
         <Text
           style={[estilo, { opacity: 0 }]}
-          onTextLayout={e => setLineas(e.nativeEvent.lines.map(l => ({ texto: l.text.trim(), alto: l.height })))}
+          onTextLayout={e => setLineas(e.nativeEvent.lines.map(l => ({ texto: l.text.trim(), x: l.x, ancho: l.width, alto: l.height })))}
         >
           {texto}
         </Text>
       ) : (
         lineas.map((l, k) => (
           <Mascara key={k} alto={l.alto} activo={activo} animar={animar} espera={retraso + k * ESCALONADO_LINEAS_MS}>
-            <Text style={estilo}>{l.texto}</Text>
+            {estiloTexto
+              ? <Animated.Text style={[estilo, estiloTexto] as React.ComponentProps<typeof Animated.Text>['style']}>{l.texto}</Animated.Text>
+              : <Text style={estilo}>{l.texto}</Text>}
+            {decorarLinea?.({ ...l, indice: k, total: lineas.length })}
           </Mascara>
         ))
       )}

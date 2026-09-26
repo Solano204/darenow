@@ -4,8 +4,8 @@ import Animated, { cancelAnimation, useAnimatedStyle, useSharedValue, withDelay,
 import { paleta, resortePlaca, haptico } from '../../theme';
 import { useReducedMotion } from '../../hooks/useReducedMotion';
 import { useTick } from '../../hooks/useTick';
+import { colorDePlaca } from '../routine-builder/BarraRutina';
 
-const COLORES = [paleta.placaVerde, paleta.placaAmarilla, paleta.placaRoja] as const;
 const MAX_SEGMENTOS = 10;
 
 const ANCHO_MINI = 96;
@@ -27,7 +27,7 @@ export function BarraRutina({ pasos }: { pasos: number }) {
   return (
     <View style={s.fila} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
       {Array.from({ length: n }, (_, i) => (
-        <View key={i} style={[s.segmento, { backgroundColor: COLORES[i % COLORES.length] }]} />
+        <View key={i} style={[s.segmento, { backgroundColor: colorDePlaca(i) }]} />
       ))}
     </View>
   );
@@ -83,7 +83,7 @@ function Placa({ i, lado, animar, retraso }: { i: number; lado: -1 | 1; animar: 
   }), [tick]);
 
   return (
-    <Animated.View style={[m.placa, { height: Math.max(8, ALTO_MINI - 2 * i), backgroundColor: COLORES[i % COLORES.length] }, estilo]} />
+    <Animated.View style={[m.placa, { height: Math.max(8, ALTO_MINI - 2 * i), backgroundColor: colorDePlaca(i) }, estilo]} />
   );
 }
 

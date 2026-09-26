@@ -23,34 +23,47 @@ type Estado = 0 | 1 | 2;
  * accion y 4 px mas alta. `total` es dinamico (algunos pasos se omiten segun
  * las respuestas). Haptica Medium solo en los hitos 5, 9 y el ultimo.
  */
-export function BarraCarga13({ total, actual, compacta }: {
+export function BarraCarga13({ total, actual, compacta, ganadas, colorHecha = paleta.magnesia2, etiqueta }: {
   total: number;
   actual: number;
   /** Sin margen lateral ni contador: para ir dentro de una tarjeta que ya dice «Semana N de M». */
   compacta?: boolean;
+  /**
+   * La barra como cuenta (los logros ganados): las primeras `ganadas` placas van llenas, las demas vacias y
+   * ninguna es «la actual». Sin contador. `actual` no se usa.
+   */
+  ganadas?: number;
+  /** El color de una placa hecha (`magnesia2` por defecto; los logros ganados van en `magnesia`). */
+  colorHecha?: string;
+  /** Lo que oye el lector de pantalla si no es «Paso N de M». */
+  etiqueta?: string;
 }) {
   const previo = useRef(actual);
+  const comoCuenta = ganadas !== undefined;
 
   useEffect(() => {
-    if (actual > previo.current && (HITOS.includes(actual) || actual === total)) haptico.placa();
+    if (!comoCuenta && actual > previo.current && (HITOS.includes(actual) || actual === total)) haptico.placa();
     previo.current = actual;
   }, [actual]);
 
   return (
     <View
-      style={compacta ? s.filaCompacta : s.fila}
+      style={compacta || comoCuenta ? s.filaCompacta : s.fila}
       accessible
       accessibilityRole="progressbar"
-      accessibilityLabel={`Paso ${actual} de ${total}`}
-      accessibilityValue={{ min: 1, max: total, now: actual }}
+      accessibilityLabel={etiqueta ?? `Paso ${actual} de ${total}`}
+      accessibilityValue={comoCuenta ? { min: 0, max: total, now: ganadas } : { min: 1, max: total, now: actual }}
     >
       <View style={s.interior} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>
         <View style={s.placas}>
           {Array.from({ length: total }, (_, k) => (
-            <Placa key={k} estado={(k < actual - 1 ? 2 : k === actual - 1 ? 1 : 0) as Estado} />
+            <Placa
+              key={k} colorHecha={colorHecha}
+              estado={(comoCuenta ? (k < ganadas ? 2 : 0) : k < actual - 1 ? 2 : k === actual - 1 ? 1 : 0) as Estado}
+            />
           ))}
         </View>
-        {!compacta && (
+        {!compacta && !comoCuenta && (
           <View style={s.contador}>
             <Odometro valor={actual} continuo estilo={s.numero} />
             <Text style={s.total}>/ {total}</Text>
@@ -61,7 +74,7 @@ export function BarraCarga13({ total, actual, compacta }: {
   );
 }
 
-function Placa({ estado }: { estado: Estado }) {
+function Placa({ estado, colorHecha }: { estado: Estado; colorHecha: string }) {
   const reducido = useReducedMotion();
   const tick = useTick();
   const t = useSharedValue<number>(estado);
@@ -71,9 +84,9 @@ function Placa({ estado }: { estado: Estado }) {
   }, [estado, reducido]);
 
   const estilo = useAnimatedStyle(() => ({
-    backgroundColor: interpolateColor(t.value, [0, 1, 2], [paleta.gomaBorde, paleta.placaAzul, paleta.magnesia2]),
+    backgroundColor: interpolateColor(t.value, [0, 1, 2], [paleta.gomaBorde, paleta.placaAzul, colorHecha]),
     transform: [{ scaleY: interpolate(t.value, [0, 1, 2], [ESCALA_NORMAL, 1, ESCALA_NORMAL]) }],
-  }), [tick]);
+  }), [tick, colorHecha]);
 
   return <Animated.View style={[s.placa, estilo]} />;
 }

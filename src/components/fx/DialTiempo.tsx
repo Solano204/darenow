@@ -23,11 +23,16 @@ const MARGEN_ARO = 18;
  * a 5 minutos y un numero central que rueda igual. Al llegar a 5 el arco pasa
  * a azul de accion y da un unico pulso. Es decorativo: no guarda nada.
  */
-export function DialTiempo({ tamano, activo, animar = true, retraso = 0 }: {
+export function DialTiempo({ tamano, activo, animar = true, retraso = 0, medida }: {
   tamano: number;
   activo: boolean;
   animar?: boolean;
   retraso?: number;
+  /**
+   * Modo medidor (los minutos por sesion de Ajustes): el arco refleja `valor` respecto a `maximo` y se
+   * mueve con `resortePlaca` al cambiar; no hay cuenta atras ni numero central (el numero va debajo).
+   */
+  medida?: { valor: number; maximo: number };
 }) {
   const reducido = useReducedMotion();
   const estatico = reducido || !animar;
@@ -47,11 +52,18 @@ export function DialTiempo({ tamano, activo, animar = true, retraso = 0 }: {
 
   const aro = useMemo(() => Skia.PathBuilder.Make().addCircle(c, c, radioMarcas - MARGEN_ARO).detach(), [tamano]);
 
-  const fin = useSharedValue(estatico ? MIN_FIN / MIN_POR_VUELTA : MIN_INICIO / MIN_POR_VUELTA);
-  const azul = useSharedValue(estatico ? 1 : 0);
+  const fraccion = medida === undefined ? 0 : Math.min(1, Math.max(0, medida.valor / medida.maximo));
+  const fin = useSharedValue(medida !== undefined ? fraccion : estatico ? MIN_FIN / MIN_POR_VUELTA : MIN_INICIO / MIN_POR_VUELTA);
+  const azul = useSharedValue(medida === undefined && estatico ? 1 : 0);
   const pulso = useSharedValue(1);
 
   useEffect(() => {
+    if (medida === undefined) return;
+    fin.value = estatico ? fraccion : withSpring(fraccion, { ...resortePlaca, overshootClamping: true });
+  }, [fraccion, estatico]);
+
+  useEffect(() => {
+    if (medida !== undefined) return;
     const meta = MIN_FIN / MIN_POR_VUELTA;
     if (estatico) { fin.value = meta; azul.value = 1; pulso.value = 1; return; }
     fin.value = MIN_INICIO / MIN_POR_VUELTA;
@@ -87,13 +99,15 @@ export function DialTiempo({ tamano, activo, animar = true, retraso = 0 }: {
           </Group>
         </Group>
       </Canvas>
-      <View style={[StyleSheet.absoluteFill, s.centro]}>
-        <Odometro
-          desde={MIN_INICIO} valor={MIN_FIN} ocultarCerosIzq
-          activo={activo} animar={animar} retraso={retraso} duracionColumna={DURACION_COLUMNA}
-          estilo={[tipo.numero, { fontSize: 64, lineHeight: 64, color: paleta.magnesia }]}
-        />
-      </View>
+      {medida === undefined && (
+        <View style={[StyleSheet.absoluteFill, s.centro]}>
+          <Odometro
+            desde={MIN_INICIO} valor={MIN_FIN} ocultarCerosIzq
+            activo={activo} animar={animar} retraso={retraso} duracionColumna={DURACION_COLUMNA}
+            estilo={[tipo.numero, { fontSize: 64, lineHeight: 64, color: paleta.magnesia }]}
+          />
+        </View>
+      )}
     </View>
   );
 }

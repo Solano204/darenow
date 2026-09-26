@@ -20,7 +20,7 @@ const EXPOSICION = 0.8;
  * tarjeta no escala). `estiloImagen` admite un estilo animado de parallax.
  */
 export function FotoOscura({
-  tipo, id, ancho, alto, radioEsquina = radio.foto, velo = true, alturaVelo = '55%', fondoVelo, estilo, estiloImagen,
+  tipo, id, ancho, alto, radioEsquina = radio.foto, velo = true, alturaVelo = '55%', fondoVelo, fondo, exposicion, estilo, estiloImagen,
 }: {
   tipo: TipoFoto;
   id: string;
@@ -32,6 +32,10 @@ export function FotoOscura({
   alturaVelo?: `${number}%`;
   /** Color al que se funde el velo (por defecto `goma`; una tarjeta de `gomaAlta` pide ese). */
   fondoVelo?: string;
+  /** Color de la superficie sobre la que va la foto (por defecto `gomaAlta`; los renders de musculos, con fondo claro, piden `magnesia`). */
+  fondo?: string;
+  /** Opacidad de la foto sobre esa superficie (0.8 por defecto; 1 la deja tal cual). */
+  exposicion?: number;
   estilo?: StyleProp<ViewStyle>;
   estiloImagen?: React.ComponentProps<typeof Animated.View>['style'];
 }) {
@@ -39,11 +43,11 @@ export function FotoOscura({
   const [lista, setLista] = useState(false);
 
   return (
-    <View style={[{ width: ancho, height: alto, borderRadius: radioEsquina }, s.caja, estilo]}>
+    <View style={[{ width: ancho, height: alto, borderRadius: radioEsquina }, s.caja, fondo ? { backgroundColor: fondo } : null, estilo]}>
       {src ? (
         <Animated.View style={[s.llena, estiloImagen]}>
           <Image
-            source={src} style={s.imagen} contentFit="cover" transition={200}
+            source={src} style={exposicion === undefined ? s.imagen : [s.imagen, { opacity: exposicion }]} contentFit="cover" transition={200}
             cachePolicy="memory-disk" recyclingKey={id} onLoad={() => setLista(true)}
           />
         </Animated.View>

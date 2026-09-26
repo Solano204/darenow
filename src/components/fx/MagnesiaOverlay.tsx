@@ -50,8 +50,8 @@ const MINI: Motor = {
 interface Api {
   /** Aplauso completo: nube y velo. `x`, `y` en coordenadas de ventana. */
   aplaudir: (x: number, y: number) => void;
-  /** Nube pequena, sin velo. */
-  mini: (x: number, y: number) => void;
+  /** Nube pequena, sin velo. `particulas` la achica aun mas (Ajustes suelta 6). */
+  mini: (x: number, y: number, particulas?: number) => void;
   /** Solo el velo de polvo, para marcar un momento sin nube. */
   destello: () => void;
 }
@@ -106,9 +106,9 @@ export function ProveedorMagnesia({ children }: { children: React.ReactNode }) {
   const aplaudir = useCallback((x: number, y: number) => lanzar(x, y, false), [lanzar]);
   const destello = useCallback(() => lanzar(0, 0, true), [lanzar]);
 
-  const mini = useCallback((x: number, y: number) => {
+  const mini = useCallback((x: number, y: number, particulas?: number) => {
     if (reducido) return;
-    paramsMini.value = sortear(MINI);
+    paramsMini.value = sortear(particulas === undefined ? MINI : { ...MINI, particulas });
     origenMini.value = { x, y };
     cancelAnimation(tMini);
     tMini.value = 0;

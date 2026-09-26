@@ -29,9 +29,11 @@ export interface Estampado {
 }
 
 /** Insignia de evidencia: el punto lleva el color de la placa; el texto, su variante legible (AA). */
-export function InsigniaEvidencia({ tipo, pequena, estampar, estilo }: {
+export function InsigniaEvidencia({ tipo, pequena, grande, estampar, estilo }: {
   tipo: TipoEvidencia;
   pequena?: boolean;
+  /** El sello del detalle de un mito: Figtree 700 de 15 con relleno de 8 x 14. */
+  grande?: boolean;
   /** Si se pasa, la insignia se estampa (escala 1.3 a 1, golpe Rigid) cuando `activo`. */
   estampar?: Estampado;
   estilo?: StyleProp<ViewStyle>;
@@ -63,10 +65,10 @@ export function InsigniaEvidencia({ tipo, pequena, estampar, estilo }: {
     <Animated.View
       accessible
       accessibilityLabel={d.etiqueta}
-      style={[s.caja, pequena && s.pequena, { backgroundColor: d.fondo }, estilo, animado]}
+      style={[s.caja, pequena && s.pequena, grande && s.grande, { backgroundColor: d.fondo }, estilo, animado]}
     >
       <View style={[s.punto, { backgroundColor: d.punto }]} />
-      <Text style={[s.texto, { color: d.texto }]} importantForAccessibility="no" accessibilityElementsHidden>{d.etiqueta}</Text>
+      <Text style={[s.texto, grande && s.textoGrande, { color: d.texto }]} importantForAccessibility="no" accessibilityElementsHidden>{d.etiqueta}</Text>
     </Animated.View>
   );
 }
@@ -77,6 +79,8 @@ const s = StyleSheet.create({
     borderRadius: radio.insignia, paddingVertical: 6, paddingHorizontal: 10,
   },
   pequena: { paddingVertical: 3, paddingHorizontal: 8 },
+  grande: { paddingVertical: 8, paddingHorizontal: 14 },
   punto: { width: 6, height: 6, borderRadius: 3 },
   texto: { fontFamily: familia.enfasis, fontSize: 13, lineHeight: 18 },
+  textoGrande: { fontFamily: familia.negrita, fontSize: 15, lineHeight: 20 },
 });

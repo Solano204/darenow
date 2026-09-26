@@ -21,9 +21,13 @@ const TAMANO_NUMERO = 48;
  * impactar. El numero rueda cuando se asienta. El filo superior de 3 px lleva
  * el color de la placa que le toca.
  */
-export function PlacaDato({ numero, etiqueta, filo, retraso, activo = true, animar = true, haptica = true, tamano = TAMANO_NUMERO }: {
+export function PlacaDato({
+  numero, etiqueta, lector, filo, retraso, activo = true, animar = true, haptica = true, tamano = TAMANO_NUMERO, continuo, adorno,
+}: {
   numero: number;
   etiqueta: string;
+  /** Lo que oye el lector de pantalla si la etiqueta visible va abreviada («días/sem» → «días por semana»). */
+  lector?: string;
   filo: string;
   retraso: number;
   activo?: boolean;
@@ -32,6 +36,10 @@ export function PlacaDato({ numero, etiqueta, filo, retraso, activo = true, anim
   haptica?: boolean;
   /** Tamano del numero (48 por defecto; 32 cuando van cuatro en fila). */
   tamano?: number;
+  /** El numero vuelve a rodar cuando cambia su valor (con `animar` en falso, solo esos cambios ruedan). */
+  continuo?: boolean;
+  /** Una marca pequena en la esquina de arriba a la derecha, junto al numero (la huella de la racha). */
+  adorno?: React.ReactNode;
 }) {
   const reducido = useReducedMotion();
   const tick = useTick();
@@ -57,15 +65,16 @@ export function PlacaDato({ numero, etiqueta, filo, retraso, activo = true, anim
   }), [tick]);
 
   return (
-    <Animated.View style={[s.tarjeta, estilo]} accessible accessibilityLabel={`${numero} ${etiqueta}`}>
+    <Animated.View style={[s.tarjeta, estilo]} accessible accessibilityLabel={`${numero} ${lector ?? etiqueta}`}>
       <View style={[s.filo, { backgroundColor: filo }]} />
       <View importantForAccessibility="no-hide-descendants" accessibilityElementsHidden style={s.contenido}>
         <Odometro
-          valor={numero} activo={activo} animar={animar} retraso={retraso + NUMERO_RETRASO_MS}
+          valor={numero} activo={activo} animar={animar} continuo={continuo} retraso={retraso + NUMERO_RETRASO_MS}
           estilo={[s.numero, { fontSize: tamano, lineHeight: tamano + 2 }]}
         />
         <Text style={s.etiqueta} maxFontSizeMultiplier={1.3}>{etiqueta}</Text>
       </View>
+      {adorno ? <View style={s.adorno} pointerEvents="none">{adorno}</View> : null}
     </Animated.View>
   );
 }
@@ -77,6 +86,7 @@ const s = StyleSheet.create({
   },
   filo: { position: 'absolute', top: 0, left: 0, right: 0, height: 3 },
   contenido: { alignItems: 'center', paddingTop: 20, paddingBottom: 16, paddingHorizontal: 8, gap: 4 },
+  adorno: { position: 'absolute', top: 8, right: 8 },
   numero: { ...tipo.numero, fontSize: 48, lineHeight: 50, color: paleta.magnesia },
   etiqueta: { fontFamily: familia.medio, fontSize: 13, lineHeight: 18, color: paleta.magnesia2, textAlign: 'center' },
 });

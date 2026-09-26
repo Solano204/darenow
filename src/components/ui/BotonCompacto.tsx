@@ -11,12 +11,14 @@ const ESCALA_PRESIONADO = 0.05;
  * acciones dentro de una tarjeta. Es la version compacta de `BotonPlaca`: mismo
  * azul, sin resplandor ni llenado.
  */
-export function BotonCompacto({ texto, onPress, etiqueta, estilo }: {
+export function BotonCompacto({ texto, onPress, etiqueta, estilo, alto = ALTO }: {
   texto: string;
   onPress: () => void;
   /** Si el texto solo no describe la accion (p. ej. incluye el ejercicio). */
   etiqueta?: string;
   estilo?: StyleProp<ViewStyle>;
+  /** Alto del boton (40 por defecto; 44 en «Empezar reto» y 56 en «Guardar», junto a un campo). */
+  alto?: number;
 }) {
   const presion = useSharedValue(0);
   const cuerpo = useAnimatedStyle(() => ({
@@ -34,7 +36,7 @@ export function BotonCompacto({ texto, onPress, etiqueta, estilo }: {
       accessibilityLabel={etiqueta ?? texto}
       style={estilo}
     >
-      <Animated.View style={[s.cuerpo, cuerpo]}>
+      <Animated.View style={[s.cuerpo, { height: alto }, cuerpo]}>
         <Text style={s.texto} numberOfLines={1} maxFontSizeMultiplier={1.15}>{texto}</Text>
       </Animated.View>
     </Pressable>

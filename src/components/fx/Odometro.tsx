@@ -117,6 +117,7 @@ export function Odometro({
               alto={alto}
               ancho={celda}
               continuo={!!continuo}
+              animarCambios={!reducido}
               sentido={sentido}
               estilo={estilo}
             />
@@ -127,10 +128,13 @@ export function Odometro({
   );
 }
 
-function Columna({ inicio, fin, destino, oculta, activo, estatico, retraso, duracion, alto, ancho, continuo, sentido, estilo }: {
+function Columna({ inicio, fin, destino, oculta, activo, estatico, retraso, duracion, alto, ancho, continuo, animarCambios, sentido, estilo }: {
   indice: number; inicio: number; fin: number; destino: number; oculta: boolean; activo: boolean;
   estatico: boolean; retraso: number; duracion: number; alto: number; ancho: number;
-  continuo: boolean; sentido: number; estilo: StyleProp<TextStyle>;
+  continuo: boolean;
+  /** Un cambio de valor posterior a la entrada rueda aunque la entrada no se animara (solo movimiento reducido lo salta). */
+  animarCambios: boolean;
+  sentido: number; estilo: StyleProp<TextStyle>;
 }) {
   const pos = useSharedValue(estatico ? fin : inicio);
   const visible = useSharedValue(1);
@@ -160,7 +164,7 @@ function Columna({ inicio, fin, destino, oculta, activo, estatico, retraso, dura
     finPrevio.current = fin;
     if (delta === 0) return;
     objetivo.current += delta;
-    pos.value = estatico ? objetivo.current : withSpring(objetivo.current, { ...resortePlaca, overshootClamping: true });
+    pos.value = animarCambios ? withSpring(objetivo.current, { ...resortePlaca, overshootClamping: true }) : objetivo.current;
   }, [fin]);
 
   const columna = useAnimatedStyle(() => {

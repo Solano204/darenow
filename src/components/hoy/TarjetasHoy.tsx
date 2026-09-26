@@ -1,16 +1,19 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { StyleSheet, Text, View, type StyleProp, type TextStyle } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { paleta, familia } from '../../theme';
 import { fuente, type TipoFoto } from '../../media/registry';
 import {
-  CATEGORIAS, evidenciaDe, insigniaDe, type Ejercicio, type Musculo, type Tip,
+  CATEGORIAS, evidenciaDe, type Ejercicio, type Musculo, type Tip,
 } from '../../data/catalog';
 import { nombreVisible } from '../../data/nombresVisibles';
+import { textoVisible } from '../../utils/presentacion';
+import { iconoDeSala, nombreDeSala } from '../../utils/aprender';
 import { Presionable } from '../ui/Presionable';
 import { FotoOscura } from '../ui/FotoOscura';
 import { NivelPlacas } from '../ui/NivelPlacas';
-import { InsigniaEvidencia } from '../ui/InsigniaEvidencia';
+import { contarVeredictos, resumenDeConteos } from '../exercise/MedidorEvidencia';
+import { MiniMedidorEvidencia } from '../explore/MiniMedidorEvidencia';
 import { EstrellaFavorito } from './EstrellaFavorito';
 
 export const ANCHO_EJERCICIO_MINI = 150;
@@ -54,14 +57,16 @@ function TarjetaFoto({
 /**
  * Ficha de «Ejercicios para ti» (150 de ancho): foto de 150x120, nombre completo
  * a 2 lineas, la categoria con su inicial en mayuscula y el nivel en placas, y
- * el medidor de evidencia (la insignia pequena de siempre) si el ejercicio la tiene.
+ * el mini medidor de evidencia de Explorar (32x4, un segmento por veredicto) si el
+ * ejercicio tiene afirmaciones.
  */
 export function TarjetaEjercicioMini({ e, favorito, onPress, onFavorito }: {
   e: Ejercicio; favorito: boolean; onPress: () => void; onFavorito: () => void;
 }) {
   const nombre = nombreVisible(e.name);
   const categoria = CATEGORIAS.find(c => c.id === e.category)?.nombre ?? e.category;
-  const conEvidencia = Object.keys(evidenciaDe(e).mapa).length > 0;
+  const conteos = useMemo(() => contarVeredictos(evidenciaDe(e).mapa), [e]);
+  const evidencia = resumenDeConteos(conteos);
   return (
     <TarjetaFoto
       tipoFoto="ejercicio" id={e.id} ancho={ANCHO_EJERCICIO_MINI} altoFoto={ALTO_EJERCICIO_MINI} radioFoto={20}
@@ -72,11 +77,11 @@ export function TarjetaEjercicioMini({ e, favorito, onPress, onFavorito }: {
             <Text style={s.categoria} numberOfLines={1}>{categoria}</Text>
             <NivelPlacas nivel={e.level} />
           </View>
-          {conEvidencia && <InsigniaEvidencia tipo={insigniaDe(e)} pequena />}
+          <MiniMedidorEvidencia conteos={conteos} />
         </View>
       )}
       favorito={favorito} onFavorito={onFavorito}
-      onPress={onPress} etiqueta={`${nombre}, ${categoria}, nivel ${e.level} de 3`}
+      onPress={onPress} etiqueta={`${nombre}, ${categoria}, nivel ${e.level} de 3${evidencia ? `. Evidencia: ${evidencia}` : ''}`}
     />
   );
 }
@@ -98,19 +103,23 @@ export function FichaMusculo({ m, trabajaHoy, onPress }: { m: Musculo; trabajaHo
   );
 }
 
-/** Articulo de «Para leer hoy» (240 de ancho): foto de 240x130, la sala con un icono y el titulo en Big Shoulders, hasta 3 lineas. */
-export function TarjetaArticulo({ t, sala, favorito, onPress, onFavorito }: {
-  t: Tip; sala?: string; favorito: boolean; onPress: () => void; onFavorito: () => void;
+/**
+ * Articulo de «Para leer hoy» (240 de ancho): foto de 240x130, la categoria en tipo oracion con el icono de su sala
+ * (el mismo de Aprender) y el titulo en Big Shoulders, hasta 3 lineas. Lo que dice y el icono salen de los mismos
+ * ayudantes que la tarjeta de Aprender, para que un articulo se lea igual en las dos pestanas.
+ */
+export function TarjetaArticulo({ t, favorito, onPress, onFavorito }: {
+  t: Tip; favorito: boolean; onPress: () => void; onFavorito: () => void;
 }) {
-  const titulo = nombreVisible(t.titulo);
-  const categoria = sala ? nombreVisible(sala) : undefined;
+  const titulo = textoVisible(t.titulo);
+  const categoria = nombreDeSala(t.sala);
   return (
     <TarjetaFoto
       tipoFoto="tip" id={t.id} ancho={ANCHO_ARTICULO} altoFoto={ALTO_ARTICULO} radioFoto={20}
       titulo={titulo} estiloTitulo={s.tituloArticulo} lineas={3}
       pie={categoria ? (
         <View style={s.sala}>
-          <Ionicons name="bookmark-outline" size={14} color={paleta.magnesia2} />
+          <Ionicons name={iconoDeSala(t.sala)} size={14} color={paleta.magnesia2} />
           <Text style={s.categoria} numberOfLines={1}>{categoria}</Text>
         </View>
       ) : undefined}

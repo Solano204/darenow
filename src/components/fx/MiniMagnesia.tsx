@@ -11,8 +11,8 @@ export function useMiniMagnesia() {
   const magnesia = useMagnesia();
   const ref = useRef<View>(null);
 
-  const disparar = useCallback(() => {
-    ref.current?.measureInWindow((x, y, ancho, alto) => magnesia.mini(x + ancho / 2, y + alto / 2));
+  const disparar = useCallback((particulas?: number) => {
+    ref.current?.measureInWindow((x, y, ancho, alto) => magnesia.mini(x + ancho / 2, y + alto / 2, particulas));
   }, [magnesia]);
 
   return { ref, disparar };

@@ -36,10 +36,43 @@ const GLIFOS: Record<string, Glifo> = {
  * con `resortePlaca` (`alAsentar` da el golpe y la nube) y un brillo la cruza una
  * vez. Con movimiento reducido aparece fija.
  */
-export function PlacaMedalla({ icono, retraso = 0, alAsentar }: {
+export function PlacaMedalla({ icono, retraso = 0, alAsentar, activo = true, pendiente }: {
   icono: string;
   retraso?: number;
   alAsentar?: () => void;
+  /** Cae cuando pasa a verdadero (una vitrina bajo el pliegue espera a entrar en pantalla). */
+  activo?: boolean;
+  /** El logro que aun no se gana: solo el contorno y el icono tenue, sin candado ni caida. */
+  pendiente?: boolean;
+}) {
+  return pendiente
+    ? <MedallaPendiente icono={icono} retraso={retraso} activo={activo} />
+    : <MedallaGanada icono={icono} retraso={retraso} alAsentar={alAsentar} activo={activo} />;
+}
+
+/** La medalla pendiente: un aro de `gomaBorde` con el icono al 30 %. Aparece con un fundido, sin caer. */
+function MedallaPendiente({ icono, retraso, activo }: { icono: string; retraso: number; activo: boolean }) {
+  const reducido = useReducedMotion();
+  const tick = useTick();
+  const t = useSharedValue(reducido ? 1 : 0);
+
+  useEffect(() => {
+    if (reducido) { t.value = 1; return; }
+    if (!activo) { t.value = 0; return; }
+    t.value = withDelay(retraso, withTiming(1, { duration: 300 }));
+    return () => cancelAnimation(t);
+  }, [reducido, activo, retraso]);
+
+  const estilo = useAnimatedStyle(() => ({ opacity: t.value }), [tick]);
+  return (
+    <Animated.View style={[s.pendiente, estilo]} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
+      <Ionicons name={GLIFOS[icono] ?? 'ribbon'} size={22} color={paleta.magnesia} style={s.iconoTenue} />
+    </Animated.View>
+  );
+}
+
+function MedallaGanada({ icono, retraso, alAsentar, activo }: {
+  icono: string; retraso: number; alAsentar?: () => void; activo: boolean;
 }) {
   const reducido = useReducedMotion();
   const tick = useTick();
@@ -55,10 +88,11 @@ export function PlacaMedalla({ icono, retraso = 0, alAsentar }: {
 
   useEffect(() => {
     if (reducido) { t.value = 1; return; }
+    if (!activo) { t.value = 0; return; }
     t.value = withDelay(retraso, withSpring(1, resortePlaca, fin => { if (fin) runOnJS(asentar)(); }));
     brillo.value = withDelay(retraso + 350, withTiming(1, { duration: BRILLO_MS, easing: easing.salida }));
     return () => { cancelAnimation(t); cancelAnimation(brillo); };
-  }, [reducido, retraso]);
+  }, [reducido, retraso, activo]);
 
   const cae = useAnimatedStyle(() => ({
     opacity: Math.min(1, t.value * 4),
@@ -99,6 +133,11 @@ export function PlacaMedalla({ icono, retraso = 0, alAsentar }: {
 
 const s = StyleSheet.create({
   caja: { width: LADO, height: LADO },
+  pendiente: {
+    width: LADO, height: LADO, borderRadius: LADO / 2, borderWidth: 2, borderColor: paleta.gomaBorde,
+    alignItems: 'center', justifyContent: 'center',
+  },
+  iconoTenue: { opacity: 0.3 },
   disco: { position: 'absolute', top: 0, left: 0, width: LADO, height: LADO, borderRadius: LADO / 2, backgroundColor: paleta.magnesia },
   muesca: {
     position: 'absolute', top: RADIO_EXTERIOR - 1.5, left: RADIO_EXTERIOR - 0.75, width: 1.5, height: 3, backgroundColor: paleta.goma,

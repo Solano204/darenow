@@ -7,14 +7,16 @@ const SATURACION = 0.65;
 const EXPOSICION = 0.72;
 const SOMBRA_ROJO = -0.012;
 const SOMBRA_AZUL = 0.028;
+/** Los mitos se ven como «lo que se cree»: la saturacion del tratamiento baja otro 20 %. */
+const DESATURACION_EXTRA = 0.8;
 
 /**
  * Tratamiento de respaldo para las fotos claras actuales: -35 % de saturacion,
  * menos exposicion y sombras un poco hacia azul frio. Una foto nueva, ya
  * oscura y de luz dura, se dibuja con `tratar={false}`.
  */
-function matrizTratamiento(): number[] {
-  const s = SATURACION;
+function matrizTratamiento(saturacion: number = SATURACION): number[] {
+  const s = saturacion;
   const e = EXPOSICION;
   const r = LUMA.r * (1 - s);
   const g = LUMA.g * (1 - s);
@@ -28,6 +30,7 @@ function matrizTratamiento(): number[] {
 }
 
 export const MATRIZ_TRATAMIENTO = matrizTratamiento();
+export const MATRIZ_DESATURADA = matrizTratamiento(SATURACION * DESATURACION_EXTRA);
 
 /** Anclas del degradado foto a goma y alto del scrim superior. Comunes a toda foto a sangre. */
 export const ANCLAS_VELO = [0.2, 0.5, 0.78, 1] as const;
@@ -47,11 +50,13 @@ function rectanguloCover(imagen: SkImage, ancho: number, alto: number, foco: Foc
   return { x: (ancho - w) * foco.x, y: (alto - h) * foco.y, width: w, height: h };
 }
 
-export function ImagenTratada({ imagen, ancho, alto, tratar = TRATAR_FOTOS, foco = FOCO_ARRIBA, opacidad }: {
+export function ImagenTratada({ imagen, ancho, alto, tratar = TRATAR_FOTOS, matriz = MATRIZ_TRATAMIENTO, foco = FOCO_ARRIBA, opacidad }: {
   imagen: SkImage | null;
   ancho: number;
   alto: number;
   tratar?: boolean;
+  /** El tratamiento de color; por defecto el de siempre (`matrizTratamiento()`). */
+  matriz?: number[];
   foco?: Foco;
   opacidad?: SharedValue<number>;
 }) {
@@ -59,16 +64,17 @@ export function ImagenTratada({ imagen, ancho, alto, tratar = TRATAR_FOTOS, foco
   const r = rectanguloCover(imagen, ancho, alto, foco);
   return (
     <SkiaImage image={imagen} x={r.x} y={r.y} width={r.width} height={r.height} fit="fill" opacity={opacidad}>
-      {tratar && <ColorMatrix matrix={MATRIZ_TRATAMIENTO} />}
+      {tratar && <ColorMatrix matrix={matriz} />}
     </SkiaImage>
   );
 }
 
-export function FotoTratada({ fuente, ancho, alto, tratar = TRATAR_FOTOS, foco, escala }: {
+export function FotoTratada({ fuente, ancho, alto, tratar = TRATAR_FOTOS, matriz, foco, escala }: {
   fuente: number;
   ancho: number;
   alto: number;
   tratar?: boolean;
+  matriz?: number[];
   foco?: Foco;
   escala?: SharedValue<number>;
 }) {
@@ -78,7 +84,7 @@ export function FotoTratada({ fuente, ancho, alto, tratar = TRATAR_FOTOS, foco, 
   return (
     <Canvas style={{ width: ancho, height: alto }} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
       <Group transform={transform} origin={{ x: ancho / 2, y: alto / 2 }}>
-        <ImagenTratada imagen={imagen} ancho={ancho} alto={alto} tratar={tratar} foco={foco} />
+        <ImagenTratada imagen={imagen} ancho={ancho} alto={alto} tratar={tratar} matriz={matriz} foco={foco} />
       </Group>
     </Canvas>
   );

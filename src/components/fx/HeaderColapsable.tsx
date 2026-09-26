@@ -11,14 +11,16 @@ import { useTick } from '../../hooks/useTick';
 /** Alto del encabezado expandido, sin contar el inset superior. */
 export const ALTO_HEADER = 96;
 /** Scroll en el que termina de colapsar. */
-const RANGO_SCROLL = 80;
+export const RANGO_SCROLL = 80;
 /** Cuanto sube el bloque al colapsar: deja una barra de 52 px. */
-const RECORRIDO_PX = 44;
+export const RECORRIDO_PX = 44;
 const TAMANO_TITULO = 40;
 const TAMANO_TITULO_COLAPSADO = 22;
 const ESCALA_FINAL = TAMANO_TITULO_COLAPSADO / TAMANO_TITULO;
 const FUNDE_SALUDO = RANGO_SCROLL / 2;
 const OPACIDAD_BARRA = 0.92;
+/** Cuanto se corre el titulo colapsado para dejar sitio a la flecha de atras. */
+const DESPLAZA_POR_FLECHA_PX = 40;
 
 type Icono = keyof typeof Ionicons.glyphMap;
 
@@ -31,11 +33,16 @@ type Icono = keyof typeof Ionicons.glyphMap;
  * inset.top + ALTO_HEADER`. Con movimiento reducido cambia en un solo paso al
  * pasar de 80 px.
  */
-export function HeaderColapsable({ y, saludo, titulo, accion }: {
+export function HeaderColapsable({ y, saludo, titulo, accion, onAtras }: {
   y: SharedValue<number>;
   saludo?: string;
   titulo: string;
   accion?: { icono: Icono; etiqueta: string; onPress: () => void };
+  /**
+   * Una flecha de atras fija arriba a la izquierda (las pantallas que se abren desde otra). Mientras el titulo
+   * grande esta a la vista la barra solo lleva la flecha; al colapsar, el titulo se corre a su lado.
+   */
+  onAtras?: () => void;
 }) {
   const { top } = useSafeAreaInsets();
   const reducido = useReducedMotion();
@@ -55,10 +62,14 @@ export function HeaderColapsable({ y, saludo, titulo, accion }: {
       : interpolate(y.value, [0, FUNDE_SALUDO], [1, 0], Extrapolation.CLAMP),
   }), [reducido, tick]);
   const textoTitulo = useAnimatedStyle(() => ({
-    transform: [{ scale: 1 - (1 - ESCALA_FINAL) * avance(y.value) }],
-  }), [reducido, tick]);
+    transform: [
+      { translateX: onAtras ? DESPLAZA_POR_FLECHA_PX * avance(y.value) : 0 },
+      { scale: 1 - (1 - ESCALA_FINAL) * avance(y.value) },
+    ],
+  }), [reducido, tick, onAtras]);
 
   return (
+    <>
     <Animated.View style={[s.caja, { height: top + ALTO_HEADER, paddingTop: top }, contenedor]} pointerEvents="box-none">
       {Platform.OS === 'ios' ? <BlurView intensity={40} tint="dark" style={s.llena} /> : null}
       <View style={s.llena} />
@@ -86,10 +97,23 @@ export function HeaderColapsable({ y, saludo, titulo, accion }: {
         )}
       </View>
     </Animated.View>
+    {onAtras && (
+      <Pressable
+        onPress={() => { haptico.toque(); onAtras(); }} hitSlop={4}
+        accessibilityRole="button" accessibilityLabel="Atrás" style={[s.atras, { top: top + 4 }]}
+      >
+        <Ionicons name="chevron-back" size={22} color={paleta.magnesia} />
+      </Pressable>
+    )}
+    </>
   );
 }
 
 const s = StyleSheet.create({
+  atras: {
+    position: 'absolute', left: 12, zIndex: 11, width: AREA_TACTIL_MIN, height: AREA_TACTIL_MIN,
+    alignItems: 'center', justifyContent: 'center',
+  },
   caja: { position: 'absolute', top: 0, left: 0, right: 0, zIndex: 10 },
   llena: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: conAlfa(paleta.goma, OPACIDAD_BARRA) },
   linea: { position: 'absolute', left: 0, right: 0, bottom: 0, height: 1, backgroundColor: paleta.gomaBorde },

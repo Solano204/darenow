@@ -1,10 +1,15 @@
 import React, { createContext, useContext } from 'react';
 import { StyleSheet, Text, type StyleProp, type TextStyle } from 'react-native';
 import Animated, {
-  Extrapolation, interpolate, useAnimatedScrollHandler, useAnimatedStyle, useSharedValue, type SharedValue,
+  Extrapolation, interpolate, useAnimatedScrollHandler, useAnimatedStyle, useSharedValue, withTiming, type SharedValue,
 } from 'react-native-reanimated';
 import { paleta, tipo, MARGEN_PANTALLA } from '../../theme';
 import { useReducedMotion } from '../../hooks/useReducedMotion';
+import { barraBajada } from '../../hooks/useBarraFlotante';
+
+const UMBRAL_DIRECCION = 6;
+const MIN_BAJADA = 40;
+const DUR_BARRA_MS = 180;
 
 const RECORRIDO_TITULO = 56;
 const APARICION_COMPACTA: [number, number] = [40, 72];
@@ -16,7 +21,19 @@ export const ContextoScroll = createContext<SharedValue<number> | null>(null);
 
 export function useScrollCabecera() {
   const y = useSharedValue(0);
-  const onScroll = useAnimatedScrollHandler(e => { y.value = e.contentOffset.y; });
+  const previo = useSharedValue(0);
+  const bajando = useSharedValue(0);
+  const onScroll = useAnimatedScrollHandler(e => {
+    const actual = e.contentOffset.y;
+    y.value = actual;
+    const delta = actual - previo.value;
+    if (Math.abs(delta) < UMBRAL_DIRECCION) return;
+    previo.value = actual;
+    const objetivo = delta > 0 && actual > MIN_BAJADA ? 1 : 0;
+    if (objetivo === bajando.value) return;
+    bajando.value = objetivo;
+    barraBajada.value = withTiming(objetivo, { duration: DUR_BARRA_MS });
+  });
   return { y, onScroll };
 }
 

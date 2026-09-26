@@ -23,3 +23,7 @@ export const TOQUE = 52;
 export const ALTO_BOTON = 58;
 export const ALTO_BARRA = 68;
 export const AREA_TACTIL_MIN = 44;
+
+/** Barra de pestanas flotante: separacion lateral y del borde inferior. */
+export const SEPARACION_BARRA = 12;
+export const separacionBarra = (insetAbajo: number) => Math.max(insetAbajo - 8, SEPARACION_BARRA);

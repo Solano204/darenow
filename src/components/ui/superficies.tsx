@@ -14,7 +14,7 @@ import {
 import Animated from 'react-native-reanimated';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { color, tipo, esp, radio, degradado, sombra, sol, ALTO_BARRA, MARGEN_PANTALLA } from '../../theme';
+import { color, tipo, esp, radio, degradado, sombra, sol, ALTO_BARRA, separacionBarra, MARGEN_PANTALLA } from '../../theme';
 import { Toque } from './controles';
 import { ContextoScroll, BarraCompacta, useScrollCabecera } from './cabecera';
 
@@ -115,14 +115,12 @@ export function Seccion({ titulo, accion, onAccion, children, estilo }: {
 }
 
 /**
- * Hueco inferior: la barra de pestanas (pegada al fondo, no flotante) mas
- * un respiro. Su alto real crece con el inset del telefono (ver
- * `Pestanas` en App.tsx: mismo calculo, `Math.max(inset.bottom - 10, 0)`
- * mantiene el icono a la misma altura y solo agranda el padding de abajo).
+ * Hueco inferior: la barra de pestanas flotante (su alto mas la separacion
+ * del borde, ver `TabBarGoma`) mas un respiro.
  */
 export function useHuecoAbajo(extra = 0) {
   const inset = useSafeAreaInsets();
-  return ALTO_BARRA + Math.max(inset.bottom - 10, 0) + esp.md + extra;
+  return ALTO_BARRA + separacionBarra(inset.bottom) + esp.md + extra;
 }
 
 /**

@@ -5,12 +5,20 @@ import { BlurView } from 'expo-blur';
 import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import type { BottomTabBarProps } from '@react-navigation/bottom-tabs';
-import { color, paleta, tipo, ALTO_BARRA, resortePlaca, haptico } from '../../theme';
+import {
+  color, paleta, tipo, ALTO_BARRA, SEPARACION_BARRA, separacionBarra, resortePlaca, haptico,
+} from '../../theme';
 import { useReducedMotion } from '../../hooks/useReducedMotion';
+import { useTick } from '../../hooks/useTick';
+import { barraBajada } from '../../hooks/useBarraFlotante';
 
 const ANCHO_INDICADOR = 16;
 const ALTO_INDICADOR = 3;
 const TOP_INDICADOR = 56;
+const RADIO_BARRA = 24;
+const BAJADA_PX = 8;
+const TRANSPARENCIA_EXTRA = 0.1;
+const ESCALA_ICONO_INICIAL = 0.9;
 
 type Icono = keyof typeof Ionicons.glyphMap;
 const ICONOS: Record<string, [activo: Icono, inactivo: Icono]> = {
@@ -20,20 +28,19 @@ const ICONOS: Record<string, [activo: Icono, inactivo: Icono]> = {
   Yo: ['person', 'person-outline'],
 };
 
-/** Alto de la barra incluyendo el hueco del gesto del telefono. Es el mismo calculo que `useHuecoAbajo`. */
-export const altoBarra = (insetAbajo: number) => ALTO_BARRA + Math.max(insetAbajo - 10, 0);
-
 /**
- * Barra de pestanas: `gomaAlta` con desenfoque en iOS (color casi solido en
- * Android), borde superior de 1 px y una barrita azul de 16x3 que se desliza
- * bajo la pestana activa con `resortePlaca`. Cambiar de pestana da un toque
- * de seleccion.
+ * Barra de pestanas flotante: margen de 12 px, esquinas de 24, `gomaAlta` con
+ * desenfoque en iOS (96 % de opacidad en Android) y una barrita azul de 16x3
+ * que se desliza bajo la pestana activa. El icono que se activa entra de 0.9
+ * a 1 con un toque de seleccion. Mientras se baja por una lista, la barra baja
+ * 8 px y se vuelve un 10 % mas transparente.
  */
-export function BarraPestanas({ state, descriptors, navigation }: BottomTabBarProps) {
+export function TabBarGoma({ state, descriptors, navigation }: BottomTabBarProps) {
   const inset = useSafeAreaInsets();
   const { width } = useWindowDimensions();
   const reducido = useReducedMotion();
-  const ancho = width / state.routes.length;
+  const tick = useTick();
+  const ancho = (width - 2 * SEPARACION_BARRA - 2) / state.routes.length;
   const x = useSharedValue(state.index * ancho);
 
   useEffect(() => {
@@ -43,14 +50,18 @@ export function BarraPestanas({ state, descriptors, navigation }: BottomTabBarPr
 
   const indicador = useAnimatedStyle(() => ({
     transform: [{ translateX: x.value + (ancho - ANCHO_INDICADOR) / 2 }],
-  }));
+  }), [tick]);
+  const flota = useAnimatedStyle(() => (
+    reducido ? {} : { transform: [{ translateY: BAJADA_PX * barraBajada.value }] }
+  ), [reducido, tick]);
+  const cuerpo = useAnimatedStyle(() => ({ opacity: 1 - TRANSPARENCIA_EXTRA * barraBajada.value }), [tick]);
 
   return (
-    <View style={[s.barra, { height: altoBarra(inset.bottom), paddingBottom: Math.max(inset.bottom, 10) }]}>
-      {Platform.OS === 'ios'
-        ? <BlurView intensity={40} tint="dark" style={StyleSheet.absoluteFill} />
-        : null}
-      <View style={[StyleSheet.absoluteFill, { backgroundColor: Platform.OS === 'ios' ? color.barraPestanasBlur : color.barraPestanas }]} />
+    <Animated.View style={[s.barra, { bottom: separacionBarra(inset.bottom) }, flota]}>
+      <Animated.View style={[StyleSheet.absoluteFill, cuerpo]}>
+        {Platform.OS === 'ios' ? <BlurView intensity={40} tint="dark" style={StyleSheet.absoluteFill} /> : null}
+        <View style={[StyleSheet.absoluteFill, { backgroundColor: Platform.OS === 'ios' ? color.barraPestanasBlur : color.barraPestanas }]} />
+      </Animated.View>
 
       <View style={s.fila} accessibilityRole="tablist">
         {state.routes.map((ruta, i) => {
@@ -76,7 +87,7 @@ export function BarraPestanas({ state, descriptors, navigation }: BottomTabBarPr
               accessibilityState={{ selected: activa }}
               style={s.item}
             >
-              <Ionicons name={activa ? lleno : contorno} size={22} color={activa ? paleta.magnesia : paleta.magnesia3} />
+              <IconoPestana activa={activa} lleno={lleno} contorno={contorno} />
               <Text style={[s.etiqueta, { color: activa ? paleta.magnesia : color.textoTenue }]} numberOfLines={1}>
                 {etiqueta}
               </Text>
@@ -86,14 +97,33 @@ export function BarraPestanas({ state, descriptors, navigation }: BottomTabBarPr
       </View>
 
       <Animated.View style={[s.indicador, indicador]} pointerEvents="none" />
-    </View>
+    </Animated.View>
+  );
+}
+
+function IconoPestana({ activa, lleno, contorno }: { activa: boolean; lleno: Icono; contorno: Icono }) {
+  const reducido = useReducedMotion();
+  const tick = useTick();
+  const escala = useSharedValue(1);
+
+  useEffect(() => {
+    if (!activa || reducido) { escala.value = 1; return; }
+    escala.value = ESCALA_ICONO_INICIAL;
+    escala.value = withSpring(1, resortePlaca);
+  }, [activa, reducido]);
+
+  const estilo = useAnimatedStyle(() => ({ transform: [{ scale: escala.value }] }), [tick]);
+  return (
+    <Animated.View style={estilo}>
+      <Ionicons name={activa ? lleno : contorno} size={22} color={activa ? paleta.magnesia : paleta.magnesia3} />
+    </Animated.View>
   );
 }
 
 const s = StyleSheet.create({
   barra: {
-    position: 'absolute', left: 0, right: 0, bottom: 0,
-    borderTopWidth: 1, borderTopColor: paleta.gomaBorde, overflow: 'hidden',
+    position: 'absolute', left: SEPARACION_BARRA, right: SEPARACION_BARRA, height: ALTO_BARRA,
+    borderRadius: RADIO_BARRA, borderWidth: 1, borderColor: paleta.gomaBorde, overflow: 'hidden',
   },
   fila: { flex: 1, flexDirection: 'row', paddingTop: 10 },
   item: { flex: 1, alignItems: 'center', gap: 2, minHeight: 44 },

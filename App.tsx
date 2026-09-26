@@ -17,7 +17,7 @@ import { ProveedorCuenta, useCuenta } from './src/store/cuenta';
 import { ProveedorAnuncios } from './src/components/RelojAnuncios';
 import { ProveedorMagnesia } from './src/components/fx/MagnesiaOverlay';
 import { Entrada } from './src/components/fx/Entrada';
-import { BarraPestanas } from './src/components/ui/BarraPestanas';
+import { TabBarGoma } from './src/components/ui/TabBarGoma';
 import { resorteTap } from './src/theme';
 
 // Se queda visible hasta que las fuentes resuelvan (cargadas o no): nada
@@ -66,7 +66,7 @@ function Pestanas() {
   return (
     <Entrada activo escala={1.02} resorte={resorteTap} estilo={{ flex: 1 }}>
       <Tab.Navigator
-        tabBar={props => <BarraPestanas {...props} />}
+        tabBar={props => <TabBarGoma {...props} />}
         screenOptions={{
           headerShown: false,
           animation: 'fade',

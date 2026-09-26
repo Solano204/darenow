@@ -1,4 +1,5 @@
 import { nombreVisible } from '../data/nombresVisibles';
+import { equipoPorId } from '../data/catalog';
 
 /**
  * Ayudas de presentacion. Solo se usan para mostrar: nunca modifican los datos
@@ -24,4 +25,11 @@ export function separarNumeroUnidad(valor: string): { numero: number | null; uni
 /** Zonas de riesgo como una frase: «Rodilla, cadera». `atm` es una sigla. */
 export function textoDeZonas(zonas: string[]): string {
   return capitalizar(zonas.map(z => (z === 'atm' ? 'ATM' : nombreVisible(z))).join(', '));
+}
+
+/** Equipo de un ejercicio como una frase: «Pared, silla o escalón». Sin equipo: «Sin equipo». */
+export function textoDeEquipo(ids: string[]): string {
+  const nombres = ids.filter(i => i !== 'ninguno').map(i => nombreVisible(equipoPorId.get(i)?.name ?? i));
+  if (nombres.length === 0) return 'Sin equipo';
+  return nombres.map((n, i) => (i === 0 ? capitalizar(n) : n[0].toLowerCase() + n.slice(1))).join(', ');
 }

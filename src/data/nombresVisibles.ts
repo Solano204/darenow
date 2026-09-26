@@ -68,7 +68,7 @@ ultimo:último unica:única unico:único util:útil vacio:vacío valoracion:valo
 veras:verás version:versión via:vía abrelos:ábrelos acompanando:acompañando agachate:agáchate
 alejandolos:alejándolos anade:añade arrancon:arrancón bajate:bájate caida:caída caido:caído
 caidos:caídos cruzala:crúzala cruzalos:crúzalos ahi:ahí aerea:aérea aerobica:aeróbica
-aerobico:aeróbico
+aerobico:aeróbico seccion:sección excentricas:excéntricas monotematico:monotemático
 `;
 
 const PALABRAS: Record<string, string> = Object.fromEntries(

@@ -22,7 +22,7 @@ const SALIDA_MS = 140;
  * particulas. El estado y el efecto sobre los datos son los de siempre:
  * `onPress` alterna el favorito y `activo` viene del almacen.
  */
-export function EstrellaFavorito({ activo, onPress, nombre, lado = LADO, fondo }: {
+export function EstrellaFavorito({ activo, onPress, nombre, lado = LADO, fondo, sinFondo, tamanoIcono = TAMANO_ICONO, contorno = paleta.magnesia }: {
   activo: boolean;
   onPress: () => void;
   nombre: string;
@@ -30,6 +30,12 @@ export function EstrellaFavorito({ activo, onPress, nombre, lado = LADO, fondo }
   lado?: number;
   /** Opacidad del fondo circular (0 a 1). Sin ella el fondo siempre se ve. */
   fondo?: SharedValue<number>;
+  /** En una lista (no sobre una foto): sin el disco oscuro. */
+  sinFondo?: boolean;
+  /** Tamano del glifo (20 por defecto; 22 en las filas de Explorar). */
+  tamanoIcono?: number;
+  /** Color del contorno cuando no esta marcada (el relleno siempre es `magnesia`). */
+  contorno?: string;
 }) {
   const reducido = useReducedMotion();
   const tick = useTick();
@@ -68,10 +74,10 @@ export function EstrellaFavorito({ activo, onPress, nombre, lado = LADO, fondo }
     >
       <View ref={magnesia.ref} collapsable={false}>
         <Animated.View style={[s.disco, { width: lado, height: lado, borderRadius: lado / 2 }, disco]}>
-          <Animated.View style={[s.fondo, { borderRadius: lado / 2 }, capaFondo]} />
-          <Ionicons name="star-outline" size={TAMANO_ICONO} color={paleta.magnesia} />
+          {!sinFondo && <Animated.View style={[s.fondo, { borderRadius: lado / 2 }, capaFondo]} />}
+          <Ionicons name="star-outline" size={tamanoIcono} color={contorno} />
           <Animated.View style={[s.relleno, relleno]} pointerEvents="none">
-            <Ionicons name="star" size={TAMANO_ICONO} color={paleta.magnesia} />
+            <Ionicons name="star" size={tamanoIcono} color={paleta.magnesia} />
           </Animated.View>
         </Animated.View>
       </View>

@@ -15,7 +15,8 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { paleta, tipo, familia, esp, degradado, MARGEN_PANTALLA, AREA_TACTIL_MIN, resorteMagnesia } from '../theme';
 import { Boton } from '../components/ui';
 import { BotonPlaca } from '../components/ui/BotonPlaca';
-import { OpcionCuestionario, type IconoOpcion } from '../components/ui/OpcionCuestionario';
+import { OpcionCuestionario } from '../components/ui/OpcionCuestionario';
+import { ICONOS_OBJETIVO } from '../components/ui/iconosObjetivo';
 import { ContadorPlacas } from '../components/ui/ContadorPlacas';
 import { CampoTexto } from '../components/ui/CampoTexto';
 import { GomaTexture } from '../components/fx/GomaTexture';
@@ -34,17 +35,6 @@ export { derivar, derivarNivel, elegirPrograma, avisosDe };
 
 type Cuestion = ReturnType<typeof useOnboarding>;
 type Transicion = ReturnType<typeof useTransicionPaso>;
-
-const ICONOS_OBJETIVO: Record<string, IconoOpcion> = {
-  bajar_peso: 'scale-outline',
-  musculo: 'fitness-outline',
-  mandibula: 'happy-outline',
-  postura: 'body-outline',
-  cardio: 'pulse-outline',
-  running: 'footsteps-outline',
-  gym: 'barbell-outline',
-  calistenia: 'accessibility-outline',
-};
 
 const PISTA_OBJETIVO = 'Elige un objetivo para continuar';
 const PISTA_NOMBRE = 'Escribe tu nombre para continuar';

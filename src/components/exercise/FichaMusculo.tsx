@@ -39,20 +39,24 @@ export function medidasFichas(nombres: string[]): MedidasFicha {
  * al entrar en pantalla se cruza de la neutra a la resaltada en 400 ms; si no,
  * se omite. Al presionar se hunde un 5 %.
  */
-export function FichaMusculo({ m, principal, medidas, indice, activo, onPress }: {
+export function FichaMusculo({ m, principal, medidas, indice, activo, animar = true, detalle, onPress }: {
   m: Musculo;
   principal: boolean;
   medidas: MedidasFicha;
   indice: number;
   activo: boolean;
+  /** Con `false` la ficha aparece ya puesta (sin entrada escalonada). */
+  animar?: boolean;
+  /** Linea bajo el nombre («12 ejercicios»). */
+  detalle?: string;
   onPress: () => void;
 }) {
   const nombre = textoVisible(m.name);
   return (
-    <Entrada activo={activo} retraso={indice * ESCALONADO_MS} y={12}>
+    <Entrada activo={activo} animar={animar} retraso={indice * ESCALONADO_MS} y={12}>
       <Presionable
         onPress={onPress} escala={ESCALA_PRESIONADA} estilo={{ width: medidas.ancho }}
-        etiqueta={principal ? `${nombre}, músculo principal` : nombre}
+        etiqueta={[nombre, principal ? 'músculo principal' : '', detalle ?? ''].filter(Boolean).join(', ')}
       >
         <View style={[s.ficha, { width: medidas.ancho }]}>
           <FotoResalte id={m.id} ancho={medidas.ancho} activo={activo} />
@@ -69,6 +73,7 @@ export function FichaMusculo({ m, principal, medidas, indice, activo, onPress }:
         >
           {nombre}
         </Text>
+        {detalle ? <Text style={s.detalle}>{detalle}</Text> : null}
       </Presionable>
     </Entrada>
   );
@@ -109,4 +114,5 @@ const s = StyleSheet.create({
   },
   marcaTexto: { fontFamily: familia.enfasis, fontSize: 11, lineHeight: 14, color: paleta.goma },
   nombre: { marginTop: 8, fontFamily: familia.enfasis, color: paleta.magnesia },
+  detalle: { marginTop: 2, fontFamily: familia.cuerpo, fontSize: 13, lineHeight: 18, color: paleta.magnesia3Texto },
 });

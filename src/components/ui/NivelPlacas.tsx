@@ -2,30 +2,25 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { paleta } from '../../theme';
 
-const PLACAS_NIVEL = [paleta.placaVerde, paleta.placaAmarilla, paleta.placaRoja] as const;
-const ANCHO = 8;
-const ALTO = 22;
+const ANCHO = 6;
+const ALTO = 16;
 
 /**
- * Nivel del ejercicio (1 a 3) como placas: se llenan de izquierda a derecha en
- * verde, amarillo y rojo, las que faltan quedan como contorno. Mismo dato que
- * el texto «Nivel N», que sigue siendo lo que lee el lector de pantalla.
+ * Nivel del ejercicio como placas de 6x16: las del nivel actual en `magnesia`
+ * y el resto hasta `maximo` en `gomaBorde`. El maximo de niveles del catalogo
+ * es 3 (`Ejercicio.level`). El lector de pantalla oye «Nivel N de 3».
  */
-export function NivelPlacas({ nivel }: { nivel: 1 | 2 | 3 }) {
+export function NivelPlacas({ nivel, maximo = 3 }: { nivel: number; maximo?: number }) {
   return (
-    <View style={s.fila} accessible accessibilityLabel={`Nivel ${nivel} de 3`}>
-      {PLACAS_NIVEL.map((c, i) => (
-        <View
-          key={i}
-          style={[s.placa, i < nivel ? { backgroundColor: c, borderColor: c } : s.vacia]}
-        />
+    <View style={s.fila} accessible accessibilityLabel={`Nivel ${nivel} de ${maximo}`}>
+      {Array.from({ length: maximo }, (_, i) => (
+        <View key={i} style={[s.placa, { backgroundColor: i < nivel ? paleta.magnesia : paleta.gomaBorde }]} />
       ))}
     </View>
   );
 }
 
 const s = StyleSheet.create({
-  fila: { flexDirection: 'row', alignItems: 'flex-end', gap: 4 },
-  placa: { width: ANCHO, height: ALTO, borderRadius: 3, borderWidth: 1 },
-  vacia: { backgroundColor: 'transparent', borderColor: paleta.gomaBorde },
+  fila: { flexDirection: 'row', alignItems: 'flex-end', gap: 3 },
+  placa: { width: ANCHO, height: ALTO, borderRadius: 2 },
 });

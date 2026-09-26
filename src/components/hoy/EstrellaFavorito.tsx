@@ -1,20 +1,23 @@
 import React, { useEffect, useRef } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
-import Animated, { useAnimatedStyle, useSharedValue, withSpring, withTiming } from 'react-native-reanimated';
+import Animated, { useAnimatedStyle, useSharedValue, withSequence, withSpring, withTiming } from 'react-native-reanimated';
 import { Ionicons } from '@expo/vector-icons';
-import { color, paleta, resortePlaca, haptico } from '../../theme';
+import { paleta, conAlfa, resortePlaca, haptico } from '../../theme';
 import { useReducedMotion } from '../../hooks/useReducedMotion';
 import { useTick } from '../../hooks/useTick';
 import { useMiniMagnesia } from '../fx/MiniMagnesia';
 
-const LADO = 36;
+const LADO = 40;
+const SOBREIMPULSO = 1.2;
+const ENCOGE_AL_QUITAR = 0.85;
 const TAMANO_ICONO = 20;
 const SALIDA_MS = 140;
 
 /**
- * Estrella de favorito sobre una foto. El contorno siempre esta; al marcarla se
- * llena con un resorte y suelta una nube pequena de magnesia. Al quitarla el
- * relleno se apaga. El estado y el efecto sobre los datos son los de siempre:
+ * Estrella de favorito sobre una foto (40 px, `goma` al 70 %). El contorno
+ * siempre esta; al marcarla se llena (escala 0 a 1.2 a 1 con `resortePlaca`) y
+ * suelta una nube pequena de magnesia. Al quitarla se vacia (1 a 0.85 a 1) sin
+ * particulas. El estado y el efecto sobre los datos son los de siempre:
  * `onPress` alterna el favorito y `activo` viene del almacen.
  */
 export function EstrellaFavorito({ activo, onPress, nombre }: {
@@ -26,32 +29,42 @@ export function EstrellaFavorito({ activo, onPress, nombre }: {
   const tick = useTick();
   const magnesia = useMiniMagnesia();
   const t = useSharedValue(activo ? 1 : 0);
+  const icono = useSharedValue(1);
   const primera = useRef(true);
 
   useEffect(() => {
     if (primera.current) { primera.current = false; return; }
     if (reducido) { t.value = activo ? 1 : 0; return; }
-    t.value = activo ? withSpring(1, resortePlaca) : withTiming(0, { duration: SALIDA_MS });
-    if (activo) magnesia.disparar();
+    if (activo) {
+      t.value = 0;
+      t.value = withSequence(withTiming(SOBREIMPULSO, { duration: 120 }), withSpring(1, resortePlaca));
+      magnesia.disparar();
+    } else {
+      t.value = withTiming(0, { duration: SALIDA_MS });
+      icono.value = withSequence(withTiming(ENCOGE_AL_QUITAR, { duration: SALIDA_MS / 2 }), withTiming(1, { duration: SALIDA_MS / 2 }));
+    }
   }, [activo, reducido]);
 
   const relleno = useAnimatedStyle(() => ({
     opacity: Math.min(1, t.value * 3),
     transform: [{ scale: reducido ? 1 : t.value }],
   }), [reducido, tick]);
+  const disco = useAnimatedStyle(() => ({ transform: [{ scale: reducido ? 1 : icono.value }] }), [reducido, tick]);
 
   return (
     <Pressable
-      onPress={() => { haptico.seleccion(); onPress(); }}
-      hitSlop={4}
+      onPress={() => { haptico.toque(); onPress(); }}
+      hitSlop={2}
       accessibilityRole="button"
       accessibilityLabel={activo ? `Quitar ${nombre} de favoritos` : `Guardar ${nombre} en favoritos`}
       accessibilityState={{ selected: activo }}
     >
-      <View ref={magnesia.ref} collapsable={false} style={s.disco}>
-        <Ionicons name="star-outline" size={TAMANO_ICONO} color={activo ? paleta.magnesia : paleta.magnesia2} />
-        <Animated.View style={[s.relleno, relleno]} pointerEvents="none">
-          <Ionicons name="star" size={TAMANO_ICONO} color={paleta.magnesia} />
+      <View ref={magnesia.ref} collapsable={false}>
+        <Animated.View style={[s.disco, disco]}>
+          <Ionicons name="star-outline" size={TAMANO_ICONO} color={paleta.magnesia} />
+          <Animated.View style={[s.relleno, relleno]} pointerEvents="none">
+            <Ionicons name="star" size={TAMANO_ICONO} color={paleta.magnesia} />
+          </Animated.View>
         </Animated.View>
       </View>
     </Pressable>
@@ -61,7 +74,7 @@ export function EstrellaFavorito({ activo, onPress, nombre }: {
 const s = StyleSheet.create({
   disco: {
     width: LADO, height: LADO, borderRadius: LADO / 2, alignItems: 'center', justifyContent: 'center',
-    backgroundColor: color.chipVidrioFondo, borderWidth: 1, borderColor: color.chipVidrioBorde,
+    backgroundColor: conAlfa(paleta.goma, 0.7),
   },
   relleno: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, alignItems: 'center', justifyContent: 'center' },
 });

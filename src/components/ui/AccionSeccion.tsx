@@ -2,7 +2,7 @@ import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 import { Ionicons } from '@expo/vector-icons';
-import { paleta, tipo, AREA_TACTIL_MIN, MARGEN_PANTALLA, resorteTap, haptico } from '../../theme';
+import { paleta, familia, AREA_TACTIL_MIN, MARGEN_PANTALLA, resorteTap, haptico } from '../../theme';
 import { useReducedMotion } from '../../hooks/useReducedMotion';
 
 const EMPUJE_FLECHA_PX = 4;
@@ -33,10 +33,14 @@ export function AccionSeccion({ texto, onPress }: { texto: string; onPress: () =
 }
 
 /** Encabezado de un modulo: titulo a la izquierda y, si hay, su accion a la derecha. */
-export function CabeceraSeccion({ titulo, accion, onAccion }: { titulo: string; accion?: string; onAccion?: () => void }) {
+export function CabeceraSeccion({ titulo, accion, onAccion, grande }: {
+  titulo: string; accion?: string; onAccion?: () => void;
+  /** 26 px (Elige tu enfoque y otras rutinas) en vez de los 24 del resto del feed. */
+  grande?: boolean;
+}) {
   return (
     <View style={s.cabecera}>
-      <Text style={s.titulo} accessibilityRole="header">{titulo}</Text>
+      <Text style={[s.titulo, grande && s.tituloGrande]} accessibilityRole="header">{titulo}</Text>
       {accion && onAccion ? <AccionSeccion texto={accion} onPress={onAccion} /> : null}
     </View>
   );
@@ -47,7 +51,8 @@ const s = StyleSheet.create({
     flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',
     paddingHorizontal: MARGEN_PANTALLA, marginBottom: 12, minHeight: AREA_TACTIL_MIN,
   },
-  titulo: { ...tipo.h2, flexShrink: 1, color: paleta.magnesia },
+  titulo: { fontFamily: familia.titulo, fontSize: 24, lineHeight: 28, flexShrink: 1, color: paleta.magnesia },
+  tituloGrande: { fontSize: 26, lineHeight: 30 },
   boton: { flexDirection: 'row', alignItems: 'center', gap: 2, minHeight: AREA_TACTIL_MIN, paddingLeft: 12 },
-  texto: { ...tipo.etiqueta, fontSize: 14, color: paleta.magnesia2 },
+  texto: { fontFamily: familia.enfasis, fontSize: 15, lineHeight: 20, color: paleta.magnesia2 },
 });

@@ -23,7 +23,12 @@ type Estado = 0 | 1 | 2;
  * accion y 4 px mas alta. `total` es dinamico (algunos pasos se omiten segun
  * las respuestas). Haptica Medium solo en los hitos 5, 9 y el ultimo.
  */
-export function BarraCarga13({ total, actual }: { total: number; actual: number }) {
+export function BarraCarga13({ total, actual, compacta }: {
+  total: number;
+  actual: number;
+  /** Sin margen lateral ni contador: para ir dentro de una tarjeta que ya dice «Semana N de M». */
+  compacta?: boolean;
+}) {
   const previo = useRef(actual);
 
   useEffect(() => {
@@ -33,7 +38,7 @@ export function BarraCarga13({ total, actual }: { total: number; actual: number 
 
   return (
     <View
-      style={s.fila}
+      style={compacta ? s.filaCompacta : s.fila}
       accessible
       accessibilityRole="progressbar"
       accessibilityLabel={`Paso ${actual} de ${total}`}
@@ -45,10 +50,12 @@ export function BarraCarga13({ total, actual }: { total: number; actual: number 
             <Placa key={k} estado={(k < actual - 1 ? 2 : k === actual - 1 ? 1 : 0) as Estado} />
           ))}
         </View>
-        <View style={s.contador}>
-          <Odometro valor={actual} continuo estilo={s.numero} />
-          <Text style={s.total}>/ {total}</Text>
-        </View>
+        {!compacta && (
+          <View style={s.contador}>
+            <Odometro valor={actual} continuo estilo={s.numero} />
+            <Text style={s.total}>/ {total}</Text>
+          </View>
+        )}
       </View>
     </View>
   );
@@ -73,6 +80,7 @@ function Placa({ estado }: { estado: Estado }) {
 
 const s = StyleSheet.create({
   fila: { paddingHorizontal: 24, paddingTop: 8 },
+  filaCompacta: { paddingTop: 0 },
   interior: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
   placas: { flexDirection: 'row', alignItems: 'center', gap: SEPARACION, height: ALTO_ACTUAL },
   placa: { width: ANCHO_PLACA, height: ALTO_ACTUAL, borderRadius: 2 },

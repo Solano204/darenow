@@ -18,23 +18,25 @@ const MARGEN_VISIBLE_PX = 80;
  * ya puesto y `activo` es verdadero desde el inicio. Debe ser hijo directo del
  * contenido del scroll.
  */
-export function BloqueRevela({ y, estilo, children }: {
+export function BloqueRevela({ y, estilo, sinMovimiento, children }: {
   y: SharedValue<number>;
   estilo?: StyleProp<ViewStyle>;
+  /** Solo avisa a `children` cuando entra en pantalla (`activo`): no sube ni se desvanece. */
+  sinMovimiento?: boolean;
   children: (activo: boolean) => React.ReactNode;
 }) {
   const reducido = useReducedMotion();
   const tick = useTick();
   const { height: alturaVentana } = useWindowDimensions();
   const arriba = useSharedValue(Number.POSITIVE_INFINITY);
-  const visto = useSharedValue(reducido ? 1 : 0);
+  const visto = useSharedValue(reducido || sinMovimiento ? 1 : 0);
   const [activo, setActivo] = useState(reducido);
 
   useAnimatedReaction(
     () => y.value + alturaVentana - MARGEN_VISIBLE_PX > arriba.value,
     (dentro, previo) => {
       if (!dentro || previo) return;
-      visto.value = withSpring(1, resorteMagnesia);
+      if (!sinMovimiento) visto.value = withSpring(1, resorteMagnesia);
       runOnJS(setActivo)(true);
     },
     [alturaVentana],

@@ -303,6 +303,7 @@ Se rellena al cerrar cada fase. «código» = lectura de código, `tsc` y `lint:
 | Programa activo, Programas, Ejercicios, Músculos, Tips: mismas fuentes y rutas | ✅ código |
 | Pestañas: las 4 rutas y su salto | ✅ código |
 | Cifras de «Explorar todo» = 190, 30, 12 | ✅ código (las cifras salen ahora de `ESTADISTICAS`; se contó el catálogo: 190, 30, 12) |
+| Segunda pasada contra el texto completo del brief (encabezado de 80 px, entrada de miniaturas, franja de días, mazo de programas, etc.): mismas fuentes y mismas rutas | ✅ código |
 | Barra flotante, encabezado que se encoge, parallax, huella, arrastrar para actualizar | pendiente en dispositivo |
 | Barra de pestañas flotante no tapa el último módulo ni el banner | pendiente en dispositivo |
 | Rendimiento del scroll en una build de release | pendiente en dispositivo |
@@ -315,9 +316,14 @@ No cambian ningún dato, filtro ni ruta.
 
 - «Explorar todo»: las cifras salen de `ESTADISTICAS` en vez de estar escritas a mano. Mismos valores hoy.
 - Categoría bajo un ejercicio de «Ejercicios para ti»: se muestra el nombre de `CATEGORIAS` («Fuerza») en vez del id («fuerza»).
-- Duración de las rutinas del catálogo: se muestra una vez (insignia), ya no también como subtítulo. Las propias siguen con «Mi rutina».
-- Tarjetas nuevas: la de rutina propia muestra una barra con un segmento por ejercicio y una huella si ya se hizo alguna sesión con ella (`sesiones.some(rutinaId === id)`); un músculo que trabaja la sesión de hoy lleva la insignia «Hoy».
+- Duración de las rutinas y programas del catálogo: se muestra una vez (insignia sobre la foto), ya no también como subtítulo. En las rutinas del catálogo el subtítulo pasa a ser su objetivo (`nombreGoal(r.goal)`); las propias siguen con «Mi rutina».
+- La rutina propia muestra una barra con un segmento por ejercicio y una huella de 12 si ya se hizo alguna sesión con ella (`sesiones.some(rutinaId === id)`).
+- «Ejercicios para ti»: la ficha muestra el nivel en placas y la insignia de evidencia pequeña (datos del propio ejercicio, `level` y `evidenciaDe`); «Para leer hoy» muestra la sala con un ícono; la ficha de músculo ya no lleva insignia.
+- Estadísticas: plurales («1 sesión», «1 minuto», «1 serie») y «días seguidos» en minúscula.
+- «Elige tu enfoque»: «Nivel N» acompaña a las placas; «Inicio» es un botón y hace lo mismo que tocar la tarjeta.
+- El estado «Hecho hoy» añade la etiqueta y la huella de 120 al 10 %; el criterio (`entrenoHoy`) es el mismo.
 - Títulos de módulo nuevos: «Tu semana» y «Tu progreso» (antes esos bloques no tenían título).
+- Ortografía de títulos (sección 6D.10 del brief), en la capa de presentación por la misma razón que los ejercicios (`name`, `titulo` y `name` de programas son claves de búsqueda de Explorar y Aprender): «Musculo en casa con mancuernas» → «Músculo en casa con mancuernas», «Cuando volver despues de una molestia» → «Cuándo volver después de una molestia» (el dato no es una pregunta, así que solo lleva acentos), «Que dice el unico estudio serio…» → «Qué dice el único estudio serio…», «Traccion en gym» → «Tracción en gym», «Sesion minima de 5 minutos» → «Sesión mínima de 5 minutos», «Mandibula y perfil» → «Mandíbula y perfil», «Vuelta despues de una pausa larga» → «Vuelta después de una pausa larga», «Baja mas lento de lo que subes» → «Baja más lento de lo que subes», «Elige el dia mas dificil de la semana» → «Elige el día más difícil de la semana», salas («Tecnica», «Alimentacion», «Mandibula y rostro») y músculos («Triceps braquial», «Gluteo mayor», «Cuadriceps», «Soleo», «Suelo pelvico»…). Palabras añadidas a `nombresVisibles.ts`: alimentación, básica, cigomáticos, después, día, difícil, digástrico, ilíaco, intrínseca, mandíbula, más, mínima, multífidos, músculo, pélvico, proteína, rápido, sesión, sóleo, técnica, tracción, único, versión. Las descripciones largas de los programas no se tocan.
 - «Inicio» en «Elige tu enfoque» ahora es un botón; hace lo mismo que tocar la tarjeta.
 - Arrastrar para actualizar: nuevo, sin datos que pedir; solo relee la fecha.
 

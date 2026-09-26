@@ -8,7 +8,7 @@ import { paleta, tinte, radio, easing } from '../../theme';
 import { useReducedMotion } from '../../hooks/useReducedMotion';
 import { useTick } from '../../hooks/useTick';
 
-const BARRIDO_MS = 1400;
+const BARRIDO_MS = 1200;
 const ANCHO_BANDA = 0.6;
 
 /**

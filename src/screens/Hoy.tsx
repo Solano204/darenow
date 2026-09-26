@@ -18,24 +18,25 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useFocusEffect, type NavigationProp, type ParamListBase } from '@react-navigation/native';
 import { paleta, esp, haptico } from '../theme';
 import { useHuecoAbajo, useScrollCabecera } from '../components/ui';
-import { HeaderColapsable, ALTO_HEADER } from '../components/ui/HeaderColapsable';
+import { HeaderColapsable, ALTO_HEADER } from '../components/fx/HeaderColapsable';
 import { CabeceraSeccion } from '../components/ui/AccionSeccion';
 import { BannerAnuncio, ANUNCIOS_ACTIVOS } from '../components/Anuncio';
 import { useMagnesia } from '../components/fx/MagnesiaOverlay';
-import { TarjetaSesionHoy, TarjetaSesionVacia } from '../components/hoy/TarjetaSesionHoy';
-import { TarjetaEnfoque, ANCHO_ENFOQUE, ALTO_ENFOQUE, CABEZA_ENFOQUE } from '../components/hoy/TarjetaEnfoque';
-import { CarruselProfundidad } from '../components/hoy/CarruselProfundidad';
-import { CarruselHoy } from '../components/hoy/CarruselHoy';
-import { TarjetaRutina, ANCHO_TARJETA_RUTINA, type RutinaHoy } from '../components/hoy/TarjetaRutina';
+import { TarjetaSesionHoy, TarjetaSesionVacia } from '../components/ui/TarjetaSesionHoy';
+import { TarjetaEnfoque, ANCHO_ENFOQUE, ALTO_ENFOQUE, CABEZA_ENFOQUE } from '../components/ui/TarjetaEnfoque';
+import { CarruselProfundidad } from '../components/fx/CarruselProfundidad';
+import { CarruselHoy, TarjetaVerMas } from '../components/hoy/CarruselHoy';
+import { TarjetaRutina, ANCHO_TARJETA_RUTINA, ALTO_FOTO_RUTINA, type RutinaHoy } from '../components/hoy/TarjetaRutina';
+import { NubeRefresco } from '../components/hoy/NubeRefresco';
 import { FilaSemana } from '../components/hoy/FilaSemana';
 import { BloqueRevela } from '../components/hoy/BloqueRevela';
 import { TuSemana } from '../components/hoy/TuSemana';
 import { FilaExplorar } from '../components/hoy/FilaExplorar';
 import { TuPrograma } from '../components/hoy/TuPrograma';
-import { PilaProgramas } from '../components/hoy/PilaProgramas';
+import { TarjetaPrograma, ANCHO_TARJETA_PROGRAMA, ALTO_FOTO_PROGRAMA } from '../components/hoy/TarjetaPrograma';
 import {
   TarjetaEjercicioMini, FichaMusculo, TarjetaArticulo,
-  ANCHO_EJERCICIO_MINI, ALTO_EJERCICIO_MINI, ANCHO_MUSCULO, ALTO_MUSCULO, ANCHO_ARTICULO, ALTO_ARTICULO,
+  ANCHO_EJERCICIO_MINI, ALTO_EJERCICIO_MINI, LADO_MUSCULO, ANCHO_ARTICULO, ALTO_ARTICULO,
 } from '../components/hoy/TarjetasHoy';
 import { EstadisticasHoy } from '../components/hoy/EstadisticasHoy';
 import { useEstado, estadisticas, ultimos7, hoy, imagenRutina } from '../store/store';
@@ -46,9 +47,13 @@ import {
 import { saludo } from '../data/mensajes';
 
 const SEPARACION_MODULOS = 48;
+const SEPARACION_BLOQUES = 32;
+const AIRE_FINAL = 32;
+const SEPARACION_CARRUSEL = 16;
 const ALTO_CARRUSEL_ENFOQUE = ALTO_ENFOQUE + CABEZA_ENFOQUE;
 const DURACION_REFRESCO_MS = 700;
 const ID_RUTINA_CINCO_MIN = 'rt_030';
+const ALTO_CARRUSEL_RUTINAS = 236;
 
 export default function Hoy({ navigation }: { navigation: NavigationProp<ParamListBase> }) {
   const abajo = useHuecoAbajo();
@@ -106,7 +111,7 @@ export default function Hoy({ navigation }: { navigation: NavigationProp<ParamLi
     const catalogo = RUTINAS
       .filter(r => (r.goal === perfil.objetivo || r.min <= 15))
       .filter(r => !perfil.modoSinSaltos || r.modo_sin_saltos)
-      .map(r => ({ id: r.id, nombre: r.name, min: r.min, mia: false }));
+      .map(r => ({ id: r.id, nombre: r.name, min: r.min, mia: false, subtitulo: nombreGoal(r.goal) }));
     return [...mias, ...catalogo].slice(0, 4);
   }, [estado.rutinasPropias, sesiones, perfil.objetivo, perfil.modoSinSaltos]);
 
@@ -175,13 +180,13 @@ export default function Hoy({ navigation }: { navigation: NavigationProp<ParamLi
         scrollEventThrottle={16}
         contentContainerStyle={{
           paddingTop: inset.top + ALTO_HEADER + esp.sm,
-          paddingBottom: abajo + (ANUNCIOS_ACTIVOS ? 62 : 0),
+          paddingBottom: abajo + AIRE_FINAL + (ANUNCIOS_ACTIVOS ? 62 : 0),
         }}
         showsVerticalScrollIndicator={false}
         refreshControl={(
           <RefreshControl
             refreshing={refrescando} onRefresh={refrescar}
-            tintColor={paleta.magnesia} colors={[paleta.placaAzul]} progressBackgroundColor={paleta.gomaAlta}
+            tintColor="transparent" colors={[paleta.placaAzul]} progressBackgroundColor={paleta.gomaAlta}
             progressViewOffset={inset.top + ALTO_HEADER}
           />
         )}
@@ -197,8 +202,8 @@ export default function Hoy({ navigation }: { navigation: NavigationProp<ParamLi
         )}
 
         {ejercicios.length > 0 && (
-          <View style={s.modulo}>
-            <CabeceraSeccion titulo="Elige tu enfoque" />
+          <View style={s.bloque}>
+            <CabeceraSeccion titulo="Elige tu enfoque" grande />
             <CarruselProfundidad
               data={ejercicios.slice(0, 3)}
               keyExtractor={e => e.id}
@@ -213,18 +218,19 @@ export default function Hoy({ navigation }: { navigation: NavigationProp<ParamLi
           </View>
         )}
 
-        <View style={s.modulo}>
-          <CabeceraSeccion titulo="¿Prefieres otra rutina?" accion="Ver todas" onAccion={() => irAExplorar('rutinas')} />
-          <CarruselHoy
-            data={rutinas} keyExtractor={r => r.id} ancho={ANCHO_TARJETA_RUTINA}
-            renderItem={r => (
+        <View style={s.bloque}>
+          <CabeceraSeccion titulo="¿Prefieres otra rutina?" accion="Ver todas" onAccion={() => irAExplorar('rutinas')} grande />
+          <CarruselProfundidad
+            data={rutinas} keyExtractor={r => r.id}
+            ancho={ANCHO_TARJETA_RUTINA} alto={ALTO_CARRUSEL_RUTINAS} suave
+            renderItem={(r, _, progreso) => (
               <TarjetaRutina
-                r={r} favorito={esFavorito('rutinas', r.id)}
+                r={r} progreso={progreso} favorito={esFavorito('rutinas', r.id)}
                 onPress={() => navigation.navigate(r.id.startsWith('mi_') ? 'RutinaPropia' : 'Rutina', { id: r.id })}
                 onFavorito={() => alternarFavorito('rutinas', r.id)}
               />
             )}
-            verMas={{ texto: 'Ver todas', onPress: () => irAExplorar('rutinas'), alto: 150 }}
+            pie={<TarjetaVerMas ancho={ANCHO_TARJETA_RUTINA} texto="Ver todas" alto={ALTO_FOTO_RUTINA} onPress={() => irAExplorar('rutinas')} />}
           />
         </View>
 
@@ -232,7 +238,7 @@ export default function Hoy({ navigation }: { navigation: NavigationProp<ParamLi
           {activo => (
             <>
               <CabeceraSeccion titulo="Tu semana" />
-              <FilaSemana semana={semana} />
+              <FilaSemana semana={semana} sello={sello} />
               <View style={s.entreFilas} />
               <TuSemana dias={racha.dias} enPausa={racha.enPausa} semana={semana} activo={activo} />
             </>
@@ -245,14 +251,14 @@ export default function Hoy({ navigation }: { navigation: NavigationProp<ParamLi
 
         {programa && (
           <BloqueRevela y={y} estilo={s.modulo}>
-            {activo => (
+            {() => (
               <>
                 <CabeceraSeccion
                   titulo="Tu programa" accion="Ver"
                   onAccion={() => navigation.navigate('Programa', { id: programa.id })}
                 />
                 <TuPrograma
-                  programa={programa} semanaActual={estado.semanaPrograma} activo={activo}
+                  programa={programa} semanaActual={estado.semanaPrograma}
                   onPress={() => navigation.navigate('Programa', { id: programa.id })}
                 />
               </>
@@ -262,13 +268,16 @@ export default function Hoy({ navigation }: { navigation: NavigationProp<ParamLi
 
         <View style={s.modulo}>
           <CabeceraSeccion titulo="Programas" accion="Ver todos" onAccion={() => irAExplorar('programas')} />
-          <PilaProgramas
-            items={programas.map(p => ({
-              id: p.id, nombre: p.name, semanas: p.semanas, favorito: esFavorito('programas', p.id),
-            }))}
-            onPress={id => navigation.navigate('Programa', { id })}
-            onFavorito={id => alternarFavorito('programas', id)}
-            onVerMas={() => irAExplorar('programas')} textoVerMas="Ver todos"
+          <CarruselHoy
+            data={programas} keyExtractor={p => p.id} ancho={ANCHO_TARJETA_PROGRAMA} separacion={SEPARACION_CARRUSEL}
+            renderItem={p => (
+              <TarjetaPrograma
+                p={{ id: p.id, nombre: p.name, semanas: p.semanas, favorito: esFavorito('programas', p.id) }}
+                onPress={() => navigation.navigate('Programa', { id: p.id })}
+                onFavorito={() => alternarFavorito('programas', p.id)}
+              />
+            )}
+            verMas={{ texto: 'Ver todos', onPress: () => irAExplorar('programas'), alto: ALTO_FOTO_PROGRAMA }}
           />
         </View>
 
@@ -290,21 +299,21 @@ export default function Hoy({ navigation }: { navigation: NavigationProp<ParamLi
         <View style={s.modulo}>
           <CabeceraSeccion titulo="Músculos de hoy" accion="Ver todos" onAccion={() => irAExplorar('musculos')} />
           <CarruselHoy
-            data={musculos} keyExtractor={m => m.id} ancho={ANCHO_MUSCULO}
+            data={musculos} keyExtractor={m => m.id} ancho={LADO_MUSCULO}
             renderItem={m => (
               <FichaMusculo
                 m={m} trabajaHoy={musculosDeHoy.has(m.id)}
                 onPress={() => navigation.navigate('Musculo', { id: m.id })}
               />
             )}
-            verMas={{ texto: 'Ver todos', onPress: () => irAExplorar('musculos'), alto: ALTO_MUSCULO }}
+            verMas={{ texto: 'Ver todos', onPress: () => irAExplorar('musculos'), alto: LADO_MUSCULO, radioEsquina: 24 }}
           />
         </View>
 
         <View style={s.modulo}>
           <CabeceraSeccion titulo="Para leer hoy" accion="Ver más" onAccion={irAAprender} />
           <CarruselHoy
-            data={tips} keyExtractor={t => t.id} ancho={ANCHO_ARTICULO}
+            data={tips} keyExtractor={t => t.id} ancho={ANCHO_ARTICULO} separacion={SEPARACION_CARRUSEL}
             renderItem={t => (
               <TarjetaArticulo
                 t={t} sala={salaPorId.get(t.sala)?.name} favorito={esFavorito('tips', t.id)}
@@ -317,14 +326,21 @@ export default function Hoy({ navigation }: { navigation: NavigationProp<ParamLi
         </View>
 
         {stats.total > 0 && (
-          <View style={s.modulo}>
-            <CabeceraSeccion titulo="Tu progreso" />
-            <EstadisticasHoy
-              sesiones={stats.total} minutos={stats.minutos} series={stats.series} mejorRacha={racha.mejor}
-            />
-          </View>
+          <BloqueRevela y={y} estilo={s.modulo} sinMovimiento>
+            {activo => (
+              <>
+                <CabeceraSeccion titulo="Tu progreso" />
+                <EstadisticasHoy
+                  sesiones={stats.total} minutos={stats.minutos} series={stats.series} mejorRacha={racha.mejor}
+                  activo={activo}
+                />
+              </>
+            )}
+          </BloqueRevela>
         )}
       </Animated.ScrollView>
+
+      <NubeRefresco y={y} arriba={inset.top + ALTO_HEADER} />
 
       <HeaderColapsable
         y={y}
@@ -348,6 +364,7 @@ export default function Hoy({ navigation }: { navigation: NavigationProp<ParamLi
 const s = StyleSheet.create({
   raiz: { flex: 1, backgroundColor: paleta.goma },
   modulo: { marginTop: SEPARACION_MODULOS },
+  bloque: { marginTop: SEPARACION_BLOQUES },
   entreFilas: { height: esp.md },
   bannerAbajo: { position: 'absolute', left: 24, right: 24 },
 });

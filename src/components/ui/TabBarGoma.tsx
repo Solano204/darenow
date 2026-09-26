@@ -6,7 +6,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import type { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import {
-  color, paleta, tipo, ALTO_BARRA, SEPARACION_BARRA, separacionBarra, resortePlaca, haptico,
+  color, paleta, familia, ALTO_BARRA, SEPARACION_BARRA, separacionBarra, resortePlaca, haptico,
 } from '../../theme';
 import { useReducedMotion } from '../../hooks/useReducedMotion';
 import { useTick } from '../../hooks/useTick';
@@ -88,7 +88,7 @@ export function TabBarGoma({ state, descriptors, navigation }: BottomTabBarProps
               style={s.item}
             >
               <IconoPestana activa={activa} lleno={lleno} contorno={contorno} />
-              <Text style={[s.etiqueta, { color: activa ? paleta.magnesia : color.textoTenue }]} numberOfLines={1}>
+              <Text style={[s.etiqueta, activa ? s.etiquetaActiva : s.etiquetaInactiva]} numberOfLines={1}>
                 {etiqueta}
               </Text>
             </Pressable>
@@ -127,7 +127,9 @@ const s = StyleSheet.create({
   },
   fila: { flex: 1, flexDirection: 'row', paddingTop: 10 },
   item: { flex: 1, alignItems: 'center', gap: 2, minHeight: 44 },
-  etiqueta: { ...tipo.etiqueta, fontSize: 12, lineHeight: 16 },
+  etiqueta: { fontSize: 12, lineHeight: 16 },
+  etiquetaActiva: { fontFamily: familia.enfasis, color: paleta.magnesia },
+  etiquetaInactiva: { fontFamily: familia.medio, color: paleta.magnesia3Texto },
   indicador: {
     position: 'absolute', top: TOP_INDICADOR, left: 0, width: ANCHO_INDICADOR, height: ALTO_INDICADOR,
     borderRadius: ALTO_INDICADOR / 2, backgroundColor: paleta.placaAzul,

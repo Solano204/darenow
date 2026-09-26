@@ -38,7 +38,7 @@ Todo lo de esta sección es opcional: sin estos archivos Hoy usa las fotos actua
 
 | Archivo | Uso | Formato | Prompt |
 |---|---|---|---|
-| `assets/img/ejercicios/ex_XXXX_recorte.png` | «Elige tu enfoque»: el atleta rompe el marco 44 px por arriba | PNG con transparencia, 600×720, cuerpo completo, pies en el borde inferior, sin sombra proyectada | El mismo modelo de la receta común ejecutando el ejercicio `ex_XXXX`, fondo transparente, luz dura lateral |
+| `assets/img/ejercicios/ex_XXXX_recorte.png` | «Elige tu enfoque»: el atleta rompe el marco 24 px por arriba | PNG con transparencia, 600×720, cuerpo completo, pies en el borde inferior, sin sombra proyectada | El mismo modelo de la receta común ejecutando el ejercicio `ex_XXXX`, fondo transparente, luz dura lateral |
 | `assets/img/musculos/<id>_hoy.jpg` | «Músculos de hoy»: versión con el músculo resaltado, cuando la sesión lo trabaja | JPG 800×430, mismo encuadre que `<id>.jpg` | La foto anatómica del músculo, en gris oscuro, con el músculo en `magnesia` brillante y el resto apagado |
 | `assets/img/rutinas/rt_001.jpg` … `rt_030.jpg`, `assets/img/programas/pg_001.jpg` … | Tarjetas de rutina (240×150) y de programa (200×250, pila) | JPG oscuro, sujeto en el tercio superior; la parte baja debe quedar libre para el nombre | Receta común, un ejercicio por rutina |
 

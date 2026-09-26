@@ -13,6 +13,7 @@ const ESCALA_INICIAL = 1.1;
 const IMPACTO_MS = 260;
 const VIBRACION_PX = 2;
 const NUMERO_RETRASO_MS = 350;
+const TAMANO_NUMERO = 48;
 
 /**
  * Placa de dato del plan: una tarjeta vertical que cae desde 40 px arriba y
@@ -20,7 +21,7 @@ const NUMERO_RETRASO_MS = 350;
  * impactar. El numero rueda cuando se asienta. El filo superior de 3 px lleva
  * el color de la placa que le toca.
  */
-export function PlacaDato({ numero, etiqueta, filo, retraso, activo = true, animar = true, haptica = true }: {
+export function PlacaDato({ numero, etiqueta, filo, retraso, activo = true, animar = true, haptica = true, tamano = TAMANO_NUMERO }: {
   numero: number;
   etiqueta: string;
   filo: string;
@@ -29,6 +30,8 @@ export function PlacaDato({ numero, etiqueta, filo, retraso, activo = true, anim
   animar?: boolean;
   /** Golpe Medium al asentarse. En un grupo de placas solo la ultima lo lleva. */
   haptica?: boolean;
+  /** Tamano del numero (48 por defecto; 32 cuando van cuatro en fila). */
+  tamano?: number;
 }) {
   const reducido = useReducedMotion();
   const tick = useTick();
@@ -57,7 +60,10 @@ export function PlacaDato({ numero, etiqueta, filo, retraso, activo = true, anim
     <Animated.View style={[s.tarjeta, estilo]} accessible accessibilityLabel={`${numero} ${etiqueta}`}>
       <View style={[s.filo, { backgroundColor: filo }]} />
       <View importantForAccessibility="no-hide-descendants" accessibilityElementsHidden style={s.contenido}>
-        <Odometro valor={numero} activo={activo} animar={animar} retraso={retraso + NUMERO_RETRASO_MS} estilo={s.numero} />
+        <Odometro
+          valor={numero} activo={activo} animar={animar} retraso={retraso + NUMERO_RETRASO_MS}
+          estilo={[s.numero, { fontSize: tamano, lineHeight: tamano + 2 }]}
+        />
         <Text style={s.etiqueta} maxFontSizeMultiplier={1.3}>{etiqueta}</Text>
       </View>
     </Animated.View>

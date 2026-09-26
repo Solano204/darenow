@@ -6,7 +6,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { paleta, radio, degradado } from '../../theme';
 import { fuente, type TipoFoto } from '../../media/registry';
-import { Esqueleto } from './Esqueleto';
+import { Esqueleto } from '../fx/Esqueleto';
 
 /** Exposicion de las fotos claras del catalogo sobre la goma: el equivalente barato al tratamiento de Skia. */
 const EXPOSICION = 0.8;
@@ -20,7 +20,7 @@ const EXPOSICION = 0.8;
  * tarjeta no escala). `estiloImagen` admite un estilo animado de parallax.
  */
 export function FotoOscura({
-  tipo, id, ancho, alto, radioEsquina = radio.foto, velo = true, estilo, estiloImagen,
+  tipo, id, ancho, alto, radioEsquina = radio.foto, velo = true, alturaVelo = '55%', estilo, estiloImagen,
 }: {
   tipo: TipoFoto;
   id: string;
@@ -28,6 +28,8 @@ export function FotoOscura({
   alto: number;
   radioEsquina?: number;
   velo?: boolean;
+  /** Alto del degradado a goma sobre la foto, desde abajo. */
+  alturaVelo?: `${number}%`;
   estilo?: StyleProp<ViewStyle>;
   estiloImagen?: React.ComponentProps<typeof Animated.View>['style'];
 }) {
@@ -49,7 +51,7 @@ export function FotoOscura({
       {src && !lista && <Esqueleto radioEsquina={radioEsquina} />}
       {velo && (
         <LinearGradient
-          colors={degradado.haciaGoma} pointerEvents="none" style={s.velo}
+          colors={degradado.haciaGoma} pointerEvents="none" style={[s.velo, { height: alturaVelo }]}
         />
       )}
     </View>
@@ -61,5 +63,5 @@ const s = StyleSheet.create({
   llena: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 },
   imagen: { width: '100%', height: '100%', opacity: EXPOSICION },
   hueco: { flex: 1, alignItems: 'center', justifyContent: 'center' },
-  velo: { position: 'absolute', left: 0, right: 0, bottom: 0, height: '55%' },
+  velo: { position: 'absolute', left: 0, right: 0, bottom: 0 },
 });

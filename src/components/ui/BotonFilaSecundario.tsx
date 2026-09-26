@@ -3,21 +3,20 @@ import { Pressable, StyleSheet, Text, View, type StyleProp, type ViewStyle } fro
 import Animated, {
   interpolateColor, useAnimatedStyle, useSharedValue, withDelay, withSequence, withSpring, withTiming,
 } from 'react-native-reanimated';
-import { Ionicons } from '@expo/vector-icons';
-import { paleta, tipo, radio, esp, resorteTap, easing, haptico } from '../../theme';
+import { paleta, familia, esp, resorteTap, easing, haptico } from '../../theme';
 import { useReducedMotion } from '../../hooks/useReducedMotion';
 import { useTick } from '../../hooks/useTick';
 
-const LADO_DIAL = 30;
+const LADO_DIAL = 20;
 const GRADOS_45_MIN = 270;
 const GRADOS_5_MIN = 30;
-const GIRO_MS = 420;
+const GIRO_MS = 300;
 const REPOSO_MS = 700;
 const ESCALA_PRESIONADO = 0.02;
 
 /**
- * Fila secundaria de superficie solida (nunca fantasma) con un dial en
- * miniatura a la izquierda. Quieto marca 45 min; al tocar, la aguja gira hasta
+ * Fila secundaria (fondo transparente con borde de 1 px, radio 16, alto de 48)
+ * con un dial en miniatura de 20 px a la izquierda. Quieto marca 45 min; al tocar, la aguja gira hasta
  * 5 y se pone azul mientras se dispara `onPress`. Con movimiento reducido el
  * dial ya marca 5.
  */
@@ -70,7 +69,6 @@ export function BotonFilaSecundario({ texto, onPress, estilo }: {
           <View style={s.centro} />
         </View>
         <Text style={s.texto} numberOfLines={2} maxFontSizeMultiplier={1.15}>{texto}</Text>
-        <Ionicons name="chevron-forward" size={18} color={paleta.magnesia3Texto} />
       </Animated.View>
     </Pressable>
   );
@@ -78,16 +76,16 @@ export function BotonFilaSecundario({ texto, onPress, estilo }: {
 
 const s = StyleSheet.create({
   cuerpo: {
-    minHeight: 56, flexDirection: 'row', alignItems: 'center', gap: esp.sm + 4,
-    paddingHorizontal: esp.md, paddingVertical: 10, borderRadius: radio.pastilla,
-    backgroundColor: paleta.gomaAlta, borderWidth: 1, borderColor: paleta.gomaBorde,
+    minHeight: 48, flexDirection: 'row', alignItems: 'center', gap: esp.sm + 4,
+    paddingHorizontal: esp.md, paddingVertical: 8, borderRadius: 16,
+    borderWidth: 1, borderColor: paleta.gomaBorde,
   },
   dial: {
     width: LADO_DIAL, height: LADO_DIAL, borderRadius: LADO_DIAL / 2,
     borderWidth: 1.5, borderColor: paleta.magnesia3, alignItems: 'center', justifyContent: 'center',
   },
   giro: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, alignItems: 'center' },
-  aguja: { width: 2, height: LADO_DIAL / 2 - 5, marginTop: 3, borderRadius: 1 },
+  aguja: { width: 2, height: LADO_DIAL / 2 - 4, marginTop: 2, borderRadius: 1 },
   centro: { width: 4, height: 4, borderRadius: 2, backgroundColor: paleta.magnesia2 },
-  texto: { flex: 1, ...tipo.etiqueta, fontSize: 14, lineHeight: 19, color: paleta.magnesia2 },
+  texto: { flex: 1, fontFamily: familia.enfasis, fontSize: 15, lineHeight: 20, color: paleta.magnesia },
 });

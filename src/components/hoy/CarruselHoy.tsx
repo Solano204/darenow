@@ -46,7 +46,7 @@ export function CarruselHoy<T>({ data, keyExtractor, renderItem, ancho, separaci
   );
 }
 
-function TarjetaVerMas({ ancho, texto, onPress, alto, radioEsquina = 20 }: VerMas & { ancho: number }) {
+export function TarjetaVerMas({ ancho, texto, onPress, alto, radioEsquina = 20 }: VerMas & { ancho: number }) {
   return (
     <View style={{ width: ancho }}>
       <Presionable onPress={onPress} etiqueta={texto}>

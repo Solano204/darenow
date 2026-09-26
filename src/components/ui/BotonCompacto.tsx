@@ -3,11 +3,11 @@ import { Pressable, StyleSheet, Text, type StyleProp, type ViewStyle } from 'rea
 import Animated, { interpolateColor, useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 import { paleta, tipo, radio, resorteTap, haptico } from '../../theme';
 
-const ALTO = 36;
+const ALTO = 40;
 const ESCALA_PRESIONADO = 0.05;
 
 /**
- * Boton azul pequeno (36 px de alto, area tactil de 44 por `hitSlop`) para
+ * Boton azul pequeno (40 px de alto, area tactil de 44 por `hitSlop`) para
  * acciones dentro de una tarjeta. Es la version compacta de `BotonPlaca`: mismo
  * azul, sin resplandor ni llenado.
  */

@@ -12,6 +12,8 @@ export const haptico = {
   toque: () => golpe(Haptics.ImpactFeedbackStyle.Light),
   placa: () => golpe(Haptics.ImpactFeedbackStyle.Medium),
   sello: () => golpe(Haptics.ImpactFeedbackStyle.Rigid),
+  golpe: () => golpe(Haptics.ImpactFeedbackStyle.Heavy),
+  suave: () => golpe(Haptics.ImpactFeedbackStyle.Soft),
   aplauso: () => {
     golpe(Haptics.ImpactFeedbackStyle.Heavy);
     setTimeout(() => golpe(Haptics.ImpactFeedbackStyle.Soft), SEGUNDO_GOLPE_MS);

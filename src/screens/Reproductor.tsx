@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import {
   View, Text, Pressable, StyleSheet, ScrollView, Modal, Alert, Animated, TextInput,
-  KeyboardAvoidingView, Platform,
+  KeyboardAvoidingView, Platform, useWindowDimensions,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
@@ -9,7 +9,12 @@ import { useKeepAwake } from 'expo-keep-awake';
 import * as Haptics from 'expo-haptics';
 import * as Speech from 'expo-speech';
 import { createAudioPlayer, type AudioPlayer } from 'expo-audio';
-import { color, colorSesion, tipo, esp, radio, TOQUE, anim, sombra } from '../theme';
+import { color, colorSesion, paleta, tipo, esp, radio, TOQUE, anim, sombra, haptico } from '../theme';
+import { PantallaListo } from '../components/session/PantallaListo';
+import { useMagnesia } from '../components/fx/MagnesiaOverlay';
+
+const DURACION_LISTO_MS = 3000;
+const CENTRO_LISTO = 0.46;
 import {
   useSessionPlayer, leerSesionGuardada, borrarSesionGuardada, type SesionEnCurso,
 } from '../session/useSessionPlayer';
@@ -115,6 +120,8 @@ export default function Reproductor({ route, navigation }: any) {
   const [restaurar, setRestaurar] = useState<SesionEnCurso | null>(null);
   const [mostrarListo, setMostrarListo] = useState(true);
   const [itemsConfirmados, setItemsConfirmados] = useState<ItemSesion[] | null>(null);
+  const magnesia = useMagnesia();
+  const { width: anchoVentana, height: altoVentana } = useWindowDimensions();
 
   // Se prepara aqui, no en useSessionPlayer: entre esta pantalla y el primer
   // "preparado" de verdad pasan la pantalla "Listo?" y, si aplica, el editor
@@ -149,26 +156,22 @@ export default function Reproductor({ route, navigation }: any) {
 
   // Pantalla "listo para empezar", 3 segundos. Solo en un arranque de
   // verdad: si se esta continuando una sesion interrumpida, ya se estaba
-  // entrenando, no hace falta el aviso.
+  // entrenando, no hace falta el aviso. Al vencer, el aplauso de magnesia
+  // cubre el paso a lo siguiente.
   useEffect(() => {
     if (!listo) return;
     if (restaurar) { setMostrarListo(false); return; }
-    const id = setTimeout(() => setMostrarListo(false), 3000);
+    const id = setTimeout(() => {
+      haptico.aplauso();
+      magnesia.aplaudir(anchoVentana / 2, altoVentana * CENTRO_LISTO);
+      setMostrarListo(false);
+    }, DURACION_LISTO_MS);
     return () => clearTimeout(id);
   }, [listo, restaurar]);
 
-  if (!listo) return <SafeAreaView style={{ flex: 1, backgroundColor: color.fondo }} />;
+  if (!listo) return <View style={{ flex: 1, backgroundColor: paleta.goma }} />;
 
-  if (mostrarListo) {
-    return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: color.fondo, alignItems: 'center', justifyContent: 'center' }}>
-        <Aparece estilo={{ alignItems: 'center' }}>
-          <Text style={[tipo.display, { color: color.texto }]}>¿Listo?</Text>
-          <Text style={[tipo.cuerpo, { color: color.textoSuave, marginTop: esp.sm }]}>Empezamos en un momento</Text>
-        </Aparece>
-      </SafeAreaView>
-    );
-  }
+  if (mostrarListo) return <PantallaListo duracionMs={DURACION_LISTO_MS} />;
 
   // Revisar y ajustar series, repeticiones/tiempo y descanso de cada
   // ejercicio antes de arrancar. Solo en un arranque de verdad: al

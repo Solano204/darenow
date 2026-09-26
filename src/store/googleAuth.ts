@@ -19,21 +19,28 @@
  * Ubicacion: src/store/googleAuth.ts
  */
 import { useState } from 'react';
-import {
-  GoogleSignin,
-  isErrorWithCode,
-  isSuccessResponse,
-  statusCodes,
-} from '@react-native-google-signin/google-signin';
 
+type GoogleModulo = typeof import('@react-native-google-signin/google-signin');
+
+// En Expo Go el modulo nativo no existe y el import lanza al cargar: se
+// captura para que la app siga en modo invitado en vez de romper.
+function cargarGoogle(): GoogleModulo | null {
+  try {
+    return require('@react-native-google-signin/google-signin') as GoogleModulo;
+  } catch {
+    return null;
+  }
+}
+
+const google = cargarGoogle();
 const WEB_CLIENT_ID = process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID;
 
-export const googleDisponible = !!WEB_CLIENT_ID;
+export const googleDisponible = !!WEB_CLIENT_ID && !!google;
 
 // Sin Web Client ID no hay nada que configurar: la app sigue funcionando
 // en modo invitado, sin boton de Google (ver Acceso.tsx).
-if (WEB_CLIENT_ID) {
-  GoogleSignin.configure({ webClientId: WEB_CLIENT_ID });
+if (google && WEB_CLIENT_ID) {
+  google.GoogleSignin.configure({ webClientId: WEB_CLIENT_ID });
 }
 
 export interface PerfilGoogle {
@@ -51,6 +58,8 @@ export function useGoogleSignIn() {
   const [error, setError] = useState<ErrorGoogle>(null);
 
   const iniciar = async () => {
+    if (!google) { setError('servicios'); return; }
+    const { GoogleSignin, isErrorWithCode, isSuccessResponse, statusCodes } = google;
     setError(null);
     setCargando(true);
     try {
@@ -115,7 +124,7 @@ export function mensajeError(e: ErrorGoogle): string | null {
 /** Cierra la sesion nativa de Google. Silencioso: un fallo aqui no debe bloquear salir() ni borrarCuenta(). */
 export async function cerrarGoogle(): Promise<void> {
   try {
-    await GoogleSignin.signOut();
+    await google?.GoogleSignin.signOut();
   } catch {
     // no hay nada que el usuario pueda hacer con esto: se sigue con el logout local igual
   }

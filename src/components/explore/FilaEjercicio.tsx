@@ -25,9 +25,10 @@ const ALTO_NIVEL = 12;
 
 /**
  * Fila del segmento Ejercicios, de 88 de alto como minimo: miniatura de 64 con la foto
- * tratada, nombre (2 lineas), equipo con su icono y el nivel en placas, y bajo ellos el
- * mini medidor de la evidencia. Termina en la estrella de favorito (44 de area, 22 de
- * glifo). El separador empieza despues de la miniatura. Al presionar, un fondo
+ * tratada, nombre (2 lineas) y, en la segunda, equipo con su icono, el nivel en placas y
+ * el mini medidor de la evidencia (el equipo cede espacio y se corta con puntos
+ * suspensivos; el lector de pantalla oye la frase entera). Termina en la estrella de
+ * favorito (44 de area, 22 de glifo). El separador empieza despues de la miniatura. Al presionar, un fondo
  * `gomaAlta` al 60 % cubre la fila y la miniatura se hunde a 0.96.
  *
  * Memoizada: cada tecla en el buscador re-renderiza `Explorar` y sin esto React
@@ -76,14 +77,16 @@ export const FilaEjercicio = React.memo(function FilaEjercicio({ e, favorito, on
             <Text style={s.equipo} numberOfLines={1}>{equipo}</Text>
             <NivelPlacas nivel={e.level} alto={ALTO_NIVEL} />
             <Text style={s.nivel}>Nivel {e.level}</Text>
+            <MiniMedidorEvidencia conteos={conteos} />
           </View>
-          <MiniMedidorEvidencia conteos={conteos} />
         </View>
       </Pressable>
-      <EstrellaFavorito
-        activo={favorito} onPress={() => onFav(e.id)} nombre={nombre}
-        lado={LADO_ESTRELLA} tamanoIcono={TAMANO_ESTRELLA} sinFondo contorno={paleta.magnesia3}
-      />
+      <View style={s.estrella}>
+        <EstrellaFavorito
+          activo={favorito} onPress={() => onFav(e.id)} nombre={nombre}
+          lado={LADO_ESTRELLA} tamanoIcono={TAMANO_ESTRELLA} sinFondo contorno={paleta.magnesia3}
+        />
+      </View>
       <View style={s.separador} pointerEvents="none" />
     </View>
   );
@@ -100,7 +103,9 @@ const s = StyleSheet.create({
   },
   info: { flex: 1, gap: 4 },
   nombre: { fontFamily: familia.enfasis, fontSize: 16, lineHeight: 21, color: paleta.magnesia },
-  segunda: { flexDirection: 'row', alignItems: 'center', gap: 6 },
+  segunda: { flexDirection: 'row', alignItems: 'center', gap: 4 },
+  // El glifo de 22 queda centrado en el area de 44: se corre 11 para que su borde caiga en el margen y la fila gane esos px.
+  estrella: { marginRight: -(LADO_ESTRELLA - TAMANO_ESTRELLA) / 2 },
   equipo: { flexShrink: 1, fontFamily: familia.cuerpo, fontSize: 14, lineHeight: 20, color: paleta.magnesia2 },
   nivel: { fontFamily: familia.medio, fontSize: 14, lineHeight: 20, color: paleta.magnesia2 },
   separador: {

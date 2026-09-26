@@ -14,10 +14,9 @@
  */
 
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import Animated, {
   runOnJS, useAnimatedScrollHandler, useAnimatedStyle, useSharedValue, withTiming,
-  type EntryExitAnimationFunction,
 } from 'react-native-reanimated';
 import { Ionicons } from '@expo/vector-icons';
 import { useFocusEffect, type ParamListBase } from '@react-navigation/native';
@@ -42,16 +41,16 @@ import { ChipCategoria } from '../components/explore/ChipCategoria';
 import { InterruptorDos } from '../components/explore/InterruptorDos';
 import { ContadorResultados } from '../components/explore/ContadorResultados';
 import {
-  EncabezadoFiltrosColapsable, FilaChips, ALTO_FILA_CATEGORIA, ALTO_FILA_OBJETIVO, ALTO_FILTROS_EJERCICIOS,
-  SEPARACION_FILAS,
+  EncabezadoFiltrosColapsable, ResumenFiltros, FilaChips, ALTO_FILA_CATEGORIA, ALTO_FILA_OBJETIVO,
+  ALTO_FILTROS_EJERCICIOS, RECORRIDO_PLIEGUE, SEPARACION_FILAS,
 } from '../components/explore/EncabezadoFiltrosColapsable';
 import {
-  EncabezadoExplorar, altoEncabezado, SEP_SEGMENTOS, SEP_CONTADOR, SEP_INTERRUPTOR, type SegmentoExplorar,
+  EncabezadoExplorar, altoEncabezado, SEP_SEGMENTOS, SEP_CONTADOR, type SegmentoExplorar,
 } from '../components/explore/EncabezadoExplorar';
 import { CabeceraRutinas } from '../components/explore/CabeceraRutinas';
-import { RejillaMusculos } from '../components/explore/RejillaMusculos';
+import { RejillaMusculos } from '../components/muscles/RejillaMusculos';
 import { ListaEjercicios, ListaRutinas, ListaProgramas } from '../components/explore/listas';
-import type { PropsLista } from '../components/explore/listaBase';
+import { transicionesDeSegmento, type PropsLista } from '../components/explore/listaBase';
 
 const SEGMENTOS: readonly { id: SegmentoExplorar; texto: string }[] = [
   { id: 'ejercicios', texto: 'Ejercicios' }, { id: 'rutinas', texto: 'Rutinas' },
@@ -61,14 +60,14 @@ const UNIDADES: Record<SegmentoExplorar, [singular: string, plural: string]> = {
   ejercicios: ['ejercicio', 'ejercicios'], rutinas: ['rutina', 'rutinas'],
   programas: ['programa', 'programas'], musculos: ['músculo', 'músculos'],
 };
-const OPCIONES_INTERRUPTOR = ['Lo que puedo hacer', 'Catálogo completo'] as const;
+// El interruptor comparte linea con el contador y en 360 px no caben las frases enteras:
+// se ve la version corta y el lector de pantalla oye la completa.
+const TEXTOS_INTERRUPTOR = ['Puedo hacer', 'Catálogo'] as const;
+const ETIQUETAS_INTERRUPTOR = ['Lo que puedo hacer', 'Catálogo completo'] as const;
 
 const UMBRAL_PLEGAR_PX = 24;
 const DESPLEGAR_PX = 12;
 const PLIEGUE_MS = 220;
-const SEGMENTO_MS = 220;
-const FUNDIDO_REDUCIDO_MS = 150;
-const DESPLAZAMIENTO_SEGMENTO = 16;
 const AIRE_LISTA = 16;
 const RETRASO_CONTEO_MS = 350;
 const BAJADA_BARRA_MS = 180;
@@ -222,35 +221,15 @@ export default function Explorar({ navigation, route }: BottomTabScreenProps<Par
     return partes.length > 0 ? partes.join(' · ') : 'Sin filtros';
   }, [cat, goal]);
 
-  const entradaSegmento = useMemo<EntryExitAnimationFunction>(() => () => {
-    'worklet';
-    if (reducido) return { initialValues: { opacity: 0 }, animations: { opacity: withTiming(1, { duration: FUNDIDO_REDUCIDO_MS }) } };
-    return {
-      initialValues: { opacity: 0, transform: [{ translateX: sentido.value * DESPLAZAMIENTO_SEGMENTO }] },
-      animations: {
-        opacity: withTiming(1, { duration: SEGMENTO_MS }),
-        transform: [{ translateX: withTiming(0, { duration: SEGMENTO_MS }) }],
-      },
-    };
-  }, [reducido, sentido]);
-  const salidaSegmento = useMemo<EntryExitAnimationFunction>(() => () => {
-    'worklet';
-    if (reducido) return { initialValues: { opacity: 1 }, animations: { opacity: withTiming(0, { duration: FUNDIDO_REDUCIDO_MS }) } };
-    return {
-      initialValues: { opacity: 1, transform: [{ translateX: 0 }] },
-      animations: {
-        opacity: withTiming(0, { duration: SEGMENTO_MS }),
-        transform: [{ translateX: withTiming(-sentido.value * DESPLAZAMIENTO_SEGMENTO, { duration: SEGMENTO_MS }) }],
-      },
-    };
-  }, [reducido, sentido]);
+  const { entrada: entradaSegmento, salida: salidaSegmento } = useMemo(
+    () => transicionesDeSegmento(reducido, sentido), [reducido, sentido],
+  );
 
   const sube = useAnimatedStyle(() => ({
-    transform: [{ translateY: -ALTO_FILTROS_EJERCICIOS * pliegue.value }],
+    transform: [{ translateY: -RECORRIDO_PLIEGUE * pliegue.value }],
   }), [tick]);
-  const resumen = useAnimatedStyle(() => ({ opacity: pliegue.value }), [tick]);
 
-  const extraAbajo = plegable ? ALTO_FILTROS_EJERCICIOS : 0;
+  const extraAbajo = plegable ? RECORRIDO_PLIEGUE : 0;
   const relleno = altoEncabezado(tab, top) + AIRE_LISTA;
   const propsLista = useMemo<PropsLista>(() => ({
     onScroll,
@@ -271,27 +250,20 @@ export default function Explorar({ navigation, route }: BottomTabScreenProps<Par
     </>
   );
 
-  const derecha = plegable || desbloqueada ? (
-    <View style={s.derecha}>
-      {plegable && (
-        <Animated.View style={[s.resumen, resumen]} pointerEvents={plegado ? 'auto' : 'none'}
-          accessibilityElementsHidden={!plegado} importantForAccessibility={plegado ? 'auto' : 'no-hide-descendants'}>
-          <Pressable
-            onPress={desplegar} hitSlop={8} accessibilityRole="button"
-            accessibilityLabel={`Filtros: ${resumenFiltros}. Toca para mostrarlos`}
-          >
-            <Text style={s.resumenTexto} numberOfLines={1}>{resumenFiltros}</Text>
-          </Pressable>
-        </Animated.View>
-      )}
-      {desbloqueada && (
-        <View style={s.sinConexion}>
-          <Ionicons name="checkmark" size={14} color={paleta.magnesia2} />
-          <Text style={s.resumenTexto}>Sin conexión</Text>
-        </View>
-      )}
+  // En Ejercicios la linea del contador lleva el interruptor a la derecha y no queda sitio
+  // para la frase «Sin conexión»: ahi solo se ve la palomita, junto a la unidad.
+  const sinConexion = desbloqueada ? (
+    <View style={s.sinConexion} accessible accessibilityLabel="Sin conexión">
+      <Ionicons name="checkmark" size={14} color={paleta.magnesia2} />
+      {!plegable && <Text style={s.sinConexionTexto}>Sin conexión</Text>}
     </View>
   ) : undefined;
+  const derecha = plegable ? (
+    <InterruptorDos
+      opciones={TEXTOS_INTERRUPTOR} etiquetas={ETIQUETAS_INTERRUPTOR}
+      indice={soloMios ? 0 : 1} onCambio={i => setSoloMios(i === 0)}
+    />
+  ) : sinConexion;
 
   const cabeceraRutinas = (
     <CabeceraRutinas
@@ -314,7 +286,7 @@ export default function Explorar({ navigation, route }: BottomTabScreenProps<Par
           )}
           {tab === 'rutinas' && (
             <ListaRutinas
-              rutinas={rutinas} cabecera={cabeceraRutinas} propsLista={propsLista} favorito={favorito('rutinas')}
+              rutinas={rutinas} cabecera={cabeceraRutinas} propsLista={propsLista} scrollY={y} favorito={favorito('rutinas')}
               onFav={id => alternarFavorito('rutinas', id)} onPress={id => navigation.navigate('Rutina', { id })}
             />
           )}
@@ -326,7 +298,8 @@ export default function Explorar({ navigation, route }: BottomTabScreenProps<Par
           )}
           {tab === 'musculos' && (
             <RejillaMusculos
-              musculos={musculos} propsLista={propsLista} onPress={id => navigation.navigate('Musculo', { id })}
+              musculos={musculos} propsLista={propsLista} scrollY={y} topPegajoso={altoEncabezado(tab, top)}
+              onPress={id => navigation.navigate('Musculo', { id })}
             />
           )}
         </Animated.View>
@@ -355,18 +328,13 @@ export default function Explorar({ navigation, route }: BottomTabScreenProps<Par
             <FilaChips alto={ALTO_FILA_OBJETIVO}>{chipsObjetivo}</FilaChips>
           </View>
         ) : null}
+        {plegable && <ResumenFiltros pliegue={pliegue} texto={resumenFiltros} plegado={plegado} onPress={desplegar} />}
         <View style={[s.margen, { marginTop: SEP_CONTADOR }]}>
           <ContadorResultados
-            cuantos={cuantos} singular={UNIDADES[tab][0]} plural={UNIDADES[tab][1]} derecha={derecha}
+            cuantos={cuantos} singular={UNIDADES[tab][0]} plural={UNIDADES[tab][1]}
+            junto={plegable ? sinConexion : undefined} derecha={derecha}
           />
         </View>
-        {tab === 'ejercicios' && (
-          <View style={[s.margen, { marginTop: SEP_INTERRUPTOR }]}>
-            <InterruptorDos
-              opciones={OPCIONES_INTERRUPTOR} indice={soloMios ? 0 : 1} onCambio={i => setSoloMios(i === 0)}
-            />
-          </View>
-        )}
       </EncabezadoExplorar>
 
       {/* Desbloqueo por categoria: se ve la lista detras del vidrio, que es
@@ -393,8 +361,6 @@ const s = StyleSheet.create({
   pantalla: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 },
   interior: { position: 'absolute', top: 0, left: 0, right: 0 },
   margen: { marginHorizontal: MARGEN_PANTALLA },
-  derecha: { flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end', gap: 12 },
-  resumen: { flexShrink: 1 },
-  resumenTexto: { fontFamily: familia.cuerpo, fontSize: 13, lineHeight: 18, color: paleta.magnesia2 },
   sinConexion: { flexDirection: 'row', alignItems: 'center', gap: 4 },
+  sinConexionTexto: { fontFamily: familia.cuerpo, fontSize: 13, lineHeight: 18, color: paleta.magnesia2 },
 });

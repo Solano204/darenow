@@ -1,6 +1,6 @@
 import React from 'react';
 import type { ListRenderItemInfo } from 'react-native';
-import Animated from 'react-native-reanimated';
+import Animated, { type SharedValue } from 'react-native-reanimated';
 import type { Ejercicio, Programa, Rutina } from '../../data/catalog';
 import { useReducedMotion } from '../../hooks/useReducedMotion';
 import { FilaEjercicio } from './FilaEjercicio';
@@ -46,10 +46,11 @@ export function ListaEjercicios({ ejercicios, propsLista, favorito, onFav, onPre
   );
 }
 
-export function ListaRutinas({ rutinas, cabecera, propsLista, favorito, onFav, onPress }: ComunesFavorito & {
+export function ListaRutinas({ rutinas, cabecera, propsLista, scrollY, favorito, onFav, onPress }: ComunesFavorito & {
   rutinas: Rutina[];
   cabecera: React.ReactElement;
   propsLista: PropsLista;
+  scrollY: SharedValue<number>;
   onPress: (id: string) => void;
 }) {
   const reducido = useReducedMotion();
@@ -67,7 +68,8 @@ export function ListaRutinas({ rutinas, cabecera, propsLista, favorito, onFav, o
           exiting={index < TARJETAS_ESCALONADAS ? (reducido ? salidaReducida : salida) : undefined}
         >
           <TarjetaRutina
-            r={item} favorito={favorito(item.id)} onPress={() => onPress(item.id)} onFavorito={() => onFav(item.id)}
+            r={item} favorito={favorito(item.id)} scrollY={scrollY}
+            onPress={() => onPress(item.id)} onFavorito={() => onFav(item.id)}
           />
         </Animated.View>
       )}

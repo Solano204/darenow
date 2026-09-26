@@ -33,10 +33,12 @@ export const PLACEHOLDER_COMPLETO = 'Buscar ejercicio, rutina, músculo';
  * titulo. La X que borra el texto es la de iOS de siempre, ahora propia y tambien
  * en Android.
  */
-export function BuscadorVivo({ valor, onCambio, foco }: {
+export function BuscadorVivo({ valor, onCambio, foco, placeholder }: {
   valor: string;
   onCambio: (texto: string) => void;
   foco: SharedValue<number>;
+  /** Un texto fijo («Buscar»): sin rotar, porque es un solo termino. Sin el, rota entre ejercicio, rutina y musculo. */
+  placeholder?: string;
 }) {
   const reducido = useReducedMotion();
   const tick = useTick();
@@ -59,9 +61,9 @@ export function BuscadorVivo({ valor, onCambio, foco }: {
         value={valor} onChangeText={onCambio}
         style={s.campo} placeholder="" cursorColor={paleta.placaAzul} selectionColor={paleta.placaAzul}
         onFocus={() => cambiarFoco(true)} onBlur={() => cambiarFoco(false)}
-        keyboardAppearance="dark" accessibilityLabel={PLACEHOLDER_COMPLETO}
+        keyboardAppearance="dark" accessibilityLabel={placeholder ?? PLACEHOLDER_COMPLETO}
       />
-      {vacio && <Placeholder animado={!reducido} girando={!enfocado} />}
+      {vacio && <Placeholder animado={!reducido && placeholder === undefined} girando={!enfocado} texto={placeholder ?? PLACEHOLDER_COMPLETO} />}
       {!vacio && (
         <Pressable
           onPress={() => { haptico.toque(); onCambio(''); }}
@@ -80,7 +82,7 @@ export function BuscadorVivo({ valor, onCambio, foco }: {
  * Al enfocar (`girando` en false) deja de rodar donde este, sin saltar: la animacion en
  * curso termina y ya no se programa otra.
  */
-function Placeholder({ animado, girando }: { animado: boolean; girando: boolean }) {
+function Placeholder({ animado, girando, texto }: { animado: boolean; girando: boolean; texto: string }) {
   const tick = useTick();
   const pos = useSharedValue(0);
   const paso = useRef(0);
@@ -110,7 +112,7 @@ function Placeholder({ animado, girando }: { animado: boolean; girando: boolean 
           </View>
         </>
       ) : (
-        <Text style={s.guiaTexto}>{PLACEHOLDER_COMPLETO}</Text>
+        <Text style={s.guiaTexto}>{texto}</Text>
       )}
     </View>
   );

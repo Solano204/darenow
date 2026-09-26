@@ -12,13 +12,15 @@ const ANUNCIO_RETRASO_MS = 700;
  * al mostrarlos. El numero rueda hacia arriba o abajo cada vez que cambia (filtro,
  * busqueda o segmento). El lector de pantalla oye la frase entera y la vuelve a oir al
  * cambiar (region viva en Android; en iOS, un aviso tras dejar de teclear).
- * `derecha` es lo que va al otro lado de la linea.
+ * `derecha` es lo que va al otro lado de la linea (la fila crece hasta su alto) y
+ * `junto` lo que va pegado a la unidad.
  */
-export function ContadorResultados({ cuantos, singular, plural: pluralUnidad, derecha }: {
+export function ContadorResultados({ cuantos, singular, plural: pluralUnidad, derecha, junto }: {
   cuantos: number;
   singular: string;
   plural: string;
   derecha?: React.ReactNode;
+  junto?: React.ReactNode;
 }) {
   const unidad = plural(cuantos, singular, pluralUnidad);
   const frase = `${cuantos} ${unidad}`;
@@ -38,6 +40,7 @@ export function ContadorResultados({ cuantos, singular, plural: pluralUnidad, de
       >
         <Odometro valor={cuantos} continuo estilo={s.numero} />
         <Text style={s.unidad} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>{unidad}</Text>
+        {junto}
       </View>
       {derecha}
     </View>
@@ -45,8 +48,8 @@ export function ContadorResultados({ cuantos, singular, plural: pluralUnidad, de
 }
 
 const s = StyleSheet.create({
-  fila: { height: ALTO_CONTADOR, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 12 },
-  cifra: { flexDirection: 'row', alignItems: 'center', gap: 6 },
+  fila: { minHeight: ALTO_CONTADOR, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 12 },
+  cifra: { flexShrink: 0, flexDirection: 'row', alignItems: 'center', gap: 6 },
   numero: { fontFamily: familia.titulo, fontSize: 20, lineHeight: 24, color: paleta.magnesia },
   unidad: { fontFamily: familia.cuerpo, fontSize: 15, lineHeight: 24, color: paleta.magnesia2 },
 });

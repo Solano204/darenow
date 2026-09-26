@@ -1,6 +1,6 @@
 # Errores detectados (sin corregir)
 
-Encontrados al auditar la sesión de entrenamiento (Parte 4). **Ninguno está corregido**: el rediseño no cambia funcionalidad y la corrección de cada uno espera la aprobación del dueño. Ninguno bloquea el rediseño.
+Encontrados al auditar la sesión de entrenamiento (Parte 4, BUG-1 a BUG-7) y Explorar (Parte 6, BUG-8 y BUG-9). **Ninguno está corregido**: el rediseño no cambia funcionalidad y la corrección de cada uno espera la aprobación del dueño. Ninguno bloquea el rediseño.
 
 ## BUG-1. «Programa completo» se otorga con la primera sesión guardada, aunque no se haya hecho nada
 
@@ -71,3 +71,19 @@ Hasta entonces, la corrección mínima es condicionar la línea 343 a `s.estado 
 **Causa.** `Hoy.tsx` calcula `entrenoHoy` con `sesiones.some(s => s.fecha === hoy())` (comportamiento anterior al rediseño): cuenta cualquier sesión guardada, aunque tenga 0 series. Es la misma raíz que BUG-1.
 
 **Propuesta.** Contar solo sesiones con al menos una serie no omitida (la misma regla que la racha).
+
+## BUG-8. La búsqueda no encuentra lo que se ve
+
+**Síntoma.** En Explorar, escribir «flexión» (con tilde, como se ve en pantalla) no devuelve ningún ejercicio; «flexion» sí. Con «isométrica», «estática», «músculo», «mandíbula» y el resto de nombres con tilde pasa lo mismo.
+
+**Causa.** El catálogo (`assets/data/*.json`) está escrito sin tildes y `Explorar.tsx` compara `name.toLowerCase().includes(q.trim().toLowerCase())` sin normalizar. Hasta las Partes 3 a 6 la pantalla mostraba también el nombre sin tilde, así que lo que se veía coincidía con lo que se buscaba. Las tildes se añaden ahora solo al mostrar (`data/nombresVisibles.ts`), y desde entonces lo que se ve y lo que se compara ya no son lo mismo. Se aplica a los cuatro segmentos y al buscador del editor de rutinas.
+
+**Propuesta.** Quitar las tildes a los dos lados antes de comparar (`texto.normalize('NFD').replace(/[̀-ͯ]/g, '')`), en una función común (`utils/presentacion.ts`) usada por Explorar y por el buscador del editor. No cambia ningún dato ni identificador y devuelve un resultado más (nunca menos) que hoy. Cambia el comportamiento de la búsqueda: decisión del dueño.
+
+## BUG-9. «Ver todas» no siempre cambia de segmento
+
+**Síntoma.** Desde Hoy se pulsa «Ver todas» de rutinas y se abre Explorar en Rutinas. El usuario pulsa a mano «Ejercicios», vuelve a Hoy y pulsa «Ver todas» de rutinas otra vez: Explorar se queda en Ejercicios.
+
+**Causa.** Hoy navega con `navigate('Tabs', { screen: 'Explorar', merge: true, params: { tab } })`. `Explorar.tsx` reacciona al cambio del parámetro (`useEffect` con `[route.params.tab]`), pero el cambio manual de segmento solo actualiza el estado local y el parámetro sigue valiendo `'rutinas'`; al pulsar lo mismo, el valor no cambia y el efecto no se dispara. Es el mismo caso de las fichas de músculo y programa y de Favoritos.
+
+**Propuesta.** Borrar el parámetro una vez consumido (`navigation.setParams({ tab: undefined })` dentro del efecto) o guardar en él un identificador que cambie en cada navegación. Cambia la navegación: decisión del dueño.

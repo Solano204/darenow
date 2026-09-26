@@ -560,3 +560,47 @@ Orden: el de los datos, sin ordenar. No hay paginación, ni carga incremental, n
 
 `MuroCategoria` e `Intersticial` (desbloqueo por anuncio) están conectados al segmento, pero `ANUNCIOS_ACTIVOS = false`: el muro nunca se dibuja y «Sin conexión ✓» solo saldría si `estado.descargas` ya lo trajera. Se conservan tal cual. No existe ningún estado de carga: los datos son locales, y lo único que carga es cada foto (con su esqueleto).
 
+### 15.7 Registro de la Parte 6
+
+«código» = lectura de código, `tsc`, `lint:color` y los cinco conjuntos de pruebas; nada se ha corrido en dispositivo.
+
+| Punto | Estado |
+|---|---|
+| Los filtros de Ejercicios, Rutinas, Programas y Músculos (búsqueda, objetivo, categoría, «Lo que puedo hacer») son el mismo código, copiado sin cambios | ✅ código |
+| El contador es la misma cuenta (`length` de la lista filtrada; no incluye «Mis rutinas») | ✅ código |
+| «Crear mi rutina», fila de ejercicio, tarjeta de rutina, fila de «Mis rutinas», lápiz, tarjeta de programa y músculo abren lo mismo y con los mismos parámetros | ✅ código |
+| Favoritos de ejercicios, rutinas y programas: mismas llamadas a `alternarFavorito` y a `esFavorito` | ✅ código |
+| El parámetro `tab` sigue cambiando de segmento (y conserva el error BUG-9, ver 15.9) | ✅ código |
+| `MuroCategoria`, `Intersticial` y «Sin conexión» siguen conectados | ✅ código |
+| Ningún dato, ni el almacén, ni el motor, ni `catalog.ts` se tocaron | ✅ código |
+| Cabecera fija, título que se colapsa, buscador con placeholder que rueda, segmentos con barra, chips con relleno desde el toque, interruptor, plegado de filtros | pendiente en dispositivo |
+| Contador que rueda, entrada escalonada de tarjetas, reacomodo de filas, cambio de segmento con desplazamiento | pendiente en dispositivo |
+| Fila propia nueva o editada al volver del editor (entrada, placas, brillo, contador del grupo) | pendiente en dispositivo |
+| 60 fps al hacer scroll rápido por los 190 ejercicios en Android de gama media | pendiente en dispositivo |
+| Lector de pantalla: segmento seleccionado, filtros activos, número de resultados y filas con equipo, nivel y evidencia | pendiente en dispositivo |
+
+Suites tras la fase: `test:ui` 21, `test:player` 63, `test:engine` 74, `test:rutinas` 31, `test:borrarTodo` 14, todas en verde; `tsc` solo con los 4 errores previos de `tests/`; `lint:color` sin fugas; `expo export` de Android sin errores.
+
+### 15.8 Cambios de presentación que tocan un texto o una acción visible
+
+No cambian ningún dato ni ruta.
+
+- **Tildes**: se muestran con `nombreVisible` los nombres de ejercicios («Sentadilla isométrica en pared», «Estocada estática»), rutinas y programas, y las descripciones de programas (se añadieron «sección», «excéntricas» y «monotemático» al mapa). Equipo: `textoDeEquipo` («Sin equipo», «Pared, silla o escalón»: la primera palabra con mayúscula y las demás en minúscula). Los objetivos del filtro ya venían con tilde («Ganar músculo», «Mandíbula y rostro», «Condición física»). El contador dice «músculos» (antes el id sin tilde, «musculos»).
+- **Plural**: «1 rutina», «1 ejercicio», «1 semana», «1 día/sem» (`utils/plural.ts`). «Mis rutinas (1)» pasa a «Mis rutinas» con el 1 aparte.
+- **Etiquetas de segundo nivel**: «nivel 1» pasa a las placas más «Nivel 1» con mayúscula; «Silenciosa» ya no es un chip debajo, sino una etiqueta sobre la foto de la rutina. «Sin conexión ✓» pasa a un icono de palomita más «Sin conexión».
+- **Duración**: en las rutinas del catálogo sale una sola vez (sobre la foto), no otra vez en la etiqueta de abajo.
+- **Programas**: se conserva la descripción de 2 líneas y los tres números (semanas, días por semana y minutos por sesión), ahora en Big Shoulders con su unidad aparte.
+- **Sin resultados**: Rutinas pasa de «Sin rutinas con ese filtro.» a «Sin rutinas con ese filtro. Prueba con otro objetivo o borra la búsqueda.» y Programas y Músculos, que no mostraban nada, dicen ahora «Sin programas con ese filtro. Prueba con otro objetivo o borra la búsqueda.» y «Ningún músculo coincide. Prueba con otra palabra.». Ejercicios conserva su texto.
+- **X para borrar la búsqueda**: antes solo existía la de iOS (nativa); ahora es propia y sale también en Android. No hay botón «Cancelar» porque nunca lo hubo.
+- **Filas de filtro con el teclado abierto**: ahora el primer toque en un chip funciona (`keyboardShouldPersistTaps="handled"`); antes el primero solo cerraba el teclado.
+- **Interruptor**: «Lo que puedo hacer / Catálogo completo» son ahora un control de dos posiciones a todo el ancho, en la línea de debajo del contador (en 360 px no caben junto a él). Escribe el mismo `soloMios`.
+- **Mini medidor**: bajo la segunda línea de cada ejercicio, no junto a ella, porque no cabe en 360 px sin ocultar el equipo.
+
+### 15.9 Errores detectados (no corregidos)
+
+Detalle y propuesta en `docs/BUGS.md`.
+
+- **BUG-8.** La búsqueda no encuentra lo que se ve. Los nombres se muestran con tilde («Flexión»), pero el dato no la trae y la búsqueda compara sin quitar tildes: escribir «flexión» no devuelve nada; «flexion» sí. Lo destapa la corrección de ortografía en pantalla (Partes 3 a 6).
+- **BUG-9.** «Ver todas» no siempre cambia de segmento: si Hoy ya pasó `{ tab: 'rutinas' }`, el usuario cambia a mano de segmento y vuelve a Hoy a pulsar lo mismo, el parámetro no cambia y la pestaña se queda donde está.
+- **Observación, no error:** «Mis rutinas» no se filtra con la búsqueda ni con el objetivo, y no entra en el contador («30 rutinas»). Se conserva tal cual.
+

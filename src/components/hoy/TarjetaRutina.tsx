@@ -1,12 +1,13 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Extrapolation, interpolate, useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
-import { paleta, conAlfa, familia } from '../../theme';
+import { paleta, familia } from '../../theme';
 import { nombreVisible } from '../../data/nombresVisibles';
 import { useReducedMotion } from '../../hooks/useReducedMotion';
 import { useTick } from '../../hooks/useTick';
 import { Presionable } from '../ui/Presionable';
 import { FotoOscura } from '../ui/FotoOscura';
+import { InsigniaFoto } from '../ui/InsigniaFoto';
 import { Huella } from '../fx/Huella';
 import { EstrellaFavorito } from './EstrellaFavorito';
 import { BarraRutina } from './BarraRutina';
@@ -74,10 +75,7 @@ export function TarjetaRutina({ r, progreso, favorito, onPress, onFavorito }: {
             tipo="rutina" id={r.imagenId ?? r.id} ancho={ANCHO_TARJETA_RUTINA} alto={ALTO_FOTO_RUTINA}
             radioEsquina={20} alturaVelo="30%" estiloImagen={foto}
           />
-          <View style={s.insignia}>
-            <Text style={s.insigniaNumero}>{r.min}</Text>
-            <Text style={s.insigniaUnidad}>min</Text>
-          </View>
+          <View style={s.insignia}><InsigniaFoto numero={r.min} unidad="min" /></View>
         </View>
         <Text style={s.titulo} numberOfLines={2}>{nombre}</Text>
         {r.mia ? (
@@ -99,12 +97,7 @@ export function TarjetaRutina({ r, progreso, favorito, onPress, onFavorito }: {
 
 const s = StyleSheet.create({
   caja: { width: ANCHO_TARJETA_RUTINA },
-  insignia: {
-    position: 'absolute', bottom: 8, left: 8, flexDirection: 'row', alignItems: 'baseline', gap: 3,
-    paddingVertical: 3, paddingHorizontal: 8, borderRadius: 8, backgroundColor: conAlfa(paleta.goma, 0.8),
-  },
-  insigniaNumero: { fontFamily: familia.titulo, fontSize: 16, lineHeight: 20, color: paleta.magnesia },
-  insigniaUnidad: { fontFamily: familia.cuerpo, fontSize: 13, lineHeight: 18, color: paleta.magnesia2 },
+  insignia: { position: 'absolute', bottom: 8, left: 8 },
   estrella: { position: 'absolute', top: 6, right: 6 },
   titulo: { fontFamily: familia.enfasis, fontSize: 16, lineHeight: 21, color: paleta.magnesia, marginTop: 10 },
   subtitulo: { fontFamily: familia.cuerpo, fontSize: 14, lineHeight: 20, color: paleta.magnesia2 },

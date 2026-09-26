@@ -1,9 +1,10 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { paleta, conAlfa, familia } from '../../theme';
+import { paleta, familia } from '../../theme';
 import { nombreVisible } from '../../data/nombresVisibles';
 import { Presionable } from '../ui/Presionable';
 import { FotoOscura } from '../ui/FotoOscura';
+import { InsigniaFoto } from '../ui/InsigniaFoto';
 import { EstrellaFavorito } from './EstrellaFavorito';
 
 export const ANCHO_TARJETA_PROGRAMA = 240;
@@ -34,10 +35,7 @@ export function TarjetaPrograma({ p, onPress, onFavorito }: {
             tipo="programa" id={p.id} ancho={ANCHO_TARJETA_PROGRAMA} alto={ALTO_FOTO_PROGRAMA}
             radioEsquina={20} alturaVelo="30%"
           />
-          <View style={s.insignia}>
-            <Text style={s.insigniaNumero}>{p.semanas}</Text>
-            <Text style={s.insigniaUnidad}>sem</Text>
-          </View>
+          <View style={s.insignia}><InsigniaFoto numero={p.semanas} unidad="sem" /></View>
         </View>
         <Text style={s.titulo} numberOfLines={2}>{nombre}</Text>
       </Presionable>
@@ -54,12 +52,7 @@ const s = StyleSheet.create({
     position: 'absolute', height: ALTO_FOTO_PROGRAMA, borderRadius: 20,
     backgroundColor: paleta.gomaAlta, borderWidth: 1, borderColor: paleta.gomaBorde,
   },
-  insignia: {
-    position: 'absolute', bottom: 8, left: 8, flexDirection: 'row', alignItems: 'baseline', gap: 3,
-    paddingVertical: 3, paddingHorizontal: 8, borderRadius: 8, backgroundColor: conAlfa(paleta.goma, 0.8),
-  },
-  insigniaNumero: { fontFamily: familia.titulo, fontSize: 16, lineHeight: 20, color: paleta.magnesia },
-  insigniaUnidad: { fontFamily: familia.cuerpo, fontSize: 13, lineHeight: 18, color: paleta.magnesia2 },
+  insignia: { position: 'absolute', bottom: 8, left: 8 },
   estrella: { position: 'absolute', top: 6, right: 6 },
   titulo: { fontFamily: familia.enfasis, fontSize: 16, lineHeight: 21, color: paleta.magnesia, marginTop: 18 },
 });

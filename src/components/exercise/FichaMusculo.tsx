@@ -70,6 +70,7 @@ export function FichaMusculo({ m, principal, medidas, indice, activo, animar = t
         <Text
           style={[s.nombre, { fontSize: medidas.letra, lineHeight: medidas.letra + 5 }]}
           numberOfLines={medidas.lineas} maxFontSizeMultiplier={1.2}
+          adjustsFontSizeToFit minimumFontScale={0.85}
         >
           {nombre}
         </Text>

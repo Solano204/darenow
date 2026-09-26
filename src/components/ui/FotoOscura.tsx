@@ -4,7 +4,7 @@ import Animated from 'react-native-reanimated';
 import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
-import { paleta, radio, degradado } from '../../theme';
+import { paleta, radio, degradado, conAlfa } from '../../theme';
 import { fuente, type TipoFoto } from '../../media/registry';
 import { Esqueleto } from '../fx/Esqueleto';
 
@@ -20,7 +20,7 @@ const EXPOSICION = 0.8;
  * tarjeta no escala). `estiloImagen` admite un estilo animado de parallax.
  */
 export function FotoOscura({
-  tipo, id, ancho, alto, radioEsquina = radio.foto, velo = true, alturaVelo = '55%', estilo, estiloImagen,
+  tipo, id, ancho, alto, radioEsquina = radio.foto, velo = true, alturaVelo = '55%', fondoVelo, estilo, estiloImagen,
 }: {
   tipo: TipoFoto;
   id: string;
@@ -30,6 +30,8 @@ export function FotoOscura({
   velo?: boolean;
   /** Alto del degradado a goma sobre la foto, desde abajo. */
   alturaVelo?: `${number}%`;
+  /** Color al que se funde el velo (por defecto `goma`; una tarjeta de `gomaAlta` pide ese). */
+  fondoVelo?: string;
   estilo?: StyleProp<ViewStyle>;
   estiloImagen?: React.ComponentProps<typeof Animated.View>['style'];
 }) {
@@ -51,7 +53,7 @@ export function FotoOscura({
       {src && !lista && <Esqueleto radioEsquina={radioEsquina} />}
       {velo && (
         <LinearGradient
-          colors={degradado.haciaGoma} pointerEvents="none" style={[s.velo, { height: alturaVelo }]}
+          colors={fondoVelo ? [conAlfa(fondoVelo, 0), fondoVelo] : degradado.haciaGoma} pointerEvents="none" style={[s.velo, { height: alturaVelo }]}
         />
       )}
     </View>

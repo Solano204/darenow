@@ -42,30 +42,30 @@ const s = StyleSheet.create({
  * Version compacta de 96x20: una barra con una placa por ejercicio en cada
  * manga (hasta 8), la mas alta pegada al centro, con los colores de siempre.
  * Con `animar` distinto de cero (un contador que sube cada vez que hay que
- * repetirlo) las placas entran una por una, 40 ms entre cada una, y suena un
- * solo golpe al final.
+ * repetirlo) las placas entran una por una, 40 ms entre cada una (tras `retraso`), y
+ * suena un solo golpe al final.
  */
-export function MiniBarraRutina({ pasos, animar = 0 }: { pasos: number; animar?: number }) {
+export function MiniBarraRutina({ pasos, animar = 0, retraso = 0 }: { pasos: number; animar?: number; retraso?: number }) {
   const n = Math.max(1, Math.min(pasos, MAX_PLACAS_POR_MANGA));
   const reducido = useReducedMotion();
 
   useEffect(() => {
     if (!animar || reducido) return;
-    const id = setTimeout(haptico.placa, (n - 1) * ESCALONADO_PLACA_MS + ASENTAMIENTO_MS);
+    const id = setTimeout(haptico.placa, retraso + (n - 1) * ESCALONADO_PLACA_MS + ASENTAMIENTO_MS);
     return () => clearTimeout(id);
-  }, [animar, reducido, n]);
+  }, [animar, reducido, n, retraso]);
 
   const indices = Array.from({ length: n }, (_, i) => i);
   return (
     <View style={m.barra} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
-      {[...indices].reverse().map(i => <Placa key={`i${i}`} i={i} lado={-1} animar={animar} />)}
+      {[...indices].reverse().map(i => <Placa key={`i${i}`} i={i} lado={-1} animar={animar} retraso={retraso} />)}
       <View style={m.eje} />
-      {indices.map(i => <Placa key={`d${i}`} i={i} lado={1} animar={animar} />)}
+      {indices.map(i => <Placa key={`d${i}`} i={i} lado={1} animar={animar} retraso={retraso} />)}
     </View>
   );
 }
 
-function Placa({ i, lado, animar }: { i: number; lado: -1 | 1; animar: number }) {
+function Placa({ i, lado, animar, retraso }: { i: number; lado: -1 | 1; animar: number; retraso: number }) {
   const reducido = useReducedMotion();
   const tick = useTick();
   const t = useSharedValue(1);
@@ -73,7 +73,7 @@ function Placa({ i, lado, animar }: { i: number; lado: -1 | 1; animar: number })
   useEffect(() => {
     if (!animar || reducido) return;
     t.value = 0;
-    t.value = withDelay(i * ESCALONADO_PLACA_MS, withSpring(1, resortePlaca));
+    t.value = withDelay(retraso + i * ESCALONADO_PLACA_MS, withSpring(1, resortePlaca));
     return () => cancelAnimation(t);
   }, [animar, reducido]);
 

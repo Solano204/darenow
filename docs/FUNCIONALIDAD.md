@@ -416,11 +416,31 @@ Se rellena al cerrar cada fase. «código» = lectura de código, `tsc`, suites 
 
 | Punto | Estado |
 |---|---|
-| «¿Listo?» dura 3000 ms y no depende de nada más | |
-| Editor: mismos límites, pasos, cálculo del total, Cambiar y Empezar | |
-| Ajuste de máquina se sigue guardando | |
-| Reproductor: mismas fases, tiempos y orden; mismos handlers | |
-| El anillo lee `restanteS` y no lleva reloj propio | |
-| Segundo plano y app cerrada igual que antes | |
-| Resumen: mismos datos y mismos casos de logro; «Cómo se sintió» igual (local) | |
+| «¿Listo?» dura 3000 ms y no depende de nada más (`DURACION_LISTO_MS`, mismo `setTimeout`) | ✅ código |
+| Editor: mismos límites (series 1 a 10, tiempo 5 a 300 de 5 en 5, repeticiones 1 a 50, descanso 0 a 300 de 5 en 5), mismo cálculo del total, Cambiar y Empezar | ✅ código |
+| Ajuste de máquina se sigue guardando (`guardarAjusteMaquina`) | ✅ código |
+| Reproductor: mismas fases, tiempos y orden (`session/*` sin cambios, `git diff` vacío); mismos handlers de Salir, Pausa, Terminar antes, Omitir, Ya estoy, Listo y Deshacer | ✅ código |
+| El anillo lee `restanteS` y no lleva reloj propio | ✅ código |
+| Segundo plano y app cerrada igual que antes (`useSessionPlayer` sin cambios) | ✅ código |
+| Resumen: mismos datos y mismos casos de logro; «Cómo se sintió» igual (local, BUG-3) | ✅ código |
+| El temporizador no se desincroniza con la animación (cronómetro 5 min) | pendiente en dispositivo |
+| Partículas de «¿Listo?», barrido de fase, respiración, golpes 3-2-1 y sus hápticas | pendiente en dispositivo |
+| 60 fps en Android de gama media y temperatura tras una sesión larga | pendiente en dispositivo |
+| Bloquear y desbloquear a mitad de un ejercicio | pendiente en dispositivo |
+| Anuncios del lector de pantalla (fase y cada 10 s) | pendiente en dispositivo |
+
+Suites tras la fase: `test:ui` 21, `test:player` 63, `test:engine` 74, `test:rutinas` 31, `test:borrarTodo` 14; `tsc` solo con los 4 errores previos de `tests/`; `lint:color` sin fugas; `expo export` de Android sin errores.
+
+### 13.7 Cambios de presentación que tocan un texto o una háptica
+
+No cambian la máquina, los tiempos, las series ni los datos guardados.
+
+- Háptica de Omitir: Warning → Light (lo pide la Parte 4).
+- Háptica al registrar una serie: Light, y Medium si esa serie cierra el ejercicio (el «clank» de la placa). Nuevas: Heavy, Soft y Medium al entrar a Trabaja, Descansa y Prepárate; Rigid en los últimos 3 segundos (también en Descansa); Heavy al asentarse la medalla; hápticas por opción en «Cómo se sintió».
+- Lector de pantalla: antes el número anunciaba cada segundo (`accessibilityLiveRegion`); ahora la fase se anuncia al cambiar y el tiempo cada 10 s.
+- Mientras la voz lee el ejercicio, la pausa que abre la sesión ya no muestra «En pausa» ni cambia el fondo: conserva el aspecto de Prepárate. La pausa manual muestra «Pausa» sobre un velo.
+- En trabajo por repeticiones, el número y el nombre del ejercicio se muestran igual también en pausa (antes en pausa el número mostraba el tiempo transcurrido).
+- Editor: «N minutos en total» pasa a «N min en total»; «Repeticiones» y «Tiempo» se ajustan con `Stepper`; en el límite el botón se apaga, sacude y da un aviso (antes se acotaba en silencio); «Empezar rutina» va fijo abajo (antes al final del scroll).
+- Reproductor: «Deshacer última serie» y «Omitir este ejercicio» comparten fila; «Sigue: nombre» pasa a una tarjeta con miniatura.
+- Textos con tilde: «Ajuste de la máquina» (antes «maquina») y los nombres de ejercicio en el editor, «Sigue» y el resumen, con `nombreVisible` (`Círculos de brazos`, `Respiración nasal consciente`, etc.; el dato no se toca, ver 12.6).
 

@@ -136,13 +136,40 @@ Un solo azul por vista en la tarjeta de la sesión: «Empezar». Lo demás es `g
 
 Faltan en el repo las Partes 6 a 12 que el brief cita: `BarraRutina`, `Huella`, `SieteDias`, `AccionSeccion`, `NivelPlacas`, `FichaMusculo` y `TarjetaArticulo` se crearon aquí en su versión mínima. `TextoDesvanecido`, el medidor de evidencia y el elemento compartido no se crearon: no hay texto que desvanecer, los tips no tienen evidencia y el Stack nativo no soporta el elemento compartido (ver arriba).
 
+## Sesión de entrenamiento (Parte 4)
+
+**Excepción a la regla del azul único: modo sesión.** Dentro del reproductor, la fase se lee de lejos por el color de su placa. Solo aquí:
+
+| Fase | Color | Texto de la palabra |
+|---|---|---|
+| Prepárate (y «Cambia de lado») | `placaAmarilla` | `placaAmarilla` |
+| Trabaja | `placaRoja` | `placaRojaTexto` |
+| Descansa | `placaAzul` | `placaAzulTexto` |
+
+Los textos usan la variante medida para AA (la roja y la azul puras no llegan sobre `goma`). El fondo es **siempre** `goma` + `GomaTexture`; el color vive en el anillo, la palabra, un resplandor difuminado al 14 % detrás del anillo y la placa actual de la barra de progreso. La pausa conserva el color de la fase que interrumpe. «Ya estoy» en Descansa no es azul (competiría con el ambiente): es sólido `magnesia` con texto `goma`. El mapa vive en `theme/fases.ts`.
+
+- **«¿Listo?»** (`PantallaListo`, `TextoDeParticulas`): 200 partículas de magnesia viajan desde toda la pantalla hasta puntos del contorno (55 %, con `Skia.Path.MakeFromText` y `ContourMeasureIter`) y del relleno (`path.contains`) del texto en 700 ms; luego aparece el texto sólido y cae un polvo leve (8 partículas). Empieza a deshacerse hacia arriba 400 ms antes de terminar y, al vencer los 3000 ms de siempre, el aplauso de magnesia cubre el paso. La pantalla no espera ninguna carga: dura lo mismo que antes. El texto es un trazo de la fuente Big Shoulders 800.
+- **Editor** («Tu rutina de hoy»): tarjetas de ~260 px (miniatura de 88, número de orden, nombre a 2 líneas, «Cambiar» con área de 44) con tres `Stepper` de 44 px, valor de Big Shoulders 24 que rueda, sacudida de 4 px y aviso en el límite, y el valor se sigue pudiendo escribir. El total (`TotalPegajoso`) es cabecera pegajosa del scroll y rueda con pulso 1.06. «Cambiar» hace un giro de tablero (`rotateX`, 2×130 ms). «Empezar rutina» va fijo abajo: hace lo mismo que antes y no exige haber recorrido la lista.
+- **Reproductor** (`ReproductorLayout`): barra de una placa por ejercicio, cabecera, palabra de fase, anillo con el número dentro, nombre, serie, modelo, tarjeta «Sigue» y acciones. El anillo mide `clamp(29 % del alto, 227, 260)` y el número `160/260` de eso (140 px o más); con minutos («1:05») baja al 87.5 % para caber. Un solo `Canvas` de Skia dibuja anillo y resplandor.
+- **El anillo no lleva reloj propio.** `restanteS` es la única fuente. Cada vez que cambia, el progreso se fija en `restanteS / total` y se anima linealmente hasta el valor del segundo siguiente en 1000 ms; en pausa se congela. Al cambiar de fase se rellena en 240 ms. `total` sale del propio ejercicio (`PREPARACION_S`, 5 de cambio de lado, `segPlan`, `descansoPlan`). Sin final previsible (trabajo por repeticiones) el anillo queda lleno.
+- **Transición de fase.** Círculo del color nuevo que crece desde el anillo a 22 % (380 ms) y se apaga (300 ms) — es una vista circular escalada, no una máscara de Skia, para no tener un segundo `Canvas` a pantalla completa —; palabra estampada (1.3 → 1); número que entra rodando (se remonta por fase); háptica Heavy al entrar a Trabaja, Soft a Descansa y Medium a Prepárate. Nunca provoca ni retrasa el cambio: reacciona a él.
+- **Últimos 3 segundos** (también en Descansa): golpe de escala 1 → 1.15 → 1 y háptica Rigid en 3, 2 y 1. A la mitad del trabajo la marca del anillo destella, sin háptica. Al terminar el último set de un ejercicio, su placa se asienta y la háptica es Medium (antes Light).
+- **Descansa:** el anillo respira (8 s por ciclo, 1 → 1.08 → 1) y bajo el nombre se cruzan «Inhala» y «Exhala» al mismo ritmo. Solo visual. Sin el modelo, el contenido se centra en la pantalla.
+- **Pausa** (`OverlayPausa`): solo en la pausa manual. La pausa que se abre mientras habla la voz conserva el aspecto de la fase, sin velo. Velo `goma` al 40 % con desenfoque en iOS y al 85 % en Android; el anillo y el número se congelan y el número baja a media opacidad. Con la hoja de salida abierta no se dibuja.
+- **Salir** (`HojaSalida`): hoja inferior `gomaAlta` con esquinas superiores de 28; mismos motivos y texto. **Omitir**: el modelo sale hacia arriba con fundido (240 ms) y la háptica pasa de Warning a Light; la placa omitida queda con una diagonal (solo si todas las series de ese ejercicio se omitieron).
+- **Resumen** (`ResumenSesion`): el último color de fase se contrae al centro y se vuelve polvo; título por máscara; racha de 120 en `magnesia` (deja de ser azul) que rueda (en 0 da una vuelta entera y cae en 0); tres `PlacaDato` con filo neutro y golpe solo la última; medalla del logro (`PlacaMedalla`, vistas y no Skia: un `Canvas` no gira bien en Y en Android) que cae girando una vuelta y media, con golpe Heavy y tres nubes chicas (30 partículas) y un brillo; «Cómo se sintió» como escala de esfuerzo (`EscalaEsfuerzo`: placas de 32, 44, 56 y 68 en verde, amarilla, azul y roja, con háptica creciente). La selección sigue siendo solo local (BUG-3).
+- **Accesibilidad:** el número tiene una etiqueta exacta pero no anuncia cada segundo: la fase se anuncia al cambiar y el tiempo cada 10 s con `announceForAccessibility`. Todo lo tocable en sesión es de 48×48 o más.
+- **Movimiento reducido:** «¿Listo?» solo aparece con un fundido; el número cambia sin rodar; el anillo sigue vaciándose (es información) pero sin respiración, destellos ni resplandor que respira; la fase cambia de color con un fundido de 150 ms, sin barrido ni estampado; el resumen aparece colocado; la medalla queda fija. La háptica se conserva.
+- **Desviaciones del brief:** el modelo ocupa lo que sobra entre el nombre y las acciones (no el 40 % del alto: con el anillo de 227 px y el resto de controles no cabe); siempre va en una ficha `magnesia` de radio 24 porque los clips y las fotos tienen fondo claro, y no se construyó la variante de PNG transparente (no hay recortes). No hay horizontal: la app es solo vertical.
+
 ## Componentes
 
 | Carpeta | Piezas |
 |---|---|
 | `components/ui` | `BotonPlaca`, `BotonCompacto`, `BotonFilaSecundario`, `NotaEntrenador`, `InsigniaEvidencia`, `TarjetaGoma`, `TabBarGoma`, `HeaderColapsable`, `Esqueleto`, `FotoOscura`, `NivelPlacas`, `Presionable`, `AccionSeccion` (y `CabeceraSeccion`), `cabecera` (`TituloGrande`, `BarraCompacta`) |
-| `components/fx` | `GomaTexture`, `FotoTratada`, `FotoParallax`, `MagnesiaParticles`, `MagnesiaOverlay` (`ProveedorMagnesia`, `useMagnesia`), `Odometro`, `TituloEstampado`, `TituloMascara` (y `TituloLetras`), `BarraPlacas`, `DialTiempo`, `TachadoMito`, `Entrada`, `Huella` |
+| `components/fx` | `TextoDeParticulas`, `GomaTexture`, `FotoTratada`, `FotoParallax`, `MagnesiaParticles`, `MagnesiaOverlay` (`ProveedorMagnesia`, `useMagnesia`), `Odometro`, `TituloEstampado`, `TituloMascara` (y `TituloLetras`), `BarraPlacas`, `DialTiempo`, `TachadoMito`, `Entrada`, `Huella` |
 | `components/hoy` | `TarjetaSesionHoy`, `MiniaturaEjercicio`, `TarjetaEnfoque`, `CarruselProfundidad`, `CarruselHoy`, `TarjetaRutina`, `BarraRutina`, `EstrellaFavorito`, `FilaSemana`, `TuSemana`, `BloqueRevela`, `FilaExplorar`, `TuPrograma`, `PilaProgramas`, `TarjetasHoy` (`TarjetaEjercicioMini`, `FichaMusculo`, `TarjetaArticulo`), `EstadisticasHoy` |
+| `components/session` | `PantallaListo`, `EditorAntesDeEmpezar`, `TarjetaAjusteEjercicio`, `Stepper`, `TotalPegajoso`, `ReproductorLayout`, `AnilloTemporizador`, `NumeroTemporizador`, `PalabraFase`, `TarjetaSigue`, `BarraProgresoSesion`, `OverlayPausa`, `HojaSalida`, `ResumenSesion`, `PlacaMedalla`, `EscalaEsfuerzo` |
 | `hooks` | `useReducedMotion`, `useFirstView`, `useWelcomeData`, `usePresentacion`, `useOnboarding`, `useTick`, `useBarraFlotante` |
 
 Las imágenes nuevas, con nombre, tamaño y prompt, están en `docs/IMAGENES.md`.

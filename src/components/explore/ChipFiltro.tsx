@@ -19,6 +19,8 @@ const HUNDIMIENTO = 0.95;
 const PADDING_X = 12;
 const TAMANO_ICONO = 16;
 const MIN_ESCALA = 0.001;
+/** Antes de medir el chip, un circulo mas grande que cualquiera: un chip marcado no se ve vacio ni un cuadro. */
+const DIAMETRO_INICIAL = 400;
 
 /**
  * Chip de filtro (estado, no navegacion). Sin marcar: borde de 1 px y texto
@@ -46,7 +48,7 @@ export function ChipFiltro({ texto, activo, onPress, icono, variante = 'objetivo
   const ox = useSharedValue(0);
   const oy = useSharedValue(0);
   const tocado = useRef(false);
-  const [diametro, setDiametro] = useState(0);
+  const [diametro, setDiametro] = useState(DIAMETRO_INICIAL);
 
   useEffect(() => {
     t.value = withTiming(activo ? 1 : 0, { duration: reducido ? FUNDIDO_REDUCIDO_MS : RELLENO_MS, easing: easing.salida });

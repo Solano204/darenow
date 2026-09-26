@@ -19,20 +19,28 @@ const ENCOGIMIENTO = 0.9;
 /** Posicion vertical del scroll de la pantalla, para ligar a ella el encogimiento del titulo. */
 export const ContextoScroll = createContext<SharedValue<number> | null>(null);
 
+/**
+ * Baja o sube la barra de pestanas segun la direccion del scroll. `previo` y `bajando`
+ * son el estado de la pantalla que la usa (dos valores compartidos suyos).
+ */
+export function seguirBarra(actual: number, previo: SharedValue<number>, bajando: SharedValue<number>) {
+  'worklet';
+  const delta = actual - previo.value;
+  if (Math.abs(delta) < UMBRAL_DIRECCION) return;
+  previo.value = actual;
+  const objetivo = delta > 0 && actual > MIN_BAJADA ? 1 : 0;
+  if (objetivo === bajando.value) return;
+  bajando.value = objetivo;
+  barraBajada.value = withTiming(objetivo, { duration: DUR_BARRA_MS });
+}
+
 export function useScrollCabecera() {
   const y = useSharedValue(0);
   const previo = useSharedValue(0);
   const bajando = useSharedValue(0);
   const onScroll = useAnimatedScrollHandler(e => {
-    const actual = e.contentOffset.y;
-    y.value = actual;
-    const delta = actual - previo.value;
-    if (Math.abs(delta) < UMBRAL_DIRECCION) return;
-    previo.value = actual;
-    const objetivo = delta > 0 && actual > MIN_BAJADA ? 1 : 0;
-    if (objetivo === bajando.value) return;
-    bajando.value = objetivo;
-    barraBajada.value = withTiming(objetivo, { duration: DUR_BARRA_MS });
+    y.value = e.contentOffset.y;
+    seguirBarra(e.contentOffset.y, previo, bajando);
   });
   return { y, onScroll };
 }

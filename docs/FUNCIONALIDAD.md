@@ -511,3 +511,52 @@ No cambian ningún dato ni ruta.
 
 **Ortografía de los textos de los 190 ejercicios.** El catálogo está escrito sin tildes (solo hay una palabra acentuada, «revés», y las ñ). Se inventariaron las 1 925 palabras distintas de descripción, pasos, claves, errores, respiración, afirmaciones, notas y nombres de familias y músculos, y `src/data/nombresVisibles.ts` corrige al mostrar las que no son ambiguas (264 palabras, entre ellas: más, también, después, así, atrás, según, músculo, glúteo, cuádriceps, tríceps, bíceps, talón, muñeca, respiración, posición, flexión, extensión, tensión, rotación, técnica, isométrica, rápida, máquina, círculos, búlgara, mantén, siéntate, sujétate, verás). **No se corrigen** las palabras cuyo significado cambia con la tilde: esta/está, si/sí, aun/aún, solo, continua/continúa, perdida/pérdida, como, cuando, que; en los textos largos pueden quedar sin tilde. Arreglarlas del todo exige corregir el dato con una revisión humana y hacer la búsqueda insensible a tildes.
 
+## 15. Parte 6: pestaña Explorar (auditoría previa)
+
+Archivo: `src/screens/Explorar.tsx`. Pestaña `Explorar` con parámetro opcional `{ tab }` (`ejercicios`, `rutinas`, `programas` o `musculos`) que llega desde Hoy («Ver todas»), Favoritos, la ficha de ejercicio y las fichas de músculo y programa. Lo que sigue es el comportamiento previo al rediseño y no cambia.
+
+### 15.1 Búsqueda
+
+- Un solo campo. Filtra en vivo con cada tecla; no hay botón de enviar ni abre otra pantalla. Compara `q.trim().toLowerCase()` con `includes`, sin quitar tildes.
+- Qué busca según el segmento: Ejercicios: `name`, `name_en` y `aliases`. Rutinas: `name`. Programas: `name`. Músculos: `name` y `group`.
+- El texto se conserva al cambiar de segmento y al salir de la pestaña (el estado vive en la pantalla, que sigue montada).
+- No hay botón «Cancelar». Lo único parecido es la X nativa de iOS (`clearButtonMode="while-editing"`); en Android no hay ninguna.
+- Sin resultados: Ejercicios muestra «Nada con esos filtros. Prueba a quitar alguno.»; Rutinas, «Sin rutinas con ese filtro.». Programas y Músculos no muestran nada. Ninguno ofrece una acción (no existe «limpiar filtros»).
+
+### 15.2 Segmentos
+
+- Ejercicios, Rutinas, Programas y Músculos: cuatro chips en una fila con scroll horizontal. Se cambian **solo con el toque**: no hay paginador ni deslizamiento. Cada segmento monta su propia `FlatList` y desmonta las demás. También cambian con el parámetro `tab`.
+- Listas: Ejercicios (`EJERCICIOS` filtrada), Rutinas (`RUTINAS` filtrada, precedida por «Crear mi rutina» y por «Mis rutinas» si las hay), Programas (`PROGRAMAS` filtrada) y Músculos (`MUSCULOS` filtrada, 3 columnas).
+- Filas de filtro por segmento: Ejercicios lleva categoría, objetivo y «Lo que puedo hacer / Catálogo completo»; Rutinas y Programas, solo objetivo; Músculos, ninguna.
+- Toda la cabecera (título, buscador, chips, contador) está **fuera** de la lista: ya es fija y no hace scroll con ella.
+
+### 15.3 Filtros
+
+- **Objetivo** (`goal`): selección única, un solo estado para los tres segmentos. Tocar el elegido lo quita; «Cualquier objetivo» equivale a ninguno. Se combina con la búsqueda: Ejercicios (`e.goals.includes(goal)`), Rutinas (`r.goal === goal`) y Programas (`p.goal === goal`). No afecta a Músculos ni a «Mis rutinas».
+- **Categoría** (`cat`, solo Ejercicios): selección única; «Todo» la quita; tocar la elegida no la quita.
+- **Lo que puedo hacer / Catálogo completo** (`soloMios`, solo Ejercicios): por defecto «Lo que puedo hacer». Activo excluye los ejercicios cuyo `contra` coincide con `perfil.contra`, los que piden un equipo que no está en `perfil.equipo` (más `ninguno`, `pared` y `silla`) y, con `modoSinSaltos`, los de `impact >= 2` o `noise >= 2`.
+- Todos se combinan entre sí (Y lógico) y con la búsqueda.
+
+### 15.4 Contador
+
+`cuantos` es el largo de la lista filtrada del segmento activo y se escribe `${cuantos} ${tab}` («30 rutinas», «69 ejercicios»; el id del segmento, así que hoy sale «musculos» sin tilde y «1 rutinas» con uno). **No** incluye «Mis rutinas». A su derecha van «Lo que puedo hacer» y «Catálogo completo» (solo Ejercicios) y, si el segmento está descargado (`estado.descargas.includes(tab)`), «Sin conexión ✓».
+
+### 15.5 Qué abre cada cosa
+
+| Elemento | Acción |
+|---|---|
+| «Crear mi rutina» | `navigate('EditorRutina')` sin parámetros |
+| Fila de ejercicio | `navigate('Ejercicio', { id })`; estrella: `alternarFavorito('ejercicios', id)` |
+| Tarjeta de rutina | `navigate('Rutina', { id })`; estrella: `alternarFavorito('rutinas', id)` |
+| Fila de «Mis rutinas» | `navigate('RutinaPropia', { id })`; lápiz: `navigate('EditorRutina', { id })` |
+| Tarjeta de programa | `navigate('Programa', { id })`; estrella: `alternarFavorito('programas', id)` |
+| Músculo | `navigate('Musculo', { id })` (sin favorito) |
+
+Datos de cada tarjeta: ejercicio, `nombreEquipo(equipment)` y `level`. Rutina, `min`, `nombreGoal(goal)`, `level` y «Silenciosa» si `modo_sin_saltos`. Programa, `desc` (2 líneas), `semanas`, `dias_semana` y `min_sesion`. Rutina propia, `nombre`, foto `imagenRutina(id, imagenId)`, `items.length` y `minutosPropios(items)`.
+
+Orden: el de los datos, sin ordenar. No hay paginación, ni carga incremental, ni arrastrar para actualizar. En «Mis rutinas» no hay eliminar ni «ver todas» (borrar vive en la propia rutina).
+
+### 15.6 Lo que existe pero no se ve hoy
+
+`MuroCategoria` e `Intersticial` (desbloqueo por anuncio) están conectados al segmento, pero `ANUNCIOS_ACTIVOS = false`: el muro nunca se dibuja y «Sin conexión ✓» solo saldría si `estado.descargas` ya lo trajera. Se conservan tal cual. No existe ningún estado de carga: los datos son locales, y lo único que carga es cada foto (con su esqueleto).
+

@@ -20,13 +20,15 @@ const NUMERO_RETRASO_MS = 350;
  * impactar. El numero rueda cuando se asienta. El filo superior de 3 px lleva
  * el color de la placa que le toca.
  */
-export function PlacaDato({ numero, etiqueta, filo, retraso, activo = true, animar = true }: {
+export function PlacaDato({ numero, etiqueta, filo, retraso, activo = true, animar = true, haptica = true }: {
   numero: number;
   etiqueta: string;
   filo: string;
   retraso: number;
   activo?: boolean;
   animar?: boolean;
+  /** Golpe Medium al asentarse. En un grupo de placas solo la ultima lo lleva. */
+  haptica?: boolean;
 }) {
   const reducido = useReducedMotion();
   const tick = useTick();
@@ -39,8 +41,8 @@ export function PlacaDato({ numero, etiqueta, filo, retraso, activo = true, anim
     if (!activo) return;
     caida.value = withDelay(retraso, withSpring(1, resortePlaca));
     golpe.value = withDelay(retraso + IMPACTO_MS, withSequence(withTiming(1, { duration: 40 }), withSpring(0, resorteTap)));
-    const impacto = setTimeout(haptico.placa, retraso + IMPACTO_MS);
-    return () => { clearTimeout(impacto); cancelAnimation(caida); cancelAnimation(golpe); };
+    const impacto = haptica ? setTimeout(haptico.placa, retraso + IMPACTO_MS) : undefined;
+    return () => { if (impacto) clearTimeout(impacto); cancelAnimation(caida); cancelAnimation(golpe); };
   }, [estatico, activo]);
 
   const estilo = useAnimatedStyle(() => ({

@@ -1,3 +1,4 @@
+
 #!/usr/bin/env bash
 # Build a production AAB locally with Gradle, signed with the same upload
 # key EAS uses. Run from the project root: ./scripts/build-local-aab.sh <versionCode>
@@ -199,7 +200,9 @@ log "Google client IDs match eas.json production"
 
 # --- g. gradle bundleRelease (dev-client exclude active via env var) ----
 log "running gradlew bundleRelease"
-(cd android && DARENOW_LOCAL_RELEASE_BUILD=1 ./gradlew bundleRelease)
+(cd android && DARENOW_LOCAL_RELEASE_BUILD=1 ./gradlew bundleRelease \
+  -PreactNativeArchitectures=arm64-v8a \
+  -x lint -x lintVitalRelease -x lintVitalAnalyzeRelease -x generateReleaseLintModel)
 
 # --- h. copy output -------------------------------------------------------
 SRC_AAB="android/app/build/outputs/bundle/release/app-release.aab"

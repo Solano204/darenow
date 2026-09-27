@@ -23,21 +23,19 @@ const ESCALA_OLA = 0.92;
 /**
  * Los musculos como una rejilla de tres columnas de fichas cuadradas (`FichaRender`, radio 24,
  * sobre `magnesia`), con un encabezado cada vez que cambia el grupo **en el orden actual**: la
- * lista nunca se reordena. Los encabezados quedan pegados bajo la cabecera de Explorar mientras
- * su grupo esta en pantalla (`EncabezadoPegado`, que sigue el colapso de la cabecera).
+ * lista nunca se reordena. Los encabezados quedan pegados justo bajo la cabecera fija de Explorar
+ * (que ya no se mueve) mientras su grupo esta en pantalla (`EncabezadoPegado`).
  *
  * Al cargar, las fichas visibles entran en ola diagonal: retraso de (fila + columna) × 30 ms, con
  * fundido y escala de 0.92 a 1 con `resorteMagnesia`. Con una busqueda, las filas se reacomodan con
  * transiciones de layout. Con movimiento reducido no hay ola. Las filas tienen un alto que se
  * calcula (`armarFilas`), asi que la lista no mide nada.
  */
-export function RejillaMusculos({ musculos, propsLista, scrollY, topPegajoso, onPress }: {
+export function RejillaMusculos({ musculos, propsLista, scrollY, onPress }: {
   musculos: Musculo[];
   propsLista: PropsLista;
   /** El scroll de la lista (el mismo que mueve la cabecera). */
   scrollY: SharedValue<number>;
-  /** Donde termina la cabecera de Explorar: ahi se pega el encabezado de region. */
-  topPegajoso: number;
   onPress: (id: string) => void;
 }) {
   const reducido = useReducedMotion();
@@ -76,7 +74,7 @@ export function RejillaMusculos({ musculos, propsLista, scrollY, topPegajoso, on
         renderItem={renderItem}
       />
       <EncabezadoPegado
-        arriba={arriba} scrollY={scrollY} top={topPegajoso}
+        arriba={arriba} scrollY={scrollY} top={0} recorrido={0}
         contenido={i => {
           const fila = filas[i];
           return fila.tipo === 'region' ? <EncabezadoRegion etiqueta={fila.etiqueta} cantidad={fila.cantidad} /> : null;

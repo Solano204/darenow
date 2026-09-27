@@ -3,35 +3,30 @@
  *
  * Los datos, los filtros, el contador y las rutas son los de siempre (ver
  * `docs/FUNCIONALIDAD.md` §15). Lo que cambia es la presentacion:
- * - La cabecera (titulo, buscador, segmentos, filtros y contador) es fija y flota sobre
- *   las listas; las listas pasan por debajo con un relleno igual a su alto (que es una
- *   suma exacta de constantes: medirla haria bailar la lista al plegar los filtros).
- * - En Ejercicios, al bajar mas de 24 px las filas de categoria y objetivo se pliegan
- *   (solo visual: los filtros siguen aplicados) y la lista sube con ellas por una
- *   transformacion, sin volver a medirse.
+ * - La cabecera (titulo, buscador, segmentos, filtros y contador) es opaca y fija, fuera
+ *   de la FlatList y en el flujo normal del layout: no flota ni cambia de alto. Con el
+ *   scroll solo el titulo encoge (`scale`). Las listas van justo debajo, con un aire fijo
+ *   de 16 px antes de la primera fila (sin relleno calculado).
+ * - En Ejercicios, las filas de categoria y objetivo quedan siempre visibles (no se pliegan).
  * - Cada segmento monta su propia lista; al cambiar, la vieja sale y la nueva entra
  *   desde el lado del segmento elegido.
  */
 
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import Animated, {
-  runOnJS, useAnimatedScrollHandler, useAnimatedStyle, useSharedValue, withTiming,
-} from 'react-native-reanimated';
+import Animated, { useAnimatedScrollHandler, useSharedValue, withTiming } from 'react-native-reanimated';
 import { Ionicons } from '@expo/vector-icons';
 import { useFocusEffect, type ParamListBase } from '@react-navigation/native';
 import type { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { paleta, familia, easing, MARGEN_PANTALLA } from '../theme';
+import { paleta, familia, MARGEN_PANTALLA } from '../theme';
 import { useHuecoAbajo } from '../components/ui';
 import { seguirBarra } from '../components/ui/cabecera';
 import { ICONOS_OBJETIVO } from '../components/ui/iconosObjetivo';
 import { barraBajada } from '../hooks/useBarraFlotante';
 import { useReducedMotion } from '../hooks/useReducedMotion';
-import { useTick } from '../hooks/useTick';
 import { MuroCategoria, Intersticial } from '../components/Anuncio';
 import {
-  EJERCICIOS, RUTINAS, PROGRAMAS, MUSCULOS, CATEGORIAS, GOALS, nombreGoal,
+  EJERCICIOS, RUTINAS, PROGRAMAS, MUSCULOS, CATEGORIAS, GOALS,
 } from '../data/catalog';
 import { useEstado } from '../store/store';
 import { BuscadorVivo } from '../components/explore/BuscadorVivo';
@@ -40,13 +35,8 @@ import { ChipFiltro } from '../components/explore/ChipFiltro';
 import { ChipCategoria } from '../components/explore/ChipCategoria';
 import { InterruptorDos } from '../components/explore/InterruptorDos';
 import { ContadorResultados } from '../components/explore/ContadorResultados';
-import {
-  EncabezadoFiltrosColapsable, ResumenFiltros, FilaChips, ALTO_FILA_CATEGORIA, ALTO_FILA_OBJETIVO,
-  ALTO_FILTROS_EJERCICIOS, RECORRIDO_PLIEGUE, SEPARACION_FILAS,
-} from '../components/explore/EncabezadoFiltrosColapsable';
-import {
-  EncabezadoExplorar, altoEncabezado, SEP_SEGMENTOS, SEP_CONTADOR, type SegmentoExplorar,
-} from '../components/explore/EncabezadoExplorar';
+import { FilaChips, ALTO_FILA_CATEGORIA, ALTO_FILA_OBJETIVO, SEPARACION_FILAS } from '../components/explore/EncabezadoFiltrosColapsable';
+import { EncabezadoExplorar, SEP_SEGMENTOS, SEP_CONTADOR, type SegmentoExplorar } from '../components/explore/EncabezadoExplorar';
 import { CabeceraRutinas } from '../components/explore/CabeceraRutinas';
 import { RejillaMusculos } from '../components/muscles/RejillaMusculos';
 import { ListaEjercicios, ListaRutinas, ListaProgramas } from '../components/explore/listas';
@@ -65,18 +55,13 @@ const UNIDADES: Record<SegmentoExplorar, [singular: string, plural: string]> = {
 const TEXTOS_INTERRUPTOR = ['Puedo hacer', 'Catálogo'] as const;
 const ETIQUETAS_INTERRUPTOR = ['Lo que puedo hacer', 'Catálogo completo'] as const;
 
-const UMBRAL_PLEGAR_PX = 24;
-const DESPLEGAR_PX = 12;
-const PLIEGUE_MS = 220;
 const AIRE_LISTA = 16;
 const RETRASO_CONTEO_MS = 350;
 const BAJADA_BARRA_MS = 180;
 
 export default function Explorar({ navigation, route }: BottomTabScreenProps<ParamListBase, 'Explorar'>) {
   const abajo = useHuecoAbajo();
-  const { top } = useSafeAreaInsets();
   const reducido = useReducedMotion();
-  const tick = useTick();
   const { estado, alternarFavorito, esFavorito, registrarDescarga } = useEstado();
   const parametro = (route.params as { tab?: SegmentoExplorar } | undefined)?.tab;
   const [tab, setTab] = useState<SegmentoExplorar>(parametro ?? 'ejercicios');
@@ -85,20 +70,14 @@ export default function Explorar({ navigation, route }: BottomTabScreenProps<Par
   const [goal, setGoal] = useState<string | null>(null);
   const [soloMios, setSoloMios] = useState(true);
   const [verAnuncio, setVerAnuncio] = useState(false);
-  const [plegado, setPlegado] = useState(false);
 
   const y = useSharedValue(0);
-  const ultimoY = useSharedValue(0);
-  const ancla = useSharedValue(0);
   const previo = useSharedValue(0);
   const bajando = useSharedValue(0);
-  const plegadoSV = useSharedValue(0);
-  const plegableSV = useSharedValue(tab === 'ejercicios' ? 1 : 0);
-  const pliegue = useSharedValue(0);
   const foco = useSharedValue(0);
   const sentido = useSharedValue(1);
 
-  const plegable = tab === 'ejercicios';
+  const esEjercicios = tab === 'ejercicios';
 
   // La pestana ya montada ignoraba el parametro nuevo, asi que "Ver todas"
   // desde programas siempre acababa en ejercicios. Ahora se escucha el
@@ -107,18 +86,9 @@ export default function Explorar({ navigation, route }: BottomTabScreenProps<Par
     if (parametro && parametro !== tab) irATab(parametro);
   }, [parametro]);
 
-  useEffect(() => { plegableSV.value = plegable ? 1 : 0; }, [plegable]);
-  useEffect(() => {
-    pliegue.value = reducido ? (plegado ? 1 : 0) : withTiming(plegado ? 1 : 0, { duration: PLIEGUE_MS, easing: easing.salida });
-  }, [plegado, reducido]);
-
-  const desplegar = useCallback(() => { plegadoSV.value = 0; setPlegado(false); }, []);
-
-  /** Una lista nueva empieza arriba: sin scroll, con los filtros abiertos y la barra de pestanas en su sitio. */
+  /** Una lista nueva empieza arriba: sin scroll y con la barra de pestanas en su sitio. */
   const reiniciarScroll = () => {
-    y.value = 0; ultimoY.value = 0; ancla.value = 0; previo.value = 0; bajando.value = 0;
-    plegadoSV.value = 0; pliegue.value = 0;
-    setPlegado(false);
+    y.value = 0; previo.value = 0; bajando.value = 0;
     barraBajada.value = withTiming(0, { duration: BAJADA_BARRA_MS });
   };
 
@@ -131,18 +101,8 @@ export default function Explorar({ navigation, route }: BottomTabScreenProps<Par
   };
 
   const onScroll = useAnimatedScrollHandler(e => {
-    const v = e.contentOffset.y;
-    const delta = v - ultimoY.value;
-    ultimoY.value = v;
-    y.value = v;
-    seguirBarra(v, previo, bajando);
-    if (!plegableSV.value) return;
-    if (plegadoSV.value === 1) {
-      if (v <= 0 || ancla.value - v > DESPLEGAR_PX) { plegadoSV.value = 0; runOnJS(setPlegado)(false); }
-      else if (v > ancla.value) ancla.value = v;
-    } else if (delta > 0 && v > UMBRAL_PLEGAR_PX && v <= e.contentSize.height - e.layoutMeasurement.height) {
-      plegadoSV.value = 1; ancla.value = v; runOnJS(setPlegado)(true);
-    }
+    y.value = e.contentOffset.y;
+    seguirBarra(e.contentOffset.y, previo, bajando);
   });
 
   const equipoDisp = useMemo(
@@ -213,28 +173,14 @@ export default function Explorar({ navigation, route }: BottomTabScreenProps<Par
     return () => clearTimeout(id);
   }, [estado.rutinasPropias]));
 
-  const resumenFiltros = useMemo(() => {
-    const partes = [
-      cat ? CATEGORIAS.find(c => c.id === cat)?.nombre : undefined,
-      goal ? nombreGoal(goal) : undefined,
-    ].filter((p): p is string => !!p);
-    return partes.length > 0 ? partes.join(' · ') : 'Sin filtros';
-  }, [cat, goal]);
-
   const { entrada: entradaSegmento, salida: salidaSegmento } = useMemo(
     () => transicionesDeSegmento(reducido, sentido), [reducido, sentido],
   );
 
-  const sube = useAnimatedStyle(() => ({
-    transform: [{ translateY: -RECORRIDO_PLIEGUE * pliegue.value }],
-  }), [tick]);
-
-  const extraAbajo = plegable ? RECORRIDO_PLIEGUE : 0;
-  const relleno = altoEncabezado(tab, top) + AIRE_LISTA;
   const propsLista = useMemo<PropsLista>(() => ({
     onScroll,
-    contentContainerStyle: { paddingTop: relleno, paddingHorizontal: MARGEN_PANTALLA, paddingBottom: abajo + extraAbajo },
-  }), [onScroll, relleno, abajo, extraAbajo]);
+    contentContainerStyle: { paddingTop: AIRE_LISTA, paddingHorizontal: MARGEN_PANTALLA, paddingBottom: abajo },
+  }), [onScroll, abajo]);
 
   const chipsObjetivo = (
     <>
@@ -255,10 +201,10 @@ export default function Explorar({ navigation, route }: BottomTabScreenProps<Par
   const sinConexion = desbloqueada ? (
     <View style={s.sinConexion} accessible accessibilityLabel="Sin conexión">
       <Ionicons name="checkmark" size={14} color={paleta.magnesia2} />
-      {!plegable && <Text style={s.sinConexionTexto}>Sin conexión</Text>}
+      {!esEjercicios && <Text style={s.sinConexionTexto}>Sin conexión</Text>}
     </View>
   ) : undefined;
-  const derecha = plegable ? (
+  const derecha = esEjercicios ? (
     <InterruptorDos
       opciones={TEXTOS_INTERRUPTOR} etiquetas={ETIQUETAS_INTERRUPTOR}
       indice={soloMios ? 0 : 1} onCambio={i => setSoloMios(i === 0)}
@@ -276,8 +222,39 @@ export default function Explorar({ navigation, route }: BottomTabScreenProps<Par
 
   return (
     <View style={s.raiz}>
-      <Animated.View key={tab} style={s.pantalla} entering={entradaSegmento} exiting={salidaSegmento}>
-        <Animated.View style={[s.interior, { bottom: -extraAbajo }, sube]}>
+      <EncabezadoExplorar y={y} foco={foco}>
+        <View style={s.margen}>
+          <BuscadorVivo valor={q} onCambio={setQ} foco={foco} />
+        </View>
+        <View style={{ marginTop: SEP_SEGMENTOS }}>
+          <SegmentosIndicador segmentos={SEGMENTOS} activo={tab} onCambio={irATab} />
+        </View>
+        {esEjercicios ? (
+          <View style={{ paddingTop: SEPARACION_FILAS, gap: SEPARACION_FILAS }}>
+            <FilaChips alto={ALTO_FILA_CATEGORIA}>
+              {[{ id: null, nombre: 'Todo' }, ...CATEGORIAS].map(c => (
+                <ChipCategoria
+                  key={c.id ?? 'todo'} texto={c.nombre} activo={cat === c.id} onPress={() => setCat(c.id)}
+                />
+              ))}
+            </FilaChips>
+            <FilaChips alto={ALTO_FILA_OBJETIVO}>{chipsObjetivo}</FilaChips>
+          </View>
+        ) : tab !== 'musculos' ? (
+          <View style={{ paddingTop: SEPARACION_FILAS }}>
+            <FilaChips alto={ALTO_FILA_OBJETIVO}>{chipsObjetivo}</FilaChips>
+          </View>
+        ) : null}
+        <View style={[s.margen, { marginTop: SEP_CONTADOR }]}>
+          <ContadorResultados
+            cuantos={cuantos} singular={UNIDADES[tab][0]} plural={UNIDADES[tab][1]}
+            junto={esEjercicios ? sinConexion : undefined} derecha={derecha}
+          />
+        </View>
+      </EncabezadoExplorar>
+
+      <View style={s.contenido}>
+        <Animated.View key={tab} style={s.pantalla} entering={entradaSegmento} exiting={salidaSegmento}>
           {tab === 'ejercicios' && (
             <ListaEjercicios
               ejercicios={ejercicios} propsLista={propsLista} favorito={favorito('ejercicios')}
@@ -298,44 +275,12 @@ export default function Explorar({ navigation, route }: BottomTabScreenProps<Par
           )}
           {tab === 'musculos' && (
             <RejillaMusculos
-              musculos={musculos} propsLista={propsLista} scrollY={y} topPegajoso={altoEncabezado(tab, top)}
+              musculos={musculos} propsLista={propsLista} scrollY={y}
               onPress={id => navigation.navigate('Musculo', { id })}
             />
           )}
         </Animated.View>
-      </Animated.View>
-
-      <EncabezadoExplorar y={y} foco={foco}>
-        <View style={s.margen}>
-          <BuscadorVivo valor={q} onCambio={setQ} foco={foco} />
-        </View>
-        <View style={{ marginTop: SEP_SEGMENTOS }}>
-          <SegmentosIndicador segmentos={SEGMENTOS} activo={tab} onCambio={irATab} />
-        </View>
-        {plegable ? (
-          <EncabezadoFiltrosColapsable pliegue={pliegue} alto={ALTO_FILTROS_EJERCICIOS} plegado={plegado}>
-            <FilaChips alto={ALTO_FILA_CATEGORIA}>
-              {[{ id: null, nombre: 'Todo' }, ...CATEGORIAS].map(c => (
-                <ChipCategoria
-                  key={c.id ?? 'todo'} texto={c.nombre} activo={cat === c.id} onPress={() => setCat(c.id)}
-                />
-              ))}
-            </FilaChips>
-            <FilaChips alto={ALTO_FILA_OBJETIVO}>{chipsObjetivo}</FilaChips>
-          </EncabezadoFiltrosColapsable>
-        ) : tab !== 'musculos' ? (
-          <View style={{ paddingTop: SEPARACION_FILAS }}>
-            <FilaChips alto={ALTO_FILA_OBJETIVO}>{chipsObjetivo}</FilaChips>
-          </View>
-        ) : null}
-        {plegable && <ResumenFiltros pliegue={pliegue} texto={resumenFiltros} plegado={plegado} onPress={desplegar} />}
-        <View style={[s.margen, { marginTop: SEP_CONTADOR }]}>
-          <ContadorResultados
-            cuantos={cuantos} singular={UNIDADES[tab][0]} plural={UNIDADES[tab][1]}
-            junto={plegable ? sinConexion : undefined} derecha={derecha}
-          />
-        </View>
-      </EncabezadoExplorar>
+      </View>
 
       {/* Desbloqueo por categoria: se ve la lista detras del vidrio, que es
           justo lo que motiva a abrirla, pero no se puede usar todavia. */}
@@ -358,8 +303,8 @@ export default function Explorar({ navigation, route }: BottomTabScreenProps<Par
 
 const s = StyleSheet.create({
   raiz: { flex: 1, backgroundColor: paleta.goma },
+  contenido: { flex: 1 },
   pantalla: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 },
-  interior: { position: 'absolute', top: 0, left: 0, right: 0 },
   margen: { marginHorizontal: MARGEN_PANTALLA },
   sinConexion: { flexDirection: 'row', alignItems: 'center', gap: 4 },
   sinConexionTexto: { fontFamily: familia.cuerpo, fontSize: 13, lineHeight: 18, color: paleta.magnesia2 },

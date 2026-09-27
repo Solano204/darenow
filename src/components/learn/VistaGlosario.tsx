@@ -19,16 +19,15 @@ const AIRE_AL_MOSTRAR_PX = 16;
  * El segmento Glosario: los terminos, con una letra pegajosa por cada tramo alfabetico **en el orden
  * del dato** (nada se reordena; el dato son dos bloques alfabeticos, asi que una letra puede volver
  * a salir), y despues las preguntas frecuentes con su acordeon. Sin animacion de entrada: es
- * consulta y la rapidez importa mas. `rellenoSuperior` es el relleno con el que la pantalla deja pasar
- * la lista bajo su cabecera y `topPegajoso` donde termina esa cabecera.
+ * consulta y la rapidez importa mas. `rellenoSuperior` es el aire fijo que la lista deja antes de
+ * su primera fila (la letra pegajosa se queda al ras del principio de la lista).
  */
-export function VistaGlosario({ terminos, preguntas, propsLista, scrollY, rellenoSuperior, topPegajoso }: {
+export function VistaGlosario({ terminos, preguntas, propsLista, scrollY, rellenoSuperior }: {
   terminos: Termino[];
   preguntas: { p: string; r: string }[];
   propsLista: PropsLista;
   scrollY: SharedValue<number>;
   rellenoSuperior: number;
-  topPegajoso: number;
 }) {
   const reducido = useReducedMotion();
   const { height: ventana } = useWindowDimensions();
@@ -75,7 +74,7 @@ export function VistaGlosario({ terminos, preguntas, propsLista, scrollY, rellen
       </Animated.ScrollView>
 
       <EncabezadoPegado
-        arriba={arriba} scrollY={scrollY} top={topPegajoso}
+        arriba={arriba} scrollY={scrollY} top={0} recorrido={0}
         contenido={i => <EncabezadoLetra letra={tramos[i].letra} />}
       />
     </View>

@@ -4,9 +4,10 @@
  * Tips, mitos, alimentacion y glosario. Los datos, la busqueda, las categorias, los favoritos y las
  * rutas son los de siempre (ver `docs/FUNCIONALIDAD.md`, seccion 20); lo que cambia es la
  * presentacion. La cabecera (titulo que se encoge, buscador, segmentos y, en Tips, las categorias)
- * es la de Explorar y flota sobre las listas, que pasan por debajo con un relleno igual a su alto
- * (una suma exacta de constantes). Cada segmento monta su propia vista; al cambiar, la vieja sale y
- * la nueva entra desde el lado del segmento elegido.
+ * es la de Explorar: opaca y fija, fuera de la lista y en el flujo normal del layout, sin cambiar
+ * de alto. Las listas van justo debajo, con un aire fijo de 16 px antes de la primera fila. Cada
+ * segmento monta su propia vista; al cambiar, la vieja sale y la nueva entra desde el lado del
+ * segmento elegido.
  */
 
 import React, { useCallback, useMemo, useState } from 'react';
@@ -15,7 +16,6 @@ import Animated, { useAnimatedScrollHandler, useSharedValue, withTiming } from '
 import { Ionicons } from '@expo/vector-icons';
 import type { ParamListBase } from '@react-navigation/native';
 import type { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { paleta, familia, MARGEN_PANTALLA } from '../theme';
 import { useHuecoAbajo } from '../components/ui';
 import { seguirBarra } from '../components/ui/cabecera';
@@ -25,11 +25,11 @@ import { MuroCategoria, Intersticial } from '../components/Anuncio';
 import { TIPS, SALAS, MITOS, GLOSARIO, FAQ } from '../data/catalog';
 import { useEstado } from '../store/store';
 import { RUTA_DE_RELACIONADO, nombreDeSala, type RelacionadoVista } from '../utils/aprender';
-import { BuscadorVivo, ALTO_BUSCADOR } from '../components/explore/BuscadorVivo';
-import { SegmentosIndicador, ALTO_SEGMENTOS } from '../components/explore/SegmentosIndicador';
+import { BuscadorVivo } from '../components/explore/BuscadorVivo';
+import { SegmentosIndicador } from '../components/explore/SegmentosIndicador';
 import { ChipCategoria } from '../components/explore/ChipCategoria';
 import { FilaChips, ALTO_FILA_CATEGORIA, SEPARACION_FILAS } from '../components/explore/EncabezadoFiltrosColapsable';
-import { EncabezadoExplorar, ALTO_TITULO, SEP_SEGMENTOS, PADDING_INFERIOR } from '../components/explore/EncabezadoExplorar';
+import { EncabezadoExplorar, SEP_SEGMENTOS } from '../components/explore/EncabezadoExplorar';
 import { transicionesDeSegmento, type PropsLista } from '../components/explore/listaBase';
 import { ListaTips } from '../components/learn/ListaTips';
 import { ListaMitos } from '../components/learn/ListaMitos';
@@ -45,19 +45,8 @@ const SEGMENTOS: readonly { id: SegmentoAprender; texto: string }[] = [
 const AIRE_LISTA = 16;
 const BAJADA_BARRA_MS = 180;
 
-/**
- * Alto de la cabecera desplegada, con el inset de arriba: la suma exacta de sus filas (titulo,
- * buscador, segmentos y, solo en Tips, la fila de categorias). Las vistas lo usan de relleno
- * superior, asi que no se mide.
- */
-function altoEncabezado(segmento: SegmentoAprender, insetArriba: number): number {
-  const categorias = segmento === 'tips' ? SEPARACION_FILAS + ALTO_FILA_CATEGORIA : 0;
-  return insetArriba + ALTO_TITULO + ALTO_BUSCADOR + SEP_SEGMENTOS + ALTO_SEGMENTOS + categorias + PADDING_INFERIOR;
-}
-
 export default function Aprender({ navigation }: BottomTabScreenProps<ParamListBase, 'Aprender'>) {
   const abajo = useHuecoAbajo();
-  const { top } = useSafeAreaInsets();
   const reducido = useReducedMotion();
   const { estado, alternarFavorito, esFavorito, registrarDescarga } = useEstado();
   const [tab, setTab] = useState<SegmentoAprender>('tips');
@@ -123,12 +112,10 @@ export default function Aprender({ navigation }: BottomTabScreenProps<ParamListB
     () => transicionesDeSegmento(reducido, sentido), [reducido, sentido],
   );
 
-  const alto = altoEncabezado(tab, top);
-  const relleno = alto + AIRE_LISTA;
   const propsLista = useMemo<PropsLista>(() => ({
     onScroll,
-    contentContainerStyle: { paddingTop: relleno, paddingHorizontal: MARGEN_PANTALLA, paddingBottom: abajo },
-  }), [onScroll, relleno, abajo]);
+    contentContainerStyle: { paddingTop: AIRE_LISTA, paddingHorizontal: MARGEN_PANTALLA, paddingBottom: abajo },
+  }), [onScroll, abajo]);
 
   const sinConexion = desbloqueada ? (
     <View style={s.sinConexion} accessible accessibilityLabel="Sin conexión">
@@ -139,22 +126,6 @@ export default function Aprender({ navigation }: BottomTabScreenProps<ParamListB
 
   return (
     <View style={s.raiz}>
-      <Animated.View key={tab} style={s.pantalla} entering={entradaSegmento} exiting={salidaSegmento}>
-        {tab === 'tips' && (
-          <ListaTips tips={tips} propsLista={propsLista} favorito={favoritoTip} onFav={onFavTip} onPress={onPressTip} />
-        )}
-        {tab === 'mitos' && (
-          <ListaMitos mitos={mitos} propsLista={propsLista} onPress={onPressMito} onAbrirRelacionado={onAbrirRelacionado} />
-        )}
-        {tab === 'nutricion' && <VistaAlimentacion propsLista={propsLista} scrollY={y} />}
-        {tab === 'glosario' && (
-          <VistaGlosario
-            terminos={glosario} preguntas={FAQ} propsLista={propsLista} scrollY={y}
-            rellenoSuperior={relleno} topPegajoso={alto}
-          />
-        )}
-      </Animated.View>
-
       <EncabezadoExplorar y={y} foco={foco} titulo="Aprender" extraTitulo={sinConexion}>
         <View style={s.margen}>
           <BuscadorVivo valor={q} onCambio={setQ} foco={foco} placeholder="Buscar" />
@@ -176,6 +147,23 @@ export default function Aprender({ navigation }: BottomTabScreenProps<ParamListB
         )}
       </EncabezadoExplorar>
 
+      <View style={s.contenido}>
+        <Animated.View key={tab} style={s.pantalla} entering={entradaSegmento} exiting={salidaSegmento}>
+          {tab === 'tips' && (
+            <ListaTips tips={tips} propsLista={propsLista} favorito={favoritoTip} onFav={onFavTip} onPress={onPressTip} />
+          )}
+          {tab === 'mitos' && (
+            <ListaMitos mitos={mitos} propsLista={propsLista} onPress={onPressMito} onAbrirRelacionado={onAbrirRelacionado} />
+          )}
+          {tab === 'nutricion' && <VistaAlimentacion propsLista={propsLista} scrollY={y} />}
+          {tab === 'glosario' && (
+            <VistaGlosario
+              terminos={glosario} preguntas={FAQ} propsLista={propsLista} scrollY={y} rellenoSuperior={AIRE_LISTA}
+            />
+          )}
+        </Animated.View>
+      </View>
+
       <MuroCategoria
         visible={!desbloqueada}
         categoria="todo el contenido"
@@ -194,6 +182,7 @@ export default function Aprender({ navigation }: BottomTabScreenProps<ParamListB
 
 const s = StyleSheet.create({
   raiz: { flex: 1, backgroundColor: paleta.goma },
+  contenido: { flex: 1 },
   pantalla: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 },
   margen: { marginHorizontal: MARGEN_PANTALLA },
   sinConexion: { flexDirection: 'row', alignItems: 'center', gap: 4 },

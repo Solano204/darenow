@@ -53,6 +53,22 @@ Nuevos, descubiertos en R2:
 | H-26 | `app.json` pide `userInterfaceStyle: dark` sin `expo-system-ui` | knip; documentación de Expo | Código | P2 | R3 | Medio: cambia el fondo nativo del arranque |
 | H-27 | `assets/img/musculos/deltoide_posterior..jpg` duplicado y sin uso; `assetBundlePatterns: ["**/*"]` | `R2_REPORTE.md` | Medida | P2 (peso del APK) | R5 / R3 | Bajo |
 
+## Estado tras R3 (2026-09-30)
+
+| ID | Fase | Estado | Detalle |
+|---|---|---|---|
+| H-05 | R3 | ✅ Resuelto | `@expo/vector-icons/Ionicons` en 50 archivos; fuentes de Metro 42 ttf / 5,33 MB → 2 / 0,49 MB |
+| H-06 | R3 | ✅ Resuelto | 6 ttf incrustados con el plugin `expo-font` (Android); iOS usa `useFonts` con los mismos 6 |
+| H-07 | R3 | ✅ Resuelto | `getComponent` en 22 pantallas; módulos de la app evaluados al arrancar 308 → 105 |
+| H-08 | R3 | ✅ Resuelto | Índice + detalle bajo demanda (`scripts/build-catalogo.ts`); proxy 2,1–3,3 → 1,4–1,7 ms; equivalencia 8/8 |
+| H-09 | R3 | 🟡 Parcial | 3 `getItem` → 1 `multiGet`, mismas claves y formato. El parseo del estado completo sigue ahí (MMKV/partición: P-R3-1, requiere migración) |
+| H-10 | R3 | 🟡 Parcial | El Canvas de magnesia ya no se monta en el arranque. Montarlo solo durante la animación queda para R6 |
+| H-13 | R3 | ⏸️ Costo fijo | El índice de reanimated importa todos los presets; excluirlos exige parchear el paquete |
+| H-19 | R3 | 🟡 Parcial | `freezeOnBlur` en pestañas y Stack (excepto Reproductor); pausar las animaciones infinitas sigue en R6 |
+| H-26 | R3 | ⏸️ Propuesta | `expo-system-ui` no quita ningún parpadeo (`windowBackground` ya es `#1B1C1E`) y oscurece los diálogos nativos: P-R3-4 |
+
+Pendiente en el teléfono: arranque en frío (promedio/peor), tamaño de APK/AAB con R8 y SMOKE del build de release. Ver `R3_REPORTE.md`.
+
 ## Resumen
 
 1. **H-01 Context gigante**: un favorito o un «tip leído» re-renderiza las 4 pestañas y todo lo abierto en el stack → **R4**.

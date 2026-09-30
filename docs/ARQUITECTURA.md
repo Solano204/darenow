@@ -5,7 +5,7 @@ Léelo antes de crear un archivo. Las reglas de dependencias las revisa `npm run
 ## Carpetas
 
 ```
-App.tsx                 navegacion: Stack + Tabs de React Navigation, providers, fuentes, splash
+App.tsx                 navegacion: Stack + Tabs de React Navigation (pantallas con getComponent), providers, splash
 index.ts                entrada (registerRootComponent)
 src/
   features/<feature>/   una por area de la app
@@ -20,7 +20,8 @@ src/
     hooks/              useReducedMotion, useTick, useBarraFlotante, useNumeroEditable
   state/                estado global: store (ProveedorEstado/useEstado), cuenta, preferencias
   storage/              persistencia: claves de AsyncStorage, respaldo, claves forja:*
-  data/                 catalogo (JSON de assets/data) y textos: catalog, mensajes, nombresVisibles, perfil
+  data/                 catalogo y textos: catalog, aprender (mitos, glosario...), logros, mensajes, nombresVisibles, perfil
+    indice/ detalle/    GENERADOS por scripts/build-catalogo.ts (npm run catalogo); no se editan a mano
   lib/                  utilidades puras compartidas: plural, fechas, presentacion, textosVisibles, legal
     engine/             motor de sesion (armarSesion, rutinas propias, duracion)
   media/                registros de imagenes, clips, voz y sonidos (GENERADOS por generar_registry.py)
@@ -39,6 +40,7 @@ No hay `app/` de expo-router: la app usa React Navigation 7 y las rutas viven en
 2. **Las capas compartidas (`ui`, `state`, `storage`, `lib`, `data`, `media`, `dev`) no importan de `features/`.**
 3. **Sin ciclos** entre modulos.
 4. `media/*` se regenera: no se edita a mano (`python3 generar_registry.py`). El resto de `sonido.ts` si.
+   `data/indice/` y `data/detalle/` tambien: se editan los JSON de `assets/data` y se corre `npm run catalogo`.
 5. Colores solo en `src/ui/theme/` (`npm run lint:color`).
 
 Las reglas 1 y 2 son `no-restricted-imports` en `eslint.config.js`: un import que las rompe falla el lint.
@@ -72,6 +74,19 @@ Las reglas 1 y 2 son `no-restricted-imports` en `eslint.config.js`: un import qu
 | un dato del usuario que se guarda | la accion en `state/acciones.ts`, el tipo en `state/tipos.ts`, la clave en `storage/claves.ts` |
 | un color, tamaño de letra, espacio o curva | un token en `ui/theme/` |
 | un log de depuracion | nada en produccion; `no-console` avisa |
+
+## Arranque (R3)
+
+Lo que se evalua al abrir la app es lo que cuelga de `index.ts` por `import` estatico. Para no volver a cargarlo:
+
+- **Pantalla nueva**: se registra con `getComponent={() => require('@/features/x/screens/X').default}`, no con `import`. Solo Hoy y Bienvenida van con `import`.
+- **Catalogo**: `EJERCICIOS`, `MUSCULOS` y `TIPS` son el indice (sin textos largos). Si necesitas `steps`, `cues`, `desc`, `funcion`, `cuerpo`… usa `getEjercicio(id)`, `getMusculo(id)` o `getTip(id)`. Datos nuevos de una sola pantalla van en su propio modulo de `data/` (como `aprender.ts`), no en `catalog.ts`.
+- **`scripts/build-catalogo.ts`** (`npm run catalogo`): lee `assets/data/*.json` y escribe `data/indice/` (listas sin textos, `patron` puesto, salas, conteos) y `data/detalle/<tipo>.json` (textos por id). Correrlo al cambiar `assets/data` y commitear lo generado; `npm run test:unit` compara contra el catalogo de antes de R3.
+- **Almacenamiento**: la primera lectura de estado, cuenta y vibracion pasa por `storage/lecturaInicial.ts` (un `multiGet`). Una clave nueva que se lea al arrancar se agrega ahi.
+- **Splash**: `ui/hooks/useSplash.ts`. `mantenerSplash()` en `App.tsx`; se oculta en el `onLayout` de la primera pantalla con datos. Una animacion de entrada que deba verse espera `useSplashOculto()`.
+- **Fuentes**: `ui/theme/fuentes.ts` (iOS, `useFonts`) y `fuentes.android.ts` (ya incrustadas por el plugin `expo-font` de `app.json`). Un peso nuevo se agrega en los dos y en `app.json`.
+- **Iconos**: `import Ionicons from '@expo/vector-icons/Ionicons'`, nunca el indice del paquete.
+- **`freezeOnBlur`** esta activo en pestañas y Stack. Una pantalla que deba seguir corriendo efectos tapada (como el Reproductor) lo apaga en sus `options`.
 
 ## Limites
 

@@ -77,8 +77,16 @@ for i in 1 2 3; do
 done
 ```
 
-La línea `[perf]` trae, en ms desde `js-start`: `catalog-ready`, `fonts-ready`,
-`storage-ready`, `hoy-interactive`, y `bundle-start->js-start`.
+La línea `[perf]` trae, en ms desde `js-start`: `catalog-ready`, `app-render`,
+`providers-montados`, `fonts-ready`, `storage-ready`, `primer-layout` (se oculta el splash),
+`hoy-interactive`, y `bundle-start->js-start`.
+
+Proxy de laboratorio (sin teléfono) del costo de evaluar el catálogo:
+
+```bash
+node scripts/perf/medir-catalogo.mjs tests/unit/fixtures/catalogoViejo.ts 400   # antes de R3
+node scripts/perf/medir-catalogo.mjs src/data/catalog.ts 400                    # ahora
+```
 
 Nota: `hoy-interactive` solo se marca si la app entra directo a Hoy. Si la Bienvenida
 del día aún no se vio, abre la app una vez antes de medir (la Bienvenida se muestra una

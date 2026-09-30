@@ -74,7 +74,25 @@ export function revisarPausa(r: Racha): Racha {
 /* Estadisticas derivadas                                              */
 /* ------------------------------------------------------------------ */
 
+/**
+ * Cada calculo sobre el historial se hace una vez por cambio de datos (R4): el resultado se guarda
+ * junto al arreglo de sesiones, que es inmutable (una sesion nueva crea un arreglo nuevo). Asi Hoy,
+ * Yo y Bienvenida comparten el mismo calculo en vez de repetirlo cada una. La clave extra
+ * distingue los calculos que tambien dependen de la fecha de hoy.
+ */
+const cache = new WeakMap<SesionGuardada[], Map<string, unknown>>();
+function unaVezPorDatos<T>(s: SesionGuardada[], clave: string, calcular: () => T): T {
+  let porClave = cache.get(s);
+  if (!porClave) { porClave = new Map(); cache.set(s, porClave); }
+  if (!porClave.has(clave)) porClave.set(clave, calcular());
+  return porClave.get(clave) as T;
+}
+
 export function estadisticas(s: SesionGuardada[]) {
+  return unaVezPorDatos(s, 'estadisticas', () => calcularEstadisticas(s));
+}
+
+function calcularEstadisticas(s: SesionGuardada[]) {
   const completadas = s.filter(x => x.estado === 'completada').length;
   const minutos = Math.round(s.reduce((a, x) => a + x.duracionS, 0) / 60);
   const series = s.reduce((a, x) => a + x.series.filter(y => !y.omitida).length, 0);
@@ -85,6 +103,11 @@ export function estadisticas(s: SesionGuardada[]) {
 
 /** Minutos por dia de los ultimos 7 dias, para la grafica de Yo. */
 export function ultimos7(s: SesionGuardada[]): { fecha: string; min: number }[] {
+  // La ventana depende del dia de hoy (en UTC, como siempre): cambia de clave al cambiar de dia.
+  return unaVezPorDatos(s, `ultimos7:${new Date().toISOString().slice(0, 10)}`, () => calcularUltimos7(s));
+}
+
+function calcularUltimos7(s: SesionGuardada[]): { fecha: string; min: number }[] {
   const salida: { fecha: string; min: number }[] = [];
   for (let i = 6; i >= 0; i--) {
     const d = new Date(Date.now() - i * 86400000).toISOString().slice(0, 10);
@@ -99,14 +122,16 @@ export function ultimos7(s: SesionGuardada[]): { fecha: string; min: number }[] 
 
 /** Minutos por fecha. Alimenta el calendario mensual. */
 export function minutosPorDia(s: SesionGuardada[]): Record<string, number> {
-  const out: Record<string, number> = {};
-  for (const x of s) out[x.fecha] = (out[x.fecha] ?? 0) + Math.round(x.duracionS / 60);
-  return out;
+  return unaVezPorDatos(s, 'minutosPorDia', () => {
+    const out: Record<string, number> = {};
+    for (const x of s) out[x.fecha] = (out[x.fecha] ?? 0) + Math.round(x.duracionS / 60);
+    return out;
+  });
 }
 
 /** Fechas unicas con sesion. */
 export function diasEntrenados(s: SesionGuardada[]): string[] {
-  return [...new Set(s.map(x => x.fecha))];
+  return unaVezPorDatos(s, 'diasEntrenados', () => [...new Set(s.map(x => x.fecha))]);
 }
 
 /** Ultimo rendimiento registrado de un ejercicio en estas sesiones (la serie real mas reciente). */

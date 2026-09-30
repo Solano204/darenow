@@ -6,13 +6,13 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
-import * as SplashScreen from 'expo-splash-screen';
 import { NavigationBar } from 'expo-navigation-bar';
 import { useFonts } from 'expo-font';
 import { BigShouldersDisplay_700Bold, BigShouldersDisplay_800ExtraBold } from '@expo-google-fonts/big-shoulders-display';
 import { Figtree_400Regular, Figtree_500Medium, Figtree_600SemiBold, Figtree_700Bold } from '@expo-google-fonts/figtree';
 
 import { color, colorSesion, peso, resorteTap } from '@/ui/theme';
+import { mantenerSplash, ocultarSplash, useSplashOculto } from '@/ui/hooks/useSplash';
 import { ProveedorEstado, useEstado, hoy } from '@/state/store';
 import { ProveedorCuenta, useCuenta } from '@/state/cuenta';
 import { ProveedorAnuncios } from '@/ui/components/RelojAnuncios';
@@ -21,10 +21,9 @@ import { Entrada } from '@/ui/fx/Entrada';
 import { TabBarGoma } from '@/ui/components/TabBarGoma';
 import { mark as perfMark } from '@/dev/perfMarks'; // perf:R1
 
-// Se queda visible hasta que las fuentes resuelvan (cargadas o no): nada
-// de texto invisible esperando fuente, ni un flash de la fuente del
-// sistema antes de que llegue la propia.
-SplashScreen.preventAutoHideAsync().catch(() => {});
+// El splash nativo se queda hasta que la primera pantalla con datos hace su
+// layout (ver useSplash): ni texto esperando fuente, ni spinner, ni fondo vacio.
+mantenerSplash();
 
 import Presentacion from '@/features/onboarding/screens/Presentacion';
 import Acceso from '@/features/cuenta/screens/Acceso';
@@ -71,8 +70,10 @@ const tema = {
 };
 
 function Pestanas() {
+  // La entrada de Hoy empieza cuando el splash ya se fue, no debajo de el.
+  const splashOculto = useSplashOculto();
   return (
-    <Entrada activo escala={1.02} resorte={resorteTap} estilo={{ flex: 1 }}>
+    <Entrada activo={splashOculto} escala={1.02} resorte={resorteTap} estilo={{ flex: 1 }}>
       <Tab.Navigator
         tabBar={props => <TabBarGoma {...props} />}
         screenOptions={{
@@ -93,9 +94,14 @@ function Pestanas() {
 /** Pantallas que ya traen su propia entrada o su propia transicion: no llevan la de escala. */
 const SIN_ENTRADA = new Set(['Bienvenida', 'Tabs', 'Reproductor', 'Resumen', 'EditorRutina', 'Ejercicio', 'Rutina', 'RutinaPropia', 'Programa', 'Musculo', 'Tip', 'Mito', 'Retos', 'Mediciones', 'Historial', 'Ajustes']);
 
+/**
+ * Mientras se lee el estado guardado el splash sigue arriba (el spinner solo se ve si esa lectura
+ * pasa del respaldo de useSplash). La primera pantalla con datos, al hacer su layout, oculta el
+ * splash.
+ */
 function Raiz() {
-  const { estado, cargando, terminarOnboarding, marcarPresentacion } = useEstado();
-  const { cuenta, cargando: cargandoCuenta } = useCuenta();
+  const { cargando } = useEstado();
+  const { cargando: cargandoCuenta } = useCuenta();
 
   if (cargando || cargandoCuenta) {
     return (
@@ -104,6 +110,18 @@ function Raiz() {
       </View>
     );
   }
+
+  return (
+    <View style={s.llena} onLayout={ocultarSplash}>
+      <Pantallas />
+    </View>
+  );
+}
+
+/** La primera pantalla que toca, segun el estado guardado (docs/FUNCIONALIDAD.md §2). */
+function Pantallas() {
+  const { estado, terminarOnboarding, marcarPresentacion } = useEstado();
+  const { cuenta } = useCuenta();
 
   // La primera vez de todas: intro animada, y despues el onboarding.
   if (!estado.presentacionVista) {
@@ -183,12 +201,9 @@ export default function App() {
   });
 
   useEffect(() => {
-    // Se oculta con exito O con error: si la carga falla, `tipo` sigue
-    // renderizando (fontFamily desconocida cae a la fuente del sistema
-    // sola, RN no revienta), pero la app no se queda en el splash para
-    // siempre esperando algo que no va a llegar.
+    // Con exito O con error se sigue: si la carga falla, `tipo` cae a la
+    // fuente del sistema (RN no revienta) y la app no se queda esperando.
     if (fontsLoaded || fontError) perfMark('fonts-ready'); // perf:R1
-    if (fontsLoaded || fontError) SplashScreen.hideAsync().catch(() => {});
   }, [fontsLoaded, fontError]);
 
   // Barra de gestos de Android oculta: la app ocupa la pantalla completa.
@@ -228,4 +243,5 @@ export default function App() {
 
 const s = StyleSheet.create({
   cargando: { flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: color.fondo },
+  llena: { flex: 1 },
 });

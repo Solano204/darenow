@@ -5,7 +5,7 @@
  * store (y sin ciclo entre ambos). store.ts los re-exporta.
  */
 
-export interface SerieGuardada {
+interface SerieGuardada {
   ejercicioId: string; serieNum: number; lado: 'izq' | 'der' | null;
   reps: number | null; segundos: number | null; pesoKg: number | null; omitida: boolean;
 }

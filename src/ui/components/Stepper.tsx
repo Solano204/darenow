@@ -1,12 +1,8 @@
-import React, { useEffect, useState } from 'react';
 import { Pressable, StyleSheet, Text, TextInput, View, type AccessibilityActionEvent } from 'react-native';
-import Animated, {
-  useAnimatedStyle, useSharedValue, withSequence, withSpring, withTiming,
-} from 'react-native-reanimated';
+import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 import { Ionicons } from '@expo/vector-icons';
 import { paleta, tipo, familia, AREA_TACTIL_MIN, resorteTap, haptico } from '@/ui/theme';
-import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
-import { useTick } from '@/ui/hooks/useTick';
+import { useNumeroEditable, useSacudida } from '@/ui/hooks/useNumeroEditable';
 import { Odometro } from '@/ui/fx/Odometro';
 
 const LADO_BOTON = AREA_TACTIL_MIN;
@@ -40,41 +36,19 @@ export function Stepper({ etiqueta, valor, min, max, paso = 1, sufijo, compacto,
   compacto?: boolean;
   onCambio: (v: number) => void;
 }) {
-  const reducido = useReducedMotion();
-  const tick = useTick();
-  const [editando, setEditando] = useState(false);
-  const [texto, setTexto] = useState(String(valor));
-  const sacudida = useSharedValue(0);
+  const { editando, setEditando, texto, setTexto, confirmar } = useNumeroEditable(valor, min, max, onCambio);
+  const { sacudir, estilo: zonaValor } = useSacudida(SACUDIDA_PX);
   const nombre = etiqueta.toLowerCase();
   const unidad = sufijo ? ` ${sufijo}` : '';
 
-  useEffect(() => { if (!editando) setTexto(String(valor)); }, [valor, editando]);
-
-  const sacudir = () => {
-    haptico.aviso();
-    if (reducido) return;
-    sacudida.value = withSequence(
-      withTiming(SACUDIDA_PX, { duration: 40 }), withTiming(-SACUDIDA_PX, { duration: 80 }),
-      withTiming(SACUDIDA_PX, { duration: 80 }), withTiming(0, { duration: 40 }),
-    );
-  };
   const restar = () => { if (valor <= min) { sacudir(); return; } haptico.toque(); onCambio(Math.max(min, valor - paso)); };
   const sumar = () => { if (valor >= max) { sacudir(); return; } haptico.toque(); onCambio(Math.min(max, valor + paso)); };
-
-  const confirmar = () => {
-    const n = parseInt(texto, 10);
-    const limpio = Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : valor;
-    setTexto(String(limpio));
-    setEditando(false);
-    if (limpio !== valor) onCambio(limpio);
-  };
 
   const alAccesibilidad = (e: AccessibilityActionEvent) => {
     if (e.nativeEvent.actionName === 'increment') sumar();
     if (e.nativeEvent.actionName === 'decrement') restar();
   };
 
-  const zonaValor = useAnimatedStyle(() => ({ transform: [{ translateX: sacudida.value }] }), [tick]);
   const estiloValor = compacto ? ESTILO_VALOR_COMPACTO : ESTILO_VALOR;
   const lado = compacto ? LADO_BOTON_COMPACTO : LADO_BOTON;
 

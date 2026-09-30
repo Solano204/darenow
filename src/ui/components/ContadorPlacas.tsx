@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Pressable, StyleSheet, Text, TextInput, View, type AccessibilityActionEvent, type StyleProp, type ViewStyle } from 'react-native';
 import Animated, {
-  useAnimatedStyle, useSharedValue, withSequence, withSpring, withTiming,
+  useAnimatedStyle, useSharedValue, withSpring,
 } from 'react-native-reanimated';
 import { Ionicons } from '@expo/vector-icons';
 import { paleta, tipo, familia, esp, resorteTap, resortePlaca, haptico } from '@/ui/theme';
 import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
 import { useTick } from '@/ui/hooks/useTick';
+import { useNumeroEditable, useSacudida } from '@/ui/hooks/useNumeroEditable';
 import { Odometro } from '@/ui/fx/Odometro';
 
 const INICIALES = ['L', 'M', 'M', 'J', 'V', 'S', 'D'];
@@ -39,43 +40,20 @@ export function ContadorPlacas({ valor, min, max, sufijo, onCambio, semana, comp
   encima?: React.ReactNode;
   estilo?: StyleProp<ViewStyle>;
 }) {
-  const reducido = useReducedMotion();
-  const tick = useTick();
-  const [editando, setEditando] = useState(false);
-  const [texto, setTexto] = useState(String(valor));
-  const sacudida = useSharedValue(0);
+  const { editando, setEditando, texto, setTexto, confirmar } = useNumeroEditable(valor, min, max, onCambio);
+  const { sacudir, estilo: numero } = useSacudida(AMPLITUD_SACUDIDA);
   const resto = sufijo ? ` ${sufijo}` : '';
   const tamanoNumero = compacto ? TAMANO_NUMERO_COMPACTO : TAMANO_NUMERO;
   const lado = compacto ? LADO_BOTON_COMPACTO : LADO_BOTON;
   const estiloNumero = estiloDelNumero(tamanoNumero);
 
-  useEffect(() => { if (!editando) setTexto(String(valor)); }, [valor, editando]);
-
-  const sacudir = () => {
-    haptico.aviso();
-    if (reducido) return;
-    sacudida.value = withSequence(
-      withTiming(AMPLITUD_SACUDIDA, { duration: 40 }), withTiming(-AMPLITUD_SACUDIDA, { duration: 80 }),
-      withTiming(AMPLITUD_SACUDIDA, { duration: 80 }), withTiming(0, { duration: 40 }),
-    );
-  };
   const restar = () => { if (valor <= min) sacudir(); else haptico.toque(); onCambio(Math.max(min, valor - 1)); };
   const sumar = () => { if (valor >= max) sacudir(); else haptico.toque(); onCambio(Math.min(max, valor + 1)); };
-
-  const confirmar = () => {
-    const n = parseInt(texto, 10);
-    const limpio = Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : valor;
-    setTexto(String(limpio));
-    setEditando(false);
-    if (limpio !== valor) onCambio(limpio);
-  };
 
   const alAccesibilidad = (e: AccessibilityActionEvent) => {
     if (e.nativeEvent.actionName === 'increment') sumar();
     if (e.nativeEvent.actionName === 'decrement') restar();
   };
-
-  const numero = useAnimatedStyle(() => ({ transform: [{ translateX: sacudida.value }] }), [tick]);
 
   return (
     <View style={[s.raiz, estilo]}>

@@ -7,7 +7,7 @@ import { paleta, familia, easing, haptico } from '../../theme';
 import { useReducedMotion } from '../../hooks/useReducedMotion';
 import { useTick } from '../../hooks/useTick';
 
-export const MAX_NOMBRE = 48;
+const MAX_NOMBRE = 48;
 const PLACEHOLDER = 'Nombre de la rutina';
 const LINEA_MS = 200;
 const FUNDIDO_REDUCIDO_MS = 150;

@@ -8,7 +8,7 @@ import { comillasLatinas, textoVisible } from './presentacion';
  */
 
 /** Palabras por minuto con las que se estima el tiempo de lectura de un articulo. */
-export const PALABRAS_POR_MINUTO = 200;
+const PALABRAS_POR_MINUTO = 200;
 
 /** Minutos de lectura: las palabras del cuerpo entre 200, hacia arriba, minimo 1. */
 export function tiempoDeLectura(cuerpo: string): number {

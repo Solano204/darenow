@@ -7,7 +7,7 @@ import { plural } from '../../utils/plural';
 import { Presionable } from '../ui/Presionable';
 import { FotoOscura } from '../ui/FotoOscura';
 
-export const ANCHO_TARJETA_FASE = 150;
+const ANCHO_TARJETA_FASE = 150;
 const ALTO_FOTO = 100;
 const ESCALA_PRESIONADA = 0.03;
 

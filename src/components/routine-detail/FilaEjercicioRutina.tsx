@@ -23,17 +23,17 @@ export interface ItemVista {
   descansoS?: number;
 }
 
-export const ALTO_FILA_RUTINA = 80;
+const ALTO_FILA_RUTINA = 80;
 const LADO_MINIATURA = 56;
 const ESCALA_MINIATURA = 0.96;
 const OPACIDAD_PRESIONADA = 0.6;
 /** Las primeras filas (las que se ven al abrir) entran escalonadas; las de mas abajo, no. */
-export const FILAS_CON_ENTRADA = 6;
+const FILAS_CON_ENTRADA = 6;
 const ESCALONADO_MS = 40;
 const DESDE_EL_RIEL_PX = -8;
 
 /** «3 series de 60 segundos, por lado, 45 segundos de descanso»: lo que oye el lector de pantalla. */
-export function frasePrescripcion(it: ItemVista): string {
+function frasePrescripcion(it: ItemVista): string {
   const medida = it.seg
     ? `${it.seg} ${plural(it.seg, 'segundo')}`
     : it.reps ? `${it.reps} ${plural(it.reps, 'repetición', 'repeticiones')}` : '';

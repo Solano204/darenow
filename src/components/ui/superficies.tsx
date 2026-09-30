@@ -27,7 +27,7 @@ import { ContextoScroll, BarraCompacta, useScrollCabecera } from './cabecera';
  * tarjeta de Hoy.tsx todavia lo pasa) pero ya no hace nada: una superficie
  * plana no tiene nada detras que valga la pena difuminar.
  */
-export function Vidrio3D({
+function Vidrio3D({
   children, tono = 'crema', estilo, radioExterior = radio.tarjeta,
   desenfoque, elevacion = 'suave',
 }: {

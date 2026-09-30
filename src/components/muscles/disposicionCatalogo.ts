@@ -9,10 +9,10 @@ import { textoDeEtiqueta, textoVisible } from '../../utils/presentacion';
 
 export const COLUMNAS = 3;
 export const SEPARACION_H = 12;
-export const SEPARACION_V = 20;
+const SEPARACION_V = 20;
 export const ALTO_REGION = 44;
-export const ALTO_LINEA_NOMBRE = 18;
-export const AIRE_NOMBRE = 8;
+const ALTO_LINEA_NOMBRE = 18;
+const AIRE_NOMBRE = 8;
 export const RADIO_FICHA = 24;
 /** Letras de Figtree 600 de 14 px que caben en una linea bajo una ficha de unos 96 px, con holgura. */
 const LETRAS_POR_LINEA = 12;

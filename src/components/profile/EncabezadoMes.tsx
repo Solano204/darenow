@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { paleta, familia } from '../../theme';
 
-export const ALTO_ENCABEZADO_MES = 48;
+const ALTO_ENCABEZADO_MES = 48;
 
 /**
  * El encabezado de un mes del historial («Septiembre 2026»): Big Shoulders 700 de 20 en `magnesia3`, con la

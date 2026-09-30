@@ -5,7 +5,7 @@ import { paleta, familia, resortePlaca, haptico } from '../../theme';
 import { useReducedMotion } from '../../hooks/useReducedMotion';
 import { useTick } from '../../hooks/useTick';
 
-export const ALTO_SEGMENTOS = 44;
+const ALTO_SEGMENTOS = 44;
 const PADDING_X = 12;
 const ALTO_INDICADOR = 3;
 const FUNDIDO_REDUCIDO_MS = 150;

@@ -1,5 +1,5 @@
-import React, { createContext, useContext } from 'react';
-import { StyleSheet, Text, type StyleProp, type TextStyle } from 'react-native';
+import { createContext } from 'react';
+import { StyleSheet, Text } from 'react-native';
 import Animated, {
   Extrapolation, interpolate, useAnimatedScrollHandler, useAnimatedStyle, useSharedValue, withTiming, type SharedValue,
 } from 'react-native-reanimated';
@@ -11,10 +11,8 @@ const UMBRAL_DIRECCION = 6;
 const MIN_BAJADA = 40;
 const DUR_BARRA_MS = 180;
 
-const RECORRIDO_TITULO = 56;
 const APARICION_COMPACTA: [number, number] = [40, 72];
 const ALTO_BARRA_COMPACTA = 48;
-const ENCOGIMIENTO = 0.9;
 
 /** Posicion vertical del scroll de la pantalla, para ligar a ella el encogimiento del titulo. */
 export const ContextoScroll = createContext<SharedValue<number> | null>(null);
@@ -45,27 +43,6 @@ export function useScrollCabecera() {
   return { y, onScroll };
 }
 
-/** Titulo grande de pantalla: al bajar se encoge y se desvanece, y toma su lugar la barra compacta. */
-export function TituloGrande({ children, estilo }: { children: string; estilo?: StyleProp<TextStyle> }) {
-  const y = useContext(ContextoScroll);
-  const reducido = useReducedMotion();
-  const animado = useAnimatedStyle(() => {
-    if (y === null) return {};
-    const p = interpolate(y.value, [0, RECORRIDO_TITULO], [0, 1], Extrapolation.CLAMP);
-    if (reducido) return { opacity: 1 - p };
-    return {
-      opacity: 1 - p,
-      transform: [{ translateY: -8 * p }, { scale: 1 - (1 - ENCOGIMIENTO) * p }],
-    };
-  });
-
-  return (
-    <Animated.Text style={[tipo.h1, s.titulo, estilo, animado]} accessibilityRole="header">
-      {children}
-    </Animated.Text>
-  );
-}
-
 /** Barra superior compacta que aparece cuando el titulo grande ya salio de la vista. */
 export function BarraCompacta({ titulo, y }: { titulo: string; y: SharedValue<number> }) {
   const reducido = useReducedMotion();
@@ -82,7 +59,6 @@ export function BarraCompacta({ titulo, y }: { titulo: string; y: SharedValue<nu
 }
 
 const s = StyleSheet.create({
-  titulo: { color: paleta.magnesia, transformOrigin: 'left center' },
   barra: {
     position: 'absolute', top: 0, left: 0, right: 0, height: ALTO_BARRA_COMPACTA,
     justifyContent: 'center', paddingHorizontal: MARGEN_PANTALLA,

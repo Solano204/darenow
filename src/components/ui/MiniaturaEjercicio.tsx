@@ -9,8 +9,8 @@ import { FotoOscura } from './FotoOscura';
 import { Entrada } from '../fx/Entrada';
 import type { ItemSesion } from '../../engine/session';
 
-export const LADO_MINIATURA = 112;
-export const LADO_MINIATURA_ANCHA = 128;
+const LADO_MINIATURA = 112;
+const LADO_MINIATURA_ANCHA = 128;
 export const SEPARACION_MINIATURA = 12;
 
 /** La foto interior se mueve al 85 % de la velocidad del carrusel: un 15 % del desplazamiento, con este tope de 8 px. */

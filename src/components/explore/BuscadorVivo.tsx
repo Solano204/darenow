@@ -6,7 +6,7 @@ import { paleta, familia, resorteMagnesia, haptico } from '../../theme';
 import { useReducedMotion } from '../../hooks/useReducedMotion';
 import { useTick } from '../../hooks/useTick';
 
-export const ALTO_BUSCADOR = 52;
+const ALTO_BUSCADOR = 52;
 const RADIO = 16;
 const PADDING_X = 16;
 const ANCHO_ICONO = 20;
@@ -15,7 +15,7 @@ const FUNDIDO_REDUCIDO_MS = 150;
 const AREA_LIMPIAR = 44;
 
 /** Texto por defecto del placeholder nativo, fijo y sin animación. */
-export const PLACEHOLDER_COMPLETO = 'Buscar ejercicio, rutina, músculo';
+const PLACEHOLDER_COMPLETO = 'Buscar ejercicio, rutina, músculo';
 
 /**
  * Campo de busqueda de 52 px con el placeholder nativo del TextInput, estatico.

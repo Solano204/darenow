@@ -94,7 +94,3 @@ export function reproducir(nombre: Sonido): void {
     // el player se libero entre el disparo y este punto
   }
 }
-
-export function cuantosSonidos(): number {
-  return Object.keys(SONIDOS).length;
-}

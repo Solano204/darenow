@@ -79,7 +79,7 @@ export function ProveedorAnuncios({ children }: { children: React.ReactNode }) {
   );
 }
 
-export function useAnuncios() {
+function useAnuncios() {
   return useContext(Contexto);
 }
 

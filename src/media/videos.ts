@@ -15,7 +15,7 @@ type Registro = Record<string, number>;
 
 
 /* ejercicios · 190 */
-export const VIDEO_EJERCICIOS: Registro = {
+const VIDEO_EJERCICIOS: Registro = {
   'ex_1001': require('../../assets/video/ejercicios/ex_1001.mp4'),
   'ex_1002': require('../../assets/video/ejercicios/ex_1002.mp4'),
   'ex_1003': require('../../assets/video/ejercicios/ex_1003.mp4'),
@@ -221,6 +221,9 @@ let baseRemota: string | null = null;
  * (campo `cdn` de 50_packs_manifest.json) o null para desactivarla.
  *
  * Mientras no se llame, la app es 100% local y funciona sin internet.
+ * Hoy nadie la llama: se conserva como API publica para el CDN.
+ *
+ * @public
  */
 export function usarCDN(url: string | null): void {
   baseRemota = url ? url.replace(/\/*$/, '/') : null;
@@ -232,16 +235,4 @@ export function clipFuente(id: string): FuenteClip {
   if (local != null) return local;
   if (baseRemota) return { uri: `${baseRemota}${id}.mp4` };
   return null;
-}
-
-/** Ruta que la app muestra en el hueco vacio, para saber que archivo falta. */
-export function rutaClipEsperada(id: string): string {
-  return `video/ejercicios/${id}.mp4`;
-}
-
-export function cuantosClips(): { clips: number; cdn: boolean } {
-  return {
-    clips: Object.keys(VIDEO_EJERCICIOS).length,
-    cdn: baseRemota != null,
-  };
 }

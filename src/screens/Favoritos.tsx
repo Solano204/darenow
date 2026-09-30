@@ -6,11 +6,11 @@
  * secciones que dicen "aun no tienes nada aqui" cinco veces seguidas.
  */
 
-import React, { useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import { View, Text, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { color, tipo, esp } from '../theme';
-import { Seccion, Vacio, Chip, Boton , useHuecoAbajo } from '../components/ui';
+import { Seccion, Boton, useHuecoAbajo } from '../components/ui';
 import Carrusel from '../components/Carrusel';
 import { useEstado, imagenRutina } from '../store/store';
 import {

@@ -35,7 +35,7 @@ export function mark(nombre: Marca): void {
   if (nombre === 'hoy-interactive') reportar();
 }
 
-/** Mide de `desde` a `hasta` (por defecto, ahora). Devuelve ms o `undefined` si falta una marca. */
+/** Mide de `desde` a `hasta` (por defecto, ahora). Devuelve ms o `undefined` si falta una marca. @public */
 export function measure(nombre: string, desde: Marca, hasta?: Marca): number | undefined {
   if (!ACTIVO) return undefined;
   const a = marcas.get(desde);
@@ -46,7 +46,7 @@ export function measure(nombre: string, desde: Marca, hasta?: Marca): number | u
   return ms;
 }
 
-/** Todas las marcas relativas a `js-start`, en ms. Vacio si la instrumentacion esta apagada. */
+/** Todas las marcas relativas a `js-start`, en ms. Vacio si la instrumentacion esta apagada. @public */
 export function resumen(): Record<string, number> {
   if (!ACTIVO) return {};
   const base = marcas.get('js-start') ?? 0;

@@ -5,8 +5,8 @@
  * entrada escalonada, pulso de estado y numeros que cuentan.
  */
 
-import React, { useEffect, useRef, useState } from 'react';
-import { View, Text, StyleSheet, Animated, Easing, type ViewStyle } from 'react-native';
+import React, { useEffect, useRef } from 'react';
+import { View, Animated, Easing, type ViewStyle } from 'react-native';
 import { color, anim } from '../../theme';
 
 export { useReducedMotion as useMovimientoReducido } from '../../hooks/useReducedMotion';
@@ -64,38 +64,4 @@ export function Pulso({ tamano = 8, tono = color.carbon }: { tamano?: number; to
       <View style={{ width: tamano, height: tamano, borderRadius: tamano / 2, backgroundColor: tono }} />
     </View>
   );
-}
-
-/**
- * Numero que cuenta hasta su valor. Para cifras que merecen notarse:
- * racha, logros. Nunca durante la sesion, el reproductor no se puede
- * permitir renders extra.
- *
- * El listener de `Animated.Value` dispara por fotograma (60/s): sin
- * limite, cada cifra en pantalla es 60 `setState` por segundo. Se
- * limita a 20 fps (una actualizacion cada 50 ms), suficiente para que
- * se vea contar.
- */
-export function NumeroAnimado({ valor, estilo, duracion = anim.lenta, retraso = 0, maxFontSizeMultiplier }: {
-  valor: number; estilo?: object; duracion?: number; retraso?: number; maxFontSizeMultiplier?: number;
-}) {
-  const reducido = useMovimientoReducido();
-  const [n, setN] = useState(reducido ? valor : 0);
-  const v = useRef(new Animated.Value(0)).current;
-  const ultimoUpdate = useRef(0);
-  useEffect(() => {
-    if (reducido) { setN(valor); return; }
-    const sub = v.addListener(({ value }) => {
-      const ahora = Date.now();
-      if (ahora - ultimoUpdate.current < 50) return;
-      ultimoUpdate.current = ahora;
-      setN(Math.round(value));
-    });
-    Animated.timing(v, {
-      toValue: valor, duration: duracion, delay: retraso,
-      easing: Easing.out(Easing.cubic), useNativeDriver: false,
-    }).start(() => setN(Math.round(valor)));   // el limite de 20 fps puede saltarse el ultimo frame
-    return () => v.removeListener(sub);
-  }, [valor, reducido]);
-  return <Text style={estilo} maxFontSizeMultiplier={maxFontSizeMultiplier}>{n}</Text>;
 }

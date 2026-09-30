@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { paleta, familia, resorteMagnesia, MARGEN_PANTALLA } from '../../theme';
+import { paleta, familia, resorteMagnesia } from '../../theme';
 import type { Ejercicio } from '../../data/catalog';
 import { useReducedMotion } from '../../hooks/useReducedMotion';
 import { Entrada } from '../fx/Entrada';

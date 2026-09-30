@@ -4,7 +4,7 @@ import { paleta, familia } from '../../theme';
 import { plural } from '../../utils/plural';
 import { Odometro } from '../fx/Odometro';
 
-export const ALTO_CONTADOR = 24;
+const ALTO_CONTADOR = 24;
 const ANUNCIO_RETRASO_MS = 700;
 
 /**

@@ -15,7 +15,7 @@ export interface Lamina {
   mito?: string;
 }
 
-export const LAMINAS: Lamina[] = [
+const LAMINAS: Lamina[] = [
   {
     id: 'intro_04',
     titulo: 'Gratis. Todo. Sin trucos',

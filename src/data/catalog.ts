@@ -82,7 +82,7 @@ export interface Rutina {
   bloques: BloqueRutina[]; kcal_aprox_70kg: number; nota?: string; equipment: string[];
 }
 
-export interface FaseProg { semanas: string; foco: string; rutinas: string[]; nota?: string }
+interface FaseProg { semanas: string; foco: string; rutinas: string[]; nota?: string }
 export interface Programa {
   id: string; name: string; goal: string; semanas: number; dias_semana: number;
   min_sesion: number; level: number; equipment: string[]; desc: string;
@@ -108,7 +108,7 @@ const bloquesEjercicios = [
 
 export const MUSCULOS = (muscles as unknown as { items: Musculo[] }).items;
 export const EQUIPO = (equipment as unknown as { items: Equipo[] }).items;
-export const FAMILIAS = (families as unknown as { items: Familia[] }).items;
+const FAMILIAS = (families as unknown as { items: Familia[] }).items;
 export const EJERCICIOS: Ejercicio[] = bloquesEjercicios.flatMap(b => b.items);
 export const RUTINAS = (routines as unknown as { items: Rutina[] }).items;
 export const PROGRAMAS = (programs as unknown as { items: Programa[] }).items;
@@ -167,20 +167,6 @@ export function evidenciaDe(e: Ejercicio): { mapa: Record<string, Evidencia>; no
   if (e.evidence) return { mapa: e.evidence, nota: e.evidence_note };
   const f = familiaPorId.get(e.family);
   return { mapa: f?.evidence ?? {}, nota: f?.evidence_note };
-}
-
-/** La insignia que se muestra: gana el veredicto mas serio del mapa. */
-export function insigniaDe(e: Ejercicio): Evidencia {
-  const { mapa } = evidenciaDe(e);
-  const v = Object.values(mapa);
-  if (v.includes('mito')) return 'mito';
-  if (v.includes('parcial')) return 'parcial';
-  if (v.includes('ok')) return 'ok';
-  return 'cuidado';
-}
-
-export function nombresMusculos(ids: string[]): string {
-  return ids.map(i => musculoPorId.get(i)?.name ?? i).join(', ');
 }
 
 export function nombreEquipo(ids: string[]): string {

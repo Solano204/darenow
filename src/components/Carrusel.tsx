@@ -16,7 +16,7 @@ import Foto from './Foto';
 import { VidrioPastilla } from './Vidrio';
 import type { TipoFoto } from '../media/registry';
 
-export interface ItemCarrusel {
+interface ItemCarrusel {
   id: string;
   titulo: string;
   sub?: string;

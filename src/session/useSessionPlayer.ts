@@ -35,10 +35,10 @@ import { AppState } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import type { ItemSesion } from '../engine/session';
 import { crearReducer, estadoInicial, esUnilateral, avanzarReloj } from './playerMachine';
-import type { EstadoPlayer, SerieHecha, Fase } from './playerMachine';
+import type { EstadoPlayer, Fase } from './playerMachine';
 import { prepararSonido, soltarSonido, activarSonido, reproducir } from '../media/sonido';
 
-export type { EstadoPlayer, SerieHecha, Fase };
+export type { Fase };
 
 export const CLAVE_GUARDADO = 'forja:sesion_en_curso';
 

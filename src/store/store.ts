@@ -13,14 +13,12 @@
 import React, { createContext, useContext, useEffect, useMemo, useState, useCallback, useRef } from 'react';
 import { AppState } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { PERFIL_INICIAL, FAVORITOS_VACIOS, ESTADO_INICIAL } from './estadoInicial';
+import { PERFIL_INICIAL, ESTADO_INICIAL } from './estadoInicial';
 import { mark as perfMark } from '../dev/perfMarks'; // perf:R1
-
-export { PERFIL_INICIAL, FAVORITOS_VACIOS, ESTADO_INICIAL };
 
 export const CLAVE = 'forja:v1';
 
-export interface SerieGuardada {
+interface SerieGuardada {
   ejercicioId: string; serieNum: number; lado: 'izq' | 'der' | null;
   reps: number | null; segundos: number | null; pesoKg: number | null; omitida: boolean;
 }

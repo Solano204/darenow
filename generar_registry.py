@@ -76,6 +76,9 @@ let baseRemota: string | null = null;
  * (campo `cdn` de 50_packs_manifest.json) o null para desactivarla.
  *
  * Mientras no se llame, la app es 100% local y funciona sin internet.
+ * Hoy nadie la llama: se conserva como API publica para el CDN.
+ *
+ * @public
  */
 export function usarCDN(url: string | null): void {
   baseRemota = url ? url.replace(/\\/*$/, '/') : null;
@@ -87,18 +90,6 @@ export function clipFuente(id: string): FuenteClip {
   if (local != null) return local;
   if (baseRemota) return { uri: `${baseRemota}${id}.mp4` };
   return null;
-}
-
-/** Ruta que la app muestra en el hueco vacio, para saber que archivo falta. */
-export function rutaClipEsperada(id: string): string {
-  return `video/ejercicios/${id}.mp4`;
-}
-
-export function cuantosClips(): { clips: number; cdn: boolean } {
-  return {
-    clips: Object.keys(VIDEO_EJERCICIOS).length,
-    cdn: baseRemota != null,
-  };
 }
 """
 
@@ -134,25 +125,9 @@ const MAPAS: Record<TipoFoto, Registro> = {
   motivacion: IMG_MOTIVACION,
 };
 
-const CARPETA: Record<TipoFoto, string> = {
-  ejercicio: 'ejercicios', musculo: 'musculos', rutina: 'rutinas',
-  programa: 'programas', tip: 'tips', mito: 'mitos', fondo: 'fondos',
-  motivacion: 'motivacion',
-};
-
 /** Fuente de una imagen, o null si el archivo todavia no esta. */
 export function fuente(tipo: TipoFoto, id: string): number | null {
   return MAPAS[tipo][id] ?? null;
-}
-
-/** Ruta que la app muestra en el hueco vacio, para saber que archivo falta. */
-export function rutaEsperada(tipo: TipoFoto, id: string): string {
-  return `img/${CARPETA[tipo]}/${id}.jpg`;
-}
-
-export function cuantasHay(): { puestas: number; tipos: number } {
-  const puestas = Object.values(MAPAS).reduce((n, m) => n + Object.keys(m).length, 0);
-  return { puestas, tipos: Object.keys(MAPAS).length };
 }
 """
 
@@ -180,7 +155,7 @@ def generar_imagenes(seco):
         encontrados = escanear("img", carpeta)
         total += len(encontrados)
         partes.append(f"\n/* {carpeta} · {len(encontrados)} */")
-        partes.append(f"export const {constante}: Registro = {{")
+        partes.append(f"const {constante}: Registro = {{")
         for base, ext in encontrados:
             partes.append(f"  '{base}': require('../../assets/img/{carpeta}/{base}{ext}'),")
         partes.append("};")
@@ -201,7 +176,7 @@ def generar_videos(seco):
         encontrados = escanear("video", carpeta, exts)
         total += len(encontrados)
         partes.append(f"\n/* {carpeta} · {len(encontrados)} */")
-        partes.append(f"export const {constante}: Registro = {{")
+        partes.append(f"const {constante}: Registro = {{")
         for base, ext in encontrados:
             partes.append(f"  '{base}': require('../../assets/video/{carpeta}/{base}{ext}'),")
         partes.append("};")
@@ -362,7 +337,7 @@ def generar_voz(seco):
 
     puestos_ej = sum(1 for i in ids_ejercicios if i in hallados_ej)
     partes.append(f"\n/* ejercicios · {puestos_ej} de {len(ids_ejercicios)} */")
-    partes.append("export const VOZ_EJERCICIOS: Registro = {")
+    partes.append("const VOZ_EJERCICIOS: Registro = {")
     for eid in ids_ejercicios:
         if eid in hallados_ej:
             partes.append(f"  '{eid}': require('../../assets/voz/ejercicios/{eid}{hallados_ej[eid]}'),")
@@ -372,7 +347,7 @@ def generar_voz(seco):
 
     puestos_fase = sum(1 for f in FASES_ESPERADAS if f in hallados_fase)
     partes.append(f"\n/* fases · {puestos_fase} de {len(FASES_ESPERADAS)} */")
-    partes.append("export const VOZ_FASES: Registro = {")
+    partes.append("const VOZ_FASES: Registro = {")
     for fase in FASES_ESPERADAS:
         if fase in hallados_fase:
             partes.append(f"  '{fase}': require('../../assets/voz/fases/{fase}{hallados_fase[fase]}'),")
@@ -382,7 +357,7 @@ def generar_voz(seco):
 
     puestos_num = sum(1 for n in NUMEROS_ESPERADOS if n in hallados_num)
     partes.append(f"\n/* numeros · {puestos_num} de {len(NUMEROS_ESPERADOS)} */")
-    partes.append("export const VOZ_NUM: Registro = {")
+    partes.append("const VOZ_NUM: Registro = {")
     for n in NUMEROS_ESPERADOS:
         if n in hallados_num:
             partes.append(f"  '{n}': require('../../assets/voz/num/{n}{hallados_num[n]}'),")

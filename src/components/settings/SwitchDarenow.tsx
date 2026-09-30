@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
-import { Pressable, StyleSheet } from 'react-native';
+import { useEffect } from 'react';
+import { StyleSheet } from 'react-native';
 import Animated, { interpolateColor, useAnimatedStyle, useSharedValue, withSpring, withTiming } from 'react-native-reanimated';
-import { paleta, resortePlaca, haptico, AREA_TACTIL_MIN } from '../../theme';
+import { paleta, resortePlaca } from '../../theme';
 import { useReducedMotion } from '../../hooks/useReducedMotion';
 import { useTick } from '../../hooks/useTick';
 
@@ -40,26 +40,7 @@ export function PistaSwitch({ activo }: { activo: boolean }) {
   );
 }
 
-/** El interruptor suelto (sin fila alrededor): un area de toque de 44 con la pista, como un `Switch` del sistema. */
-export function SwitchDarenow({ activo, onCambio, etiqueta, ayuda }: {
-  activo: boolean;
-  onCambio: (activo: boolean) => void;
-  etiqueta: string;
-  ayuda?: string;
-}) {
-  return (
-    <Pressable
-      onPress={() => { haptico.toque(); onCambio(!activo); }}
-      accessibilityRole="switch" accessibilityLabel={etiqueta} accessibilityHint={ayuda}
-      accessibilityState={{ checked: activo }} style={s.area}
-    >
-      <PistaSwitch activo={activo} />
-    </Pressable>
-  );
-}
-
 const s = StyleSheet.create({
-  area: { minHeight: AREA_TACTIL_MIN, minWidth: AREA_TACTIL_MIN, alignItems: 'center', justifyContent: 'center' },
   pista: { width: ANCHO_PISTA, height: ALTO_PISTA, borderRadius: ALTO_PISTA / 2, justifyContent: 'center' },
   perilla: {
     width: LADO_PERILLA, height: LADO_PERILLA, borderRadius: LADO_PERILLA / 2, marginLeft: MARGEN_PERILLA,

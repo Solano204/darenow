@@ -54,7 +54,7 @@ const RETRASO_NOTA_CIFRA_MS = 200;
 const ESCALA_CIFRA = 1.2;
 
 /** «Gratis. Todo. Sin trucos» se lee en tres golpes; el resto de titulos va en un solo bloque. */
-export function lineasDeTitulo(titulo: string): string[] {
+function lineasDeTitulo(titulo: string): string[] {
   return titulo.includes('. ') ? titulo.split('. ').map((t, n, todas) => (n < todas.length - 1 ? `${t}.` : t)) : [titulo];
 }
 

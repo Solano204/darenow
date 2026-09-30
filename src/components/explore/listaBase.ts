@@ -27,7 +27,7 @@ export const PROPS_FIJAS = {
 export const FILAS_ANIMADAS = 8;
 /** Las primeras tarjetas de una lista de fotos aparecen escalonadas. */
 export const TARJETAS_ESCALONADAS = 4;
-export const ESCALONADO_TARJETA_MS = 60;
+const ESCALONADO_TARJETA_MS = 60;
 const MOVIMIENTO_MS = 200;
 const TARJETA_MS = 260;
 const FUNDIDO_REDUCIDO_MS = 150;

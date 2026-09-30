@@ -51,12 +51,6 @@ export const textoDeEtiqueta = (dato: string): string =>
 /** La clave de una afirmacion de evidencia («fuerza_pierna») como texto: sin guiones bajos, con tildes y mayuscula inicial. */
 export const textoDeAfirmacion = (clave: string): string => textoVisible(clave.replace(/_/g, ' '));
 
-/** «60 s» → { numero: 60, unidad: 's' }. Si el valor no empieza por un numero entero, `numero` es null y la unidad es todo el texto. */
-export function separarNumeroUnidad(valor: string): { numero: number | null; unidad: string } {
-  const m = valor.trim().match(/^(\d+)\s*(.*)$/);
-  return m ? { numero: Number(m[1]), unidad: m[2] } : { numero: null, unidad: valor };
-}
-
 /** Zonas de riesgo como una frase: «Rodilla, cadera». `atm` es una sigla. */
 export function textoDeZonas(zonas: string[]): string {
   return capitalizar(zonas.map(z => (z === 'atm' ? 'ATM' : nombreVisible(z))).join(', '));

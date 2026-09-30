@@ -15,7 +15,7 @@ type Registro = Partial<Record<string, number>>;
 
 
 /* ejercicios · 190 de 190 */
-export const VOZ_EJERCICIOS: Registro = {
+const VOZ_EJERCICIOS: Registro = {
   'ex_1001': require('../../assets/voz/ejercicios/ex_1001.mp3'),
   'ex_1002': require('../../assets/voz/ejercicios/ex_1002.mp3'),
   'ex_1003': require('../../assets/voz/ejercicios/ex_1003.mp3'),
@@ -209,7 +209,7 @@ export const VOZ_EJERCICIOS: Registro = {
 };
 
 /* fases · 5 de 5 */
-export const VOZ_FASES: Registro = {
+const VOZ_FASES: Registro = {
   'preparado': require('../../assets/voz/fases/preparado.mp3'),
   'trabajo': require('../../assets/voz/fases/trabajo.mp3'),
   'cambio_lado': require('../../assets/voz/fases/cambio_lado.mp3'),
@@ -218,7 +218,7 @@ export const VOZ_FASES: Registro = {
 };
 
 /* numeros · 3 de 3 */
-export const VOZ_NUM: Registro = {
+const VOZ_NUM: Registro = {
   '3': require('../../assets/voz/num/3.mp3'),
   '2': require('../../assets/voz/num/2.mp3'),
   '1': require('../../assets/voz/num/1.mp3'),

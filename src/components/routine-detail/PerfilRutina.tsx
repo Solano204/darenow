@@ -9,7 +9,7 @@ import { useReducedMotion } from '../../hooks/useReducedMotion';
 import type { Tramo } from '../../utils/estimarTramos';
 import { muestrasPerfil } from './curvaPerfil';
 
-export const ALTO_PERFIL = 96;
+const ALTO_PERFIL = 96;
 export const ALTO_PERFIL_COMPACTO = 40;
 const ALTO_ETIQUETAS = 28;
 const PAD_ARRIBA = 6;

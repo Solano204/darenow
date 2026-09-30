@@ -1,4 +1,3 @@
-export const escala = [4, 8, 12, 16, 24, 32, 48, 64] as const;
 
 export const esp = { xs: 4, sm: 8, md: 16, lg: 24, xl: 32 };
 
@@ -19,7 +18,6 @@ export const sombra = {
   },
 };
 
-export const TOQUE = 52;
 export const ALTO_BOTON = 58;
 export const ALTO_BARRA = 68;
 export const AREA_TACTIL_MIN = 44;

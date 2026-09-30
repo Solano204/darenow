@@ -2,7 +2,7 @@ import React, { useCallback, useMemo } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
-import { color, tipo, esp, radio, paleta, familia, MARGEN_PANTALLA } from '../theme';
+import { color, tipo, esp, paleta, familia, MARGEN_PANTALLA } from '../theme';
 import { Pantalla, Tarjeta, Chip, useHuecoAbajo, useScrollCabecera } from '../components/ui';
 import { CabeceraSeccion } from '../components/ui/AccionSeccion';
 import { GomaTexture } from '../components/fx/GomaTexture';
@@ -182,8 +182,4 @@ const s = StyleSheet.create({
   raiz: { flex: 1, backgroundColor: paleta.goma },
   seccion: { marginTop: SEPARACION_SECCIONES },
   suave: { marginHorizontal: MARGEN_PANTALLA, fontFamily: familia.cuerpo, fontSize: 15, lineHeight: 22, color: paleta.magnesia2 },
-  input: {
-    flex: 1, minHeight: 46, borderWidth: 1, borderColor: color.borde,
-    borderRadius: radio.tarjeta, paddingHorizontal: MARGEN_PANTALLA, color: color.texto, fontSize: 16,
-  },
 });

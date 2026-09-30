@@ -25,13 +25,10 @@ import { TituloMascara } from '../components/fx/TituloMascara';
 import { Entrada } from '../components/fx/Entrada';
 import { SaludoPreview } from '../components/fx/SaludoPreview';
 import { TransicionPaso, useTransicionPaso } from '../components/fx/TransicionPaso';
-import { derivar, derivarNivel, elegirPrograma, avisosDe } from '../data/perfil';
 import { useOnboarding, type TipoPaso } from '../hooks/useOnboarding';
 import { useFirstView } from '../hooks/useFirstView';
 import type { PerfilUsuario } from '../store/store';
 import PlanListo from './PlanListo';
-
-export { derivar, derivarNivel, elegirPrograma, avisosDe };
 
 type Cuestion = ReturnType<typeof useOnboarding>;
 type Transicion = ReturnType<typeof useTransicionPaso>;

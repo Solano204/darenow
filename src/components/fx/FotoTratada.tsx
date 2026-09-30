@@ -29,7 +29,7 @@ function matrizTratamiento(saturacion: number = SATURACION): number[] {
   ];
 }
 
-export const MATRIZ_TRATAMIENTO = matrizTratamiento();
+const MATRIZ_TRATAMIENTO = matrizTratamiento();
 export const MATRIZ_DESATURADA = matrizTratamiento(SATURACION * DESATURACION_EXTRA);
 
 /** Anclas del degradado foto a goma y alto del scrim superior. Comunes a toda foto a sangre. */

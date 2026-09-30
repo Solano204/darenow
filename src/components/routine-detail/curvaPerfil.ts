@@ -16,7 +16,7 @@ const RADIO_SUAVIZADO = 3;
 const lerp = (a: number, b: number, t: number): number => a + (b - a) * t;
 
 /** Intensidad de un tramo en su posicion relativa `u` (0 al inicio, 1 al final). */
-export function intensidadEn(tramo: Tramo, u: number): number {
+function intensidadEn(tramo: Tramo, u: number): number {
   switch (tramo.tipo) {
     case 'calentamiento':
       return lerp(CALENTAMIENTO.desde, CALENTAMIENTO.hasta, u);

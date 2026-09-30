@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { paleta, familia } from '../../theme';
 
 /** Ancho de la columna de lectura: unos 62 caracteres por linea a 18 px. */
-export const ANCHO_COLUMNA = 560;
+const ANCHO_COLUMNA = 560;
 const SEPARACION_PARRAFOS = 20;
 
 /**

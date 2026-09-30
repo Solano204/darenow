@@ -4,7 +4,7 @@ import { paleta, conAlfa, tipo, familia, MARGEN_PANTALLA, haptico } from '../../
 import { BotonSecundario } from '../ui/BotonSecundario';
 
 /** Los motivos de siempre y su texto. El `id` es lo que se guarda como `motivoAbandono`. */
-export const MOTIVOS_SALIDA: [id: string, texto: string][] = [
+const MOTIVOS_SALIDA: [id: string, texto: string][] = [
   ['sin_tiempo', 'No tengo tiempo hoy'],
   ['muy_dificil', 'Está muy difícil'],
   ['muy_facil', 'Está muy fácil'],

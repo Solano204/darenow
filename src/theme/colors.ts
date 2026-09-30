@@ -145,17 +145,6 @@ export const colorSesion = {
   velo: 'rgba(255,255,255,0.05)',
 };
 
-export const marcador: [string, string][] = [
-  ['#26272A', '#2E2F33'],
-  ['#27282B', '#303136'],
-  ['#25272A', '#2D3034'],
-  ['#28272A', '#313035'],
-  ['#262829', '#2F3233'],
-  ['#272729', '#303032'],
-  ['#28282A', '#313134'],
-  ['#262628', '#2F2F32'],
-];
-
 export function veloVidrio(alpha: number): string {
   return `rgba(31,24,21,${alpha})`;
 }

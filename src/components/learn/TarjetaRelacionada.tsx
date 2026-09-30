@@ -20,7 +20,7 @@ const TIPOS: Record<TipoRelacionado, string> = { programa: 'Programa', rutina: '
  * real en Figtree 600 de 15 (hasta 2 lineas). Al presionar se hunde a 0.97 con un toque suave; lleva
  * al mismo programa, rutina o ejercicio de siempre.
  */
-export function TarjetaRelacionada({ item, onPress }: { item: RelacionadoVista; onPress: (r: RelacionadoVista) => void }) {
+function TarjetaRelacionada({ item, onPress }: { item: RelacionadoVista; onPress: (r: RelacionadoVista) => void }) {
   return (
     <Presionable onPress={() => onPress(item)} etiqueta={`${TIPOS[item.tipo]}: ${item.nombre}`} estilo={s.tarjeta}>
       <FotoOscura tipo={item.tipo} id={item.id} ancho={ANCHO} alto={ALTO_FOTO} radioEsquina={16} velo={false} />

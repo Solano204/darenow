@@ -12,7 +12,7 @@ import { MESES, diaCorto, esSesionLarga, fechaLarga } from './fechas';
 /** Placas de la columna mas alta: cabe en los 120 px del mapa (placas de 8 con 2 de separacion). */
 export const MAX_PLACAS_DIA = 12;
 /** Con menos de estos minutos de referencia, la columna mas larga no llena la altura: una semana suave no parece una gran. */
-export const MINUTOS_REFERENCIA = 30;
+const MINUTOS_REFERENCIA = 30;
 
 /**
  * Cuantas placas lleva cada dia: mas minutos, mas placas, a escala de la semana (el dia mas largo, o 30
@@ -123,7 +123,7 @@ export const progresoAcotado = (progreso: number, total: number): number => Math
 /* ------------------------------------------------------------------ Retos: vista previa de la meta */
 
 /** Un reto de dias seguidos hasta este numero se ve como circulos; uno mas largo, como rejilla. */
-export const MAX_CIRCULOS = 10;
+const MAX_CIRCULOS = 10;
 
 export type VistaPreviaReto =
   | { tipo: 'circulos'; total: number }

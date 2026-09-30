@@ -10,7 +10,7 @@ import { useReducedMotion } from '../../hooks/useReducedMotion';
 import { useTick } from '../../hooks/useTick';
 import { Presionable } from '../ui/Presionable';
 
-export const ALTO_FILA_CREAR = 64;
+const ALTO_FILA_CREAR = 64;
 const RADIO = 20;
 const GROSOR_BORDE = 1.5;
 const RAYA = 6;

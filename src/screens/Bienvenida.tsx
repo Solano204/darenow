@@ -47,7 +47,7 @@ const T_NUMEROS = 700;
 const T_BOTON = 900;
 
 /** «Arriba, Carlos Josue» se parte en dos lineas cuando es largo. */
-export function partirSaludo(saludo: string): string[] {
+function partirSaludo(saludo: string): string[] {
   const corte = saludo.indexOf(', ');
   return corte > 0 && saludo.length > SALUDO_LARGO ? [saludo.slice(0, corte + 1), saludo.slice(corte + 2)] : [saludo];
 }

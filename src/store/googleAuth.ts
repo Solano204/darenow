@@ -35,7 +35,7 @@ function cargarGoogle(): GoogleModulo | null {
 const google = cargarGoogle();
 const WEB_CLIENT_ID = process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID;
 
-export const googleDisponible = !!WEB_CLIENT_ID && !!google;
+const googleDisponible = !!WEB_CLIENT_ID && !!google;
 
 // Sin Web Client ID no hay nada que configurar: la app sigue funcionando
 // en modo invitado, sin boton de Google (ver Acceso.tsx).

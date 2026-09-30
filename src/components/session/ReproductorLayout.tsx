@@ -42,7 +42,7 @@ const OMITIR_MS = 240;
 const ANUNCIO_CADA_S = 10;
 
 /** "1 minuto 5 segundos", para que un lector de pantalla no deletree "1:05". */
-export const segundosHablados = (s: number) => {
+const segundosHablados = (s: number) => {
   const m = Math.floor(s / 60), r = s % 60;
   const min = m > 0 ? `${m} minuto${m === 1 ? '' : 's'}` : '';
   const seg = r > 0 || m === 0 ? `${r} segundo${r === 1 ? '' : 's'}` : '';
@@ -50,7 +50,7 @@ export const segundosHablados = (s: number) => {
 };
 
 /** Nombre del ejercicio que viene tras la serie actual: el mismo si quedan series, si no el siguiente. */
-export function nombreSiguiente(items: ItemSesion[], i: number, serie: number): string {
+function nombreSiguiente(items: ItemSesion[], i: number, serie: number): string {
   const it = items[i];
   if (serie < it.seriesPlan) return it.name;
   return items[i + 1]?.name ?? 'Último esfuerzo';

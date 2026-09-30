@@ -8,7 +8,7 @@ import { paleta, familia, easing, resortePlaca, haptico } from '../../theme';
 import { useReducedMotion } from '../../hooks/useReducedMotion';
 import { useTick } from '../../hooks/useTick';
 
-export const MAX_PLACAS_POR_MANGA = 6;
+const MAX_PLACAS_POR_MANGA = 6;
 export const ALTO_BARRA = 72;
 export const ALTO_BARRA_COMPACTA = 40;
 

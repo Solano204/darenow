@@ -1,5 +1,5 @@
 import React from 'react';
-import { Platform, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Platform, Pressable, StyleSheet, View } from 'react-native';
 import Animated, {
   Extrapolation, interpolate, useAnimatedStyle, useDerivedValue, type SharedValue,
 } from 'react-native-reanimated';

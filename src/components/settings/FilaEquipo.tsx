@@ -34,7 +34,7 @@ const ICONOS: Record<string, IconoAjuste> = {
   anillas_trx: 'radio-button-off-outline',
 };
 
-export const iconoDeEquipo = (id: string): IconoAjuste => ICONOS[id] ?? ICONO_GENERICO;
+const iconoDeEquipo = (id: string): IconoAjuste => ICONOS[id] ?? ICONO_GENERICO;
 
 /**
  * Un equipo que se marca: icono de linea, nombre y «Si no tienes: …» en `magnesia3`. Al marcarlo la casilla se

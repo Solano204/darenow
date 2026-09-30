@@ -5,7 +5,7 @@ import { paleta, easing } from '../../theme';
 import { useReducedMotion } from '../../hooks/useReducedMotion';
 import { useTick } from '../../hooks/useTick';
 
-export const ANCHO_CONECTOR = 34;
+const ANCHO_CONECTOR = 34;
 export const ALTO_CONECTOR = 14;
 const GROSOR = 2;
 const RAYA = 5;

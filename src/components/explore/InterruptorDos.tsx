@@ -5,7 +5,7 @@ import { paleta, familia, resortePlaca, haptico } from '../../theme';
 import { useReducedMotion } from '../../hooks/useReducedMotion';
 import { useTick } from '../../hooks/useTick';
 
-export const ALTO_INTERRUPTOR = 36;
+const ALTO_INTERRUPTOR = 36;
 const RADIO = 10;
 const RADIO_FICHA = 8;
 const INSET = 2;

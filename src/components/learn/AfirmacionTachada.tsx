@@ -9,7 +9,7 @@ import { TituloMascara } from '../fx/TituloMascara';
 import { Tachon, type Linea } from '../fx/TachadoMito';
 
 /** Lo que tarda el tachon en recorrer cada linea de la afirmacion. */
-export const TACHON_LINEA_MS = 220;
+const TACHON_LINEA_MS = 220;
 const COLOR_MS = 180;
 
 /** Dice cuantas lineas tiene el titulo (lo sabe `TituloMascara` al pintar, no antes) sin tocar el estado del padre durante el render. */

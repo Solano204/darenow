@@ -8,7 +8,7 @@ import { indiceRegionActiva } from '../muscles/disposicionCatalogo';
 import { RANGO_SCROLL, RECORRIDO_PX } from './EncabezadoExplorar';
 
 /** El aire que la lista deja entre la cabecera fija y su primera fila (el relleno de la pantalla menos el alto de la cabecera). */
-export const AIRE_BAJO_CABECERA = 16;
+const AIRE_BAJO_CABECERA = 16;
 
 /**
  * La copia de un encabezado de grupo (una region de musculos, una letra del glosario) que queda

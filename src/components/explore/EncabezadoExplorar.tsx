@@ -8,10 +8,10 @@ import { useTick } from '../../hooks/useTick';
 
 export type SegmentoExplorar = 'ejercicios' | 'rutinas' | 'programas' | 'musculos';
 
-export const ALTO_TITULO = 46;
+const ALTO_TITULO = 46;
 export const SEP_SEGMENTOS = 4;
 export const SEP_CONTADOR = 12;
-export const PADDING_INFERIOR = 8;
+const PADDING_INFERIOR = 8;
 
 /** Scroll en el que termina de encoger el titulo. */
 export const RANGO_SCROLL = 80;

@@ -29,7 +29,7 @@ import { seleccionarClavesForja } from './clavesForja';
 
 export const CLAVE = 'forja:cuenta:v1';
 
-export type Proveedor = 'google' | 'invitado';
+type Proveedor = 'google' | 'invitado';
 
 export interface Cuenta {
   /** `sub` de Google, o un id local generado para el invitado. Estable. */

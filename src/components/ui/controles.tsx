@@ -7,10 +7,10 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import {
-  View, Text, Pressable, TextInput, StyleSheet, Animated, Easing,
+  View, Text, Pressable, StyleSheet, Animated, Easing,
   type ViewStyle, type AccessibilityRole, type AccessibilityState,
 } from 'react-native';
-import { color, colorSesion, tipo, esp, radio, TOQUE, ALTO_BOTON, anim, peso } from '../../theme';
+import { color, colorSesion, tipo, esp, radio, ALTO_BOTON, anim, peso } from '../../theme';
 import { useMovimientoReducido } from './movimiento';
 import { BotonPlaca } from './BotonPlaca';
 
@@ -146,28 +146,6 @@ function PuntoOcupado() {
   );
 }
 
-/**
- * Boton circular pequeño. Con halo cuando va en oscuro.
- * `etiqueta` es obligatoria porque `glifo` es un simbolo, no texto legible
- * para un lector de pantalla.
- */
-export function BotonRedondo({ glifo, etiqueta, onPress, oscuro }: {
-  glifo: string; etiqueta: string; onPress: () => void; oscuro?: boolean;
-}) {
-  return (
-    <Toque onPress={onPress} estilo={[
-      s.redondo,
-      oscuro
-        ? { backgroundColor: color.carbon, borderColor: color.carbon }
-        : { backgroundColor: color.crema, borderColor: color.borde },
-    ] as unknown as ViewStyle}
-      etiqueta={etiqueta}
-    >
-      <Text style={{ fontSize: 16, color: oscuro ? color.sobreOscuro : color.texto }}>{glifo}</Text>
-    </Toque>
-  );
-}
-
 /* ═════════════════════════════════════════ chips */
 
 export function Chip({ texto, activo, onPress, pequeno, oscuro }: {
@@ -250,132 +228,13 @@ export function Favorito({ activo, onPress, tamano = 38, sobreFoto }: {
 
 /* ═══════════════════════════════════════════════════ opciones */
 
-export function Opcion({ texto, detalle, activa, multiple, onPress }: {
-  texto: string; detalle?: string; activa: boolean; multiple?: boolean; onPress: () => void;
-}) {
-  return (
-    <Toque onPress={onPress} escala={0.985} estilo={[
-      s.opcion,
-      activa && { borderColor: color.acentoBorde, backgroundColor: color.acentoTinte },
-    ] as unknown as ViewStyle}
-      rol={multiple ? 'checkbox' : 'radio'}
-      etiqueta={detalle ? `${texto}, ${detalle}` : texto}
-      estado={multiple ? { checked: activa } : { selected: activa }}
-    >
-      <View style={{ flex: 1 }}>
-        <Text style={[tipo.cuerpo, { color: color.texto, fontFamily: activa ? peso.semibold : peso.regular }]}>{texto}</Text>
-        {detalle && <Text style={[tipo.pie, { color: color.textoSuave, marginTop: 2 }]}>{detalle}</Text>}
-      </View>
-      <View style={[s.marca, activa && { backgroundColor: color.carbon, borderColor: color.carbon }]}>
-        {activa && <Text style={{ color: color.sobreOscuro, fontSize: 12, fontFamily: peso.bold }}>✓</Text>}
-      </View>
-    </Toque>
-  );
-}
-
-export function Contador({ valor, min, max, sufijo, onCambio }: {
-  valor: number; min: number; max: number; sufijo?: string; onCambio: (n: number) => void;
-}) {
-  const resto = sufijo ? ` ${sufijo}` : '';
-  const [texto, setTexto] = useState(String(valor));
-
-  useEffect(() => { setTexto(String(valor)); }, [valor]);
-
-  // Escribir un numero grande a mano gana a apretar +/- decenas de veces.
-  const confirmar = () => {
-    const n = parseInt(texto, 10);
-    const limpio = Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : valor;
-    setTexto(String(limpio));
-    if (limpio !== valor) onCambio(limpio);
-  };
-
-  return (
-    <View style={s.contador}>
-      <View style={s.contadorFila}>
-        <Toque onPress={() => onCambio(Math.max(min, valor - 1))} estilo={s.contadorBoton as ViewStyle}
-          etiqueta={`Restar${resto}`} estado={{ disabled: valor <= min }}>
-          <Text style={{ fontSize: 24, color: color.texto }}>−</Text>
-        </Toque>
-        <View style={{ alignItems: 'center', minWidth: 96 }}>
-          <TextInput
-            value={texto} onChangeText={t => setTexto(t.replace(/[^0-9]/g, ''))}
-            onEndEditing={confirmar} onSubmitEditing={confirmar}
-            maxLength={String(max).length}
-            keyboardType="number-pad" returnKeyType="done"
-            style={[tipo.relojSm, { color: color.texto, textAlign: 'center', padding: 0, minWidth: 60 }]}
-            maxFontSizeMultiplier={1.2} accessibilityLabel={`Escribir número${resto}`}
-          />
-          {sufijo && <Text style={[tipo.pie, { color: color.textoSuave }]}>{sufijo}</Text>}
-        </View>
-        <Toque onPress={() => onCambio(Math.min(max, valor + 1))} estilo={s.contadorBoton as ViewStyle}
-          etiqueta={`Sumar${resto}`} estado={{ disabled: valor >= max }}>
-          <Text style={{ fontSize: 24, color: color.texto }}>+</Text>
-        </Toque>
-      </View>
-    </View>
-  );
-}
-
-export function Interruptor({ etiqueta, ayuda, valor, onCambio }: {
-  etiqueta: string; ayuda?: string; valor: boolean; onCambio: (v: boolean) => void;
-}) {
-  const v = useRef(new Animated.Value(valor ? 1 : 0)).current;
-  React.useEffect(() => {
-    Animated.timing(v, { toValue: valor ? 1 : 0, duration: anim.rapida, useNativeDriver: false }).start();
-  }, [valor]);
-  return (
-    <Pressable onPress={() => onCambio(!valor)} style={s.interruptor} accessibilityRole="switch"
-      accessibilityState={{ checked: valor }}>
-      <View style={{ flex: 1, paddingRight: esp.md }}>
-        <Text style={[tipo.cuerpo, { color: color.texto }]}>{etiqueta}</Text>
-        {ayuda && <Text style={[tipo.pie, { color: color.textoSuave, marginTop: 2 }]}>{ayuda}</Text>}
-      </View>
-      <Animated.View style={[s.pista, {
-        backgroundColor: v.interpolate({ inputRange: [0, 1], outputRange: [color.bordeFuerte, color.carbon] as never }),
-      }]}>
-        <Animated.View style={[s.perilla, {
-          transform: [{ translateX: v.interpolate({ inputRange: [0, 1], outputRange: [0, 20] }) }],
-        }]} />
-      </Animated.View>
-    </Pressable>
-  );
-}
-
 const s = StyleSheet.create({
   boton: {
     minHeight: ALTO_BOTON, borderRadius: radio.pastilla, paddingHorizontal: esp.lg,
     alignItems: 'center', justifyContent: 'center', overflow: 'hidden',
   },
-  redondo: {
-    width: 42, height: 42, borderRadius: 21, alignItems: 'center', justifyContent: 'center',
-    borderWidth: 1,
-  },
   chip: {
     borderWidth: 1, borderColor: color.borde, backgroundColor: color.velo,
     borderRadius: radio.chip, paddingVertical: 7, paddingHorizontal: 14,
   },
-  opcion: {
-    flexDirection: 'row', alignItems: 'center', gap: esp.sm, minHeight: TOQUE,
-    paddingHorizontal: esp.md, paddingVertical: esp.sm,
-    borderWidth: 1, borderColor: color.borde, borderRadius: radio.tarjeta,
-    backgroundColor: color.lienzo,
-  },
-  marca: {
-    width: 24, height: 24, borderRadius: 12, borderWidth: 1.5,
-    borderColor: color.bordeFuerte, alignItems: 'center', justifyContent: 'center',
-  },
-  contador: {
-    alignItems: 'center', gap: esp.sm, paddingVertical: esp.md,
-  },
-  contadorFila: {
-    flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: esp.lg,
-  },
-  contadorBoton: {
-    width: TOQUE, height: TOQUE, borderRadius: TOQUE / 2,
-    borderWidth: 1, borderColor: color.borde, backgroundColor: color.crema,
-    alignItems: 'center', justifyContent: 'center',
-  },
-  interruptor: { flexDirection: 'row', alignItems: 'center', minHeight: TOQUE, paddingVertical: esp.sm },
-  pista: { width: 46, height: 26, borderRadius: 13, padding: 3, justifyContent: 'center' },
-  perilla: { width: 20, height: 20, borderRadius: 10, backgroundColor: color.perilla },
 });

@@ -4,13 +4,13 @@
  * motor de JavaScript ni del idioma del telefono y se puede comprobar con una prueba.
  */
 
-export const DIAS_SEMANA = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'] as const;
+const DIAS_SEMANA = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'] as const;
 export const MESES = [
   'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre',
 ] as const;
 
 /** Minutos desde los que una sesion cuenta como «de 25 minutos o mas» en el calendario y el historial. */
-export const MINUTOS_SESION_LARGA = 25;
+const MINUTOS_SESION_LARGA = 25;
 
 /** «2026-09-25» → un `Date` local a medianoche (sin el corrimiento de zona horaria de `new Date('2026-09-25')`). */
 export function fechaLocal(fecha: string): Date {

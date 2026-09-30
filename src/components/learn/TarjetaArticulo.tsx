@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import Animated, { useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
+import { useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
 import { Ionicons } from '@expo/vector-icons';
 import { paleta, familia } from '../../theme';
 import type { Tip } from '../../data/catalog';
@@ -13,7 +13,7 @@ import { FotoOscura } from '../ui/FotoOscura';
 import { TextoDesvanecido } from '../ui/TextoDesvanecido';
 import { EstrellaFavorito } from '../hoy/EstrellaFavorito';
 
-export const ALTO_FOTO_ARTICULO = 170;
+const ALTO_FOTO_ARTICULO = 170;
 const ZOOM_PRESIONADO = 0.04;
 const ESCALA_PRESIONADA = 0.02;
 const ALTO_LINEA_EXTRACTO = 22;

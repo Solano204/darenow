@@ -17,7 +17,7 @@ type Registro = Record<string, number>;
 
 
 /* ejercicios · 190 */
-export const IMG_EJERCICIOS: Registro = {
+const IMG_EJERCICIOS: Registro = {
   'ex_1001': require('../../assets/img/ejercicios/ex_1001.jpg'),
   'ex_1002': require('../../assets/img/ejercicios/ex_1002.jpg'),
   'ex_1003': require('../../assets/img/ejercicios/ex_1003.jpg'),
@@ -211,7 +211,7 @@ export const IMG_EJERCICIOS: Registro = {
 };
 
 /* musculos · 53 */
-export const IMG_MUSCULOS: Registro = {
+const IMG_MUSCULOS: Registro = {
   'aductores': require('../../assets/img/musculos/aductores.jpg'),
   'antebrazo': require('../../assets/img/musculos/antebrazo.jpg'),
   'biceps': require('../../assets/img/musculos/biceps.jpg'),
@@ -268,7 +268,7 @@ export const IMG_MUSCULOS: Registro = {
 };
 
 /* rutinas · 30 */
-export const IMG_RUTINAS: Registro = {
+const IMG_RUTINAS: Registro = {
   'rt_001': require('../../assets/img/rutinas/rt_001.jpg'),
   'rt_002': require('../../assets/img/rutinas/rt_002.jpg'),
   'rt_003': require('../../assets/img/rutinas/rt_003.jpg'),
@@ -302,7 +302,7 @@ export const IMG_RUTINAS: Registro = {
 };
 
 /* programas · 12 */
-export const IMG_PROGRAMAS: Registro = {
+const IMG_PROGRAMAS: Registro = {
   'pg_001': require('../../assets/img/programas/pg_001.jpg'),
   'pg_002': require('../../assets/img/programas/pg_002.jpg'),
   'pg_003': require('../../assets/img/programas/pg_003.jpg'),
@@ -318,7 +318,7 @@ export const IMG_PROGRAMAS: Registro = {
 };
 
 /* tips · 52 */
-export const IMG_TIPS: Registro = {
+const IMG_TIPS: Registro = {
   'nut_001': require('../../assets/img/tips/nut_001.jpg'),
   'nut_002': require('../../assets/img/tips/nut_002.jpg'),
   'nut_003': require('../../assets/img/tips/nut_003.jpg'),
@@ -374,7 +374,7 @@ export const IMG_TIPS: Registro = {
 };
 
 /* mitos · 20 */
-export const IMG_MITOS: Registro = {
+const IMG_MITOS: Registro = {
   'myth_001': require('../../assets/img/mitos/myth_001.jpg'),
   'myth_002': require('../../assets/img/mitos/myth_002.jpg'),
   'myth_003': require('../../assets/img/mitos/myth_003.jpg'),
@@ -398,7 +398,7 @@ export const IMG_MITOS: Registro = {
 };
 
 /* motivacion · 21 */
-export const IMG_MOTIVACION: Registro = {
+const IMG_MOTIVACION: Registro = {
   'mot_01': require('../../assets/img/motivacion/mot_01.jpg'),
   'mot_02': require('../../assets/img/motivacion/mot_02.jpg'),
   'mot_03': require('../../assets/img/motivacion/mot_03.jpg'),
@@ -423,7 +423,7 @@ export const IMG_MOTIVACION: Registro = {
 };
 
 /* fondos · 5 */
-export const IMG_FONDOS: Registro = {
+const IMG_FONDOS: Registro = {
   'bienvenida': require('../../assets/img/fondos/bienvenida.jpg'),
   'intro_01': require('../../assets/img/fondos/intro_01.jpg'),
   'intro_02': require('../../assets/img/fondos/intro_02.jpg'),
@@ -444,23 +444,7 @@ const MAPAS: Record<TipoFoto, Registro> = {
   motivacion: IMG_MOTIVACION,
 };
 
-const CARPETA: Record<TipoFoto, string> = {
-  ejercicio: 'ejercicios', musculo: 'musculos', rutina: 'rutinas',
-  programa: 'programas', tip: 'tips', mito: 'mitos', fondo: 'fondos',
-  motivacion: 'motivacion',
-};
-
 /** Fuente de una imagen, o null si el archivo todavia no esta. */
 export function fuente(tipo: TipoFoto, id: string): number | null {
   return MAPAS[tipo][id] ?? null;
-}
-
-/** Ruta que la app muestra en el hueco vacio, para saber que archivo falta. */
-export function rutaEsperada(tipo: TipoFoto, id: string): string {
-  return `img/${CARPETA[tipo]}/${id}.jpg`;
-}
-
-export function cuantasHay(): { puestas: number; tipos: number } {
-  const puestas = Object.values(MAPAS).reduce((n, m) => n + Object.keys(m).length, 0);
-  return { puestas, tipos: Object.keys(MAPAS).length };
 }

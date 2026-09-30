@@ -11,7 +11,7 @@ const PREPARANDO_MS = 1100;
 
 export type TipoPaso = 'unica' | 'multiple' | 'numero' | 'texto';
 
-export interface Paso {
+interface Paso {
   campo: string; tipo: TipoPaso; pregunta: string; ayuda?: string;
   opciones?: { id: string; texto: string; detalle?: string }[];
   obligatorio?: boolean; min?: number; max?: number; sufijo?: string;
@@ -27,7 +27,7 @@ const EQUIPO_ONB = EQUIPO.filter(e => e.onboarding && e.id !== 'ninguno')
     detalle: e.sustituto_casero ? `Si no tienes: ${e.sustituto_casero}` : undefined,
   }));
 
-export const PASOS: Paso[] = [
+const PASOS: Paso[] = [
   { campo: 'objetivo', tipo: 'unica', obligatorio: true,
     pregunta: 'Qué quieres trabajar',
     ayuda: 'Puedes cambiarlo cuando quieras, sin perder tu historial.',

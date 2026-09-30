@@ -16,7 +16,7 @@ import { InsigniaFoto, EtiquetaFoto } from '../ui/InsigniaFoto';
 import { ICONOS_OBJETIVO } from '../ui/iconosObjetivo';
 import { EstrellaFavorito } from '../hoy/EstrellaFavorito';
 
-export const ALTO_FOTO_TARJETA = 180;
+const ALTO_FOTO_TARJETA = 180;
 const ZOOM_PRESIONADO = 0.04;
 const ESCALA_PRESIONADA = 0.02;
 const ALTO_NIVEL = 12;

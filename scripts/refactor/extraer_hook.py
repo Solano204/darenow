@@ -53,11 +53,11 @@ usados = [n for n in dict.fromkeys(declarados) if re.search(r'(?<![\w.])' + n + 
 import textwrap
 lista = textwrap.fill(', '.join(usados), 100, initial_indent='    ', subsequent_indent='    ') + ','
 
-imports = ''.join(re.findall(r'^import [\s\S]*?;\n', src, re.M))
+imports = ''.join(re.findall(r'^import [\s\S]*?;[^\n]*\n', src, re.M))
 
 # declaraciones de modulo (entre los imports y la pantalla) que usa el cuerpo: pasan al hook.
 # Si el JSX o los estilos tambien las usan, el hook las exporta y la pantalla las importa.
-ultimo_imp = list(re.finditer(r'^import [\s\S]*?;\n', src, re.M))[-1].end()
+ultimo_imp = list(re.finditer(r'^import [\s\S]*?;[^\n]*\n', src, re.M))[-1].end()
 zona = src[ultimo_imp:m.start()]
 despues = src[ret:]
 bloques = list(re.finditer(r'^(?:/\*\*[\s\S]*?\*/\n)?(?:const|interface|type) (\w+)[\s\S]*?(?=^(?:/\*\*|const |interface |type |export )|\Z)', zona, re.M))
@@ -113,7 +113,7 @@ if not usa_params:
 llamada = f"  const {{\n{lista}\n  }} = {hook}({args});\n"
 modulo = '@/' + destino[len('src/'):].rsplit('.', 1)[0]
 nuevo = src[:ini_cuerpo] + llamada + src[ret + 1:]
-ultimo_import = list(re.finditer(r'^import [\s\S]*?;\n', nuevo, re.M))[-1]
+ultimo_import = list(re.finditer(r'^import [\s\S]*?;[^\n]*\n', nuevo, re.M))[-1]
 extra = ''.join(', ' + n for n in exportadas)
 nuevo = nuevo[:ultimo_import.end()] + f"import {{ {hook}{extra} }} from '{modulo}';\n" + nuevo[ultimo_import.end():]
 open(pantalla, 'w').write(nuevo)

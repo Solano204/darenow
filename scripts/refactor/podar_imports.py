@@ -36,7 +36,7 @@ for _ in range(3):
         offs = [0]
         for l in lineas:
             offs.append(offs[-1] + len(l) + 1)
-        sentencias = [(m.start(), m.end()) for m in re.finditer(r'^import [\s\S]*?;\n', texto, re.M)]
+        sentencias = [(m.start(), m.end()) for m in re.finditer(r'^import [\s\S]*?;[^\n]*\n', texto, re.M)]
         quitar_nombres = {}
         quitar_sent = set()
         for linea, col, cod, msg in lista:
@@ -59,11 +59,11 @@ for _ in range(3):
                 continue
             s = texto[a:b]
             fuera = quitar_nombres[i]
-            m = re.match(r'^import (type )?(?:(\w+)(?:, )?)?(?:\{([\s\S]*?)\})? from (\'[^\']+\');\n$', s)
+            m = re.match(r'^import (type )?(?:(\w+)(?:, )?)?(?:\{([\s\S]*?)\})? from (\'[^\']+\');([^\n]*)\n$', s)
             if not m:
                 partes.append(s)
                 continue
-            es_tipo, defecto, llaves, modulo = m.groups()
+            es_tipo, defecto, llaves, modulo, cola = m.groups()
             if defecto in fuera:
                 defecto = None
             nombres = []
@@ -79,7 +79,7 @@ for _ in range(3):
                 continue
             cabeza = 'import ' + (es_tipo or '')
             cuerpo = ', '.join(x for x in [defecto, ('{ ' + ', '.join(nombres) + ' }') if nombres else None] if x)
-            linea = f'{cabeza}{cuerpo} from {modulo};\n'
+            linea = f'{cabeza}{cuerpo} from {modulo};{cola}\n'
             if len(linea) > 120 and nombres:
                 linea = f"{cabeza}{(defecto + ', ') if defecto else ''}{{\n  {', '.join(nombres)},\n}} from {modulo};\n"
             partes.append(linea)

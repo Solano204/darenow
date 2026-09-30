@@ -7,15 +7,15 @@ import { Pantalla, Tarjeta, Chip, useHuecoAbajo, useScrollCabecera } from '@/ui/
 import { CabeceraSeccion } from '@/ui/components/AccionSeccion';
 import { GomaTexture } from '@/ui/fx/GomaTexture';
 import { BloqueRevela } from '@/ui/fx/BloqueRevela';
-import { EncabezadoPerfil } from '@/components/profile/EncabezadoPerfil';
-import { EstadisticasPerfil } from '@/components/profile/EstadisticasPerfil';
+import { EncabezadoPerfil } from '@/features/perfil/components/EncabezadoPerfil';
+import { EstadisticasPerfil } from '@/features/perfil/components/EstadisticasPerfil';
 import { SieteDias } from '@/ui/components/SieteDias';
-import { CalendarioHuellas } from '@/components/profile/CalendarioHuellas';
-import { FavoritosPerfil } from '@/components/profile/FavoritosPerfil';
-import { VitrinaLogros } from '@/components/profile/VitrinaLogros';
-import { TarjetaReto } from '@/components/profile/TarjetaReto';
-import { FilaHistorial } from '@/components/profile/FilaHistorial';
-import { FilaAjustes } from '@/components/profile/FilaAjustes';
+import { CalendarioHuellas } from '@/features/perfil/components/CalendarioHuellas';
+import { FavoritosPerfil } from '@/features/perfil/components/FavoritosPerfil';
+import { VitrinaLogros } from '@/features/perfil/components/VitrinaLogros';
+import { TarjetaReto } from '@/features/perfil/components/TarjetaReto';
+import { FilaHistorial } from '@/features/perfil/components/FilaHistorial';
+import { FilaAjustes } from '@/features/perfil/components/FilaAjustes';
 import { textoVisible } from '@/lib/presentacion';
 import type { TipoFavorito } from '@/lib/perfil';
 import {

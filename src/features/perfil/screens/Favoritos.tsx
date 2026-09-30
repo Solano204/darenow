@@ -11,7 +11,7 @@ import { View, Text, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { color, tipo, esp } from '@/ui/theme';
 import { Seccion, Boton, useHuecoAbajo } from '@/ui/components';
-import Carrusel from '@/components/Carrusel';
+import Carrusel from '@/features/perfil/components/Carrusel';
 import { useEstado, imagenRutina } from '@/state/store';
 import {
   porId, musculoPorId, rutinaPorId, programaPorId, TIPS, salaPorId,

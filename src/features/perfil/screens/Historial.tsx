@@ -15,8 +15,8 @@ import { agruparPorMes } from '@/lib/perfil';
 import { PantallaColapsable } from '@/ui/components/PantallaColapsable';
 import { RANGO_SCROLL, RECORRIDO_PX } from '@/ui/fx/HeaderColapsable';
 import { EncabezadoPegado } from '@/ui/components/EncabezadoPegado';
-import { EncabezadoMes } from '@/components/profile/EncabezadoMes';
-import { MesHistorial } from '@/components/profile/FilaHistorialCompleta';
+import { EncabezadoMes } from '@/features/perfil/components/EncabezadoMes';
+import { MesHistorial } from '@/features/perfil/components/FilaHistorialCompleta';
 
 /** Las primeras filas ya entraron escalonadas en esta sesion de la app: las siguientes veces aparecen puestas. */
 let historialAnimado = false;

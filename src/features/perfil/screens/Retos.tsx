@@ -14,7 +14,7 @@ import { useEstado } from '@/state/store';
 import { PantallaColapsable } from '@/ui/components/PantallaColapsable';
 import { NotaEntrenador } from '@/ui/components/NotaEntrenador';
 import { BloqueRevela } from '@/ui/fx/BloqueRevela';
-import { TarjetaRetoCompleta } from '@/components/profile/TarjetaRetoCompleta';
+import { TarjetaRetoCompleta } from '@/features/perfil/components/TarjetaRetoCompleta';
 
 /** Las primeras tarjetas entran escalonadas; una que llega por scroll no espera a las de arriba. */
 const TARJETAS_ESCALONADAS = 4;

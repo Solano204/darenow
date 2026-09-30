@@ -16,7 +16,7 @@ import { useConsentimientoMedidas, pedirConsentimientoMedidas } from '@/state/co
 import { unidadDeMedicion } from '@/lib/textosVisibles';
 import { PantallaColapsable } from '@/ui/components/PantallaColapsable';
 import { NotaEntrenador } from '@/ui/components/NotaEntrenador';
-import { FilaMedicion } from '@/components/profile/FilaMedicion';
+import { FilaMedicion } from '@/features/perfil/components/FilaMedicion';
 
 export default function Mediciones({ navigation }: any) {
   const { estado, guardarMedicion } = useEstado();

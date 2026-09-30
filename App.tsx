@@ -19,6 +19,7 @@ import { ProveedorMagnesia } from './src/components/fx/MagnesiaOverlay';
 import { Entrada } from './src/components/fx/Entrada';
 import { TabBarGoma } from './src/components/ui/TabBarGoma';
 import { resorteTap } from './src/theme';
+import { mark as perfMark } from './src/dev/perfMarks'; // perf:R1
 
 // Se queda visible hasta que las fuentes resuelvan (cargadas o no): nada
 // de texto invisible esperando fuente, ni un flash de la fuente del
@@ -185,6 +186,7 @@ export default function App() {
     // renderizando (fontFamily desconocida cae a la fuente del sistema
     // sola, RN no revienta), pero la app no se queda en el splash para
     // siempre esperando algo que no va a llegar.
+    if (fontsLoaded || fontError) perfMark('fonts-ready'); // perf:R1
     if (fontsLoaded || fontError) SplashScreen.hideAsync().catch(() => {});
   }, [fontsLoaded, fontError]);
 

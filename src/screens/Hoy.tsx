@@ -45,6 +45,7 @@ import {
   RUTINAS, PROGRAMAS, EJERCICIOS, MUSCULOS, TIPS, programaPorId, nombreGoal,
 } from '../data/catalog';
 import { saludo } from '../data/mensajes';
+import { mark as perfMark } from '../dev/perfMarks'; // perf:R1
 
 const SEPARACION_MODULOS = 48;
 const SEPARACION_BLOQUES = 32;
@@ -68,6 +69,7 @@ export default function Hoy({ navigation }: { navigation: NavigationProp<ParamLi
   const [refrescando, setRefrescando] = useState(false);
   const temporizador = useRef<ReturnType<typeof setTimeout> | null>(null);
   useEffect(() => () => { if (temporizador.current) clearTimeout(temporizador.current); }, []);
+  useEffect(() => { requestAnimationFrame(() => perfMark('hoy-interactive')); }, []); // perf:R1
 
   const perfilMotor: Perfil = perfil;
   const stats = useMemo(() => estadisticas(sesiones), [sesiones]);

@@ -1,0 +1,74 @@
+modules 2743
+total output code KB 9029.96875
+--- top grupos por tamaño de salida de Metro (transformado, antes de Hermes)
+  1519.0 KB   296 mods  react-native-reanimated
+  1460.9 KB   447 mods  react-native
+  1310.1 KB   211 mods  app: src/components
+   590.1 KB    64 mods  @expo/vector-icons
+   530.9 KB   251 mods  @shopify/react-native-skia
+   488.9 KB    21 mods  app: assets/data (JSON catalogo)
+   338.6 KB   781 mods  app: assets (require stubs)
+   337.6 KB     4 mods  react-reconciler
+   314.7 KB    24 mods  app: src/screens
+   230.2 KB    76 mods  @react-navigation/core
+   203.2 KB    43 mods  react-native-worklets
+   185.3 KB    39 mods  expo
+   117.5 KB    50 mods  react-native-screens
+   103.3 KB    15 mods  @react-native/virtualized-lists
+    78.0 KB    37 mods  @react-navigation/elements
+    76.7 KB    18 mods  expo-file-system
+    58.9 KB    27 mods  @react-navigation/native
+    50.1 KB    15 mods  @react-navigation/bottom-tabs
+    48.8 KB    10 mods  app: src/store
+    48.5 KB    10 mods  @react-navigation/routers
+    48.1 KB    21 mods  semver
+    46.6 KB    10 mods  @react-navigation/native-stack
+    46.4 KB    34 mods  expo-modules-core
+    44.1 KB     4 mods  app: src/media
+    42.1 KB    10 mods  expo-audio
+    39.5 KB    12 mods  expo-image
+    39.3 KB     1 mods  whatwg-url-minimum
+    37.4 KB    10 mods  app: src/utils
+    30.5 KB     4 mods  app: src/data
+    28.0 KB    12 mods  expo-asset
+    25.8 KB     1 mods  regenerator-runtime
+    23.3 KB     3 mods  color-convert
+    22.3 KB     1 mods  event-target-shim
+    21.8 KB     7 mods  app: src/theme
+    21.6 KB    11 mods  expo-font
+    21.1 KB     4 mods  scheduler
+    20.4 KB     2 mods  @react-native/js-polyfills
+    20.4 KB     1 mods  whatwg-fetch
+    20.0 KB     2 mods  app: src/session
+    18.8 KB     6 mods  @react-native-async-storage/async-storage
+--- top single modules
+   336.6 KB  node_modules/react-reconciler/cjs/react-reconciler.production.js
+   324.2 KB  node_modules/react-native/Libraries/Renderer/implementations/ReactFabric-prod.js
+   212.5 KB  node_modules/@expo/vector-icons/build/vendor/react-native-vector-icons/glyphmaps/MaterialCommunityIcons.json
+    95.2 KB  node_modules/expo/virtual/streams.js
+    57.6 KB  node_modules/@expo/vector-icons/build/vendor/react-native-vector-icons/glyphmaps/FontAwesome6Free.json
+    56.7 KB  assets/data/10_exercises_lower.json
+    54.0 KB  node_modules/@expo/vector-icons/build/vendor/react-native-vector-icons/glyphmaps/MaterialIcons.json
+    50.8 KB  node_modules/react-native-reanimated/src/layoutReanimation/defaultAnimations/Zoom.ts
+    49.5 KB  node_modules/@react-native/virtualized-lists/Lists/VirtualizedList.js
+    39.7 KB  assets/data/13_exercises_core.json
+    39.7 KB  node_modules/react-native-reanimated/src/layoutReanimation/defaultAnimations/Flip.ts
+    39.6 KB  src/components/session/ReproductorLayout.tsx
+    39.3 KB  node_modules/whatwg-url-minimum/dist/whatwg-url-minimum.mjs
+    38.5 KB  node_modules/react-native-reanimated/src/layoutReanimation/defaultAnimations/Bounce.ts
+    37.9 KB  node_modules/react-native-reanimated/src/animation/util.ts
+    37.6 KB  assets/data/16_exercises_facial.json
+    37.5 KB  node_modules/@expo/vector-icons/build/vendor/react-native-vector-icons/glyphmaps/FontAwesome6Free_meta.json
+    37.1 KB  assets/data/17_exercises_posture_mobility.json
+    36.7 KB  assets/data/14_exercises_calisthenics.json
+    36.7 KB  assets/data/12_exercises_pull.json
+    36.5 KB  assets/data/11_exercises_push.json
+    36.5 KB  node_modules/react-native-reanimated/src/layoutReanimation/defaultAnimations/Fade.ts
+    35.4 KB  node_modules/@expo/vector-icons/build/vendor/react-native-vector-icons/glyphmaps/Ionicons.json
+    34.7 KB  node_modules/react-native-reanimated/src/layoutReanimation/defaultAnimations/Rotate.ts
+    34.4 KB  src/screens/Ajustes.tsx
+    34.2 KB  node_modules/@shopify/react-native-skia/src/skia/types/Matrix4.ts
+    34.0 KB  node_modules/react-native-reanimated/src/Colors.ts
+    32.6 KB  src/screens/EditorRutina.tsx
+    32.4 KB  node_modules/react-native/src/private/featureflags/ReactNativeFeatureFlags.js
+    32.1 KB  node_modules/@expo/vector-icons/build/vendor/react-native-vector-icons/glyphmaps/FontAwesome5Free.json

@@ -32,6 +32,7 @@ import nutrition from '../../assets/data/32_nutrition.json';
 import glossary from '../../assets/data/33_glossary_faq.json';
 import challenges from '../../assets/data/40_challenges_achievements.json';
 import measurements from '../../assets/data/41_measurements.json';
+import { mark as perfMark } from '../dev/perfMarks'; // perf:R1
 
 /* ------------------------------------------------------------------ */
 /* Tipos                                                               */
@@ -220,3 +221,4 @@ export const ESTADISTICAS = {
   sinEquipo: EJERCICIOS.filter(e => e.equipment.includes('ninguno')).length,
   silenciosos: EJERCICIOS.filter(e => e.impact < 2 && e.noise < 2).length,
 };
+perfMark('catalog-ready'); // perf:R1

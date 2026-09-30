@@ -1,0 +1,131 @@
+# Medición de rendimiento · DARENOW
+
+Comandos exactos de la fase R1 (línea base). Se repiten **igual** en R7 para comparar.
+Todo se corre desde la raíz del repo.
+
+## 0. Estado del proyecto antes de medir
+
+```bash
+npm ci                         # .npmrc ya trae legacy-peer-deps=true
+npx tsc --noEmit               # línea base R1: 4 errores, todos en tests/ (ver docs/perf/INVENTARIO.md)
+npm run lint:color             # único lint del repo (no hay ESLint configurado)
+npx expo-doctor
+for t in player engine ui rutinas borrarTodo detalleRutina detallePrograma musculos aprender perfil ajustes; do npm run -s test:$t | tail -1; done
+```
+
+## 1. Bundle (Expo Atlas)
+
+`expo export` con Atlas instala `expo-atlas` y lo agrega a `package.json`. Para no ensuciar
+el repo, instálalo sin guardarlo y revierte al terminar:
+
+```bash
+npm install --no-save expo-atlas@^0.4.0
+EXPO_UNSTABLE_ATLAS=true npx expo export --platform android --output-dir /tmp/darenow-dist
+npx expo-atlas .expo/atlas.jsonl        # abre el visor en el navegador
+git checkout package.json package-lock.json   # por si el CLI los tocó
+```
+
+En un contenedor sin red hacia api.expo.dev agrega `EXPO_OFFLINE=1`.
+
+Tamaños a registrar:
+
+```bash
+ls -l /tmp/darenow-dist/_expo/static/js/android/*.hbc        # bundle Hermes
+du -sh /tmp/darenow-dist/assets                                # assets empaquetados
+# assets por tipo
+python3 - <<'EOF'
+import json, os, collections
+d = '/tmp/darenow-dist'
+m = json.load(open(f'{d}/metadata.json'))['fileMetadata']['android']['assets']
+s = collections.Counter(); c = collections.Counter()
+for a in m:
+    s[a['ext']] += os.path.getsize(f"{d}/{a['path']}"); c[a['ext']] += 1
+for e in s: print(e, c[e], round(s[e] / 1048576, 2), 'MB')
+EOF
+```
+
+## 2. Build de release con marcas de arranque
+
+Las marcas de `src/dev/perfMarks.ts` solo existen si la variable está activa **al empaquetar**:
+
+```bash
+EXPO_PUBLIC_PERF=1 npx expo run:android --variant release
+```
+
+Para medir el arranque "real" de producción (sin marcas), repite sin la variable.
+
+## 3. Condiciones
+
+- Mismo dispositivo físico de gama baja/media por USB (anotar modelo y versión de Android).
+- Mismos datos (misma cuenta y progreso), sin otras apps abiertas, batería > 50 %.
+- Cada medición 3 veces: se reporta promedio y peor valor.
+
+## 4. Arranque en frío
+
+```bash
+PKG=app.forja.fitness
+for i in 1 2 3; do
+  adb shell am force-stop $PKG
+  adb shell pm trim-caches 999G >/dev/null 2>&1   # opcional
+  sleep 2
+  adb logcat -c
+  adb shell am start -W $PKG/.MainActivity | grep -E "TotalTime|WaitTime"
+  sleep 8
+  adb logcat -d -s ReactNativeJS | grep "\[perf\]"
+done
+```
+
+La línea `[perf]` trae, en ms desde `js-start`: `catalog-ready`, `fonts-ready`,
+`storage-ready`, `hoy-interactive`, y `bundle-start->js-start`.
+
+Nota: `hoy-interactive` solo se marca si la app entra directo a Hoy. Si la Bienvenida
+del día aún no se vio, abre la app una vez antes de medir (la Bienvenida se muestra una
+vez al día).
+
+## 5. Fluidez
+
+Perf Monitor: en un build de release no hay menú de desarrollo; usa Flashlight.
+
+```bash
+# instalar Flashlight (una vez)
+curl https://get.flashlight.dev | bash
+# medir un escenario (manejarlo a mano en el teléfono mientras corre)
+flashlight measure --bundleId app.forja.fitness
+```
+
+Escenarios fijos (3 corridas cada uno), definidos en `docs/perf/BASELINE.md` §5.
+
+Si se necesita el Perf Monitor de RN (FPS UI/JS), usar un build `--variant release` con
+`EXPO_PUBLIC_PERF=1` no basta: el Perf Monitor solo existe en debug. En ese caso se reporta
+solo Flashlight (FPS UI, CPU por hilo, RAM) y se anota en BASELINE.md.
+
+## 6. Memoria
+
+```bash
+adb shell dumpsys meminfo app.forja.fitness | grep -E "TOTAL PSS|TOTAL:" | head -1
+```
+
+Tomar: al arrancar, tras los 6 escenarios, y tras repetir el escenario 3 veinte veces.
+
+## 7. Re-renders
+
+React DevTools solo funciona con el build de desarrollo:
+
+```bash
+npx expo start --dev-client     # y en otra terminal: npx react-devtools
+```
+
+Profiler → "Highlight updates when components render". Exportar cada perfil a
+`docs/perf/profiles/<escenario>-<n>.json`. Los tiempos absolutos de un build dev no se
+comparan con release; lo que interesa es **qué** se re-renderiza y cuántas veces.
+
+## Quitar la instrumentación
+
+Toda la instrumentación está en `src/dev/perfMarks.ts` y en líneas marcadas con `// perf:R1`.
+Un solo paso:
+
+```bash
+grep -rl "perf:R1" index.ts App.tsx src | xargs sed -i '/perf:R1/d' && rm -r src/dev
+```
+
+(En macOS: `sed -i ''`.) Después, `npx tsc --noEmit` debe seguir igual.

@@ -14,6 +14,7 @@ import React, { createContext, useContext, useEffect, useMemo, useState, useCall
 import { AppState } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { PERFIL_INICIAL, FAVORITOS_VACIOS, ESTADO_INICIAL } from './estadoInicial';
+import { mark as perfMark } from '../dev/perfMarks'; // perf:R1
 
 export { PERFIL_INICIAL, FAVORITOS_VACIOS, ESTADO_INICIAL };
 
@@ -253,6 +254,7 @@ export function ProveedorEstado({ children }: { children: React.ReactNode }) {
           setEstado(cargado);
         }
       } catch { /* arranca limpio */ }
+      perfMark('storage-ready'); // perf:R1
       setCargando(false);
     })();
   }, []);

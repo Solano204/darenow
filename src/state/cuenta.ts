@@ -22,8 +22,8 @@ import { useEstado } from './store';
 import {
   CLAVE_ESTADO, CLAVE_VOZ, CLAVE_HAPTICS, CLAVE_MAQUINA, CLAVE_SESION_EN_CURSO as CLAVE_SESION, CLAVE_CONSENTIMIENTO_MEDIDAS,
 } from '@/storage/claves';
-import { borrarRespaldosCache } from './respaldo';
-import { seleccionarClavesForja } from './clavesForja';
+import { borrarRespaldosCache } from '@/storage/respaldo';
+import { seleccionarClavesForja } from '@/storage/clavesForja';
 
 import { CLAVE_CUENTA as CLAVE } from '@/storage/claves';
 

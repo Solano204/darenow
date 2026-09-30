@@ -17,7 +17,7 @@ import { useHapticosActivos } from '@/state/haptics';
 import { useVozActiva } from '@/state/voz';
 import { useCuenta } from '@/state/cuenta';
 import { useConsentimientoMedidas, pedirConsentimientoMedidas } from '@/state/consentimientoMedidas';
-import { exportarProgreso, elegirRespaldo, aplicarRespaldo } from '@/state/respaldo';
+import { exportarProgreso, elegirRespaldo, aplicarRespaldo } from '@/storage/respaldo';
 import { URL_PRIVACIDAD, URL_TERMINOS, URL_BORRAR_CUENTA } from '@/lib/legal';
 import { EQUIPO, GOALS, porId, nombreGoal } from '@/data/catalog';
 import { textoVisible } from '@/lib/presentacion';

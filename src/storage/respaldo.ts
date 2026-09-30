@@ -23,10 +23,10 @@ import { File, Paths } from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
 import * as DocumentPicker from 'expo-document-picker';
 import { version as APP_VERSION } from '../../package.json';
-import { hoy } from './store';
+import { hoy } from '@/state/store';
 import {
   CLAVE_ESTADO, CLAVE_SESION_EN_CURSO as CLAVE_SESION, CLAVE_VOZ, CLAVE_HAPTICS, CLAVE_MAQUINA, CLAVE_CUENTA,
-} from '@/storage/claves';
+} from './claves';
 
 /** Version del formato del archivo de respaldo. Sube si cambia su forma. */
 const FORMATO_ACTUAL = 1;

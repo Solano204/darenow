@@ -6,10 +6,7 @@
  */
 
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import {
-  View, Text, ScrollView, StyleSheet, Pressable, AccessibilityInfo, useWindowDimensions,
-  type StyleProp, type TextStyle,
-} from 'react-native';
+import { View, Text, ScrollView, StyleSheet, Pressable, AccessibilityInfo, useWindowDimensions } from 'react-native';
 import Animated, {
   LinearTransition, useAnimatedStyle, useSharedValue, withTiming, type SharedValue,
 } from 'react-native-reanimated';
@@ -25,7 +22,6 @@ import { GomaTexture } from '@/ui/fx/GomaTexture';
 import { FotoParallax } from '@/features/onboarding/components/FotoParallax';
 import { TituloEstampado } from '@/features/onboarding/components/TituloEstampado';
 import { TituloMascara } from '@/ui/fx/TituloMascara';
-import { Odometro } from '@/ui/fx/Odometro';
 import { DialTiempo } from '@/ui/fx/DialTiempo';
 import { TachadoMito } from '@/ui/fx/TachadoMito';
 import { Entrada } from '@/ui/fx/Entrada';
@@ -33,6 +29,7 @@ import { fuente } from '@/media/registry';
 import { usePresentacion, type Lamina } from '@/features/onboarding/hooks/usePresentacion';
 import { useFirstView } from '@/features/onboarding/hooks/useFirstView';
 import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
+import { TextoConCifra } from '@/features/onboarding/components/TextoConCifra';
 
 const FRACCION_FOTO = 0.62;
 const FACTOR_CUERPO = 1.15;
@@ -51,7 +48,6 @@ const TIEMPOS = [
 const INTERVALO_INSIGNIAS_MS = 150;
 const INTERVALO_ETIQUETAS_MS = 40;
 const RETRASO_NOTA_CIFRA_MS = 200;
-const ESCALA_CIFRA = 1.2;
 
 /** «Gratis. Todo. Sin trucos» se lee en tres golpes; el resto de titulos va en un solo bloque. */
 function lineasDeTitulo(titulo: string): string[] {
@@ -246,26 +242,6 @@ function useCapa(k: number, progreso: SharedValue<number>, ancho: number, factor
   }, [k, ancho, factor, movimiento, renders.current]);
 }
 
-/** Texto donde una cifra rueda en un odometro; el resto va como texto normal, en la misma linea base. */
-function TextoConCifra({ texto, cifra, estilo, activo, animar, retraso }: {
-  texto: string; cifra?: number; estilo: StyleProp<TextStyle>; activo: boolean; animar: boolean; retraso: number;
-}) {
-  if (cifra === undefined) return <Text style={estilo}>{texto}</Text>;
-  const corte = texto.indexOf(String(cifra));
-  const antes = texto.slice(0, corte);
-  const despues = texto.slice(corte + String(cifra).length);
-
-  return (
-    <View accessible accessibilityLabel={texto}>
-      <View style={s.filaCifra} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>
-        {antes !== '' && <Text style={estilo} maxFontSizeMultiplier={ESCALA_CIFRA}>{antes}</Text>}
-        <Odometro valor={cifra} estilo={estilo} activo={activo} animar={animar} retraso={retraso} />
-        {despues !== '' && <Text style={[estilo, s.resto]} maxFontSizeMultiplier={ESCALA_CIFRA}>{despues}</Text>}
-      </View>
-    </View>
-  );
-}
-
 const s = StyleSheet.create({
   raiz: { flex: 1, backgroundColor: paleta.goma },
   foto: { position: 'absolute', top: 0, left: 0 },
@@ -282,8 +258,6 @@ const s = StyleSheet.create({
   contenidoLamina: { flexGrow: 1, justifyContent: 'flex-end', paddingHorizontal: MARGEN_PANTALLA },
   dial: { position: 'absolute', left: 0, right: 0, alignItems: 'center' },
   cuerpo: { marginTop: esp.md - 4 },
-  filaCifra: { flexDirection: 'row', alignItems: 'baseline' },
-  resto: { flexShrink: 1 },
   etiquetas: { flexDirection: 'row', flexWrap: 'wrap', gap: esp.sm, marginTop: esp.md - 4 },
   etiqueta: {
     backgroundColor: paleta.gomaAlta, borderWidth: 1, borderColor: paleta.gomaBorde,

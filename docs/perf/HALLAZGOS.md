@@ -34,6 +34,25 @@ código se da por confirmado hasta entonces.
 | H-23 | **`HojaSalida` sin `onRequestClose`**: el botón atrás de Android no hace nada en la hoja de salida de la sesión | `session/HojaSalida.tsx:22` | Código | **P2** (funcional, no de rendimiento; se anota para no perderlo) | R2 | Bajo |
 | H-24 | **`setState` en reacciones de scroll y cada 4 s en descanso**: `IndiceSecciones:48`, `EncabezadoPegado:37`, `ReproductorLayout:146` (`setInhala` re-renderiza el layout completo) | INVENTARIO §3.6 | Código | **P2** (P1 combinado con H-02/H-03) | R4 / R6 | Bajo |
 
+## Estado tras R2 (2026-09-30)
+
+| ID | Fase | Estado | Detalle |
+|---|---|---|---|
+| H-14 | R2 | ✅ Resuelto | Código muerto borrado; `npx knip` sin hallazgos (2 excepciones documentadas) |
+| H-15 | R2 | ✅ Resuelto | 11 archivos divididos; ninguno pasa de 300 líneas salvo `media/registry.ts` (generado) |
+| H-16 | R2 | ✅ Resuelto | `tsc --noEmit` 0 errores, 0 `any`, todas las pruebas en verde |
+| H-17 | R2 | ✅ Resuelto | `DesenfoqueIos.ios.tsx` / `.tsx`; `expo-blur` sigue en Android por `Vidrio.tsx` |
+| H-22 | R2 | 🟡 Parcial | 3 fusiones sin cambio visual + `Tocable`; el resto se ve distinto y se dejó (ver `R2_REPORTE.md`) |
+| H-23 | R2 | ⏸️ Sin cambio | Arreglarlo cambia comportamiento; queda para decisión del dueño |
+
+Nuevos, descubiertos en R2:
+
+| ID | Problema | Evidencia | Tipo | Impacto | Fase | Riesgo |
+|---|---|---|---|---|---|---|
+| H-25 | 163 `exhaustive-deps` y 131 avisos del React Compiler | `eslint-suppressions.json`; `npm run lint` | Medida | P2 (algunos pueden ser efectos que corren de más) | R4 | Medio: cambiar dependencias cambia cuándo corre un efecto |
+| H-26 | `app.json` pide `userInterfaceStyle: dark` sin `expo-system-ui` | knip; documentación de Expo | Código | P2 | R3 | Medio: cambia el fondo nativo del arranque |
+| H-27 | `assets/img/musculos/deltoide_posterior..jpg` duplicado y sin uso; `assetBundlePatterns: ["**/*"]` | `R2_REPORTE.md` | Medida | P2 (peso del APK) | R5 / R3 | Bajo |
+
 ## Resumen
 
 1. **H-01 Context gigante**: un favorito o un «tip leído» re-renderiza las 4 pestañas y todo lo abierto en el stack → **R4**.

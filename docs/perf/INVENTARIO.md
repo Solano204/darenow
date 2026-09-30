@@ -1,5 +1,7 @@
 # DARENOW · Inventario de estructura y código (R1)
 
+> **Rutas:** este inventario es de R1, antes de la reorganización. Equivalencias en `docs/perf/R2_MOVIMIENTOS.md`; estructura actual en `docs/ARQUITECTURA.md`.
+
 Fecha: 2026-09-30 · Commit: `48b113b` · Solo lectura: esta fase no cambió código de la app.
 
 ## 0. Estado antes de medir

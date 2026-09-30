@@ -1,5 +1,7 @@
 # FUNCIONALIDAD congelada
 
+> **Rutas:** este documento se escribió antes de la reorganización R2. La equivalencia de cada ruta citada (`src/screens/…`, `src/components/…`, `src/store/…`) está en `docs/perf/R2_MOVIMIENTOS.md`, y la estructura actual en `docs/ARQUITECTURA.md`.
+
 Contrato del rediseño visual. Nada de lo que está aquí puede cambiar. Se recorre al final de cada fase y se marca cada punto.
 
 Estado de la línea base (antes de tocar estilos): `tsc --noEmit` tiene 4 errores preexistentes, todos en `tests/` (`player.test.ts` x3, `ui.test.ts` x1). `test:ui` 21, `test:player` 63, `test:engine` 74, `test:rutinas` 31, `test:borrarTodo` 14: todas en verde.

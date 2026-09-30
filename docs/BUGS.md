@@ -1,5 +1,7 @@
 # Errores detectados (sin corregir)
 
+> **Rutas:** este documento se escribió antes de la reorganización R2. La equivalencia de cada ruta citada (`src/screens/…`, `src/components/…`, `src/store/…`) está en `docs/perf/R2_MOVIMIENTOS.md`, y la estructura actual en `docs/ARQUITECTURA.md`.
+
 Encontrados al auditar la sesión de entrenamiento (Parte 4, BUG-1 a BUG-7), Explorar (Parte 6, BUG-8 y BUG-9) el editor de rutinas (Parte 7, BUG-10 y BUG-11), el detalle de rutina (Parte 8, BUG-12), la ficha de músculo (Parte 10, BUG-13) la pestaña Yo (Parte 12, BUG-14 a BUG-17) Mediciones (Parte 13, BUG-18) y Ajustes (Parte 14, BUG-19 y BUG-20). **Ninguno está corregido**: el rediseño no cambia funcionalidad y la corrección de cada uno espera la aprobación del dueño. Ninguno bloquea el rediseño.
 
 ## BUG-1. «Programa completo» se otorga con la primera sesión guardada, aunque no se haya hecho nada

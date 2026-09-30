@@ -7,8 +7,10 @@ Todo se corre desde la raíz del repo.
 
 ```bash
 npm ci                         # .npmrc ya trae legacy-peer-deps=true
-npx tsc --noEmit               # línea base R1: 4 errores, todos en tests/ (ver docs/perf/INVENTARIO.md)
-npm run lint:color             # único lint del repo (no hay ESLint configurado)
+npx tsc --noEmit               # R1: 4 errores en tests/ · desde R2: 0
+npm run lint                   # ESLint (desde R2): 0 errores
+npm run lint:color
+npm run test:unit              # Jest (desde R2)
 npx expo-doctor
 for t in player engine ui rutinas borrarTodo detalleRutina detallePrograma musculos aprender perfil ajustes; do npm run -s test:$t | tail -1; done
 ```

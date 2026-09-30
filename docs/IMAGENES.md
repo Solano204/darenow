@@ -1,5 +1,7 @@
 # Imágenes por generar
 
+> **Rutas:** este documento se escribió antes de la reorganización R2. La equivalencia de cada ruta citada (`src/screens/…`, `src/components/…`, `src/store/…`) está en `docs/perf/R2_MOVIMIENTOS.md`, y la estructura actual en `docs/ARQUITECTURA.md`.
+
 Mientras estas imágenes no existan, la app usa las fotos actuales tratadas con Skia (`FotoTratada`: −35 % de saturación, exposición 0.72, sombras hacia azul frío, degradado a `goma`). Con las nuevas el diseño sube de nivel; no hace falta tocar código salvo un flag.
 
 ## Dónde guardarlas

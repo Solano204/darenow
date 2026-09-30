@@ -93,7 +93,7 @@ Entrada escalonada de las tarjetas, hundido al tocar, deslizamiento con direcci�
 
 ### Anuncios
 
-Tres piezas en `src/components/Anuncio.tsx`, ninguna dentro de una serie:
+Tres piezas en `src/ui/components/Anuncio.tsx`, ninguna dentro de una serie:
 
 - **Banner** pequeño, solo en la bienvenida, lejos del botón.
 - **Intersticial** a pantalla completa con cuenta atrás y botón de saltar. Máximo uno al día, y nunca la primera vez que alguien abre la app.

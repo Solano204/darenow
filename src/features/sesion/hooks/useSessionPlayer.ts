@@ -30,16 +30,18 @@
  * la sesion, no acciones del usuario.
  */
 
-import { useCallback, useEffect, useEffectEvent, useMemo, useRef, useReducer } from 'react';
+import { useCallback, useEffect, useEffectEvent, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { createStore, useStore, type StoreApi } from 'zustand';
+import { useShallow } from 'zustand/react/shallow';
 import { AppState } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import type { ItemSesion } from '@/lib/engine/session';
 import { crearReducer, estadoInicial, esUnilateral, avanzarReloj } from '@/features/sesion/utils/playerMachine';
-import type { EstadoPlayer, Fase } from '@/features/sesion/utils/playerMachine';
-import { prepararSonido, soltarSonido, activarSonido, reproducir } from '@/media/sonido';
+import type { EstadoPlayer } from '@/features/sesion/utils/playerMachine';
+import type { Accion } from '@/features/sesion/utils/playerTipos';
+import { prepararSonido, soltarSonido, activarSonido } from '@/media/sonido';
 import { CLAVE_SESION_EN_CURSO as CLAVE_GUARDADO } from '@/storage/claves';
 
-export type { Fase };
 
 
 export interface SesionEnCurso {
@@ -62,39 +64,72 @@ export async function borrarSesionGuardada(): Promise<void> {
   await AsyncStorage.removeItem(CLAVE_GUARDADO).catch(() => {});
 }
 
+/**
+ * El estado del reproductor vive en un store por sesion (R4). El reloj lo cambia cada segundo,
+ * pero la pantalla se suscribe solo a su «estructura» (fase, ejercicio, serie, lado, series
+ * hechas): el tiempo lo leen el numero y unos pocos componentes hoja (`useTiempoSesion`). La
+ * maquina, el intervalo de 1 s y las transiciones son los mismos de siempre.
+ */
+export type TiendaSesion = StoreApi<{ estado: EstadoPlayer }>;
+
+/** Lo que cambia al pasar de fase, de serie o de ejercicio; no con cada segundo. */
+export type EstructuraSesion = Omit<EstadoPlayer, 'restanteS' | 'transcurridoS' | 'descansoAcumuladoS'>;
+
+const estructuraDe = (e: EstadoPlayer): EstructuraSesion => ({
+  fase: e.fase, faseAnterior: e.faseAnterior, indice: e.indice, serieNum: e.serieNum, lado: e.lado,
+  hechas: e.hechas, anterior: e.anterior,
+});
+
+/** Segundos restantes de la fase: solo para quien los pinta o reacciona a cada segundo. */
+export function useTiempoSesion(tienda: TiendaSesion): number {
+  return useStore(tienda, s => s.estado.restanteS);
+}
+
+/** Un valor calculado del estado (con el tiempo incluido) que cambia pocas veces: p. ej. «en cuenta final». */
+export function useDeSesion<T>(tienda: TiendaSesion, sel: (e: EstadoPlayer) => T): T {
+  return useStore(tienda, s => sel(s.estado));
+}
+
 export function useSessionPlayer(
   items: ItemSesion[], sonido = true, restaurar?: SesionEnCurso | null,
 ) {
-  // React aplica cada accion con el reducer del render que la procesa, asi que basta con
-  // rehacerlo cuando cambia `items`: si la pantalla sustituye un ejercicio a mitad de sesion,
-  // el motor ve la lista nueva de inmediato en vez de quedarse con la que habia al montar.
+  // El reducer se rehace cuando cambia `items` y `enviar` usa siempre el ultimo: si la pantalla
+  // sustituye un ejercicio a mitad de sesion, el motor ve la lista nueva de inmediato.
   const reducer = useMemo(() => crearReducer({ items }), [items]);
-  const [estado, enviar] = useReducer(reducer, items, its => {
-    if (!restaurar) return estadoInicial(its);
+  const reducerRef = useRef(reducer);
+  useLayoutEffect(() => { reducerRef.current = reducer; }, [reducer]);
+  const [tienda] = useState<TiendaSesion>(() => createStore<{ estado: EstadoPlayer }>()(() => {
+    if (!restaurar) return { estado: estadoInicial(items) };
     const segundos = Math.max(0, Math.round((Date.now() - restaurar.guardadoEn) / 1000));
-    return avanzarReloj(restaurar.estado, its, segundos);
-  });
+    return { estado: avanzarReloj(restaurar.estado, items, segundos) };
+  }));
+  const enviar = useCallback(
+    (a: Accion) => tienda.setState(s => ({ estado: reducerRef.current(s.estado, a) })),
+    [tienda],
+  );
+  const estado = useStore(tienda, useShallow(s => estructuraDe(s.estado)));
 
   // Reloj. Un solo intervalo para toda la sesion.
   useEffect(() => {
     if (estado.fase === 'fin' || estado.fase === 'pausa') return;
     const id = setInterval(() => enviar({ t: 'tick' }), 1000);
     return () => clearInterval(id);
-  }, [estado.fase]);
+  }, [estado.fase, enviar]);
 
   /* ---------------------------------------------------------------- */
   /* Sesion interrumpida: segundo plano o app cerrada                  */
   /* ---------------------------------------------------------------- */
 
-  // El listener se registra una sola vez y, con `useEffectEvent`, siempre lee el estado y los
-  // items mas frescos al disparar, sin re-suscribirse cada segundo con cada tick.
+  // El listener se registra una sola vez y lee el estado y los items mas frescos al disparar
+  // (el estado, del store; los items, con `useEffectEvent`), sin re-suscribirse con cada tick.
   const fondoDesde = useRef<number | null>(null);
   const alCambiarApp = useEffectEvent((st: string) => {
     if (st !== 'active') {
       fondoDesde.current = Date.now();
-      if (estado.fase !== 'fin') {
+      const actual = tienda.getState().estado;
+      if (actual.fase !== 'fin') {
         AsyncStorage.setItem(CLAVE_GUARDADO, JSON.stringify({
-          items, estado, guardadoEn: Date.now(),
+          items, estado: actual, guardadoEn: Date.now(),
         } as SesionEnCurso)).catch(() => {});
       }
       return;
@@ -116,13 +151,14 @@ export function useSessionPlayer(
   // Ademas del respaldo por segundo plano, cada serie que se marca queda
   // guardada: si la app se cierra de golpe sin pasar por background,
   // "nada se pierde" sigue siendo cierto.
-  const alCambiarEstadoHechasLength = useEffectEvent(() => {
-    if (estado.hechas.length === 0 || estado.fase === 'fin') return;
+  const alCambiarHechas = useEffectEvent(() => {
+    const actual = tienda.getState().estado;
+    if (actual.hechas.length === 0 || actual.fase === 'fin') return;
     AsyncStorage.setItem(CLAVE_GUARDADO, JSON.stringify({
-      items, estado, guardadoEn: Date.now(),
+      items, estado: actual, guardadoEn: Date.now(),
     } as SesionEnCurso)).catch(() => {});
   });
-  useEffect(() => alCambiarEstadoHechasLength(), [estado.hechas.length]);
+  useEffect(() => alCambiarHechas(), [estado.hechas.length]);
 
   const it = items[estado.indice];
 
@@ -140,66 +176,26 @@ export function useSessionPlayer(
 
   useEffect(() => { activarSonido(sonido); }, [sonido]);
 
-  const faseAnterior = useRef<Fase | null>(null);
-  const ultimaCuenta = useRef<string>('');
-
-  // Transiciones.
-  useEffect(() => {
-    const ant = faseAnterior.current;
-    faseAnterior.current = estado.fase;
-    if (ant === null || ant === estado.fase) return;
-    // Entrar o salir de pausa no suena: es una accion del usuario, ya sabe
-    // que la hizo.
-    if (ant === 'pausa' || estado.fase === 'pausa') return;
-
-    switch (estado.fase) {
-      case 'trabajo':     reproducir('inicio_serie'); break;
-      case 'cambio_lado': reproducir('cambio_lado'); break;
-      case 'descanso':    reproducir('fin_serie'); break;
-      case 'preparado':   if (ant === 'descanso') reproducir('fin_descanso'); break;
-      case 'fin':         reproducir('fin_sesion'); break;
-    }
-  }, [estado.fase]);
-
-  // Cuenta atras. Solo en fases que cuentan hacia abajo: el trabajo por
-  // repeticiones cuenta hacia arriba y no tiene final previsible.
-  useEffect(() => {
-    const cuenta =
-      estado.fase === 'preparado' ||
-      estado.fase === 'cambio_lado' ||
-      (estado.fase === 'trabajo' && it?.segPlan != null);
-    if (!cuenta) return;
-
-    const s = estado.restanteS;
-    if (s < 1 || s > 3) return;
-
-    // Una sola vez por segundo y por serie: sin esto, pausar y reanudar en
-    // el segundo 2 vuelve a disparar el mismo tin.
-    const clave = `${estado.fase}:${estado.indice}:${estado.serieNum}:${estado.lado}:${s}`;
-    if (ultimaCuenta.current === clave) return;
-    ultimaCuenta.current = clave;
-
-    reproducir(s === 3 ? 'cuenta_3' : s === 2 ? 'cuenta_2' : 'cuenta_1');
-  }, [estado.restanteS, estado.fase, estado.indice, estado.serieNum, estado.lado, it]);
-
   const totalSeries = items.reduce((s, x) => s + x.seriesPlan * (esUnilateral(x) ? 2 : 1), 0);
   const seriesHechas = estado.hechas.length;
 
   return {
+    tienda,
+    /** La estructura del estado: sin el tiempo, que cambia cada segundo (ver `useTiempoSesion`). */
     estado,
     ejercicio: it,
     progreso: totalSeries ? seriesHechas / totalSeries : 0,
     esPorTiempo: it?.segPlan != null,
     puedeDeshacer: estado.anterior !== null,
     registrar: useCallback((reps?: number, pesoKg?: number) =>
-      enviar({ t: 'registrar', reps, pesoKg }), []),
-    avanzar:     useCallback(() => enviar({ t: 'avanzar' }), []),
-    omitir:      useCallback(() => enviar({ t: 'omitir' }), []),
-    deshacer:    useCallback(() => enviar({ t: 'deshacer' }), []),
-    masDescanso: useCallback((seg = 20) => enviar({ t: 'masDescanso', seg }), []),
-    pausar:      useCallback(() => enviar({ t: 'pausar' }), []),
-    reanudar:    useCallback(() => enviar({ t: 'reanudar' }), []),
-    irA:         useCallback((i: number) => enviar({ t: 'irA', indice: i }), []),
+      enviar({ t: 'registrar', reps, pesoKg }), [enviar]),
+    avanzar:     useCallback(() => enviar({ t: 'avanzar' }), [enviar]),
+    omitir:      useCallback(() => enviar({ t: 'omitir' }), [enviar]),
+    deshacer:    useCallback(() => enviar({ t: 'deshacer' }), [enviar]),
+    masDescanso: useCallback((seg = 20) => enviar({ t: 'masDescanso', seg }), [enviar]),
+    pausar:      useCallback(() => enviar({ t: 'pausar' }), [enviar]),
+    reanudar:    useCallback(() => enviar({ t: 'reanudar' }), [enviar]),
+    irA:         useCallback((i: number) => enviar({ t: 'irA', indice: i }), [enviar]),
     /** Se llama al salir de la sesion (completa o abandonada): ya no hay
      *  nada que ofrecer continuar la proxima vez que se abra el reproductor. */
     limpiarGuardado: useCallback(() => borrarSesionGuardada(), []),

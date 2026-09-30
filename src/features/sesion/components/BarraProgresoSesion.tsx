@@ -31,12 +31,13 @@ export function BarraProgresoSesion({ estados, fraccion, color }: {
       style={s.fila} accessible accessibilityRole="progressbar"
       accessibilityLabel={`Ejercicio ${actual >= 0 ? actual + 1 : estados.length} de ${estados.length}`}
     >
-      {estados.map((e, i) => <Placa key={i} estado={e} fraccion={fraccion} color={color} />)}
+      {/* Solo la placa actual recibe el avance: las demas no se vuelven a dibujar cada segundo. */}
+      {estados.map((e, i) => <Placa key={i} estado={e} fraccion={e === 'actual' ? fraccion : 0} color={color} />)}
     </View>
   );
 }
 
-function Placa({ estado, fraccion, color }: { estado: EstadoPlaca; fraccion: number; color: DerivedValue<string> }) {
+const Placa = React.memo(function Placa({ estado, fraccion, color }: { estado: EstadoPlaca; fraccion: number; color: DerivedValue<string> }) {
   const reducido = useReducedMotion();
   const tick = useTick();
   const lleno = useSharedValue(estado === 'hecho' ? 1 : 0);
@@ -67,7 +68,7 @@ function Placa({ estado, fraccion, color }: { estado: EstadoPlaca; fraccion: num
       {estado === 'omitido' && <View style={s.diagonal} />}
     </Animated.View>
   );
-}
+});
 
 const s = StyleSheet.create({
   fila: { flexDirection: 'row', gap: HUECO, paddingHorizontal: MARGEN_PANTALLA },

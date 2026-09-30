@@ -4,8 +4,12 @@ import * as Haptics from 'expo-haptics';
 import type { ParamListBase } from '@react-navigation/native';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { haptico, PALABRA_FASE } from '@/ui/theme';
-import { useSessionPlayer, type SesionEnCurso } from '@/features/sesion/hooks/useSessionPlayer';
-import { esUnilateral } from '@/features/sesion/utils/playerMachine';
+import { useStore } from 'zustand';
+import { useShallow } from 'zustand/react/shallow';
+import {
+  useSessionPlayer, useDeSesion, useTiempoSesion, type SesionEnCurso, type TiendaSesion,
+} from '@/features/sesion/hooks/useSessionPlayer';
+import { esUnilateral, type EstadoPlayer, type Fase } from '@/features/sesion/utils/playerMachine';
 import { usePerfil, hoy } from '@/state/store';
 import { guardarSesion } from '@/state/acciones';
 import { useHapticosActivos } from '@/state/haptics';
@@ -37,23 +41,11 @@ export function ReproductorActivo({ sesionInicial, restaurar, navigation }: {
   const { estado, ejercicio } = p;
   const [hapticosOn] = useHapticosActivos();
 
-  // Un toque corto cuando se registra una serie de verdad (no una omitida); si
-  // esa serie cierra el ejercicio, un golpe medio: el «clank» de la placa.
-  const alCambiarEstadoHechasLength = useEffectEvent(() => {
-    const ultima = estado.hechas[estado.hechas.length - 1];
-    if (!ultima || ultima.omitida) return;
-    const it = items[ultima.orden];
-    const huecos = it ? it.seriesPlan * (esUnilateral(it) ? 2 : 1) : Infinity;
-    const hechas = estado.hechas.filter(h => h.orden === ultima.orden).length;
-    if (hechas >= huecos) haptico.placa(); else haptico.toque();
-  });
-  useEffect(() => alCambiarEstadoHechasLength(), [estado.hechas.length]);
-
   // Cuenta final 3-2-1: mismas condiciones que disparan cuenta_3/2/1 en
-  // useSessionPlayer. Aqui solo deshabilita los botones mientras dura.
-  const cuentaFinal =
-    (estado.fase === 'preparado' || estado.fase === 'cambio_lado' || (estado.fase === 'trabajo' && p.esPorTiempo)) &&
-    estado.restanteS >= 1 && estado.restanteS <= 3;
+  // useSessionPlayer. Aqui solo deshabilita los botones mientras dura. Se leen del store como
+  // booleanos: la pantalla se re-renderiza cuando empieza o termina la cuenta, no cada segundo.
+  const cuentaFinal = useDeSesion(p.tienda, e => enCuentaFinal(e, p.esPorTiempo));
+  const cuentaEnDescanso = useDeSesion(p.tienda, enCuentaDeDescanso);
 
   /* ---------------------------------------------------------------- */
   /* Voz                                                               */
@@ -67,53 +59,9 @@ export function ReproductorActivo({ sesionInicial, restaurar, navigation }: {
     voz.hablar(fuente, alTerminar);
   }
 
-  // Nombre del ejercicio y sus claves cada vez que se entra a "preparate"
-  // (serie nueva o ejercicio nuevo, siempre igual). Cambios de fase (menos
-  // pausa, que es accion del usuario) se anuncian con su etiqueta.
-  //
-  // Primero se dice todo, despues arranca la cuenta: se pausa la sesion
-  // mientras habla (el reloj no corre en pausa) y se reanuda cuando
-  // termina de leer el nombre y las claves. No hay boton para saltarse
-  // esta fase: el avance a "trabajo" siempre llega solo, cuando termina
-  // la cuenta.
-  const faseVozRef = useRef<typeof estado.fase | null>(null);
-  const alCambiarEstadoFase = useEffectEvent(() => {
-    const antFase = faseVozRef.current;
-    faseVozRef.current = estado.fase;
-    if (!vozOn || antFase === null || antFase === estado.fase) return;
-    if (antFase === 'pausa' || estado.fase === 'pausa') return;
-
-    if (estado.fase === 'preparado') {
-      const claves = ejercicio.cues?.length ? ` ${ejercicio.cues.join('. ')}` : '';
-      p.pausar();
-      hablar({ tipo: 'ejercicio', id: ejercicio.id, texto: `${ejercicio.name}.${claves}` }, () => p.reanudar());
-      return;
-    }
-    hablar({ tipo: 'fase', id: estado.fase, texto: PALABRA_FASE[estado.fase] });
-  });
-  useEffect(() => alCambiarEstadoFase(), [estado.fase, vozOn]);
-
   // Cuenta final hablada: la de siempre (preparate/cambio de lado/trabajo por
   // tiempo) mas el descanso, que se anuncia igual.
-  const cuentaHablada = cuentaFinal ||
-    (estado.fase === 'descanso' && estado.restanteS >= 1 && estado.restanteS <= 3);
-  const alCambiarEstadoRestanteS = useEffectEvent(() => {
-    if (!cuentaHablada) return;
-    const n = String(estado.restanteS);
-    hablar({ tipo: 'numero', id: n, texto: n });
-  });
-  useEffect(() => alCambiarEstadoRestanteS(), [estado.restanteS, estado.fase, vozOn]);
-
-  // Tic por segundo durante la espera: preparate, cambio de lado,
-  // descanso y trabajo por tiempo (plancha, cardio...). Trabajo por
-  // repeticiones no tiene reloj, asi que no aplica. Reusa el sonido
-  // "toque" que ya existe, sin archivo nuevo.
-  useEffect(() => {
-    const enEspera = estado.fase === 'preparado' || estado.fase === 'cambio_lado' || estado.fase === 'descanso' ||
-      (estado.fase === 'trabajo' && p.esPorTiempo);
-    if (!enEspera) return;
-    reproducir('toque');
-  }, [estado.restanteS, estado.fase, p.esPorTiempo]);
+  const cuentaHablada = cuentaFinal || cuentaEnDescanso;
 
   // Si se sale de la pantalla con la voz a mitad de frase, se corta:
   // nadie quiere seguir oyendo instrucciones de un ejercicio que ya dejo.
@@ -130,6 +78,8 @@ export function ReproductorActivo({ sesionInicial, restaurar, navigation }: {
   const clipActivo = enEjercicio;
 
   function finalizar(completada: boolean, motivo: string | null) {
+    // El estado completo, con el tiempo, tal como esta ahora (la pantalla solo lee su estructura).
+    const estado = p.tienda.getState().estado;
     p.limpiarGuardado();   // completa o abandonada, ya no hay nada que continuar
     const kcal = perfil.pesoKg
       ? Math.round(sesionInicial.kcalEstimadas ?? 0)
@@ -165,7 +115,7 @@ export function ReproductorActivo({ sesionInicial, restaurar, navigation }: {
   return (
     <>
       <ReproductorLayout
-        items={items} estado={estado} ejercicio={ejercicio} esPorTiempo={p.esPorTiempo}
+        tienda={p.tienda} items={items} estado={estado} ejercicio={ejercicio} esPorTiempo={p.esPorTiempo}
         puedeDeshacer={p.puedeDeshacer} hablando={hablando}
         cuentaFinal={cuentaFinal} cuentaHablada={cuentaHablada}
         verClip={verClip} clipActivo={clipActivo} salidaAbierta={salida}
@@ -180,6 +130,11 @@ export function ReproductorActivo({ sesionInicial, restaurar, navigation }: {
         onOmitir={() => { if (!hablando) p.omitir(); }}
         onDeshacer={p.deshacer}
       />
+      {/* Despues del layout: sus efectos corren tras los de la atmosfera, en el orden de siempre. */}
+      <SonidoDeSesion
+        tienda={p.tienda} items={items} ejercicio={ejercicio} esPorTiempo={p.esPorTiempo}
+        vozOn={vozOn} hablar={hablar} pausar={p.pausar} reanudar={p.reanudar}
+      />
       <HojaSalida
         visible={salida}
         onElegir={motivo => { setSalida(false); finalizar(false, motivo); }}
@@ -187,4 +142,133 @@ export function ReproductorActivo({ sesionInicial, restaurar, navigation }: {
       />
     </>
   );
+}
+
+/** Cuenta 3-2-1 de preparado, cambio de lado y trabajo por tiempo. */
+function enCuentaFinal(e: EstadoPlayer, esPorTiempo: boolean): boolean {
+  return (e.fase === 'preparado' || e.fase === 'cambio_lado' || (e.fase === 'trabajo' && esPorTiempo)) &&
+    e.restanteS >= 1 && e.restanteS <= 3;
+}
+const enCuentaDeDescanso = (e: EstadoPlayer): boolean => e.fase === 'descanso' && e.restanteS >= 1 && e.restanteS <= 3;
+
+/**
+ * Lo que suena, vibra y se dice durante la sesion: los tonos de cada transicion, la cuenta 3-2-1,
+ * el toque al marcar una serie, la voz de cada fase, la cuenta hablada y el tic de la espera.
+ * Componente hoja (no dibuja nada): el segundo a segundo solo lo re-renderiza a el (R4). Los
+ * efectos, sus disparadores y su orden son los de antes (primero los del motor, luego los de la
+ * pantalla); por eso va despues de `ReproductorLayout`.
+ */
+function SonidoDeSesion({ tienda, items, ejercicio, esPorTiempo, vozOn, hablar, pausar, reanudar }: {
+  tienda: TiendaSesion; items: ItemSesion[]; ejercicio: ItemSesion; esPorTiempo: boolean; vozOn: boolean;
+  hablar: (fuente: FuenteVoz, alTerminar?: () => void) => void;
+  pausar: () => void; reanudar: () => void;
+}) {
+  const restanteS = useTiempoSesion(tienda);
+  const { fase, indice, serieNum, lado, hechas } = useStore(tienda, useShallow(s => ({
+    fase: s.estado.fase, indice: s.estado.indice, serieNum: s.estado.serieNum, lado: s.estado.lado,
+    hechas: s.estado.hechas,
+  })));
+  const it = items[indice];
+  const cuentaHablada = useDeSesion(tienda, e => enCuentaFinal(e, esPorTiempo) || enCuentaDeDescanso(e));
+
+  // Transiciones.
+  const faseAnterior = useRef<Fase | null>(null);
+  useEffect(() => {
+    const ant = faseAnterior.current;
+    faseAnterior.current = fase;
+    if (ant === null || ant === fase) return;
+    // Entrar o salir de pausa no suena: es una accion del usuario, ya sabe
+    // que la hizo.
+    if (ant === 'pausa' || fase === 'pausa') return;
+
+    switch (fase) {
+      case 'trabajo':     reproducir('inicio_serie'); break;
+      case 'cambio_lado': reproducir('cambio_lado'); break;
+      case 'descanso':    reproducir('fin_serie'); break;
+      case 'preparado':   if (ant === 'descanso') reproducir('fin_descanso'); break;
+      case 'fin':         reproducir('fin_sesion'); break;
+    }
+  }, [fase]);
+
+  // Cuenta atras. Solo en fases que cuentan hacia abajo: el trabajo por
+  // repeticiones cuenta hacia arriba y no tiene final previsible.
+  const ultimaCuenta = useRef<string>('');
+  useEffect(() => {
+    const cuenta =
+      fase === 'preparado' ||
+      fase === 'cambio_lado' ||
+      (fase === 'trabajo' && it?.segPlan != null);
+    if (!cuenta) return;
+
+    const s = restanteS;
+    if (s < 1 || s > 3) return;
+
+    // Una sola vez por segundo y por serie: sin esto, pausar y reanudar en
+    // el segundo 2 vuelve a disparar el mismo tin.
+    const clave = `${fase}:${indice}:${serieNum}:${lado}:${s}`;
+    if (ultimaCuenta.current === clave) return;
+    ultimaCuenta.current = clave;
+
+    reproducir(s === 3 ? 'cuenta_3' : s === 2 ? 'cuenta_2' : 'cuenta_1');
+  }, [restanteS, fase, indice, serieNum, lado, it]);
+
+  // Un toque corto cuando se registra una serie de verdad (no una omitida); si
+  // esa serie cierra el ejercicio, un golpe medio: el «clank» de la placa.
+  const alCambiarHechas = useEffectEvent(() => {
+    const ultima = hechas[hechas.length - 1];
+    if (!ultima || ultima.omitida) return;
+    const item = items[ultima.orden];
+    const huecos = item ? item.seriesPlan * (esUnilateral(item) ? 2 : 1) : Infinity;
+    const delEjercicio = hechas.filter(h => h.orden === ultima.orden).length;
+    if (delEjercicio >= huecos) haptico.placa(); else haptico.toque();
+  });
+  useEffect(() => alCambiarHechas(), [hechas.length]);
+
+  // Nombre del ejercicio y sus claves cada vez que se entra a "preparate"
+  // (serie nueva o ejercicio nuevo, siempre igual). Cambios de fase (menos
+  // pausa, que es accion del usuario) se anuncian con su etiqueta.
+  //
+  // Primero se dice todo, despues arranca la cuenta: se pausa la sesion
+  // mientras habla (el reloj no corre en pausa) y se reanuda cuando
+  // termina de leer el nombre y las claves. No hay boton para saltarse
+  // esta fase: el avance a "trabajo" siempre llega solo, cuando termina
+  // la cuenta.
+  const faseVozRef = useRef<Fase | null>(null);
+  const alCambiarFase = useEffectEvent(() => {
+    const antFase = faseVozRef.current;
+    faseVozRef.current = fase;
+    if (!vozOn || antFase === null || antFase === fase) return;
+    if (antFase === 'pausa' || fase === 'pausa') return;
+
+    if (fase === 'preparado') {
+      const claves = ejercicio.cues?.length ? ` ${ejercicio.cues.join('. ')}` : '';
+      pausar();
+      hablar({ tipo: 'ejercicio', id: ejercicio.id, texto: `${ejercicio.name}.${claves}` }, () => reanudar());
+      return;
+    }
+    hablar({ tipo: 'fase', id: fase, texto: PALABRA_FASE[fase] });
+  });
+  useEffect(() => alCambiarFase(), [fase, vozOn]);
+
+  // Cuenta final hablada: la de siempre (preparate/cambio de lado/trabajo por
+  // tiempo) mas el descanso, que se anuncia igual.
+  const alCambiarRestanteS = useEffectEvent(() => {
+    if (!cuentaHablada) return;
+    const n = String(restanteS);
+    hablar({ tipo: 'numero', id: n, texto: n });
+  });
+  useEffect(() => alCambiarRestanteS(), [restanteS, fase, vozOn]);
+
+  // Tic por segundo durante la espera: preparate, cambio de lado,
+  // descanso y trabajo por tiempo (plancha, cardio...). Trabajo por
+  // repeticiones no tiene reloj, asi que no aplica. Reusa el sonido
+  // "toque" que ya existe, sin archivo nuevo.
+  useEffect(() => {
+    const enEspera = fase === 'preparado' || fase === 'cambio_lado' || fase === 'descanso' ||
+      (fase === 'trabajo' && esPorTiempo);
+    if (!enEspera) return;
+    reproducir('toque');
+  }, [restanteS, fase, esPorTiempo]);
+
+  return null;
 }

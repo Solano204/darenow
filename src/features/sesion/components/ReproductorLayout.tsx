@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Pressable, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
-import Animated, { useAnimatedStyle, useSharedValue, withSequence, withTiming } from 'react-native-reanimated';
+import Animated, {
+  useAnimatedStyle, useSharedValue, withSequence, withTiming, type DerivedValue, type SharedValue,
+} from 'react-native-reanimated';
 import { Canvas } from '@shopify/react-native-skia';
 import { StatusBar } from 'expo-status-bar';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -8,7 +10,10 @@ import {
   paleta, familia, esp, ALTO_BOTON, MARGEN_PANTALLA, radio, easing, haptico, PALABRA_FASE, faseVisual, type FaseId,
 } from '@/ui/theme';
 import type { ItemSesion } from '@/lib/engine/session';
-import { esUnilateral, type EstadoPlayer } from '@/features/sesion/utils/playerMachine';
+import { esUnilateral } from '@/features/sesion/utils/playerMachine';
+import {
+  useDeSesion, type EstructuraSesion, type TiendaSesion,
+} from '@/features/sesion/hooks/useSessionPlayer';
 import { nombreVisible } from '@/data/nombresVisibles';
 import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
 import { useTick } from '@/ui/hooks/useTick';
@@ -24,7 +29,7 @@ import { BarraProgresoSesion, type EstadoPlaca } from './BarraProgresoSesion';
 import { ModeloEjercicio } from './ModeloEjercicio';
 import { GuiaRespiracion } from './GuiaRespiracion';
 import { BotonMagnesia } from './BotonMagnesia';
-import { useAtmosferaFase } from '@/features/sesion/hooks/useAtmosferaFase';
+import { useAtmosferaFase, RelojAtmosfera } from '@/features/sesion/hooks/useAtmosferaFase';
 import { segundosHablados, nombreSiguiente, totalDeFase } from '@/features/sesion/utils/reproductor';
 
 const LIENZO_MARGEN = 40;
@@ -35,8 +40,11 @@ const OMITIR_MS = 240;
 
 
 export interface ReproductorLayoutProps {
+  /** El estado completo, con el tiempo: lo leen solo las piezas que cambian cada segundo. */
+  tienda: TiendaSesion;
   items: ItemSesion[];
-  estado: EstadoPlayer;
+  /** Fase, ejercicio, serie, lado y series hechas: lo que redibuja la pantalla (no cambia cada segundo). */
+  estado: EstructuraSesion;
   ejercicio: ItemSesion;
   esPorTiempo: boolean;
   puedeDeshacer: boolean;
@@ -64,6 +72,10 @@ export interface ReproductorLayoutProps {
  * ver DESIGN.md). Un unico `Canvas` de Skia dibuja el anillo y el resplandor.
  * Todo reacciona al estado de la maquina: nada aqui provoca ni retrasa un
  * cambio de fase, y el anillo lee `restanteS`, no lleva reloj propio.
+ *
+ * R4: la pantalla se re-renderiza al cambiar de fase, de serie o de ejercicio. El segundo a
+ * segundo lo leen solo el numero (`NumeroSesion`), la placa actual de la barra (`BarraSesionViva`)
+ * y `RelojAtmosfera` (anillo, golpe, destello, anuncios), que se suscriben al store de la sesion.
  */
 export function ReproductorLayout(p: ReproductorLayoutProps) {
   const { estado, ejercicio, items } = p;
@@ -84,23 +96,19 @@ export function ReproductorLayout(p: ReproductorLayoutProps) {
   const enDescanso = visual === 'descanso';
   const conTiempo = faseEf === 'trabajo' ? p.esPorTiempo : faseEf !== 'fin';
   const totalBase = totalDeFase(faseEf, ejercicio);
-  const total = totalBase == null ? null : Math.max(totalBase, estado.restanteS);
   const claveFase = `${faseEf}:${estado.indice}:${estado.serieNum}:${estado.lado}`;
+  // En el trabajo por tiempo el total es el del plan («mas descanso» solo alarga el descanso).
+  const conMarca = faseEf === 'trabajo' && p.esPorTiempo && (totalBase ?? 0) >= 6;
 
   const {
-    colorFase, progreso, escalaAnillo, brillo, destello, golpe, expande, desvanece, inhala, conMarca,
-  } = useAtmosferaFase({
-    estado, esPorTiempo: p.esPorTiempo, reducido, visual, faseEf, corriendo, enTrabajo, enDescanso, conTiempo, total, claveFase,
-  });
+    colorFase, progreso, escalaAnillo, brillo, destello, golpe, expande, desvanece, respiro,
+  } = useAtmosferaFase({ reducido, visual, corriendo, enTrabajo, enDescanso });
   const salidaOmitir = useSharedValue(0);
 
   /* --- Datos derivados --- */
 
   const nombre = nombreVisible(faseEf === 'descanso' ? nombreSiguiente(items, estado.indice, estado.serieNum) : ejercicio.name);
   const siguiente = items[estado.indice + 1];
-  const etiquetaNumero = conTiempo
-    ? `${PALABRA_FASE[faseEf]}, ${segundosHablados(estado.restanteS)} restantes`
-    : `${PALABRA_FASE[faseEf]}, ${ejercicio.repsPlan ?? 'sin definir'} repeticiones`;
 
   const estados: EstadoPlaca[] = items.map((_, i) => {
     if (i > estado.indice) return 'pendiente';
@@ -110,8 +118,6 @@ export function ReproductorLayout(p: ReproductorLayoutProps) {
   });
   const huecos = ejercicio.seriesPlan * (esUnilateral(ejercicio) ? 2 : 1);
   const hechasAqui = estado.hechas.filter(h => h.orden === estado.indice).length;
-  const enCurso = faseEf === 'trabajo' && p.esPorTiempo && total ? 1 - estado.restanteS / total : 0;
-  const fraccion = Math.min(1, (hechasAqui + enCurso) / huecos);
 
   const barrido = useAnimatedStyle(() => ({
     backgroundColor: colorFase.value,
@@ -141,7 +147,10 @@ export function ReproductorLayout(p: ReproductorLayoutProps) {
       <GomaTexture />
       <View style={[s.columna, { paddingTop: inset.top, paddingBottom: Math.max(inset.bottom, esp.md) }]}>
         <View style={s.barra}>
-          <BarraProgresoSesion estados={estados} fraccion={fraccion} color={colorFase} />
+          <BarraSesionViva
+            tienda={p.tienda} estados={estados} color={colorFase} hechasAqui={hechasAqui} huecos={huecos}
+            enTrabajoPorTiempo={faseEf === 'trabajo' && p.esPorTiempo} totalBase={totalBase}
+          />
         </View>
 
         <View style={s.cabecera}>
@@ -181,15 +190,10 @@ export function ReproductorLayout(p: ReproductorLayoutProps) {
                 brillo={brillo} destello={destello} conMarca={conMarca}
               />
             </Canvas>
-            <View style={s.numero} accessible accessibilityLabel={etiquetaNumero}>
-              <View importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>
-                <NumeroTemporizador
-                  key={claveFase} segundos={estado.restanteS} tamano={tamanoNumero} golpe={golpe}
-                  apagado={estado.fase === 'pausa'}
-                  fijo={conTiempo ? undefined : String(ejercicio.repsPlan ?? '—')}
-                />
-              </View>
-            </View>
+            <NumeroSesion
+              tienda={p.tienda} claveFase={claveFase} faseEf={faseEf} conTiempo={conTiempo}
+              repsPlan={ejercicio.repsPlan} tamano={tamanoNumero} golpe={golpe} apagado={estado.fase === 'pausa'}
+            />
           </View>
 
           <Text style={s.nombre} numberOfLines={2} maxFontSizeMultiplier={1.2}>{nombre}</Text>
@@ -197,7 +201,7 @@ export function ReproductorLayout(p: ReproductorLayoutProps) {
             Serie {estado.serieNum} de {ejercicio.seriesPlan}
             {estado.lado ? ` · lado ${estado.lado === 'izq' ? 'izquierdo' : 'derecho'}` : ''}
           </Text>
-          {enDescanso && <GuiaRespiracion inhala={inhala} activo={corriendo && !reducido} />}
+          {enDescanso && <GuiaRespiracion respiro={respiro} activo={corriendo && !reducido} />}
         </View>
 
         {enDescanso ? <View style={s.espacio} /> : (
@@ -249,9 +253,55 @@ export function ReproductorLayout(p: ReproductorLayoutProps) {
         </View>
       </View>
 
+      <RelojAtmosfera
+        tienda={p.tienda} progreso={progreso} golpe={golpe} destello={destello} esPorTiempo={p.esPorTiempo}
+        reducido={reducido} faseEf={faseEf} corriendo={corriendo} conTiempo={conTiempo} conMarca={conMarca}
+        totalBase={totalBase} claveFase={claveFase}
+      />
       <OverlayPausa visible={pausaManual} hablando={p.hablando} onSeguir={p.onReanudar} onSalir={p.onSalir} />
     </View>
   );
+}
+
+/**
+ * El numero del temporizador y lo que oye el lector de pantalla. Lee los segundos del store: es lo
+ * unico de la pantalla que se dibuja de nuevo cada segundo. En trabajo por repeticiones no hay
+ * reloj a la vista (sale el numero de repeticiones), asi que ahi no se suscribe al segundo.
+ */
+function NumeroSesion({ tienda, claveFase, faseEf, conTiempo, repsPlan, tamano, golpe, apagado }: {
+  tienda: TiendaSesion; claveFase: string; faseEf: FaseId; conTiempo: boolean; repsPlan: number | null;
+  tamano: number; golpe: SharedValue<number>; apagado: boolean;
+}) {
+  const segundos = useDeSesion(tienda, e => (conTiempo ? e.restanteS : 0));
+  const etiqueta = conTiempo
+    ? `${PALABRA_FASE[faseEf]}, ${segundosHablados(segundos)} restantes`
+    : `${PALABRA_FASE[faseEf]}, ${repsPlan ?? 'sin definir'} repeticiones`;
+  return (
+    <View style={s.numero} accessible accessibilityLabel={etiqueta}>
+      <View importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>
+        <NumeroTemporizador
+          key={claveFase} segundos={segundos} tamano={tamano} golpe={golpe} apagado={apagado}
+          fijo={conTiempo ? undefined : String(repsPlan ?? '—')}
+        />
+      </View>
+    </View>
+  );
+}
+
+/**
+ * La barra de placas. La actual se llena con el avance del ejercicio; en el trabajo por tiempo ese
+ * avance cambia cada segundo, asi que solo aqui (y solo entonces) se lee el tiempo.
+ */
+function BarraSesionViva({ tienda, estados, color, hechasAqui, huecos, enTrabajoPorTiempo, totalBase }: {
+  tienda: TiendaSesion; estados: EstadoPlaca[]; color: DerivedValue<string>;
+  hechasAqui: number; huecos: number; enTrabajoPorTiempo: boolean; totalBase: number | null;
+}) {
+  const enCurso = useDeSesion(tienda, e => {
+    const total = totalBase == null ? null : Math.max(totalBase, e.restanteS);
+    return enTrabajoPorTiempo && total ? 1 - e.restanteS / total : 0;
+  });
+  const fraccion = Math.min(1, (hechasAqui + enCurso) / huecos);
+  return <BarraProgresoSesion estados={estados} fraccion={fraccion} color={color} />;
 }
 
 const s = StyleSheet.create({

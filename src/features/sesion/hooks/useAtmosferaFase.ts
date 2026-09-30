@@ -1,11 +1,11 @@
-import { useEffect, useEffectEvent, useRef, useState } from 'react';
+import { useEffect, useEffectEvent, useRef } from 'react';
 import { AccessibilityInfo } from 'react-native';
 import {
-  Easing, cancelAnimation, interpolateColor, runOnJS, useAnimatedReaction, useDerivedValue,
-  useSharedValue, withDelay, withRepeat, withSequence, withSpring, withTiming,
+  Easing, cancelAnimation, interpolateColor, useDerivedValue,
+  useSharedValue, withDelay, withRepeat, withSequence, withSpring, withTiming, type SharedValue,
 } from 'react-native-reanimated';
 import { easing, resortePlaca, haptico, COLOR_FASE, ORDEN_FASE, PALABRA_FASE, type FaseId, type FaseVisual } from '@/ui/theme';
-import type { EstadoPlayer } from '@/features/sesion/utils/playerMachine';
+import { useDeSesion, useTiempoSesion, type TiendaSesion } from '@/features/sesion/hooks/useSessionPlayer';
 import { segundosHablados } from '@/features/sesion/utils/reproductor';
 
 const RESPIRO_MS = 8000;
@@ -16,24 +16,20 @@ const GOLPE_ESCALA = 1.15;
 const ANUNCIO_CADA_S = 10;
 
 /**
- * La atmosfera del reproductor: el color de la fase, el anillo que se vacia, la respiracion
- * del descanso, el latido del trabajo, el golpe de los ultimos 3 segundos, el destello de la
- * mitad y los anuncios para el lector de pantalla. Todo reacciona al estado de la maquina.
+ * La atmosfera del reproductor: el color de la fase, la respiracion del descanso, el latido del
+ * trabajo y el barrido al cambiar de fase. Todo reacciona a la estructura del estado (fase,
+ * ejercicio, serie). Lo que va segundo a segundo (el anillo que se vacia, el golpe de los ultimos
+ * 3 segundos, el destello de la mitad y los anuncios) esta en `RelojAtmosfera`, un componente
+ * hoja: asi el reloj no re-renderiza la pantalla (R4).
  */
 export function useAtmosferaFase({
-  estado, esPorTiempo, reducido, visual, faseEf, corriendo, enTrabajo, enDescanso, conTiempo, total, claveFase,
+  reducido, visual, enTrabajo, enDescanso, corriendo,
 }: {
-  estado: EstadoPlayer;
-  esPorTiempo: boolean;
   reducido: boolean;
   visual: FaseVisual;
-  faseEf: FaseId;
   corriendo: boolean;
   enTrabajo: boolean;
   enDescanso: boolean;
-  conTiempo: boolean;
-  total: number | null;
-  claveFase: string;
 }) {
   /* --- Color de la fase, compartido por el anillo, el resplandor, el barrido y la barra --- */
 
@@ -49,7 +45,6 @@ export function useAtmosferaFase({
   const golpe = useSharedValue(1);
   const expande = useSharedValue(0);
   const desvanece = useSharedValue(0);
-  const [inhala, setInhala] = useState(true);
 
   const escalaAnillo = useDerivedValue(() => {
     const r = respiro.value;
@@ -57,10 +52,6 @@ export function useAtmosferaFase({
     return 1 + RESPIRO_ESCALA * (tri * tri * (3 - 2 * tri));
   });
   const brillo = useDerivedValue(() => (enTrabajo ? 0.12 + 0.04 * latido.value : 0.14), [enTrabajo]);
-
-  useAnimatedReaction(() => respiro.value < 0.5, (v, previo) => {
-    if (v !== previo) runOnJS(setInhala)(v);
-  });
 
   /* --- Cambio de atmosfera: color, barrido, haptica --- */
 
@@ -79,6 +70,55 @@ export function useAtmosferaFase({
     expande.set(withTiming(1, { duration: BARRIDO_SUBE_MS, easing: easing.salida }));
     desvanece.set(withDelay(BARRIDO_SUBE_MS, withTiming(1, { duration: BARRIDO_BAJA_MS })));
   }, [visual, reducido, idxFase, expande, desvanece]);
+
+  /* --- Respiracion del descanso y pulso del resplandor de trabajo --- */
+
+  useEffect(() => {
+    if (reducido || !enDescanso) {
+      cancelAnimation(respiro);
+      respiro.set(withTiming(0, { duration: 200 }));
+      return;
+    }
+    if (!corriendo) { cancelAnimation(respiro); return; }
+    respiro.set(withRepeat(
+      withTiming(1, { duration: RESPIRO_MS, easing: Easing.linear }), -1, false,
+    ));
+  }, [enDescanso, corriendo, reducido, respiro]);
+
+  useEffect(() => {
+    if (reducido || !enTrabajo || !corriendo) { cancelAnimation(latido); return; }
+    latido.set(withRepeat(withTiming(1, { duration: 1000, easing: Easing.inOut(Easing.sin) }), -1, true));
+  }, [enTrabajo, corriendo, reducido, latido]);
+
+  return { colorFase, progreso, escalaAnillo, brillo, destello, golpe, expande, desvanece, respiro };
+}
+
+/**
+ * Lo que la atmosfera hace cada segundo, con los mismos efectos y disparadores de siempre: el
+ * anillo que se vacia a partir de `restanteS`, el golpe y la haptica de los ultimos 3 segundos,
+ * el destello de la mitad y los anuncios del lector de pantalla. No dibuja nada.
+ */
+export function RelojAtmosfera({
+  tienda, progreso, golpe, destello, esPorTiempo, reducido, faseEf, corriendo, conTiempo, conMarca, totalBase, claveFase,
+}: {
+  tienda: TiendaSesion;
+  progreso: SharedValue<number>;
+  golpe: SharedValue<number>;
+  destello: SharedValue<number>;
+  esPorTiempo: boolean;
+  reducido: boolean;
+  faseEf: FaseId;
+  corriendo: boolean;
+  conTiempo: boolean;
+  conMarca: boolean;
+  /** Lo que dura la fase segun el plan; con «mas descanso» el total real puede ser mayor. */
+  totalBase: number | null;
+  claveFase: string;
+}) {
+  const restanteS = useTiempoSesion(tienda);
+  const fase = useDeSesion(tienda, e => e.fase);
+  const estado = { restanteS, fase };
+  const total = totalBase == null ? null : Math.max(totalBase, restanteS);
 
   /* --- Anillo: se vacia de forma continua a partir de `restanteS` --- */
 
@@ -102,25 +142,6 @@ export function useAtmosferaFase({
     }
   }, [estado.restanteS, total, corriendo, claveFase, conTiempo, reducido, progreso]);
 
-  /* --- Respiracion del descanso y pulso del resplandor de trabajo --- */
-
-  useEffect(() => {
-    if (reducido || !enDescanso) {
-      cancelAnimation(respiro);
-      respiro.set(withTiming(0, { duration: 200 }));
-      return;
-    }
-    if (!corriendo) { cancelAnimation(respiro); return; }
-    respiro.set(withRepeat(
-      withTiming(1, { duration: RESPIRO_MS, easing: Easing.linear }), -1, false,
-    ));
-  }, [enDescanso, corriendo, reducido, respiro]);
-
-  useEffect(() => {
-    if (reducido || !enTrabajo || !corriendo) { cancelAnimation(latido); return; }
-    latido.set(withRepeat(withTiming(1, { duration: 1000, easing: Easing.inOut(Easing.sin) }), -1, true));
-  }, [enTrabajo, corriendo, reducido, latido]);
-
   /* --- Los ultimos 3 segundos: golpe y haptica Rigid --- */
 
   const cuentaVisual = corriendo && conTiempo && faseEf !== 'fin' && estado.restanteS >= 1 && estado.restanteS <= 3
@@ -138,7 +159,6 @@ export function useAtmosferaFase({
 
   /* --- La mitad del trabajo: la marca del anillo destella, sin haptica --- */
 
-  const conMarca = faseEf === 'trabajo' && esPorTiempo && (total ?? 0) >= 6;
   const ultimaMitad = useRef('');
   const alCambiarEstadoRestanteS = useEffectEvent(() => {
     if (!conMarca || reducido || total == null || estado.restanteS !== Math.floor(total / 2)) return;
@@ -164,5 +184,5 @@ export function useAtmosferaFase({
   useEffect(() => alCambiarEstadoRestanteS2(), [estado.restanteS, claveFase]);
 
 
-  return { colorFase, progreso, escalaAnillo, brillo, destello, golpe, expande, desvanece, inhala, conMarca };
+  return null;
 }

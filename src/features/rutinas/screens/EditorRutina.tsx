@@ -101,7 +101,7 @@ export default function EditorRutina({ route, navigation }: PropsEditorRutina) {
             {avisos.length > 0 && (
               <View style={[s.margen, s.avisos]}>
                 {avisos.map((a, i) => (
-                  <Nota key={i} texto={a} tono="cuidado" titulo={i === 0 ? 'Revisa' : undefined} />
+                  <Nota key={a} texto={a} tono="cuidado" titulo={i === 0 ? 'Revisa' : undefined} />
                 ))}
               </View>
             )}

@@ -45,8 +45,8 @@ export function SelectorEjercicio({ visible, yaPuestos, onElegir, onCerrar }: {
           <Buscador valor={q} onCambio={setQ} placeholder="Buscar entre 190 ejercicios" />
           <ScrollView horizontal showsHorizontalScrollIndicator={false}
             contentContainerStyle={{ gap: esp.xs }}>
-            {[{ id: null, nombre: 'Todo' }, ...CATEGORIAS].map((c, i) => (
-              <Chip key={i} texto={c.nombre} pequeno activo={cat === c.id}
+            {[{ id: null, nombre: 'Todo' }, ...CATEGORIAS].map(c => (
+              <Chip key={c.id ?? 'todo'} texto={c.nombre} pequeno activo={cat === c.id}
                 onPress={() => setCat(c.id as string | null)} />
             ))}
           </ScrollView>

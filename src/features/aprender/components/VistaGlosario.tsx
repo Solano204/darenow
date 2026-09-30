@@ -70,7 +70,7 @@ export function VistaGlosario({ terminos, preguntas, propsLista, scrollY, rellen
         ))}
 
         <View style={s.preguntas}><TituloBloque>Preguntas frecuentes</TituloBloque></View>
-        {preguntas.map((f, i) => <PreguntaAcordeon key={i} pregunta={f.p} respuesta={f.r} onAbierta={mostrar} />)}
+        {preguntas.map(f => <PreguntaAcordeon key={f.p} pregunta={f.p} respuesta={f.r} onAbierta={mostrar} />)}
       </Animated.ScrollView>
 
       <EncabezadoPegado

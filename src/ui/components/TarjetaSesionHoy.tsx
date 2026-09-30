@@ -132,8 +132,8 @@ export function TarjetaSesionHoy(p: TarjetaSesionHoyProps) {
             )}
           />
 
-          {p.avisos.map((a, n) => (
-            <NotaEntrenador key={n} estilo={s.nota}>{a}</NotaEntrenador>
+          {p.avisos.map(a => (
+            <NotaEntrenador key={a} estilo={s.nota}>{a}</NotaEntrenador>
           ))}
 
           <View style={s.acciones}>

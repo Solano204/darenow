@@ -121,7 +121,7 @@ export default function RutinaPropia({ route, navigation }: Props) {
         </View>
       )}
       antes={avisos.length > 0 ? avisos.map((a, i) => (
-        <Nota key={i} texto={a} tono="cuidado" titulo={i === 0 ? 'Revisa' : undefined} />
+        <Nota key={a} texto={a} tono="cuidado" titulo={i === 0 ? 'Revisa' : undefined} />
       )) : undefined}
       bloques={bloques}
       onAbrir={id => navigation.navigate('Ejercicio', { id })}

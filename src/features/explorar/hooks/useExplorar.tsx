@@ -7,14 +7,12 @@ import type { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { paleta, familia, MARGEN_PANTALLA } from '@/ui/theme';
 import { useHuecoAbajo } from '@/ui/components';
 import { seguirBarra } from '@/ui/components/cabecera';
-import { ICONOS_OBJETIVO } from '@/ui/components/iconosObjetivo';
 import { barraBajada } from '@/ui/hooks/useBarraFlotante';
 import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
-import { EJERCICIOS, RUTINAS, PROGRAMAS, MUSCULOS, GOALS } from '@/data/catalog';
-import { useEstadoSel, usePerfil, useRutinasPropias } from '@/state/store';
+import { useEstadoSel, useRutinasPropias } from '@/state/store';
 import { registrarDescarga } from '@/state/acciones';
-import { ChipFiltro } from '@/ui/components/ChipFiltro';
-import { InterruptorDos } from '@/features/explorar/components/InterruptorDos';
+import { InterruptorMios } from '@/features/explorar/components/FiltrosExplorar';
+import { filtros } from '@/features/explorar/hooks/filtrosExplorar';
 import { type SegmentoExplorar } from '@/ui/components/EncabezadoExplorar';
 import { CabeceraRutinas } from '@/features/explorar/components/CabeceraRutinas';
 import { transicionesDeSegmento, type PropsLista } from '@/ui/components/listaBase';
@@ -23,8 +21,6 @@ export const SEGMENTOS: readonly { id: SegmentoExplorar; texto: string }[] = [
   { id: 'ejercicios', texto: 'Ejercicios' }, { id: 'rutinas', texto: 'Rutinas' },
   { id: 'programas', texto: 'Programas' }, { id: 'musculos', texto: 'Músculos' },
 ];
-const TEXTOS_INTERRUPTOR = ['Puedo hacer', 'Catálogo'] as const;
-const ETIQUETAS_INTERRUPTOR = ['Lo que puedo hacer', 'Catálogo completo'] as const;
 
 const AIRE_LISTA = 16;
 const RETRASO_CONTEO_MS = 350;
@@ -34,15 +30,10 @@ const BAJADA_BARRA_MS = 180;
 export function useExplorar({ navigation, route }: BottomTabScreenProps<ParamListBase, 'Explorar'>) {
   const abajo = useHuecoAbajo();
   const reducido = useReducedMotion();
-  const perfil = usePerfil();
   const rutinasPropias = useRutinasPropias();
   const descargas = useEstadoSel(e => e.descargas);
   const parametro = (route.params as { tab?: SegmentoExplorar } | undefined)?.tab;
   const [tab, setTab] = useState<SegmentoExplorar>(parametro ?? 'ejercicios');
-  const [q, setQ] = useState('');
-  const [cat, setCat] = useState<string | null>(null);
-  const [goal, setGoal] = useState<string | null>(null);
-  const [soloMios, setSoloMios] = useState(true);
   const [verAnuncio, setVerAnuncio] = useState(false);
 
   const y = useSharedValue(0);
@@ -83,49 +74,10 @@ export function useExplorar({ navigation, route }: BottomTabScreenProps<ParamLis
     seguirBarra(e.contentOffset.y, previo, bajando);
   });
 
-  const equipoDisp = useMemo(
-    () => new Set([...perfil.equipo, 'ninguno', 'pared', 'silla']),
-    [perfil.equipo],
-  );
-  const contra = useMemo(() => new Set(perfil.contra), [perfil.contra]);
   const desbloqueada = descargas.includes(tab);
 
-  const ejercicios = useMemo(() => {
-    const t = q.trim().toLowerCase();
-    return EJERCICIOS.filter(e => {
-      if (t && !(
-        e.name.toLowerCase().includes(t) ||
-        (e.name_en ?? '').toLowerCase().includes(t) ||
-        (e.aliases ?? []).some(a => a.toLowerCase().includes(t))
-      )) return false;
-      if (cat && e.category !== cat) return false;
-      if (goal && !e.goals.includes(goal)) return false;
-      if (soloMios) {
-        if (e.contra.some(c => contra.has(c))) return false;
-        if (!e.equipment.every(x => equipoDisp.has(x))) return false;
-        if (perfil.modoSinSaltos && (e.impact >= 2 || e.noise >= 2)) return false;
-      }
-      return true;
-    });
-  }, [q, cat, goal, soloMios, equipoDisp, contra, perfil.modoSinSaltos]);
-
-  const rutinas = useMemo(() => {
-    const t = q.trim().toLowerCase();
-    return RUTINAS.filter(r => (!t || r.name.toLowerCase().includes(t)) && (!goal || r.goal === goal));
-  }, [q, goal]);
-
-  const programas = useMemo(() => {
-    const t = q.trim().toLowerCase();
-    return PROGRAMAS.filter(p => (!t || p.name.toLowerCase().includes(t)) && (!goal || p.goal === goal));
-  }, [q, goal]);
-
-  const musculos = useMemo(() => {
-    const t = q.trim().toLowerCase();
-    return MUSCULOS.filter(m => !t || m.name.toLowerCase().includes(t) || m.group.toLowerCase().includes(t));
-  }, [q]);
-
-  const cuantos = { ejercicios: ejercicios.length, rutinas: rutinas.length,
-    programas: programas.length, musculos: musculos.length }[tab];
+  // Los filtros viven en su store (filtrosExplorar.ts); al salir de Explorar vuelven a empezar.
+  useEffect(() => filtros.reiniciar, []);
 
   // Referencias estables (reciben el id): si no, cada tecla en el buscador crea una funcion
   // nueva por fila e invalida el memo de las filas. El favorito lo lee cada estrella.
@@ -159,20 +111,6 @@ export function useExplorar({ navigation, route }: BottomTabScreenProps<ParamLis
     contentContainerStyle: { paddingTop: AIRE_LISTA, paddingHorizontal: MARGEN_PANTALLA, paddingBottom: abajo },
   }), [onScroll, abajo]);
 
-  const chipsObjetivo = (
-    <>
-      <ChipFiltro
-        texto="Cualquier objetivo" activo={goal === null} onPress={() => setGoal(null)}
-      />
-      {GOALS.map(g => (
-        <ChipFiltro
-          key={g.id} texto={g.nombre} icono={ICONOS_OBJETIVO[g.id]} activo={goal === g.id}
-          onPress={() => setGoal(goal === g.id ? null : g.id)}
-        />
-      ))}
-    </>
-  );
-
   // En Ejercicios la linea del contador lleva el interruptor a la derecha y no queda sitio
   // para la frase «Sin conexión»: ahi solo se ve la palomita, junto a la unidad.
   const sinConexion = desbloqueada ? (
@@ -181,12 +119,7 @@ export function useExplorar({ navigation, route }: BottomTabScreenProps<ParamLis
       {!esEjercicios && <Text style={s.sinConexionTexto}>Sin conexión</Text>}
     </View>
   ) : undefined;
-  const derecha = esEjercicios ? (
-    <InterruptorDos
-      opciones={TEXTOS_INTERRUPTOR} etiquetas={ETIQUETAS_INTERRUPTOR}
-      indice={soloMios ? 0 : 1} onCambio={i => setSoloMios(i === 0)}
-    />
-  ) : sinConexion;
+  const derecha = esEjercicios ? <InterruptorMios /> : sinConexion;
 
   const cabeceraRutinas = (
     <CabeceraRutinas
@@ -199,10 +132,10 @@ export function useExplorar({ navigation, route }: BottomTabScreenProps<ParamLis
 
 
   return {
-    registrarDescarga, tab, q, setQ, cat, setCat, verAnuncio, setVerAnuncio, y,
-    foco, esEjercicios, irATab, desbloqueada, ejercicios, rutinas, programas, musculos, cuantos,
+    registrarDescarga, tab, verAnuncio, setVerAnuncio, y,
+    foco, esEjercicios, irATab, desbloqueada,
     onPressEjercicio, onPressRutina, onPressPrograma, entradaSegmento, salidaSegmento, propsLista,
-    chipsObjetivo, sinConexion, derecha, cabeceraRutinas,
+    sinConexion, derecha, cabeceraRutinas,
   };
 }
 

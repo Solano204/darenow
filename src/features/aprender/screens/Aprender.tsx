@@ -10,7 +10,7 @@
  * segmento elegido.
  */
 
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useDeferredValue, useMemo, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Animated, { useAnimatedScrollHandler, useSharedValue, withTiming } from 'react-native-reanimated';
 import Ionicons from '@expo/vector-icons/Ionicons';
@@ -82,22 +82,24 @@ export default function Aprender({ navigation }: BottomTabScreenProps<ParamListB
   });
 
   const todos = useMemo(() => tipsCompletos(), []);
+  // El campo muestra cada tecla al instante; las listas filtran con el texto diferido (R4).
+  const qLista = useDeferredValue(q);
   const tips = useMemo(() => {
-    const t = q.trim().toLowerCase();
+    const t = qLista.trim().toLowerCase();
     return todos.filter(x =>
       (!sala || x.sala === sala) &&
       (!t || x.titulo.toLowerCase().includes(t) || x.cuerpo.toLowerCase().includes(t)));
-  }, [todos, sala, q]);
+  }, [todos, sala, qLista]);
 
   const mitos = useMemo(() => {
-    const t = q.trim().toLowerCase();
+    const t = qLista.trim().toLowerCase();
     return MITOS.filter(m => !t || m.titulo.toLowerCase().includes(t));
-  }, [q]);
+  }, [qLista]);
 
   const glosario = useMemo(() => {
-    const t = q.trim().toLowerCase();
+    const t = qLista.trim().toLowerCase();
     return GLOSARIO.filter(g => !t || g.termino.toLowerCase().includes(t) || g.def.toLowerCase().includes(t));
-  }, [q]);
+  }, [qLista]);
 
   // Referencias estables: cada tecla en el buscador vuelve a pintar la pantalla y sin esto se
   // invalidaria el memo de cada tarjeta.

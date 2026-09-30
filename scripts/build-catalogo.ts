@@ -8,6 +8,9 @@
  *   src/data/indice/tips.json         los tips sin `cuerpo`
  *   src/data/indice/salas.json        las salas de tips (sin importar el JSON entero de tips)
  *   src/data/indice/conteos.json      los numeros de ESTADISTICAS (190 ejercicios, 52 musculos...)
+ *   src/data/indice/busqueda.json     los textos en los que busca Explorar, ya en minusculas (R4):
+ *                                     id -> [campo, campo...]. Aparte del indice para no tocar los
+ *                                     objetos del catalogo (ni lo que se guarda en una sesion).
  *   src/data/detalle/<tipo>.json      id -> textos largos (ejercicios, musculos, tips)
  *
  * En el indice cada texto largo queda como `null` en su misma posicion: `getEjercicio(id)` (y
@@ -92,6 +95,20 @@ function main() {
     mitos: (leer('31_myths_errors.json').mitos as Obj[]).length,
     sinEquipo: ejercicios.filter(ninguno).length,
     silenciosos: ejercicios.filter(e => (e.impact as number) < 2 && (e.noise as number) < 2).length,
+  });
+
+  // Lo que compara el buscador de Explorar, en el mismo orden y con el mismo `toLowerCase` de
+  // siempre: se calcula una vez aqui y no en cada tecla.
+  const minus = (x: unknown) => String(x ?? '').toLowerCase();
+  const rutinasFuente = leer('20_routines.json').items as Obj[];
+  const programasFuente = leer('21_programs.json').items as Obj[];
+  escribir(path.join(INDICE, 'busqueda.json'), {
+    ejercicios: Object.fromEntries(ejercicios.map(e => [e.id, [
+      minus(e.name), minus(e.name_en), ...((e.aliases as string[] | undefined) ?? []).map(minus),
+    ]])),
+    rutinas: Object.fromEntries(rutinasFuente.map(r => [r.id, minus(r.name)])),
+    programas: Object.fromEntries(programasFuente.map(p => [p.id, minus(p.name)])),
+    musculos: Object.fromEntries(musculos.map(m => [m.id, [minus(m.name), minus(m.group)]])),
   });
 
   console.log(`catalogo: ${ejercicios.length} ejercicios, ${musculos.length} musculos, ${tips.length} tips -> src/data/indice y src/data/detalle`);

@@ -1,11 +1,12 @@
-import React, { createContext, useCallback, useContext, useMemo } from 'react';
-import { StyleSheet, View, useWindowDimensions } from 'react-native';
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { InteractionManager, StyleSheet, View, useWindowDimensions } from 'react-native';
 import { Canvas, Points, Rect } from '@shopify/react-native-skia';
 import {
   Easing, cancelAnimation, useDerivedValue, useSharedValue, withTiming, type SharedValue,
 } from 'react-native-reanimated';
 import { paleta, polvo } from '@/ui/theme';
 import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
+import { useSplashOculto } from '@/ui/hooks/useSplash';
 
 const VELO_SUBE_MS = 60;
 const VELO_FIJO_MS = 180;
@@ -85,6 +86,17 @@ export function ProveedorMagnesia({ children }: { children: React.ReactNode }) {
   const { width, height } = useWindowDimensions();
   const reducido = useReducedMotion();
 
+  // El Canvas de Skia a pantalla completa no hace falta para pintar la primera pantalla: se monta
+  // cuando esta ya se ve (splash oculto) y terminaron sus animaciones de entrada
+  // (runAfterInteractions), mucho antes del primer aplauso.
+  const splashOculto = useSplashOculto();
+  const [lienzoListo, setLienzoListo] = useState(false);
+  useEffect(() => {
+    if (!splashOculto) return;
+    const tarea = InteractionManager.runAfterInteractions(() => setLienzoListo(true));
+    return () => tarea.cancel();
+  }, [splashOculto]);
+
   const t = useSharedValue(1);
   const origen = useSharedValue({ x: 0, y: 0 });
   const params = useSharedValue<number[]>([]);
@@ -133,17 +145,19 @@ export function ProveedorMagnesia({ children }: { children: React.ReactNode }) {
     <Contexto.Provider value={api}>
       <View style={s.raiz}>
         {children}
-        <View style={StyleSheet.absoluteFill} pointerEvents="none" accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
-          <Canvas style={{ width, height }} pointerEvents="none">
-            <Rect x={0} y={0} width={width} height={height} color={polvo.velo} opacity={opacidadVelo} />
-            {NUBE.grupos.map(g => (
-              <Nube key={`n${g.desde}`} motor={NUBE} grupo={g} t={t} origen={origen} params={params} soloVelo={soloVelo} />
-            ))}
-            {MINI.grupos.map(g => (
-              <Nube key={`m${g.desde}`} motor={MINI} grupo={g} t={tMini} origen={origenMini} params={paramsMini} />
-            ))}
-          </Canvas>
-        </View>
+        {lienzoListo && (
+          <View style={StyleSheet.absoluteFill} pointerEvents="none" accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
+            <Canvas style={{ width, height }} pointerEvents="none">
+              <Rect x={0} y={0} width={width} height={height} color={polvo.velo} opacity={opacidadVelo} />
+              {NUBE.grupos.map(g => (
+                <Nube key={`n${g.desde}`} motor={NUBE} grupo={g} t={t} origen={origen} params={params} soloVelo={soloVelo} />
+              ))}
+              {MINI.grupos.map(g => (
+                <Nube key={`m${g.desde}`} motor={MINI} grupo={g} t={tMini} origen={origenMini} params={paramsMini} />
+              ))}
+            </Canvas>
+          </View>
+        )}
       </View>
     </Contexto.Provider>
   );

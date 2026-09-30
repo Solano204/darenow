@@ -20,18 +20,18 @@ import {
 import { BotonPlaca } from '@/ui/components/BotonPlaca';
 import { NotaEntrenador, estiloNota } from '@/ui/components/NotaEntrenador';
 import { InsigniaEvidencia } from '@/ui/components/InsigniaEvidencia';
-import { BarraPlacas } from '@/components/fx/BarraPlacas';
+import { BarraPlacas } from '@/features/onboarding/components/BarraPlacas';
 import { GomaTexture } from '@/ui/fx/GomaTexture';
-import { FotoParallax } from '@/components/fx/FotoParallax';
-import { TituloEstampado } from '@/components/fx/TituloEstampado';
+import { FotoParallax } from '@/features/onboarding/components/FotoParallax';
+import { TituloEstampado } from '@/features/onboarding/components/TituloEstampado';
 import { TituloMascara } from '@/ui/fx/TituloMascara';
 import { Odometro } from '@/ui/fx/Odometro';
 import { DialTiempo } from '@/ui/fx/DialTiempo';
 import { TachadoMito } from '@/ui/fx/TachadoMito';
 import { Entrada } from '@/ui/fx/Entrada';
 import { fuente } from '@/media/registry';
-import { usePresentacion, type Lamina } from '@/hooks/usePresentacion';
-import { useFirstView } from '@/hooks/useFirstView';
+import { usePresentacion, type Lamina } from '@/features/onboarding/hooks/usePresentacion';
+import { useFirstView } from '@/features/onboarding/hooks/useFirstView';
 import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
 
 const FRACCION_FOTO = 0.62;

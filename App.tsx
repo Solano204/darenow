@@ -26,10 +26,10 @@ import { mark as perfMark } from '@/dev/perfMarks'; // perf:R1
 // sistema antes de que llegue la propia.
 SplashScreen.preventAutoHideAsync().catch(() => {});
 
-import Presentacion from '@/screens/Presentacion';
+import Presentacion from '@/features/onboarding/screens/Presentacion';
 import Acceso from '@/features/cuenta/screens/Acceso';
 import Bienvenida from '@/features/hoy/screens/Bienvenida';
-import Onboarding from '@/screens/Onboarding';
+import Onboarding from '@/features/onboarding/screens/Onboarding';
 import Hoy from '@/features/hoy/screens/Hoy';
 import Explorar from '@/features/explorar/screens/Explorar';
 import Aprender from '@/screens/Aprender';

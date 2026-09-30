@@ -23,10 +23,10 @@ import { GomaTexture } from '@/ui/fx/GomaTexture';
 import { BarraCarga13 } from '@/ui/fx/BarraCarga13';
 import { TituloMascara } from '@/ui/fx/TituloMascara';
 import { Entrada } from '@/ui/fx/Entrada';
-import { SaludoPreview } from '@/components/fx/SaludoPreview';
-import { TransicionPaso, useTransicionPaso } from '@/components/fx/TransicionPaso';
-import { useOnboarding, type TipoPaso } from '@/hooks/useOnboarding';
-import { useFirstView } from '@/hooks/useFirstView';
+import { SaludoPreview } from '@/features/onboarding/components/SaludoPreview';
+import { TransicionPaso, useTransicionPaso } from '@/features/onboarding/components/TransicionPaso';
+import { useOnboarding, type TipoPaso } from '@/features/onboarding/hooks/useOnboarding';
+import { useFirstView } from '@/features/onboarding/hooks/useFirstView';
 import type { PerfilUsuario } from '@/state/store';
 import PlanListo from './PlanListo';
 

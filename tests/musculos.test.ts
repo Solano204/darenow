@@ -4,7 +4,7 @@
  * esbuild --bundle --platform=node --format=cjs tests/musculos.test.ts | node
  */
 
-import { MUSCULOS, EJERCICIOS, musculoPorId } from '@/data/catalog';
+import { MUSCULOS, EJERCICIOS, getMusculo, musculoPorId } from '@/data/catalog';
 import { nombreVisible } from '@/data/nombresVisibles';
 import { textoDeEtiqueta, textoVisible } from '@/lib/presentacion';
 import { relacionados, ejerciciosDeMusculo } from '@/features/musculos/utils/musculos';
@@ -110,7 +110,7 @@ console.log('\n--- Tildes de los 52 musculos ---');
   c('crónicamente, débil, síndrome',
     v('cronicamente debil, sindrome, distension, insercion, teorico, tipico') === 'crónicamente débil, síndrome, distensión, inserción, teórico, típico');
   const pendientes: string[] = [];
-  for (const m of MUSCULOS) {
+  for (const m of MUSCULOS.map(x => getMusculo(x.id)!)) {
     for (const t of [m.name, m.funcion, m.dolor_comun ?? '']) {
       if (/\b(cronicamente|debil|debiles|sindrome|distension|insercion|teorico|tipico)\b/i.test(v(t))) pendientes.push(m.id);
     }

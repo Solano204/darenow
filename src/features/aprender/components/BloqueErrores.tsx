@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { paleta, familia, MARGEN_PANTALLA } from '@/ui/theme';
-import { ERRORES } from '@/data/catalog';
+import { ERRORES } from '@/data/aprender';
 import { textoVisible } from '@/lib/presentacion';
 import { relacionadosVista, textoDeLectura, type RelacionadoVista } from '@/lib/aprender';
 import { FilaRelacionados } from './TarjetaRelacionada';

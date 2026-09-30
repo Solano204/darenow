@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { paleta, familia } from '@/ui/theme';
-import { CATEGORIAS, type Ejercicio } from '@/data/catalog';
+import { CATEGORIAS, type EjercicioIndice } from '@/data/catalog';
 import { capitalizar } from '@/lib/presentacion';
 import { NivelPlacas } from '@/ui/components/NivelPlacas';
 
@@ -10,7 +10,7 @@ import { NivelPlacas } from '@/ui/components/NivelPlacas';
  * aplica, «Impacto alto» y «Ruidoso», separados por un punto dibujado de 3 px.
  * La primera letra va en mayuscula solo en la vista.
  */
-export function MetadatosEjercicio({ ejercicio: e }: { ejercicio: Ejercicio }) {
+export function MetadatosEjercicio({ ejercicio: e }: { ejercicio: EjercicioIndice }) {
   const categoria = CATEGORIAS.find(c => c.id === e.category)?.nombre ?? capitalizar(e.category);
   const datos = [
     categoria,

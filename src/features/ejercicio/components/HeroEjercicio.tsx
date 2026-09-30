@@ -5,7 +5,7 @@ import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
 import { paleta, conAlfa, degradado, resorteMagnesia } from '@/ui/theme';
 import { fuente } from '@/media/registry';
-import type { Ejercicio } from '@/data/catalog';
+import type { EjercicioIndice } from '@/data/catalog';
 import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
 import { useTick } from '@/ui/hooks/useTick';
 import Clip from '@/ui/components/Clip';
@@ -33,7 +33,7 @@ const ESCALA_ENTRADA = 0.94;
  * movimiento reducido no se mueve. Al abrirse entra con escala 0.94 y fundido.
  */
 export function HeroEjercicio({ ejercicio, y, alto }: {
-  ejercicio: Ejercicio;
+  ejercicio: EjercicioIndice;
   y: SharedValue<number>;
   alto: number;
 }) {

@@ -22,7 +22,8 @@ import { seguirBarra } from '@/ui/components/cabecera';
 import { barraBajada } from '@/ui/hooks/useBarraFlotante';
 import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
 import { MuroCategoria, Intersticial } from '@/ui/components/Anuncio';
-import { TIPS, SALAS, MITOS, GLOSARIO, FAQ } from '@/data/catalog';
+import { TIPS, SALAS, tipsCompletos } from '@/data/catalog';
+import { MITOS, GLOSARIO, FAQ } from '@/data/aprender';
 import { useEstado } from '@/state/store';
 import { RUTA_DE_RELACIONADO, nombreDeSala, type RelacionadoVista } from '@/lib/aprender';
 import { BuscadorVivo } from '@/ui/components/BuscadorVivo';
@@ -81,12 +82,13 @@ export default function Aprender({ navigation }: BottomTabScreenProps<ParamListB
     seguirBarra(e.contentOffset.y, previo, bajando);
   });
 
+  const todos = useMemo(tipsCompletos, []);
   const tips = useMemo(() => {
     const t = q.trim().toLowerCase();
-    return TIPS.filter(x =>
+    return todos.filter(x =>
       (!sala || x.sala === sala) &&
       (!t || x.titulo.toLowerCase().includes(t) || x.cuerpo.toLowerCase().includes(t)));
-  }, [sala, q]);
+  }, [todos, sala, q]);
 
   const mitos = useMemo(() => {
     const t = q.trim().toLowerCase();

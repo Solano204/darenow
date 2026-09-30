@@ -4,7 +4,10 @@
  * esbuild --bundle --platform=node --format=cjs tests/aprender.test.ts | node
  */
 
-import { TIPS, SALAS, MITOS, ERRORES, NUTRICION, GLOSARIO, FAQ } from '@/data/catalog';
+import { SALAS, tipsCompletos } from '@/data/catalog';
+
+const TIPS = tipsCompletos();
+import { MITOS, ERRORES, NUTRICION, GLOSARIO, FAQ } from '@/data/aprender';
 import { nombreVisible } from '@/data/nombresVisibles';
 import { textoDePregunta, comillasLatinas, textoDeEtiqueta } from '@/lib/presentacion';
 import {

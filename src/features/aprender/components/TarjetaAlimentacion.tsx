@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { paleta, familia } from '@/ui/theme';
-import { NUTRICION } from '@/data/catalog';
+import { NUTRICION } from '@/data/aprender';
 import { textoVisible } from '@/lib/presentacion';
 import { textoDeLectura } from '@/lib/aprender';
 import { Entrada } from '@/ui/fx/Entrada';

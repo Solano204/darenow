@@ -9,7 +9,7 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { paleta, familia, MARGEN_PANTALLA } from '@/ui/theme';
-import { RETOS } from '@/data/catalog';
+import { RETOS } from '@/data/logros';
 import { useEstado } from '@/state/store';
 import { PantallaColapsable } from '@/ui/components/PantallaColapsable';
 import { NotaEntrenador } from '@/ui/components/NotaEntrenador';

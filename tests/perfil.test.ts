@@ -4,7 +4,8 @@
  * esbuild --bundle --platform=node --format=cjs tests/perfil.test.ts | node
  */
 
-import { LOGROS, RETOS, GOALS, PROGRAMAS, MEDICIONES, nombreGoal } from '@/data/catalog';
+import { GOALS, PROGRAMAS, nombreGoal } from '@/data/catalog';
+import { LOGROS, RETOS, MEDICIONES } from '@/data/logros';
 import {
   textoDeMotivo, textoDeEstadoSesion, textoDeFrecuencia, unidadDeMedicion, PROTOCOLOS_SIN_VALOR, MOTIVOS_DE_SALIDA,
 } from '@/lib/textosVisibles';

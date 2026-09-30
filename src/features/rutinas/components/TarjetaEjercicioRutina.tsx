@@ -6,7 +6,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import { paleta, conAlfa, familia, easing, resortePlaca } from '@/ui/theme';
 import type { ItemPropio } from '@/state/store';
-import type { Ejercicio } from '@/data/catalog';
+import type { EjercicioIndice } from '@/data/catalog';
 import { nombreVisible } from '@/data/nombresVisibles';
 import { textoDeEquipo } from '@/lib/presentacion';
 import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
@@ -69,7 +69,7 @@ export function TarjetaEjercicioRutina({
   item, ejercicio, indice, animarEntrada, impulso, brillo, onCambio, onMover, onQuitar, onAbrir, alMedir,
 }: {
   item: ItemPropio;
-  ejercicio: Ejercicio;
+  ejercicio: EjercicioIndice;
   indice: number;
   animarEntrada: boolean;
   impulso: number;

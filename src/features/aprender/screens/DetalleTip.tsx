@@ -15,7 +15,7 @@ import type { ParamListBase } from '@react-navigation/native';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { paleta, familia, MARGEN_PANTALLA } from '@/ui/theme';
 import { fuente } from '@/media/registry';
-import { TIPS } from '@/data/catalog';
+import { getTip } from '@/data/catalog';
 import { useEstado } from '@/state/store';
 import { textoVisible } from '@/lib/presentacion';
 import {
@@ -49,7 +49,7 @@ export default function DetalleTip({ route, navigation }: Props) {
   const onScroll = useAnimatedScrollHandler(e => { y.value = e.contentOffset.y; });
   const { alternarFavorito, esFavorito, marcarTipLeido } = useEstado();
 
-  const t = TIPS.find(x => x.id === (route.params as { id: string }).id);
+  const t = getTip((route.params as { id: string }).id);
   const relacionados = useMemo(() => relacionadosVista(t?.relacionado ?? []), [t]);
   useEffect(() => { if (t) marcarTipLeido(t.id); }, [t?.id]);
   if (!t) return null;

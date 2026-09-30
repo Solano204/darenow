@@ -5,7 +5,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import { Ionicons } from '@expo/vector-icons';
 import { paleta, familia, easing, resortePlaca, resorteTap, resorteMagnesia, MARGEN_PANTALLA } from '@/ui/theme';
-import type { Musculo } from '@/data/catalog';
+import type { MusculoIndice } from '@/data/catalog';
 import type { Relacionado } from '@/features/musculos/utils/musculos';
 import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
 import { useTick } from '@/ui/hooks/useTick';
@@ -56,7 +56,7 @@ function IconoRelacion({ tipo }: { tipo: TipoRelacion }) {
 export function RelacionMuscular({ tipo, titulo, actual, items, activo, onTodos, onAbrir }: {
   tipo: TipoRelacion;
   titulo: string;
-  actual: Musculo;
+  actual: MusculoIndice;
   items: Relacionado[];
   /** Verdadero cuando la seccion ya entro en pantalla. */
   activo: boolean;

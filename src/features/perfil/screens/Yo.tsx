@@ -21,7 +21,8 @@ import type { TipoFavorito } from '@/lib/perfil';
 import {
   useEstado, estadisticas, ultimos7, minutosPorDia, diasEntrenados,
 } from '@/state/store';
-import { LOGROS, RETOS, programaPorId, nombreGoal } from '@/data/catalog';
+import { programaPorId, nombreGoal } from '@/data/catalog';
+import { LOGROS, RETOS } from '@/data/logros';
 import type { ParamListBase } from '@react-navigation/native';
 import type { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { paleta, familia, resorteMagnesia } from '@/ui/theme';
-import type { Ejercicio } from '@/data/catalog';
+import type { EjercicioIndice } from '@/data/catalog';
 import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
 import { Entrada } from '@/ui/fx/Entrada';
 import { FilaEjercicio } from '@/ui/components/FilaEjercicio';
@@ -30,7 +30,7 @@ export function TituloEjercicios() {
  */
 export function SubgrupoEjercicios({ titulo, ejercicios, principal, activo, favorito, onFav, onPress }: {
   titulo: string;
-  ejercicios: Ejercicio[];
+  ejercicios: EjercicioIndice[];
   principal: boolean;
   activo: boolean;
   favorito: (id: string) => boolean;

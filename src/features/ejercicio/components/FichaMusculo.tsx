@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import { paleta, familia, easing } from '@/ui/theme';
 import { fuente } from '@/media/registry';
-import type { Musculo } from '@/data/catalog';
+import type { MusculoIndice } from '@/data/catalog';
 import { textoVisible } from '@/lib/presentacion';
 import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
 import { useTick } from '@/ui/hooks/useTick';
@@ -40,7 +40,7 @@ export function medidasFichas(nombres: string[]): MedidasFicha {
  * se omite. Al presionar se hunde un 5 %.
  */
 export function FichaMusculo({ m, principal, medidas, indice, activo, animar = true, detalle, onPress }: {
-  m: Musculo;
+  m: MusculoIndice;
   principal: boolean;
   medidas: MedidasFicha;
   indice: number;

@@ -4,7 +4,7 @@ import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { faseVisual } from '@/ui/theme';
 import { useEstado } from '@/state/store';
 import { useSinAnuncios } from '@/ui/components/RelojAnuncios';
-import { logroPorId } from '@/data/catalog';
+import { logroPorId } from '@/data/logros';
 import { nombreVisible } from '@/data/nombresVisibles';
 import type { EstadoPlayer, SerieHecha } from '@/features/sesion/utils/playerMachine';
 import type { ItemSesion } from '@/lib/engine/session';

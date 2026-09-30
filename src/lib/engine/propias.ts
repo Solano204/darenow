@@ -1,5 +1,5 @@
-import { porId, type Ejercicio } from '@/data/catalog';
-import { EQUIPO_BASE, type ItemSesion, type Perfil, type Sesion } from './base';
+import { porId, type EjercicioIndice } from '@/data/catalog';
+import { EQUIPO_BASE, completo, type ItemSesion, type Perfil, type Sesion } from './base';
 
 /* ------------------------------------------------------------------ */
 /* Rutinas creadas por el usuario                                      */
@@ -24,7 +24,7 @@ export interface RutinaPropia {
 }
 
 /** Valores de arranque al meter un ejercicio en una rutina propia. */
-export function itemPropioPorDefecto(e: Ejercicio): ItemPropio {
+export function itemPropioPorDefecto(e: EjercicioIndice): ItemPropio {
   return {
     ejercicioId: e.id,
     series: e.default.series ?? 3,
@@ -60,7 +60,7 @@ export function revisarPropia(items: ItemPropio[], p: Perfil): string[] {
 
   const conLesion = items
     .map(it => porId.get(it.ejercicioId))
-    .filter((e): e is Ejercicio => !!e && e.contra.some(c => p.contra.includes(c)));
+    .filter((e): e is EjercicioIndice => !!e && e.contra.some(c => p.contra.includes(c)));
   if (conLesion.length) {
     avisos.push(
       `${conLesion.length === 1 ? 'Un ejercicio carga' : `${conLesion.length} ejercicios cargan`} una zona que marcaste como lesionada: ${conLesion.map(e => e.name).join(', ')}.`,
@@ -69,7 +69,7 @@ export function revisarPropia(items: ItemPropio[], p: Perfil): string[] {
 
   const sinEquipo = items
     .map(it => porId.get(it.ejercicioId))
-    .filter((e): e is Ejercicio => !!e && !e.equipment.every(q => equipo.has(q)));
+    .filter((e): e is EjercicioIndice => !!e && !e.equipment.every(q => equipo.has(q)));
   if (sinEquipo.length) {
     avisos.push(`Necesitas equipo que no declaraste tener: ${sinEquipo.map(e => e.name).join(', ')}.`);
   }
@@ -77,7 +77,7 @@ export function revisarPropia(items: ItemPropio[], p: Perfil): string[] {
   if (p.modoSinSaltos) {
     const ruidosos = items
       .map(it => porId.get(it.ejercicioId))
-      .filter((e): e is Ejercicio => !!e && (e.impact >= 2 || e.noise >= 2));
+      .filter((e): e is EjercicioIndice => !!e && (e.impact >= 2 || e.noise >= 2));
     if (ruidosos.length) {
       avisos.push(`Tienes activado el modo sin saltos y ${ruidosos.length === 1 ? 'hay un ejercicio con impacto' : `hay ${ruidosos.length} ejercicios con impacto`}.`);
     }
@@ -111,7 +111,7 @@ export function sesionDePropia(
       : e.category === 'estiramiento' ? 'enfriamiento'
       : 'principal';
     items.push({
-      ...e,
+      ...completo(e),
       bloque,
       seriesPlan: it.series,
       repsPlan: it.reps ?? null,

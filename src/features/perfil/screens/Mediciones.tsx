@@ -10,7 +10,8 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { paleta, familia, MARGEN_PANTALLA } from '@/ui/theme';
-import { MEDICIONES, type Protocolo } from '@/data/catalog';
+import { type Protocolo } from '@/data/catalog';
+import { MEDICIONES } from '@/data/logros';
 import { useEstado, hoy } from '@/state/store';
 import { useConsentimientoMedidas, pedirConsentimientoMedidas } from '@/state/consentimientoMedidas';
 import { unidadDeMedicion } from '@/lib/textosVisibles';

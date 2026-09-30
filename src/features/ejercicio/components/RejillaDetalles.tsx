@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { paleta, tipo, familia } from '@/ui/theme';
-import { nombreEquipo, type Ejercicio, type Familia } from '@/data/catalog';
+import { nombreEquipo, type EjercicioIndice, type Familia } from '@/data/catalog';
 import { capitalizar, textoDeZonas, textoVisible } from '@/lib/presentacion';
 import { Entrada } from '@/ui/fx/Entrada';
 import { Odometro } from '@/ui/fx/Odometro';
@@ -22,7 +22,7 @@ interface Celda {
   icono?: boolean;
 }
 
-function celdasDe(e: Ejercicio, fam?: Familia): Celda[] {
+function celdasDe(e: EjercicioIndice, fam?: Familia): Celda[] {
   const serie = e.default.seg != null ? e.default.seg : e.default.reps;
   const celdas: Celda[] = [
     { etiqueta: 'Series por defecto', numeros: { partes: [e.default.series, '×', serie ?? '—'], unidad: e.default.seg != null ? 's' : undefined } },
@@ -47,7 +47,7 @@ const leer = (c: Celda) =>
  * (cuidado, como «Parcial»).
  */
 export function RejillaDetalles({ ejercicio, familia: fam, activo }: {
-  ejercicio: Ejercicio; familia?: Familia; activo: boolean;
+  ejercicio: EjercicioIndice; familia?: Familia; activo: boolean;
 }) {
   const celdas = celdasDe(ejercicio, fam);
   return (

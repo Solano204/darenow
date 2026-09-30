@@ -21,7 +21,7 @@ import { EtiquetasMusculo } from '@/ui/components/EtiquetasMusculo';
 import { TarjetaLoQueSuelePasar } from '@/ui/components/TarjetaLoQueSuelePasar';
 import { RelacionMuscular } from '@/features/musculos/components/RelacionMuscular';
 import { TituloEjercicios, SubgrupoEjercicios } from '@/features/musculos/components/ListaEjerciciosMusculo';
-import { EJERCICIOS, musculoPorId } from '@/data/catalog';
+import { EJERCICIOS, getMusculo, musculoPorId } from '@/data/catalog';
 import { useEstado } from '@/state/store';
 import { textoVisible } from '@/lib/presentacion';
 import { ejerciciosDeMusculo, relacionados } from '@/features/musculos/utils/musculos';
@@ -38,7 +38,7 @@ export default function DetalleMusculo({ route, navigation }: Props) {
   const onScroll = useAnimatedScrollHandler(e => { y.value = e.contentOffset.y; });
   const { alternarFavorito, esFavorito } = useEstado();
 
-  const m = musculoPorId.get((route.params as { id: string }).id);
+  const m = getMusculo((route.params as { id: string }).id);
   const { principales, secundarios } = useMemo(
     () => (m ? ejerciciosDeMusculo(m.id, EJERCICIOS) : { principales: [], secundarios: [] }),
     [m],

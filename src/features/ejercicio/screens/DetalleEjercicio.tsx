@@ -30,7 +30,7 @@ import { FichaMusculo, medidasFichas } from '@/features/ejercicio/components/Fic
 import { RejillaDetalles } from '@/features/ejercicio/components/RejillaDetalles';
 import { TarjetaAlternativa, ANCHO_ALTERNATIVA } from '@/features/ejercicio/components/TarjetaAlternativa';
 import { TituloSeccion } from '@/ui/components/TituloSeccion';
-import { porId, musculoPorId, familiaPorId, evidenciaDe, type Ejercicio } from '@/data/catalog';
+import { porId, getEjercicio, musculoPorId, familiaPorId, evidenciaDe, type EjercicioIndice } from '@/data/catalog';
 import { useEstado } from '@/state/store';
 import { textoVisible } from '@/lib/presentacion';
 
@@ -50,7 +50,7 @@ export default function DetalleEjercicio({ route, navigation }: Props) {
   const onScroll = useAnimatedScrollHandler(ev => { y.value = ev.contentOffset.y; });
   const { estado, alternarVeto, alternarFavorito, esFavorito } = useEstado();
 
-  const e = porId.get((route.params as { id: string }).id);
+  const e = getEjercicio((route.params as { id: string }).id);
   if (!e) return null;
 
   const alturaHero = Math.round(ventana * ALTO_HERO_FRACCION);
@@ -200,7 +200,7 @@ export default function DetalleEjercicio({ route, navigation }: Props) {
 function Alternativas({ titulo, ayuda, ids, clase, abrir }: {
   titulo: string; ayuda: string; ids: string[]; clase: 'nivel' | 'intercambio'; abrir: (id: string) => void;
 }) {
-  const items = ids.map(i => porId.get(i)).filter((x): x is Ejercicio => !!x);
+  const items = ids.map(i => porId.get(i)).filter((x): x is EjercicioIndice => !!x);
   if (!items.length) return null;
   return (
     <View style={s.seccionLibre}>

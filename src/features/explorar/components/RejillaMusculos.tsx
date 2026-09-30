@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { StyleSheet, View, useWindowDimensions, type ListRenderItemInfo } from 'react-native';
 import Animated, { type SharedValue } from 'react-native-reanimated';
 import { resorteMagnesia, MARGEN_PANTALLA } from '@/ui/theme';
-import type { Musculo } from '@/data/catalog';
+import type { MusculoIndice } from '@/data/catalog';
 import { textoVisible } from '@/lib/presentacion';
 import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
 import { Entrada } from '@/ui/fx/Entrada';
@@ -32,7 +32,7 @@ const ESCALA_OLA = 0.92;
  * calcula (`armarFilas`), asi que la lista no mide nada.
  */
 export function RejillaMusculos({ musculos, propsLista, scrollY, onPress }: {
-  musculos: Musculo[];
+  musculos: MusculoIndice[];
   propsLista: PropsLista;
   /** El scroll de la lista (el mismo que mueve la cabecera). */
   scrollY: SharedValue<number>;

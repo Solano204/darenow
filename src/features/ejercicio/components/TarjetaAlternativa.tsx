@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { paleta, familia } from '@/ui/theme';
-import type { Ejercicio } from '@/data/catalog';
+import type { EjercicioIndice } from '@/data/catalog';
 import { textoVisible } from '@/lib/presentacion';
 import { Tocable } from '@/ui/components/Tocable';
 import { FotoOscura } from '@/ui/components/FotoOscura';
@@ -18,7 +18,7 @@ const ALTO_FOTO = 120;
  * un sustituto, un icono de intercambio. Al presionar se hunde y da un toque suave.
  */
 export function TarjetaAlternativa({ e, clase, onPress }: {
-  e: Ejercicio;
+  e: EjercicioIndice;
   clase: 'nivel' | 'intercambio';
   onPress: () => void;
 }) {

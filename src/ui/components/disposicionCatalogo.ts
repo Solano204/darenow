@@ -1,4 +1,4 @@
-import type { Musculo } from '@/data/catalog';
+import type { MusculoIndice } from '@/data/catalog';
 import { textoDeEtiqueta, textoVisible } from '@/lib/presentacion';
 
 /**
@@ -35,10 +35,10 @@ export function lineasDeNombre(nombre: string, porLinea: number = LETRAS_POR_LIN
   return lineas;
 }
 
-export interface TramoGrupo { grupo: string; etiqueta: string; musculos: Musculo[] }
+export interface TramoGrupo { grupo: string; etiqueta: string; musculos: MusculoIndice[] }
 
 /** Tramos seguidos del mismo `group`, en el orden que traen los musculos (un grupo puede volver a aparecer mas abajo). */
-export function agruparPorGrupo(musculos: readonly Musculo[]): TramoGrupo[] {
+export function agruparPorGrupo(musculos: readonly MusculoIndice[]): TramoGrupo[] {
   const tramos: TramoGrupo[] = [];
   for (const m of musculos) {
     const ultimo = tramos[tramos.length - 1];
@@ -50,7 +50,7 @@ export function agruparPorGrupo(musculos: readonly Musculo[]): TramoGrupo[] {
 
 export type FilaCatalogo =
   | { tipo: 'region'; clave: string; grupo: string; etiqueta: string; cantidad: number; arriba: number; alto: number }
-  | { tipo: 'fichas'; clave: string; musculos: Musculo[]; fila: number; lineas: number; arriba: number; alto: number };
+  | { tipo: 'fichas'; clave: string; musculos: MusculoIndice[]; fila: number; lineas: number; arriba: number; alto: number };
 
 /**
  * Las filas del catalogo: un encabezado por tramo de grupo (con cuantos musculos trae ese
@@ -58,9 +58,9 @@ export type FilaCatalogo =
  * encabezados. `arriba` es la posicion de cada fila y `alto` su alto, incluida la separacion de abajo.
  */
 export function armarFilas(
-  musculos: readonly Musculo[],
+  musculos: readonly MusculoIndice[],
   lado: number,
-  nombreDe: (m: Musculo) => string = m => textoVisible(m.name),
+  nombreDe: (m: MusculoIndice) => string = m => textoVisible(m.name),
 ): FilaCatalogo[] {
   const conGrupos = musculos.length > 0 && musculos.every(m => !!m.group);
   const tramos = conGrupos ? agruparPorGrupo(musculos) : [{ grupo: '', etiqueta: '', musculos: [...musculos] }];

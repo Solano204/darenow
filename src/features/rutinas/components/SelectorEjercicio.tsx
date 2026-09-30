@@ -5,12 +5,12 @@ import { color, tipo, esp, radio, peso } from '@/ui/theme';
 import { Boton, Chip, Toque, Buscador, Vacio } from '@/ui/components';
 import Foto from '@/ui/components/Foto';
 import { useEstado } from '@/state/store';
-import { EJERCICIOS, CATEGORIAS, nombreEquipo, type Ejercicio } from '@/data/catalog';
+import { EJERCICIOS, CATEGORIAS, nombreEquipo, type EjercicioIndice } from '@/data/catalog';
 
 /** El modal «Agregar ejercicio» del editor de rutinas: busqueda, categoria y filtro de equipo. */
 export function SelectorEjercicio({ visible, yaPuestos, onElegir, onCerrar }: {
   visible: boolean; yaPuestos: string[];
-  onElegir: (e: Ejercicio) => void; onCerrar: () => void;
+  onElegir: (e: EjercicioIndice) => void; onCerrar: () => void;
 }) {
   const { estado } = useEstado();
   const [q, setQ] = useState('');
@@ -105,7 +105,7 @@ export function SelectorEjercicio({ visible, yaPuestos, onElegir, onCerrar }: {
 /** Memoizada: la busqueda re-renderiza el selector en cada tecla sobre las
  *  190 filas posibles; `onElegir` llega estable desde el padre. */
 const FilaSelector = React.memo(function FilaSelector({ item, puesto, onElegir }: {
-  item: Ejercicio; puesto: boolean; onElegir: (e: Ejercicio) => void;
+  item: EjercicioIndice; puesto: boolean; onElegir: (e: EjercicioIndice) => void;
 }) {
   return (
     <Toque onPress={puesto ? undefined : () => onElegir(item)} estilo={s.filaSelector as never}>

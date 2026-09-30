@@ -1,7 +1,7 @@
 import React from 'react';
 import type { ListRenderItemInfo } from 'react-native';
 import Animated, { type SharedValue } from 'react-native-reanimated';
-import type { Ejercicio, Programa, Rutina } from '@/data/catalog';
+import type { EjercicioIndice, Programa, Rutina } from '@/data/catalog';
 import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
 import { FilaEjercicio } from '@/ui/components/FilaEjercicio';
 import { TarjetaRutina } from './TarjetaRutina';
@@ -22,7 +22,7 @@ import {
 interface ComunesFavorito { favorito: (id: string) => boolean; onFav: (id: string) => void }
 
 export function ListaEjercicios({ ejercicios, propsLista, favorito, onFav, onPress }: ComunesFavorito & {
-  ejercicios: Ejercicio[];
+  ejercicios: EjercicioIndice[];
   propsLista: PropsLista;
   onPress: (id: string) => void;
 }) {
@@ -31,10 +31,10 @@ export function ListaEjercicios({ ejercicios, propsLista, favorito, onFav, onPre
     <Animated.FlatList
       {...PROPS_FIJAS} {...propsLista}
       data={ejercicios}
-      keyExtractor={(e: Ejercicio) => e.id}
+      keyExtractor={(e: EjercicioIndice) => e.id}
       itemLayoutAnimation={reducido ? undefined : reacomodo}
       ListEmptyComponent={<TextoVacio texto="Nada con esos filtros. Prueba a quitar alguno." />}
-      renderItem={({ item, index }: ListRenderItemInfo<Ejercicio>) => (
+      renderItem={({ item, index }: ListRenderItemInfo<EjercicioIndice>) => (
         <Animated.View
           entering={index < FILAS_ANIMADAS ? (reducido ? entradaReducida : entradaFila) : undefined}
           exiting={index < FILAS_ANIMADAS ? (reducido ? salidaReducida : salida) : undefined}

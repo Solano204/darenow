@@ -6,7 +6,7 @@
  * (sesiones de la app) y `propias.ts` (rutinas del usuario).
  */
 
-import { EJERCICIOS, type Ejercicio } from '@/data/catalog';
+import { EJERCICIOS, getEjercicio, type Ejercicio, type EjercicioIndice } from '@/data/catalog';
 
 export interface Perfil {
   objetivo: string;
@@ -53,7 +53,7 @@ export interface Filtro {
   objetivo?: string;
 }
 
-export function ejerciciosValidos(p: Perfil, f: Filtro = {}): Ejercicio[] {
+export function ejerciciosValidos(p: Perfil, f: Filtro = {}): EjercicioIndice[] {
   const equipoDisp = new Set([...EQUIPO_BASE, ...p.equipo]);
   const contra = new Set(p.contra);
   const vetos = new Set(p.vetos);
@@ -94,12 +94,16 @@ export function kcal(it: ItemSesion, pesoKg: number): number {
   return (it.met * 3.5 * pesoKg / 200) * (duracion(it) / 60);
 }
 
+/** El ejercicio con sus textos: el mismo objeto que habia en el catalogo antes de R3. */
+export const completo = (e: EjercicioIndice): Ejercicio => getEjercicio(e.id) ?? (e as Ejercicio);
+
 const TOPE_SEG = { calentamiento: 45, principal: 90, enfriamiento: 45 } as const;
 
-export function aItem(e: Ejercicio, bloque: ItemSesion['bloque']): ItemSesion {
+/** Un item de sesion lleva el ejercicio completo, con sus textos (el reproductor muestra las claves). */
+export function aItem(e: EjercicioIndice, bloque: ItemSesion['bloque']): ItemSesion {
   const seg = e.default.seg ?? null;
   return {
-    ...e,
+    ...completo(e),
     bloque,
     seriesPlan: e.default.series ?? 3,
     repsPlan: e.default.reps ?? null,

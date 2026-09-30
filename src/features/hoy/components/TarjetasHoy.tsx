@@ -4,7 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { paleta, familia } from '@/ui/theme';
 import { fuente, type TipoFoto } from '@/media/registry';
 import {
-  CATEGORIAS, evidenciaDe, type Ejercicio, type Musculo, type Tip,
+  CATEGORIAS, evidenciaDe, type EjercicioIndice, type MusculoIndice, type TipIndice,
 } from '@/data/catalog';
 import { nombreVisible } from '@/data/nombresVisibles';
 import { textoVisible } from '@/lib/presentacion';
@@ -61,7 +61,7 @@ function TarjetaFoto({
  * ejercicio tiene afirmaciones.
  */
 export function TarjetaEjercicioMini({ e, favorito, onPress, onFavorito }: {
-  e: Ejercicio; favorito: boolean; onPress: () => void; onFavorito: () => void;
+  e: EjercicioIndice; favorito: boolean; onPress: () => void; onFavorito: () => void;
 }) {
   const nombre = nombreVisible(e.name);
   const categoria = CATEGORIAS.find(c => c.id === e.category)?.nombre ?? e.category;
@@ -91,7 +91,7 @@ export function TarjetaEjercicioMini({ e, favorito, onPress, onFavorito }: {
  * (hasta 2 lineas). Si el musculo trabaja en la sesion de hoy y existe `<id>_hoy`
  * (la version con el musculo resaltado, ver `docs/IMAGENES.md`), se usa esa imagen.
  */
-export function FichaMusculo({ m, trabajaHoy, onPress }: { m: Musculo; trabajaHoy: boolean; onPress: () => void }) {
+export function FichaMusculo({ m, trabajaHoy, onPress }: { m: MusculoIndice; trabajaHoy: boolean; onPress: () => void }) {
   const idFoto = trabajaHoy && fuente('musculo', `${m.id}_hoy`) ? `${m.id}_hoy` : m.id;
   const nombre = nombreVisible(m.name);
   return (
@@ -109,7 +109,7 @@ export function FichaMusculo({ m, trabajaHoy, onPress }: { m: Musculo; trabajaHo
  * ayudantes que la tarjeta de Aprender, para que un articulo se lea igual en las dos pestanas.
  */
 export function TarjetaArticulo({ t, favorito, onPress, onFavorito }: {
-  t: Tip; favorito: boolean; onPress: () => void; onFavorito: () => void;
+  t: TipIndice; favorito: boolean; onPress: () => void; onFavorito: () => void;
 }) {
   const titulo = textoVisible(t.titulo);
   const categoria = nombreDeSala(t.sala);

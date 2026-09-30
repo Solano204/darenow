@@ -6,7 +6,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { paleta, conAlfa, familia, tipo } from '@/ui/theme';
 import { fuente } from '@/media/registry';
 import { nombreVisible } from '@/data/nombresVisibles';
-import type { Ejercicio } from '@/data/catalog';
+import type { EjercicioIndice } from '@/data/catalog';
 import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
 import { useTick } from '@/ui/hooks/useTick';
 import { Tocable } from './Tocable';
@@ -40,7 +40,7 @@ const OSCURECE_PRESIONADO = 0.06;
  * oscurece un 6 % y el atleta sube 6 px y escala 1.03.
  */
 export function TarjetaEnfoque({ ejercicio, progreso, onPress }: {
-  ejercicio: Ejercicio;
+  ejercicio: EjercicioIndice;
   progreso: Progreso;
   onPress: () => void;
 }) {

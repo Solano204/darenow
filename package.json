@@ -27,7 +27,8 @@
     "lint": "eslint .",
     "lint:capas": "python3 scripts/refactor/capas.py",
     "circulares": "npx --yes madge --circular --extensions ts,tsx --ts-config tsconfig.json src App.tsx",
-    "muerto": "npx --yes knip"
+    "muerto": "npx --yes knip",
+    "catalogo": "esbuild --bundle --platform=node --format=cjs scripts/build-catalogo.ts | node"
   },
   "dependencies": {
     "@expo-google-fonts/big-shoulders-display": "^0.2.3",

@@ -10,7 +10,7 @@
  * amplia el espacio y despues el nivel, y el usuario se entera.
  */
 
-import { porId, type Ejercicio } from '@/data/catalog';
+import { porId, type EjercicioIndice } from '@/data/catalog';
 import {
   aItem, duracion, ejerciciosValidos, kcal, type Filtro, type ItemSesion, type Perfil, type Sesion,
 } from './base';
@@ -38,7 +38,7 @@ const ROTACION: Record<string, string[]> = {
 };
 
 /** Igual que arriba, pero relaja filtros si el patron se queda corto. */
-function conRelajacion(p: Perfil, f: Filtro): { items: Ejercicio[]; relajado: string[] } {
+function conRelajacion(p: Perfil, f: Filtro): { items: EjercicioIndice[]; relajado: string[] } {
   const relajado: string[] = [];
   let items = ejerciciosValidos(p, f);
 
@@ -78,9 +78,9 @@ function mezcla(id: string, semilla: number): number {
   return h >>> 0;
 }
 
-function elegirVariado(pool: Ejercicio[], n: number, semilla: number): Ejercicio[] {
+function elegirVariado(pool: EjercicioIndice[], n: number, semilla: number): EjercicioIndice[] {
   const barajado = [...pool].sort((a, b) => mezcla(a.id, semilla) - mezcla(b.id, semilla));
-  const salida: Ejercicio[] = [];
+  const salida: EjercicioIndice[] = [];
   const familias = new Set<string>();
   for (const e of barajado) {
     if (salida.length >= n) break;
@@ -249,7 +249,7 @@ export function sesionDeRutina(
 }
 
 /** Sustituto valido para el boton de cambiar en caliente. */
-export function sustituir(p: Perfil, ejercicioId: string, yaEnSesion: string[]): Ejercicio | null {
+export function sustituir(p: Perfil, ejercicioId: string, yaEnSesion: string[]): EjercicioIndice | null {
   const e = porId.get(ejercicioId);
   if (!e) return null;
   const validos = new Set(ejerciciosValidos(p, { objetivo: '' }).map(x => x.id));

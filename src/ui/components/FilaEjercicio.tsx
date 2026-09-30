@@ -3,7 +3,7 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 import { Ionicons } from '@expo/vector-icons';
 import { paleta, familia, resorteTap } from '@/ui/theme';
-import { evidenciaDe, type Ejercicio } from '@/data/catalog';
+import { evidenciaDe, type EjercicioIndice } from '@/data/catalog';
 import { textoDeEquipo, textoVisible } from '@/lib/presentacion';
 import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
 import { useTick } from '@/ui/hooks/useTick';
@@ -36,7 +36,7 @@ const ALTO_NIVEL = 12;
  * id y llegan estables desde el padre.
  */
 export const FilaEjercicio = React.memo(function FilaEjercicio({ e, favorito, onFav, onPress }: {
-  e: Ejercicio;
+  e: EjercicioIndice;
   favorito: boolean;
   onFav: (id: string) => void;
   onPress: (id: string) => void;

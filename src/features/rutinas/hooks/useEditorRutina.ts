@@ -7,7 +7,7 @@ import { haptico } from '@/ui/theme';
 import { useMagnesia } from '@/ui/fx/MagnesiaOverlay';
 import { useEstado, type RutinaPropia, type ItemPropio } from '@/state/store';
 import { itemPropioPorDefecto, minutosPropios, revisarPropia } from '@/lib/engine/session';
-import type { Ejercicio } from '@/data/catalog';
+import type { EjercicioIndice } from '@/data/catalog';
 import { plural } from '@/lib/plural';
 import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
 import { useTick } from '@/ui/hooks/useTick';
@@ -157,7 +157,7 @@ export function useEditorRutina(
     AccessibilityInfo.announceForAccessibility(`Ejercicio quitado, ${quedan} ${plural(quedan, 'ejercicio', 'ejercicios')}`);
   };
 
-  const anadir = (e: Ejercicio) => {
+  const anadir = (e: EjercicioIndice) => {
     setSelector(false);
     if (r.items.some(it => it.ejercicioId === e.id)) return;
     const nuevo = itemPropioPorDefecto(e);

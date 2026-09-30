@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Animated, { type SharedValue } from 'react-native-reanimated';
 import { paleta, familia } from '@/ui/theme';
-import { NUTRICION } from '@/data/catalog';
+import { NUTRICION } from '@/data/aprender';
 import { textoDeLectura } from '@/lib/aprender';
 import { BloqueRevela } from '@/ui/fx/BloqueRevela';
 import { Entrada } from '@/ui/fx/Entrada';

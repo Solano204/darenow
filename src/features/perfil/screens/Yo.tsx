@@ -152,6 +152,7 @@ export default function Yo({ navigation }: BottomTabScreenProps<ParamListBase, '
 
 /* =============================================================== LOGROS */
 
+/** @public Pantalla del Stack: App.tsx la carga con getComponent (require), que knip no sigue. */
 export function Logros() {
   const { estado } = useEstado();
   const ganados = new Map(estado.logros.map(l => [l.id, l.fecha]));

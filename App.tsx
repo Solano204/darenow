@@ -23,29 +23,8 @@ import { mark as perfMark } from '@/dev/perfMarks'; // perf:R1
 // layout (ver useSplash): ni texto esperando fuente, ni spinner, ni fondo vacio.
 mantenerSplash();
 
-import Presentacion from '@/features/onboarding/screens/Presentacion';
-import Acceso from '@/features/cuenta/screens/Acceso';
 import Bienvenida from '@/features/hoy/screens/Bienvenida';
-import Onboarding from '@/features/onboarding/screens/Onboarding';
 import Hoy from '@/features/hoy/screens/Hoy';
-import Explorar from '@/features/explorar/screens/Explorar';
-import Aprender from '@/features/aprender/screens/Aprender';
-import DetalleTip from '@/features/aprender/screens/DetalleTip';
-import DetalleMito from '@/features/aprender/screens/DetalleMito';
-import Yo, { Logros } from '@/features/perfil/screens/Yo';
-import Ajustes from '@/features/ajustes/screens/Ajustes';
-import Retos from '@/features/perfil/screens/Retos';
-import Mediciones from '@/features/perfil/screens/Mediciones';
-import Historial from '@/features/perfil/screens/Historial';
-import Favoritos from '@/features/perfil/screens/Favoritos';
-import EditorRutina from '@/features/rutinas/screens/EditorRutina';
-import RutinaPropia from '@/features/rutinas/screens/RutinaPropia';
-import Reproductor from '@/features/sesion/screens/Reproductor';
-import Resumen from '@/features/sesion/screens/Resumen';
-import DetalleEjercicio from '@/features/ejercicio/screens/DetalleEjercicio';
-import DetalleRutina from '@/features/rutinas/screens/DetalleRutina';
-import DetallePrograma from '@/features/programas/screens/DetallePrograma';
-import DetalleMusculo from '@/features/musculos/screens/DetalleMusculo';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -67,6 +46,12 @@ const tema = {
   },
 };
 
+/*
+ * Pantallas perezosas (R3): `getComponent` con `require` adentro. Metro solo evalua el modulo de
+ * una pantalla la primera vez que se abre; al arrancar se evaluan Hoy, Bienvenida y lo que usan.
+ */
+/* eslint-disable @typescript-eslint/no-require-imports */
+
 function Pestanas() {
   // La entrada de Hoy empieza cuando el splash ya se fue, no debajo de el.
   const splashOculto = useSplashOculto();
@@ -78,12 +63,14 @@ function Pestanas() {
           headerShown: false,
           animation: 'fade',
           sceneStyle: { backgroundColor: color.fondo },
+          // Una pestaña que no se ve no se vuelve a dibujar hasta que regresas (R3).
+          freezeOnBlur: true,
         }}
       >
         <Tab.Screen name="Hoy" component={Hoy} />
-        <Tab.Screen name="Explorar" component={Explorar} />
-        <Tab.Screen name="Aprender" component={Aprender} />
-        <Tab.Screen name="Yo" component={Yo} />
+        <Tab.Screen name="Explorar" getComponent={() => require('@/features/explorar/screens/Explorar').default} />
+        <Tab.Screen name="Aprender" getComponent={() => require('@/features/aprender/screens/Aprender').default} />
+        <Tab.Screen name="Yo" getComponent={() => require('@/features/perfil/screens/Yo').default} />
       </Tab.Navigator>
     </Entrada>
   );
@@ -123,15 +110,18 @@ function Pantallas() {
 
   // La primera vez de todas: intro animada, y despues el onboarding.
   if (!estado.presentacionVista) {
+    const Presentacion = require('@/features/onboarding/screens/Presentacion').default;
     return <Presentacion onTerminar={marcarPresentacion} />;
   }
 
   // Puerta de cuenta: Google o invitado. Se ve una sola vez.
   if (!cuenta) {
+    const Acceso = require('@/features/cuenta/screens/Acceso').default;
     return <Acceso onListo={() => {}} />;
   }
 
   if (!estado.onboardingHecho) {
+    const Onboarding = require('@/features/onboarding/screens/Onboarding').default;
     return <Onboarding onTerminar={terminarOnboarding} />;
   }
 
@@ -154,6 +144,8 @@ function Pantallas() {
         headerShadowVisible: false,
         contentStyle: { backgroundColor: color.fondo },
         animation: 'fade',
+        // La pantalla de abajo no se redibuja mientras hay otra encima (R3). Excepcion: Reproductor.
+        freezeOnBlur: true,
       }}
     >
       <Stack.Screen name="Bienvenida" component={Bienvenida}
@@ -161,35 +153,39 @@ function Pantallas() {
       <Stack.Screen name="Tabs" component={Pestanas}
         options={{ headerShown: false, animation: 'fade' }} />
 
-      <Stack.Screen name="Reproductor" component={Reproductor}
+      <Stack.Screen name="Reproductor" getComponent={() => require('@/features/sesion/screens/Reproductor').default}
         options={{
           headerShown: false, gestureEnabled: false, animation: 'slide_from_bottom',
+          // Sin congelar: su voz, vibracion y cronometro van por efectos que no deben detenerse.
+          freezeOnBlur: false,
           // Unica pantalla que sigue oscura: sin esto, el fondo claro de
           // contentStyle asoma un instante durante la transicion de entrada.
           contentStyle: { backgroundColor: colorSesion.fondo },
         }} />
-      <Stack.Screen name="Resumen" component={Resumen}
+      <Stack.Screen name="Resumen" getComponent={() => require('@/features/sesion/screens/Resumen').default}
         options={{ headerShown: false, gestureEnabled: false, animation: 'fade' }} />
 
-      <Stack.Screen name="Ejercicio" component={DetalleEjercicio} options={{ headerShown: false }} />
-      <Stack.Screen name="Musculo" component={DetalleMusculo} options={{ headerShown: false }} />
-      <Stack.Screen name="Rutina" component={DetalleRutina} options={{ headerShown: false }} />
-      <Stack.Screen name="RutinaPropia" component={RutinaPropia} options={{ headerShown: false }} />
-      <Stack.Screen name="EditorRutina" component={EditorRutina}
+      <Stack.Screen name="Ejercicio" getComponent={() => require('@/features/ejercicio/screens/DetalleEjercicio').default} options={{ headerShown: false }} />
+      <Stack.Screen name="Musculo" getComponent={() => require('@/features/musculos/screens/DetalleMusculo').default} options={{ headerShown: false }} />
+      <Stack.Screen name="Rutina" getComponent={() => require('@/features/rutinas/screens/DetalleRutina').default} options={{ headerShown: false }} />
+      <Stack.Screen name="RutinaPropia" getComponent={() => require('@/features/rutinas/screens/RutinaPropia').default} options={{ headerShown: false }} />
+      <Stack.Screen name="EditorRutina" getComponent={() => require('@/features/rutinas/screens/EditorRutina').default}
         options={{ title: '', animation: 'slide_from_bottom' }} />
-      <Stack.Screen name="Programa" component={DetallePrograma} options={{ headerShown: false }} />
-      <Stack.Screen name="Tip" component={DetalleTip} options={{ headerShown: false }} />
-      <Stack.Screen name="Mito" component={DetalleMito} options={{ headerShown: false }} />
+      <Stack.Screen name="Programa" getComponent={() => require('@/features/programas/screens/DetallePrograma').default} options={{ headerShown: false }} />
+      <Stack.Screen name="Tip" getComponent={() => require('@/features/aprender/screens/DetalleTip').default} options={{ headerShown: false }} />
+      <Stack.Screen name="Mito" getComponent={() => require('@/features/aprender/screens/DetalleMito').default} options={{ headerShown: false }} />
 
-      <Stack.Screen name="Favoritos" component={Favoritos} options={{ title: 'Favoritos' }} />
-      <Stack.Screen name="Logros" component={Logros} options={{ title: 'Logros' }} />
-      <Stack.Screen name="Retos" component={Retos} options={{ headerShown: false }} />
-      <Stack.Screen name="Mediciones" component={Mediciones} options={{ headerShown: false }} />
-      <Stack.Screen name="Historial" component={Historial} options={{ headerShown: false }} />
-      <Stack.Screen name="Ajustes" component={Ajustes} options={{ headerShown: false }} />
+      <Stack.Screen name="Favoritos" getComponent={() => require('@/features/perfil/screens/Favoritos').default} options={{ title: 'Favoritos' }} />
+      <Stack.Screen name="Logros" getComponent={() => require('@/features/perfil/screens/Yo').Logros} options={{ title: 'Logros' }} />
+      <Stack.Screen name="Retos" getComponent={() => require('@/features/perfil/screens/Retos').default} options={{ headerShown: false }} />
+      <Stack.Screen name="Mediciones" getComponent={() => require('@/features/perfil/screens/Mediciones').default} options={{ headerShown: false }} />
+      <Stack.Screen name="Historial" getComponent={() => require('@/features/perfil/screens/Historial').default} options={{ headerShown: false }} />
+      <Stack.Screen name="Ajustes" getComponent={() => require('@/features/ajustes/screens/Ajustes').default} options={{ headerShown: false }} />
     </Stack.Navigator>
   );
 }
+
+/* eslint-enable @typescript-eslint/no-require-imports */
 
 export default function App() {
   perfMark('app-render'); // perf:R1

@@ -23,11 +23,11 @@ import { BloqueRevela } from '@/ui/fx/BloqueRevela';
 import { BarraSuperiorColapsable } from '@/ui/components/BarraSuperiorColapsable';
 import { TituloSeccion } from '@/ui/components/TituloSeccion';
 import { HeroRutina } from '@/ui/components/HeroRutina';
-import { DatosPrograma } from '@/components/program-detail/DatosPrograma';
-import { MapaCarga } from '@/components/program-detail/MapaCarga';
-import { LineaFases } from '@/components/program-detail/LineaFases';
-import { TarjetaQueEsperar } from '@/components/program-detail/TarjetaQueEsperar';
-import { HojaCambiarPrograma } from '@/components/program-detail/HojaCambiarPrograma';
+import { DatosPrograma } from '@/features/programas/components/DatosPrograma';
+import { MapaCarga } from '@/features/programas/components/MapaCarga';
+import { LineaFases } from '@/features/programas/components/LineaFases';
+import { TarjetaQueEsperar } from '@/features/programas/components/TarjetaQueEsperar';
+import { HojaCambiarPrograma } from '@/features/programas/components/HojaCambiarPrograma';
 import { MAX_PLACAS } from '@/ui/components/disposicionMapa';
 import { programaPorId, rutinaPorId } from '@/data/catalog';
 import { nombreVisible } from '@/data/nombresVisibles';
@@ -37,7 +37,7 @@ import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
 import { textoVisible } from '@/lib/presentacion';
 import {
   fasesDePrograma, faseDeSemana, minutosPorSemana, placasPorSemana, resumenDePlan,
-} from '@/utils/minutosPorSemana';
+} from '@/features/programas/utils/minutosPorSemana';
 
 const ALTO_BARRA_SUPERIOR = 52;
 const FRACCION_HERO = 0.38;

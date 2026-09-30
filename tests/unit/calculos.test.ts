@@ -3,7 +3,7 @@ import { fechaLocal, fechaLarga, diaCorto, esSesionLarga } from '@/lib/fechas';
 import { etiquetaDeTramo, estimarTramos, resumenDeTramos, PISO_TRAMO } from '@/utils/estimarTramos';
 import {
   parsearRango, fasesDePrograma, faseDeSemana, minutosPorSemana, placasPorSemana, textoDeRango, palabrasDeRango, resumenDePlan,
-} from '@/utils/minutosPorSemana';
+} from '@/features/programas/utils/minutosPorSemana';
 import {
   placasPorDia, semanaEnCero, fechaDeDia, celdasDelMes, diaDelCalendario, diasDelMes, etiquetasDeEstadisticas,
   totalFavoritos, mezclarFavoritos, progresoAcotado, vistaPreviaDeReto, agruparPorMes, filaDeHistorial,

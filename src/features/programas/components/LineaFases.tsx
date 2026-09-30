@@ -3,7 +3,7 @@ import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import type { SharedValue } from 'react-native-reanimated';
 import { paleta, familia, resorteMagnesia, MARGEN_PANTALLA } from '@/ui/theme';
 import { textoVisible } from '@/lib/presentacion';
-import type { FasePrograma } from '@/utils/minutosPorSemana';
+import type { FasePrograma } from '@/features/programas/utils/minutosPorSemana';
 import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
 import { Entrada } from '@/ui/fx/Entrada';
 import { NotaEntrenador } from '@/ui/components/NotaEntrenador';

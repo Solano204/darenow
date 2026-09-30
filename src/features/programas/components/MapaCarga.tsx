@@ -6,7 +6,7 @@ import {
 } from 'react-native-reanimated';
 import { paleta, familia, haptico, MARGEN_PANTALLA } from '@/ui/theme';
 import { nombreVisible } from '@/data/nombresVisibles';
-import type { FasePrograma } from '@/utils/minutosPorSemana';
+import type { FasePrograma } from '@/features/programas/utils/minutosPorSemana';
 import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
 import {
   ALTO_MAPA, ALTO_PLACA, PASO_PLACA, geometriaMapa, disponerEtiquetas, type GeoMapa,

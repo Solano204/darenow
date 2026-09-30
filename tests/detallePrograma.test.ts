@@ -6,7 +6,7 @@
 
 import {
   parsearRango, fasesDePrograma, faseDeSemana, minutosPorSemana, placasPorSemana, textoDeRango, resumenDePlan,
-} from '@/utils/minutosPorSemana';
+} from '@/features/programas/utils/minutosPorSemana';
 import { PROGRAMAS, rutinaPorId } from '@/data/catalog';
 import { nombreVisible } from '@/data/nombresVisibles';
 import { geometriaMapa, disponerEtiquetas, MAX_PLACAS } from '@/ui/components/disposicionMapa';

@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 import { paleta, familia, resortePlaca } from '@/ui/theme';
 import { nombreVisible } from '@/data/nombresVisibles';
-import { palabrasDeRango } from '@/utils/minutosPorSemana';
+import { palabrasDeRango } from '@/features/programas/utils/minutosPorSemana';
 import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
 import { useTick } from '@/ui/hooks/useTick';
 

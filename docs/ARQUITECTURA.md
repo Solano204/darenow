@@ -143,6 +143,28 @@ El React Compiler esta activo (`app.json`, `experiments.reactCompiler`) y sus re
 - `npm run catalogo` falla si un ejercicio apunta a un medio que no existe o si falta una version empaquetada, y avisa de los originales sin uso. Commitear lo generado.
 - Nada de medios remotos: la app funciona sin internet.
 
+## Animaciones y limpieza de efectos (R6)
+
+**Animar**
+
+- Solo Reanimated (`useSharedValue`, `useAnimatedStyle`, `useDerivedValue`, `withTiming`/`withSpring`). Nada de `Animated` del core.
+- Solo `transform` y `opacity` en lo que cambia cada cuadro (scroll, loops). Un relleno que crece es `scaleY`/`scaleX` con `transformOrigin`, no `height`/`width`. Las propiedades de layout solo en animaciones de un toque sobre subarboles pequenos.
+- Nada de `setState` en `useFrameCallback`, en `onScroll` ni en callbacks de animacion. `runOnJS` solo para eventos (termino, cambio de fase o de region), nunca por cuadro. No leer `.value` durante el render.
+- Un `withTiming`/`withSpring` no va dentro de un `useDerivedValue` que depende del scroll: se arranca con `useAnimatedReaction` cuando cambia el destino.
+- Scroll: `useAnimatedScrollHandler`, `scrollEventThrottle={16}`. Visibilidad «al entrar en pantalla»: `BloqueRevela` dentro de un `ProveedorRevela` (una reaccion por pantalla).
+- Skia: un `Canvas` de efectos por pantalla; particulas con pool (`ui/fx/particulas.ts`) y rutas reusadas (`ui/fx/caminos.ts`); limites en `LIMITE_PARTICULAS`. Ver DESIGN.md, «Presupuesto de Skia».
+- Loops ambientales: con `useLoopActivo()` (pantalla enfocada y app en primer plano) y respetando `useCalidadVisual()` (DESIGN.md, «Niveles de calidad»). Lo que informa al usuario (odometros, anillo, guia de respiracion, sellos) no depende del nivel.
+- Haptica: siempre `haptico` de `ui/theme/haptics.ts` (limitador de 40 ms), nunca `expo-haptics` directo ni desde un loop.
+
+**Limpiar** (todo efecto deja el mundo como lo encontro):
+
+- `setTimeout`/`setInterval` en un efecto: `clear` en la limpieza. En un manejador: `useTemporizador()` (uno por hueco, cancelado al desmontar; `alDesmontar: 'ejecutar'` para una accion ya confirmada).
+- Escuchas (`AppState`, `Keyboard`, navegacion, players): se quitan en la limpieza; una escucha que se crea en un manejador se guarda en una ref y se quita antes de crear otra y al desmontar. Para saber si la app esta en primer plano, `useLoopActivo` (una sola escucha nativa para toda la app).
+- Asincronas que actualizan estado: bandera `vivo` en la limpieza; si el usuario pudo cambiar el valor mientras llegaba, la lectura no lo pisa.
+- `withRepeat`/`useFrameCallback`: `cancelAnimation`/`setActive(false)` en la limpieza.
+- Cachés de modulo: con tope (LRU) o que se sueltan cuando ya no hacen falta.
+- La prueba `tests/unit/renders/fugas.test.tsx` abre y cierra cada pantalla principal 20 veces y exige cero temporizadores, escuchas, players y callbacks vivos: una pantalla nueva con animaciones entra ahi.
+
 ## Limites
 
 - Ningun archivo pasa de ~300 lineas (excepcion: `media/registry.ts`, generado). Si crece, subcomponentes a `components/`, logica a `hooks/`, funciones puras a `utils/`.

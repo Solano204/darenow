@@ -93,6 +93,21 @@ Pendiente en el telefono: FPS de JS en release, SMOKE, prueba de actualizacion c
 
 Pendiente en el telefono: FPS en las 5 listas, memoria tras 5 scrolls y 20 fichas, contador de players en release, AAB y SMOKE en modo avion. Ver `R5_REPORTE.md`.
 
+## Estado tras R6 (2026-09-30)
+
+| ID | Fase | Estado | Detalle |
+|---|---|---|---|
+| H-02 | R4 / R6 | ✅ Resuelto | R4: solo hojas por segundo. R6: respiracion y latido cancelados al desmontar; sesion de 10 min sin acumulacion (prueba) |
+| H-03 | R4 / R6 | ⏸️ Pendiente de telefono | `useTick` se queda: DESIGN.md documenta el caso real (`useCapa`). Quitarlo fuera de ese caso requiere verlo en el telefono |
+| H-10 | R6 | ✅ Resuelto | El `Canvas` del overlay de magnesia existe solo durante un aplauso; particulas en pools |
+| H-12 | R5 / R6 | 🟡 Parcial | Cache de 4 fotos de Skia (R5); Bienvenida junta foto, velo y polvo en un `Canvas`. Un `Canvas` por hero sigue (tratamiento de color del diseno) |
+| H-19 | R6 | ✅ Resuelto | `useLoopActivo`: pulso del riel, respiracion de la ficha, invitacion de FilaCrear, esqueleto y Pulso se detienen con la pantalla tapada o en segundo plano; el esqueleto se va si la foto falla |
+| H-20 | R6 | ✅ Resuelto | Teclado de FilaMedicion, temporizadores de manejadores (`useTemporizador`), accion de HojaConfirmacion, Pulso. Prueba de 20 aperturas por pantalla sin nada vivo |
+| H-21 | R6 | ✅ Resuelto | Cero `Animated` del core; el Chip interpola el color en el hilo de UI |
+| H-24 | R4 / R6 | ✅ Resuelto | Los `setState` que quedan en reacciones al scroll (IndiceSecciones, EncabezadoPegado) solo corren al cambiar de seccion; los rieles ya no cambian su alto con el scroll |
+
+Pendiente en el telefono: FPS UI/JS del catalogo de animaciones, memoria de la prueba de fugas, sesion de 10 minutos (FPS, memoria, bateria, temperatura), capturas en calidad alta, los tres niveles de calidad y SMOKE. Ver `R6_REPORTE.md`.
+
 ## Resumen
 
 1. **H-01 Context gigante**: un favorito o un «tip leído» re-renderiza las 4 pestañas y todo lo abierto en el stack → **R4**.

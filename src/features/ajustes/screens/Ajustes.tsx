@@ -7,176 +7,45 @@
  * borran como filas rojas con su confirmacion en una hoja inferior.
  */
 
-import React, { useState } from 'react';
-import { Alert, Linking, StyleSheet, Text, View } from 'react-native';
-import Animated, { FadeIn, FadeOut, LinearTransition } from 'react-native-reanimated';
-import { Ionicons } from '@expo/vector-icons';
-import { paleta, familia, haptico, MARGEN_PANTALLA } from '@/ui/theme';
-import { useEstado } from '@/state/store';
-import { useHapticosActivos } from '@/state/haptics';
-import { useVozActiva } from '@/state/voz';
-import { useCuenta } from '@/state/cuenta';
-import { useConsentimientoMedidas, pedirConsentimientoMedidas } from '@/state/consentimientoMedidas';
-import { exportarProgreso, elegirRespaldo, aplicarRespaldo } from '@/storage/respaldo';
+import { Linking, StyleSheet, Text, View } from 'react-native';
+import { paleta, familia, MARGEN_PANTALLA } from '@/ui/theme';
 import { URL_PRIVACIDAD, URL_TERMINOS, URL_BORRAR_CUENTA } from '@/lib/legal';
-import { EQUIPO, GOALS, porId, nombreGoal } from '@/data/catalog';
+import { porId } from '@/data/catalog';
 import { textoVisible } from '@/lib/presentacion';
-import { ESPACIOS, ETIQUETAS_ESPACIO, LESIONES, indiceDeEspacio, equipoElegible, contarMarcados } from '@/features/ajustes/utils/ajustes';
-import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
+import { ESPACIOS, ETIQUETAS_ESPACIO, LESIONES, indiceDeEspacio } from '@/features/ajustes/utils/ajustes';
 import { PantallaColapsable } from '@/ui/components/PantallaColapsable';
-import { ContadorPlacas } from '@/ui/components/ContadorPlacas';
 import { NotaEntrenador, estiloNota } from '@/ui/components/NotaEntrenador';
-import { ICONOS_OBJETIVO } from '@/ui/components/iconosObjetivo';
-import { DialTiempo } from '@/ui/fx/DialTiempo';
 import { IconoTrazo } from '@/ui/fx/IconoTrazo';
 import { TarjetaLoQueSuelePasar } from '@/ui/components/TarjetaLoQueSuelePasar';
 import { ChipCategoria } from '@/ui/components/ChipCategoria';
 import { IndiceSecciones, ALTO_INDICE } from '@/features/ajustes/components/IndiceSecciones';
 import { SeccionAjustes, ContadorDe, ContadorMarcadas } from '@/features/ajustes/components/SeccionAjustes';
 import { GrupoFilas } from '@/features/ajustes/components/GrupoFilas';
-import { FilaAjuste, BloqueControl, ChevronGiratorio, SANGRIA_CON_ICONO } from '@/features/ajustes/components/FilaAjuste';
-import { SelectorNivel } from '@/features/ajustes/components/SelectorNivel';
+import { FilaAjuste, BloqueControl, SANGRIA_CON_ICONO } from '@/features/ajustes/components/FilaAjuste';
 import { SegmentadoTres } from '@/features/ajustes/components/SegmentadoTres';
 import { FilaEquipo } from '@/features/ajustes/components/FilaEquipo';
 import { FilaLesion } from '@/features/ajustes/components/FilaLesion';
-import { ContadorEstatura } from '@/features/ajustes/components/ContadorEstatura';
 import { RejillaCatalogo } from '@/features/ajustes/components/RejillaCatalogo';
 import { FilaCuenta } from '@/features/ajustes/components/FilaCuenta';
 import { FilaDestructiva } from '@/features/ajustes/components/FilaDestructiva';
-import { HojaConfirmacion, type AccionHoja } from '@/features/ajustes/components/HojaConfirmacion';
+import { HojaConfirmacion } from '@/features/ajustes/components/HojaConfirmacion';
+import { SeccionTuPlan } from '@/features/ajustes/components/SeccionTuPlan';
+import { SeccionPesoYMedidas } from '@/features/ajustes/components/SeccionPesoYMedidas';
+import { useAjustes, INDICE } from '@/features/ajustes/hooks/useAjustes';
 
-/** Las secciones que llevan un chip en el indice, en el orden en que aparecen. */
-const INDICE = [
-  'Tu plan', 'Dónde entrenas', 'Equipo', 'Lesiones', 'Sesión', 'Qué ver', 'Peso y medidas', 'Catálogo', 'Cuenta', 'Datos', 'Legal',
-] as const;
 const SEC = {
   plan: 0, donde: 1, equipo: 2, lesiones: 3, sesion: 4, ver: 5, medidas: 6, catalogo: 7, cuenta: 8, datos: 9, legal: 10,
 } as const;
 
-const MINUTOS = { min: 5, max: 90 } as const;
-const PESO = { min: 30, max: 200, defecto: 70 } as const;
-const ESTATURA_DEFECTO = 170;
-const TAMANO_DIAL = 120;
-const ENTRADA_PESO_MS = 240;
-const SALIDA_PESO_MS = 160;
-const ENTRADA_OBJETIVOS_MS = 180;
-const SALIDA_OBJETIVOS_MS = 120;
-const AJUSTE_ALTURA_MS = 240;
-
-interface Confirmacion {
-  titulo: string;
-  texto: string;
-  acciones: AccionHoja[];
-}
 
 export default function Ajustes({ navigation }: any) {
-  const reducido = useReducedMotion();
-  const { estado, guardarPerfil, borrarMedidas } = useEstado();
-  const { cuenta, salir, borrarTodosLosDatos } = useCuenta();
-  const p = estado.perfil;
-  const [objetivoAbierto, setObjetivoAbierto] = useState(false);
-  const [hapticosOn, setHapticosOn] = useHapticosActivos();
-  const [vozOn, setVozOn] = useVozActiva();
-  const [consentimientoMedidas, cambiarConsentimientoMedidas] = useConsentimientoMedidas();
-  const [exportando, setExportando] = useState(false);
-  const [importando, setImportando] = useState(false);
-  const [hoja, setHoja] = useState<Confirmacion | null>(null);
-  const [arriba, setArriba] = useState<number[]>(() => INDICE.map(() => Number.POSITIVE_INFINITY));
-
-  const medir = (i: number) => (y: number) => setArriba(previas => (previas[i] === y ? previas : previas.map((v, k) => (k === i ? y : v))));
-
-  const equipoOnb = equipoElegible(EQUIPO);
-  const equipoMarcado = contarMarcados(p.equipo, equipoOnb.map(e => e.id));
-  const lesionesMarcadas = contarMarcados(p.contra, LESIONES.map(([id]) => id));
-  const anima = !reducido;
-
-  // Revocar = dejar de tratar el dato: se borran peso, altura, peso
-  // objetivo y mediciones, no solo la bandera de consentimiento.
-  const retirarConsentimientoMedidas = () => setHoja({
-    titulo: 'Retirar consentimiento',
-    texto: 'Al retirar tu consentimiento se borrarán tu peso, altura y medidas guardados. ¿Continuar?',
-    acciones: [{
-      texto: 'Continuar', tipo: 'peligro',
-      onPress: () => { borrarMedidas(); cambiarConsentimientoMedidas(false); },
-    }],
-  });
-
-  const exportar = async () => {
-    setExportando(true);
-    const r = await exportarProgreso();
-    setExportando(false);
-    if (!r.ok) { haptico.error(); Alert.alert('No se pudo exportar', r.motivo); }
-  };
-
-  // Mismo dialogo para "Eliminar mi cuenta" y "Borrar todos mis datos": las
-  // dos disparan el mismo borrado completo (borrarTodosLosDatos), asi que
-  // no puede haber un texto que prometa conservar el historial y otro que
-  // no. "Exportar respaldo primero" no borra nada: solo abre el compartir
-  // y deja el borrado para cuando el usuario confirme de nuevo.
-  const confirmarBorrarTodo = () => setHoja({
-    titulo: 'Borrar mis datos',
-    texto: 'Se borrarán tu cuenta, tu progreso, rutinas, medidas y ajustes de este teléfono. No se puede deshacer.',
-    acciones: [
-      { texto: 'Exportar respaldo primero', onPress: exportar },
-      { texto: 'Borrar todo', tipo: 'peligro', onPress: () => { borrarTodosLosDatos(); } },
-    ],
-  });
-
-  const confirmarCerrarSesion = () => setHoja({
-    titulo: 'Cerrar sesión',
-    texto: 'Tu historial de entrenamiento se queda en este teléfono.',
-    acciones: [{ texto: 'Cerrar sesión', onPress: () => { salir(); } }],
-  });
-
-  // Elegir y validar el archivo primero; recien si es valido se pide
-  // confirmacion (reemplaza todo, no se puede deshacer) antes de escribir.
-  const importar = async () => {
-    setImportando(true);
-    const elegido = await elegirRespaldo();
-    setImportando(false);
-    if (elegido.ok === 'cancelado') return;
-    if (!elegido.ok) { haptico.error(); Alert.alert('Archivo no válido', elegido.motivo); return; }
-
-    setHoja({
-      titulo: 'Importar progreso',
-      texto: 'Esto reemplaza tu progreso actual. No se puede deshacer.',
-      acciones: [{
-        texto: 'Importar', tipo: 'peligro',
-        onPress: async () => {
-          try {
-            await aplicarRespaldo(elegido.respaldo);
-            haptico.exito();
-            Alert.alert(
-              'Progreso importado',
-              'Cierra la app por completo y vuelve a abrirla para verlo reflejado.',
-            );
-          } catch {
-            haptico.error();
-            Alert.alert(
-              'No se pudo importar',
-              'Algo falló al escribir el progreso. Tus datos actuales no deberían haber cambiado; intenta otra vez.',
-            );
-          }
-        },
-      }],
-    });
-  };
-
-  const guardarMedida = (campo: 'pesoKg' | 'pesoObjetivoKg' | 'alturaCm') => (v: number) =>
-    pedirConsentimientoMedidas(consentimientoMedidas, cambiarConsentimientoMedidas, () => guardarPerfil({ [campo]: v }));
-
-  const cambiarVibracion = (v: boolean) => {
-    setHapticosOn(v);
-    if (v) haptico.placa();
-  };
-
-  const alternarEquipo = (id: string) => guardarPerfil({
-    equipo: p.equipo.includes(id) ? p.equipo.filter(x => x !== id) : [...p.equipo, id],
-  });
-  const alternarLesion = (id: string) => guardarPerfil({
-    contra: p.contra.includes(id) ? p.contra.filter(x => x !== id) : [...p.contra, id],
-  });
-
+  const {
+    guardarPerfil, cuenta, p, objetivoAbierto, setObjetivoAbierto, hapticosOn, vozOn, setVozOn,
+    consentimientoMedidas, cambiarConsentimientoMedidas, exportando, importando, hoja, setHoja,
+    arriba, medir, equipoOnb, equipoMarcado, lesionesMarcadas, anima, retirarConsentimientoMedidas,
+    exportar, confirmarBorrarTodo, confirmarCerrarSesion, importar, guardarMedida, cambiarVibracion,
+    alternarEquipo, alternarLesion,
+  } = useAjustes();
   return (
     <>
       <PantallaColapsable
@@ -188,47 +57,10 @@ export default function Ajustes({ navigation }: any) {
           <>
             <View style={{ height: ALTO_INDICE }} />
 
-            <SeccionAjustes titulo="Tu plan" primera alMedir={medir(SEC.plan)}>
-              <GrupoFilas animarAltura sangria={SANGRIA_CON_ICONO}>
-                <FilaAjuste
-                  key="objetivo" icono={ICONOS_OBJETIVO[p.objetivo] ?? 'flag-outline'}
-                  titulo="Objetivo" valor={nombreGoal(p.objetivo)} valorApilado
-                  derecha={<ChevronGiratorio abierto={objetivoAbierto} />}
-                  onPress={() => setObjetivoAbierto(abierto => !abierto)}
-                  estado={{ expanded: objetivoAbierto }} etiqueta={`Objetivo, ${nombreGoal(p.objetivo)}`}
-                />
-                {objetivoAbierto && GOALS.map(g => (
-                  <Animated.View
-                    key={g.id}
-                    entering={anima ? FadeIn.duration(ENTRADA_OBJETIVOS_MS) : undefined}
-                    exiting={anima ? FadeOut.duration(SALIDA_OBJETIVOS_MS) : undefined}
-                  >
-                    <FilaAjuste
-                      icono={ICONOS_OBJETIVO[g.id] ?? 'flag-outline'} titulo={g.nombre} descripcion={g.sub}
-                      derecha={p.objetivo === g.id ? <Ionicons name="checkmark" size={20} color={paleta.magnesia} /> : undefined}
-                      rol="radio" estado={{ selected: p.objetivo === g.id }} etiqueta={`${g.nombre}, ${g.sub}`}
-                      onPress={() => { guardarPerfil({ objetivo: g.id }); setObjetivoAbierto(false); }}
-                    />
-                  </Animated.View>
-                ))}
-                <BloqueControl key="minutos" titulo="Minutos por sesión" centrado>
-                  <ContadorPlacas
-                    compacto estilo={s.plano} valor={p.minPorSesion} min={MINUTOS.min} max={MINUTOS.max} sufijo="minutos"
-                    onCambio={v => guardarPerfil({ minPorSesion: v })}
-                    encima={<DialTiempo tamano={TAMANO_DIAL} activo animar={false} medida={{ valor: p.minPorSesion, maximo: MINUTOS.max }} />}
-                  />
-                </BloqueControl>
-                <BloqueControl key="dias" titulo="Días por semana" centrado>
-                  <ContadorPlacas
-                    semana estilo={s.plano} valor={p.diasPorSemana} min={1} max={7} sufijo="días"
-                    onCambio={v => guardarPerfil({ diasPorSemana: v })}
-                  />
-                </BloqueControl>
-                <BloqueControl key="nivel" titulo="Nivel">
-                  <SelectorNivel nivel={p.nivel} onCambio={n => guardarPerfil({ nivel: n })} />
-                </BloqueControl>
-              </GrupoFilas>
-            </SeccionAjustes>
+            <SeccionTuPlan
+              p={p} guardarPerfil={guardarPerfil} objetivoAbierto={objetivoAbierto} setObjetivoAbierto={setObjetivoAbierto}
+              anima={anima} alMedir={medir(SEC.plan)}
+            />
 
             <SeccionAjustes titulo="Dónde entrenas" alMedir={medir(SEC.donde)}>
               <GrupoFilas sangria={SANGRIA_CON_ICONO}>
@@ -314,58 +146,11 @@ export default function Ajustes({ navigation }: any) {
               </GrupoFilas>
             </SeccionAjustes>
 
-            <SeccionAjustes titulo="Peso y medidas" alMedir={medir(SEC.medidas)}>
-              <GrupoFilas sangria={SANGRIA_CON_ICONO}>
-                <FilaAjuste
-                  key="consentimiento" icono="lock-closed-outline" titulo="Guardar peso y medidas"
-                  descripcion="Peso, altura y mediciones son datos de salud: solo se guardan en este teléfono con tu consentimiento expreso, según el aviso de privacidad."
-                  interruptor={{
-                    activo: consentimientoMedidas,
-                    onCambio: v => (v ? cambiarConsentimientoMedidas(true) : retirarConsentimientoMedidas()),
-                  }}
-                />
-              </GrupoFilas>
-
-              {p.mostrarPeso && (
-                <Animated.View
-                  key="peso-opcional"
-                  entering={anima ? FadeIn.duration(ENTRADA_PESO_MS) : undefined}
-                  exiting={anima ? FadeOut.duration(SALIDA_PESO_MS) : undefined}
-                  layout={anima ? LinearTransition.duration(AJUSTE_ALTURA_MS) : undefined}
-                >
-                  <Text style={s.subtitulo} accessibilityRole="header" maxFontSizeMultiplier={1.3}>Peso (opcional)</Text>
-                  <GrupoFilas>
-                    <BloqueControl
-                      key="ahora" centrado
-                      descripcion="Solo se usa para estimar el gasto de la sesión. Sin él, la app funciona igual y no muestra kcal."
-                    >
-                      <ContadorPlacas
-                        compacto estilo={s.plano} valor={p.pesoKg ?? PESO.defecto} min={PESO.min} max={PESO.max} sufijo="kg ahora"
-                        onCambio={guardarMedida('pesoKg')}
-                      />
-                    </BloqueControl>
-                    <BloqueControl
-                      key="objetivo" centrado
-                      descripcion="Peso de referencia. No cambia tu plan: no ponemos dietas, ni fechas, ni objetivos de calorías."
-                    >
-                      <ContadorPlacas
-                        compacto estilo={s.plano} valor={p.pesoObjetivoKg ?? p.pesoKg ?? PESO.defecto} min={PESO.min} max={PESO.max}
-                        sufijo="kg objetivo" onCambio={guardarMedida('pesoObjetivoKg')}
-                      />
-                    </BloqueControl>
-                  </GrupoFilas>
-                </Animated.View>
-              )}
-
-              <Animated.View layout={anima ? LinearTransition.duration(AJUSTE_ALTURA_MS) : undefined}>
-                <Text style={s.subtitulo} accessibilityRole="header" maxFontSizeMultiplier={1.3}>Estatura (opcional)</Text>
-                <GrupoFilas>
-                  <BloqueControl centrado descripcion="Dato de tu perfil. No se usa en ningún cálculo del plan.">
-                    <ContadorEstatura valor={p.alturaCm ?? ESTATURA_DEFECTO} onCambio={guardarMedida('alturaCm')} />
-                  </BloqueControl>
-                </GrupoFilas>
-              </Animated.View>
-            </SeccionAjustes>
+            <SeccionPesoYMedidas
+              p={p} consentimientoMedidas={consentimientoMedidas} cambiarConsentimientoMedidas={cambiarConsentimientoMedidas}
+              retirarConsentimientoMedidas={retirarConsentimientoMedidas} guardarMedida={guardarMedida} anima={anima}
+              alMedir={medir(SEC.medidas)}
+            />
 
             {p.vetos.length > 0 && (
               <SeccionAjustes titulo={`Ejercicios vetados (${p.vetos.length})`}>
@@ -457,15 +242,10 @@ export default function Ajustes({ navigation }: any) {
 }
 
 const s = StyleSheet.create({
-  plano: { flex: 0 },
   nota: { marginHorizontal: MARGEN_PANTALLA, marginBottom: 12 },
   notaDatos: { alignSelf: 'stretch', marginHorizontal: MARGEN_PANTALLA, marginBottom: 12 },
   notaFila: { flexDirection: 'row', alignItems: 'flex-start', gap: 12 },
   notaTexto: { flex: 1 },
-  subtitulo: {
-    marginHorizontal: MARGEN_PANTALLA, marginTop: 24, marginBottom: 12,
-    fontFamily: familia.enfasis, fontSize: 16, lineHeight: 22, color: paleta.magnesia,
-  },
   chips: { marginHorizontal: MARGEN_PANTALLA, flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
   pie: {
     marginHorizontal: MARGEN_PANTALLA, marginTop: 12, fontFamily: familia.cuerpo, fontSize: 14, lineHeight: 20,

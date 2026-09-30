@@ -6,7 +6,7 @@ import { color, tipo, esp, paleta, familia, MARGEN_PANTALLA } from '@/ui/theme';
 import { Pantalla, Tarjeta, Chip, useHuecoAbajo, useScrollCabecera } from '@/ui/components';
 import { CabeceraSeccion } from '@/ui/components/AccionSeccion';
 import { GomaTexture } from '@/ui/fx/GomaTexture';
-import { BloqueRevela } from '@/ui/fx/BloqueRevela';
+import { BloqueRevela, ProveedorRevela } from '@/ui/fx/BloqueRevela';
 import { EncabezadoPerfil } from '@/features/perfil/components/EncabezadoPerfil';
 import { EstadisticasPerfil } from '@/features/perfil/components/EstadisticasPerfil';
 import { SieteDias } from '@/ui/components/SieteDias';
@@ -63,96 +63,98 @@ export default function Yo({ navigation }: BottomTabScreenProps<ParamListBase, '
   const quitarFavorito = useCallback((tipo: TipoFavorito, id: string) => alternarFavorito(tipo, id), []);
 
   return (
-    <View style={s.raiz}>
-      <GomaTexture />
-      <Animated.ScrollView
-        onScroll={onScroll} scrollEventThrottle={16} showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingTop: inset.top + 24, paddingBottom: abajo + SEPARACION_SECCIONES }}
-      >
-        <EncabezadoPerfil
-          nombre={perfil.nombre || 'Tu progreso'} objetivoId={perfil.objetivo} objetivo={textoVisible(nombreGoal(perfil.objetivo))}
-          programa={programa} semanaActual={semanaPrograma}
-        />
+    <ProveedorRevela y={y}>
+      <View style={s.raiz}>
+        <GomaTexture />
+        <Animated.ScrollView
+          onScroll={onScroll} scrollEventThrottle={16} showsVerticalScrollIndicator={false}
+          contentContainerStyle={{ paddingTop: inset.top + 24, paddingBottom: abajo + SEPARACION_SECCIONES }}
+        >
+          <EncabezadoPerfil
+            nombre={perfil.nombre || 'Tu progreso'} objetivoId={perfil.objetivo} objetivo={textoVisible(nombreGoal(perfil.objetivo))}
+            programa={programa} semanaActual={semanaPrograma}
+          />
 
-        <BloqueRevela y={y} sinMovimiento estilo={s.seccion}>
-          {activo => (
-            <EstadisticasPerfil racha={racha.dias} sesiones={stats.total} minutos={stats.minutos} series={stats.series} activo={activo} />
-          )}
-        </BloqueRevela>
+          <BloqueRevela y={y} sinMovimiento estilo={s.seccion}>
+            {activo => (
+              <EstadisticasPerfil racha={racha.dias} sesiones={stats.total} minutos={stats.minutos} series={stats.series} activo={activo} />
+            )}
+          </BloqueRevela>
 
-        <BloqueRevela y={y} sinMovimiento estilo={s.seccion}>
-          {activo => (
-            <>
-              <CabeceraSeccion titulo="Últimos 7 días" />
-              {stats.total > 0
-                ? <SieteDias semana={semana} activo={activo} />
-                : <Text style={s.suave}>Cuando entrenes, aquí vas a ver tu semana.</Text>}
-            </>
-          )}
-        </BloqueRevela>
+          <BloqueRevela y={y} sinMovimiento estilo={s.seccion}>
+            {activo => (
+              <>
+                <CabeceraSeccion titulo="Últimos 7 días" />
+                {stats.total > 0
+                  ? <SieteDias semana={semana} activo={activo} />
+                  : <Text style={s.suave}>Cuando entrenes, aquí vas a ver tu semana.</Text>}
+              </>
+            )}
+          </BloqueRevela>
 
-        <BloqueRevela y={y} sinMovimiento fraccion={0.3} estilo={s.seccion}>
-          {activo => (
-            <>
-              <CabeceraSeccion titulo="Tu calendario" />
-              <CalendarioHuellas entrenados={entrenados} minutosPor={minutosPor} activo={activo} />
-            </>
-          )}
-        </BloqueRevela>
+          <BloqueRevela y={y} sinMovimiento fraccion={0.3} estilo={s.seccion}>
+            {activo => (
+              <>
+                <CabeceraSeccion titulo="Tu calendario" />
+                <CalendarioHuellas entrenados={entrenados} minutosPor={minutosPor} activo={activo} />
+              </>
+            )}
+          </BloqueRevela>
 
-        <BloqueRevela y={y} sinMovimiento estilo={s.seccion}>
-          {activo => (
-            <>
-              <CabeceraSeccion titulo="Favoritos" accion="Ver todos" onAccion={() => navigation.navigate('Favoritos')} />
-              <FavoritosPerfil
-                favoritos={favoritos} propias={rutinasPropias} activo={activo}
-                onAbrir={abrirFavorito} onQuitar={quitarFavorito}
-              />
-            </>
-          )}
-        </BloqueRevela>
-
-        <BloqueRevela y={y} sinMovimiento fraccion={0.3} estilo={s.seccion}>
-          {activo => (
-            <>
-              <CabeceraSeccion titulo="Logros" accion="Todos" onAccion={() => navigation.navigate('Logros')} />
-              <VitrinaLogros logros={LOGROS.slice(0, LOGROS_VISIBLES)} ganados={ganados} total={LOGROS.length} activo={activo} />
-            </>
-          )}
-        </BloqueRevela>
-
-        <BloqueRevela y={y} sinMovimiento estilo={s.seccion}>
-          {activo => (
-            <>
-              <CabeceraSeccion titulo="Retos" accion="Ver" onAccion={() => navigation.navigate('Retos')} />
-              {RETOS.slice(0, RETOS_VISIBLES).map((r, i) => (
-                <TarjetaReto
-                  key={r.id} reto={r} progreso={retos[r.id]?.progreso} indice={i} activo={activo}
-                  onPress={() => navigation.navigate('Retos')}
+          <BloqueRevela y={y} sinMovimiento estilo={s.seccion}>
+            {activo => (
+              <>
+                <CabeceraSeccion titulo="Favoritos" accion="Ver todos" onAccion={() => navigation.navigate('Favoritos')} />
+                <FavoritosPerfil
+                  favoritos={favoritos} propias={rutinasPropias} activo={activo}
+                  onAbrir={abrirFavorito} onQuitar={quitarFavorito}
                 />
-              ))}
-            </>
-          )}
-        </BloqueRevela>
+              </>
+            )}
+          </BloqueRevela>
 
-        <View style={s.seccion}>
-          <CabeceraSeccion titulo="Mediciones" accion="Registrar" onAccion={() => navigation.navigate('Mediciones')} />
-          <Text style={s.suave}>
-            Protocolos repetibles para que las comparaciones signifiquen algo. Todas son opcionales.
-          </Text>
-        </View>
+          <BloqueRevela y={y} sinMovimiento fraccion={0.3} estilo={s.seccion}>
+            {activo => (
+              <>
+                <CabeceraSeccion titulo="Logros" accion="Todos" onAccion={() => navigation.navigate('Logros')} />
+                <VitrinaLogros logros={LOGROS.slice(0, LOGROS_VISIBLES)} ganados={ganados} total={LOGROS.length} activo={activo} />
+              </>
+            )}
+          </BloqueRevela>
 
-        <View style={s.seccion}>
-          <CabeceraSeccion titulo="Historial" accion="Ver todo" onAccion={() => navigation.navigate('Historial')} />
-          {recientes.map(x => <FilaHistorial key={x.id} sesion={x} />)}
-          {sesiones.length === 0 && <Text style={s.suave}>Aún no hay sesiones.</Text>}
-        </View>
+          <BloqueRevela y={y} sinMovimiento estilo={s.seccion}>
+            {activo => (
+              <>
+                <CabeceraSeccion titulo="Retos" accion="Ver" onAccion={() => navigation.navigate('Retos')} />
+                {RETOS.slice(0, RETOS_VISIBLES).map((r, i) => (
+                  <TarjetaReto
+                    key={r.id} reto={r} progreso={retos[r.id]?.progreso} indice={i} activo={activo}
+                    onPress={() => navigation.navigate('Retos')}
+                  />
+                ))}
+              </>
+            )}
+          </BloqueRevela>
 
-        <View style={s.seccion}>
-          <FilaAjustes onPress={() => navigation.navigate('Ajustes')} />
-        </View>
-      </Animated.ScrollView>
-    </View>
+          <View style={s.seccion}>
+            <CabeceraSeccion titulo="Mediciones" accion="Registrar" onAccion={() => navigation.navigate('Mediciones')} />
+            <Text style={s.suave}>
+              Protocolos repetibles para que las comparaciones signifiquen algo. Todas son opcionales.
+            </Text>
+          </View>
+
+          <View style={s.seccion}>
+            <CabeceraSeccion titulo="Historial" accion="Ver todo" onAccion={() => navigation.navigate('Historial')} />
+            {recientes.map(x => <FilaHistorial key={x.id} sesion={x} />)}
+            {sesiones.length === 0 && <Text style={s.suave}>Aún no hay sesiones.</Text>}
+          </View>
+
+          <View style={s.seccion}>
+            <FilaAjustes onPress={() => navigation.navigate('Ajustes')} />
+          </View>
+        </Animated.ScrollView>
+      </View>
+    </ProveedorRevela>
   );
 }
 

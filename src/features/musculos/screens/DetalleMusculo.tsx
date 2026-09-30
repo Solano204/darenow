@@ -14,7 +14,7 @@ import type { ParamListBase } from '@react-navigation/native';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { paleta, familia, MARGEN_PANTALLA } from '@/ui/theme';
 import { GomaTexture } from '@/ui/fx/GomaTexture';
-import { BloqueRevela } from '@/ui/fx/BloqueRevela';
+import { BloqueRevela, ProveedorRevela } from '@/ui/fx/BloqueRevela';
 import { BarraSuperiorColapsable } from '@/ui/components/BarraSuperiorColapsable';
 import { HeroMusculo } from '@/features/musculos/components/HeroMusculo';
 import { EtiquetasMusculo } from '@/ui/components/EtiquetasMusculo';
@@ -54,80 +54,82 @@ export default function DetalleMusculo({ route, navigation }: Props) {
   const todos = () => navigation.navigate('Tabs', { screen: 'Explorar', merge: true, params: { tab: 'musculos' } });
 
   return (
-    <View style={s.raiz}>
-      <GomaTexture />
-      <Animated.ScrollView
-        onScroll={onScroll} scrollEventThrottle={16} showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: inset.bottom + SEPARACION_SECCIONES }}
-      >
-        <HeroMusculo id={m.id} y={y} alto={alturaHero} />
+    <ProveedorRevela y={y}>
+      <View style={s.raiz}>
+        <GomaTexture />
+        <Animated.ScrollView
+          onScroll={onScroll} scrollEventThrottle={16} showsVerticalScrollIndicator={false}
+          contentContainerStyle={{ paddingBottom: inset.bottom + SEPARACION_SECCIONES }}
+        >
+          <HeroMusculo id={m.id} y={y} alto={alturaHero} />
 
-        <View style={s.cabecera}>
-          <Text style={s.nombre} accessibilityRole="header">{nombre}</Text>
-          {m.name_en ? <Text style={s.latin}>{m.name_en}</Text> : null}
-          <View style={s.etiquetas}><EtiquetasMusculo grupo={m.group} region={m.region} /></View>
-          <Text style={s.funcion}>{textoVisible(m.funcion)}</Text>
-        </View>
+          <View style={s.cabecera}>
+            <Text style={s.nombre} accessibilityRole="header">{nombre}</Text>
+            {m.name_en ? <Text style={s.latin}>{m.name_en}</Text> : null}
+            <View style={s.etiquetas}><EtiquetasMusculo grupo={m.group} region={m.region} /></View>
+            <Text style={s.funcion}>{textoVisible(m.funcion)}</Text>
+          </View>
 
-        {m.dolor_comun ? (
-          <BloqueRevela y={y} sinMovimiento estilo={s.seccion}>
-            {activo => <TarjetaLoQueSuelePasar texto={textoVisible(m.dolor_comun ?? '')} activo={activo} />}
-          </BloqueRevela>
-        ) : null}
+          {m.dolor_comun ? (
+            <BloqueRevela y={y} sinMovimiento estilo={s.seccion}>
+              {activo => <TarjetaLoQueSuelePasar texto={textoVisible(m.dolor_comun ?? '')} activo={activo} />}
+            </BloqueRevela>
+          ) : null}
 
-        {sinergicos.length > 0 ? (
-          <BloqueRevela y={y} sinMovimiento estilo={s.seccionLibre}>
-            {activo => (
-              <RelacionMuscular
-                tipo="sinergico" titulo="Trabaja junto a" actual={m} items={sinergicos} activo={activo}
-                onTodos={todos} onAbrir={abrirMusculo}
-              />
-            )}
-          </BloqueRevela>
-        ) : null}
+          {sinergicos.length > 0 ? (
+            <BloqueRevela y={y} sinMovimiento estilo={s.seccionLibre}>
+              {activo => (
+                <RelacionMuscular
+                  tipo="sinergico" titulo="Trabaja junto a" actual={m} items={sinergicos} activo={activo}
+                  onTodos={todos} onAbrir={abrirMusculo}
+                />
+              )}
+            </BloqueRevela>
+          ) : null}
 
-        {antagonistas.length > 0 ? (
-          <BloqueRevela y={y} sinMovimiento estilo={s.seccionLibre}>
-            {activo => (
-              <RelacionMuscular
-                tipo="antagonista" titulo="Antagonistas" actual={m} items={antagonistas} activo={activo}
-                onTodos={todos} onAbrir={abrirMusculo}
-              />
-            )}
-          </BloqueRevela>
-        ) : null}
+          {antagonistas.length > 0 ? (
+            <BloqueRevela y={y} sinMovimiento estilo={s.seccionLibre}>
+              {activo => (
+                <RelacionMuscular
+                  tipo="antagonista" titulo="Antagonistas" actual={m} items={antagonistas} activo={activo}
+                  onTodos={todos} onAbrir={abrirMusculo}
+                />
+              )}
+            </BloqueRevela>
+          ) : null}
 
-        {principales.length + secundarios.length > 0 ? (
-          <View style={s.seccion}><TituloEjercicios /></View>
-        ) : null}
+          {principales.length + secundarios.length > 0 ? (
+            <View style={s.seccion}><TituloEjercicios /></View>
+          ) : null}
 
-        {principales.length > 0 ? (
-          <BloqueRevela y={y} sinMovimiento estilo={s.grupo}>
-            {activo => (
-              <SubgrupoEjercicios
-                titulo="Como principal" ejercicios={principales} principal activo={activo}
-                onPress={abrirEjercicio}
-              />
-            )}
-          </BloqueRevela>
-        ) : null}
+          {principales.length > 0 ? (
+            <BloqueRevela y={y} sinMovimiento estilo={s.grupo}>
+              {activo => (
+                <SubgrupoEjercicios
+                  titulo="Como principal" ejercicios={principales} principal activo={activo}
+                  onPress={abrirEjercicio}
+                />
+              )}
+            </BloqueRevela>
+          ) : null}
 
-        {secundarios.length > 0 ? (
-          <BloqueRevela y={y} sinMovimiento estilo={s.grupo}>
-            {activo => (
-              <SubgrupoEjercicios
-                titulo="Como secundario" ejercicios={secundarios} principal={false} activo={activo}
-                onPress={abrirEjercicio}
-              />
-            )}
-          </BloqueRevela>
-        ) : null}
-      </Animated.ScrollView>
+          {secundarios.length > 0 ? (
+            <BloqueRevela y={y} sinMovimiento estilo={s.grupo}>
+              {activo => (
+                <SubgrupoEjercicios
+                  titulo="Como secundario" ejercicios={secundarios} principal={false} activo={activo}
+                  onPress={abrirEjercicio}
+                />
+              )}
+            </BloqueRevela>
+          ) : null}
+        </Animated.ScrollView>
 
-      <BarraSuperiorColapsable
-        y={y} alturaHero={alturaHero} nombre={nombre} favoritoDe={{ tipo: 'musculos', id: m.id }} onAtras={() => navigation.goBack()}
-      />
-    </View>
+        <BarraSuperiorColapsable
+          y={y} alturaHero={alturaHero} nombre={nombre} favoritoDe={{ tipo: 'musculos', id: m.id }} onAtras={() => navigation.goBack()}
+        />
+      </View>
+    </ProveedorRevela>
   );
 }
 

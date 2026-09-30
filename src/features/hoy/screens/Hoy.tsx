@@ -25,7 +25,7 @@ import { CarruselHoy, TarjetaVerMas } from '@/ui/components/CarruselHoy';
 import { TarjetaRutina, ANCHO_TARJETA_RUTINA, ALTO_FOTO_RUTINA } from '@/features/hoy/components/TarjetaRutina';
 import { NubeRefresco } from '@/features/hoy/components/NubeRefresco';
 import { FilaSemana } from '@/ui/components/FilaSemana';
-import { BloqueRevela } from '@/ui/fx/BloqueRevela';
+import { BloqueRevela, ProveedorRevela } from '@/ui/fx/BloqueRevela';
 import { TuSemana } from '@/features/hoy/components/TuSemana';
 import { FilaExplorar } from '@/features/hoy/components/FilaExplorar';
 import { TuPrograma } from '@/features/hoy/components/TuPrograma';
@@ -54,171 +54,173 @@ export default function Hoy({ navigation }: { navigation: NavigationProp<ParamLi
     cincoMinutos, abrirRutina, abrirPrograma, abrirEjercicio, abrirMusculo, abrirTip,
   } = useHoy({ navigation });
   return (
-    <View style={s.raiz}>
-      <Animated.ScrollView
-        onScroll={onScroll}
-        scrollEventThrottle={16}
-        contentContainerStyle={{
-          paddingTop: inset.top + ALTO_HEADER + esp.sm,
-          paddingBottom: abajo + AIRE_FINAL + (ANUNCIOS_ACTIVOS ? 62 : 0),
-        }}
-        showsVerticalScrollIndicator={false}
-        refreshControl={(
-          <RefreshControl
-            refreshing={refrescando} onRefresh={refrescar}
-            tintColor="transparent" colors={[paleta.placaAzul]} progressBackgroundColor={paleta.gomaAlta}
-            progressViewOffset={inset.top + ALTO_HEADER}
-          />
-        )}
-      >
-        {sinEjercicios ? (
-          <TarjetaSesionVacia onRevisar={() => navigation.navigate('Tabs', { screen: 'Yo' })} />
-        ) : (
-          <TarjetaSesionHoy
-            sesion={sesion} avisos={avisosSesion} objetivo={nombreGoal(perfil.objetivo)}
-            sinSaltos={perfil.modoSinSaltos} entrenoHoy={entrenoHoy} sello={sello} y={y}
-            onEmpezar={empezar} onCincoMinutos={cincoMinutos}
-          />
-        )}
+    <ProveedorRevela y={y}>
+      <View style={s.raiz}>
+        <Animated.ScrollView
+          onScroll={onScroll}
+          scrollEventThrottle={16}
+          contentContainerStyle={{
+            paddingTop: inset.top + ALTO_HEADER + esp.sm,
+            paddingBottom: abajo + AIRE_FINAL + (ANUNCIOS_ACTIVOS ? 62 : 0),
+          }}
+          showsVerticalScrollIndicator={false}
+          refreshControl={(
+            <RefreshControl
+              refreshing={refrescando} onRefresh={refrescar}
+              tintColor="transparent" colors={[paleta.placaAzul]} progressBackgroundColor={paleta.gomaAlta}
+              progressViewOffset={inset.top + ALTO_HEADER}
+            />
+          )}
+        >
+          {sinEjercicios ? (
+            <TarjetaSesionVacia onRevisar={() => navigation.navigate('Tabs', { screen: 'Yo' })} />
+          ) : (
+            <TarjetaSesionHoy
+              sesion={sesion} avisos={avisosSesion} objetivo={nombreGoal(perfil.objetivo)}
+              sinSaltos={perfil.modoSinSaltos} entrenoHoy={entrenoHoy} sello={sello} y={y}
+              onEmpezar={empezar} onCincoMinutos={cincoMinutos}
+            />
+          )}
 
-        {ejercicios.length > 0 && (
+          {ejercicios.length > 0 && (
+            <View style={s.bloque}>
+              <CabeceraSeccion titulo="Elige tu enfoque" grande />
+              <CarruselProfundidad
+                data={ejercicios.slice(0, 3)}
+                keyExtractor={e => e.id}
+                ancho={ANCHO_ENFOQUE} alto={ALTO_CARRUSEL_ENFOQUE}
+                renderItem={(e, _, progreso) => (
+                  <TarjetaEnfoque
+                    ejercicio={e} progreso={progreso}
+                    onPress={() => navigation.navigate('Ejercicio', { id: e.id })}
+                  />
+                )}
+              />
+            </View>
+          )}
+
           <View style={s.bloque}>
-            <CabeceraSeccion titulo="Elige tu enfoque" grande />
+            <CabeceraSeccion titulo="¿Prefieres otra rutina?" accion="Ver todas" onAccion={() => irAExplorar('rutinas')} grande />
             <CarruselProfundidad
-              data={ejercicios.slice(0, 3)}
-              keyExtractor={e => e.id}
-              ancho={ANCHO_ENFOQUE} alto={ALTO_CARRUSEL_ENFOQUE}
-              renderItem={(e, _, progreso) => (
-                <TarjetaEnfoque
-                  ejercicio={e} progreso={progreso}
-                  onPress={() => navigation.navigate('Ejercicio', { id: e.id })}
-                />
+              data={rutinas} keyExtractor={r => r.id}
+              ancho={ANCHO_TARJETA_RUTINA} alto={ALTO_CARRUSEL_RUTINAS} suave
+              renderItem={(r, _, progreso) => (
+                <TarjetaRutina r={r} progreso={progreso} onPress={abrirRutina} />
               )}
+              pie={<TarjetaVerMas ancho={ANCHO_TARJETA_RUTINA} texto="Ver todas" alto={ALTO_FOTO_RUTINA} onPress={() => irAExplorar('rutinas')} />}
             />
           </View>
-        )}
 
-        <View style={s.bloque}>
-          <CabeceraSeccion titulo="¿Prefieres otra rutina?" accion="Ver todas" onAccion={() => irAExplorar('rutinas')} grande />
-          <CarruselProfundidad
-            data={rutinas} keyExtractor={r => r.id}
-            ancho={ANCHO_TARJETA_RUTINA} alto={ALTO_CARRUSEL_RUTINAS} suave
-            renderItem={(r, _, progreso) => (
-              <TarjetaRutina r={r} progreso={progreso} onPress={abrirRutina} />
-            )}
-            pie={<TarjetaVerMas ancho={ANCHO_TARJETA_RUTINA} texto="Ver todas" alto={ALTO_FOTO_RUTINA} onPress={() => irAExplorar('rutinas')} />}
-          />
-        </View>
-
-        <BloqueRevela y={y} estilo={s.modulo}>
-          {activo => (
-            <>
-              <CabeceraSeccion titulo="Tu semana" />
-              <FilaSemana semana={semana} sello={sello} />
-              <View style={s.entreFilas} />
-              <TuSemana dias={racha.dias} enPausa={racha.enPausa} semana={semana} activo={activo} />
-            </>
-          )}
-        </BloqueRevela>
-
-        <BloqueRevela y={y} estilo={s.modulo}>
-          {activo => <FilaExplorar activo={activo} onPress={() => irAExplorar()} />}
-        </BloqueRevela>
-
-        {programa && (
           <BloqueRevela y={y} estilo={s.modulo}>
-            {() => (
-              <>
-                <CabeceraSeccion
-                  titulo="Tu programa" accion="Ver"
-                  onAccion={() => navigation.navigate('Programa', { id: programa.id })}
-                />
-                <TuPrograma
-                  programa={programa} semanaActual={semanaPrograma}
-                  onPress={() => navigation.navigate('Programa', { id: programa.id })}
-                />
-              </>
-            )}
-          </BloqueRevela>
-        )}
-
-        <View style={s.modulo}>
-          <CabeceraSeccion titulo="Programas" accion="Ver todos" onAccion={() => irAExplorar('programas')} />
-          <CarruselHoy
-            data={programas} keyExtractor={p => p.id} ancho={ANCHO_TARJETA_PROGRAMA} separacion={SEPARACION_CARRUSEL}
-            renderItem={p => (
-              <TarjetaPrograma p={p} onPress={abrirPrograma} />
-            )}
-            verMas={{ texto: 'Ver todos', onPress: () => irAExplorar('programas'), alto: ALTO_FOTO_PROGRAMA }}
-          />
-        </View>
-
-        <View style={s.modulo}>
-          <CabeceraSeccion titulo="Ejercicios para ti" accion="Ver todos" onAccion={() => irAExplorar('ejercicios')} />
-          <CarruselHoy
-            data={ejercicios} keyExtractor={e => e.id} ancho={ANCHO_EJERCICIO_MINI}
-            renderItem={e => (
-              <TarjetaEjercicioMini e={e} onPress={abrirEjercicio} />
-            )}
-            verMas={{ texto: 'Ver todos', onPress: () => irAExplorar('ejercicios'), alto: ALTO_EJERCICIO_MINI }}
-          />
-        </View>
-
-        <View style={s.modulo}>
-          <CabeceraSeccion titulo="Músculos de hoy" accion="Ver todos" onAccion={() => irAExplorar('musculos')} />
-          <CarruselHoy
-            data={musculos} keyExtractor={m => m.id} ancho={LADO_MUSCULO}
-            renderItem={m => (
-              <FichaMusculo m={m} trabajaHoy={musculosDeHoy.has(m.id)} onPress={abrirMusculo} />
-            )}
-            verMas={{ texto: 'Ver todos', onPress: () => irAExplorar('musculos'), alto: LADO_MUSCULO, radioEsquina: 24 }}
-          />
-        </View>
-
-        <View style={s.modulo}>
-          <CabeceraSeccion titulo="Para leer hoy" accion="Ver más" onAccion={irAAprender} />
-          <CarruselHoy
-            data={tips} keyExtractor={t => t.id} ancho={ANCHO_ARTICULO} separacion={SEPARACION_CARRUSEL}
-            renderItem={t => (
-              <TarjetaArticulo t={t} onPress={abrirTip} />
-            )}
-            verMas={{ texto: 'Ver más', onPress: irAAprender, alto: ALTO_ARTICULO }}
-          />
-        </View>
-
-        {stats.total > 0 && (
-          <BloqueRevela y={y} estilo={s.modulo} sinMovimiento>
             {activo => (
               <>
-                <CabeceraSeccion titulo="Tu progreso" />
-                <EstadisticasHoy
-                  sesiones={stats.total} minutos={stats.minutos} series={stats.series} mejorRacha={racha.mejor}
-                  activo={activo}
-                />
+                <CabeceraSeccion titulo="Tu semana" />
+                <FilaSemana semana={semana} sello={sello} />
+                <View style={s.entreFilas} />
+                <TuSemana dias={racha.dias} enPausa={racha.enPausa} semana={semana} activo={activo} />
               </>
             )}
           </BloqueRevela>
+
+          <BloqueRevela y={y} estilo={s.modulo}>
+            {activo => <FilaExplorar activo={activo} onPress={() => irAExplorar()} />}
+          </BloqueRevela>
+
+          {programa && (
+            <BloqueRevela y={y} estilo={s.modulo}>
+              {() => (
+                <>
+                  <CabeceraSeccion
+                    titulo="Tu programa" accion="Ver"
+                    onAccion={() => navigation.navigate('Programa', { id: programa.id })}
+                  />
+                  <TuPrograma
+                    programa={programa} semanaActual={semanaPrograma}
+                    onPress={() => navigation.navigate('Programa', { id: programa.id })}
+                  />
+                </>
+              )}
+            </BloqueRevela>
+          )}
+
+          <View style={s.modulo}>
+            <CabeceraSeccion titulo="Programas" accion="Ver todos" onAccion={() => irAExplorar('programas')} />
+            <CarruselHoy
+              data={programas} keyExtractor={p => p.id} ancho={ANCHO_TARJETA_PROGRAMA} separacion={SEPARACION_CARRUSEL}
+              renderItem={p => (
+                <TarjetaPrograma p={p} onPress={abrirPrograma} />
+              )}
+              verMas={{ texto: 'Ver todos', onPress: () => irAExplorar('programas'), alto: ALTO_FOTO_PROGRAMA }}
+            />
+          </View>
+
+          <View style={s.modulo}>
+            <CabeceraSeccion titulo="Ejercicios para ti" accion="Ver todos" onAccion={() => irAExplorar('ejercicios')} />
+            <CarruselHoy
+              data={ejercicios} keyExtractor={e => e.id} ancho={ANCHO_EJERCICIO_MINI}
+              renderItem={e => (
+                <TarjetaEjercicioMini e={e} onPress={abrirEjercicio} />
+              )}
+              verMas={{ texto: 'Ver todos', onPress: () => irAExplorar('ejercicios'), alto: ALTO_EJERCICIO_MINI }}
+            />
+          </View>
+
+          <View style={s.modulo}>
+            <CabeceraSeccion titulo="Músculos de hoy" accion="Ver todos" onAccion={() => irAExplorar('musculos')} />
+            <CarruselHoy
+              data={musculos} keyExtractor={m => m.id} ancho={LADO_MUSCULO}
+              renderItem={m => (
+                <FichaMusculo m={m} trabajaHoy={musculosDeHoy.has(m.id)} onPress={abrirMusculo} />
+              )}
+              verMas={{ texto: 'Ver todos', onPress: () => irAExplorar('musculos'), alto: LADO_MUSCULO, radioEsquina: 24 }}
+            />
+          </View>
+
+          <View style={s.modulo}>
+            <CabeceraSeccion titulo="Para leer hoy" accion="Ver más" onAccion={irAAprender} />
+            <CarruselHoy
+              data={tips} keyExtractor={t => t.id} ancho={ANCHO_ARTICULO} separacion={SEPARACION_CARRUSEL}
+              renderItem={t => (
+                <TarjetaArticulo t={t} onPress={abrirTip} />
+              )}
+              verMas={{ texto: 'Ver más', onPress: irAAprender, alto: ALTO_ARTICULO }}
+            />
+          </View>
+
+          {stats.total > 0 && (
+            <BloqueRevela y={y} estilo={s.modulo} sinMovimiento>
+              {activo => (
+                <>
+                  <CabeceraSeccion titulo="Tu progreso" />
+                  <EstadisticasHoy
+                    sesiones={stats.total} minutos={stats.minutos} series={stats.series} mejorRacha={racha.mejor}
+                    activo={activo}
+                  />
+                </>
+              )}
+            </BloqueRevela>
+          )}
+        </Animated.ScrollView>
+
+        <NubeRefresco y={y} arriba={inset.top + ALTO_HEADER} />
+
+        <HeaderColapsable
+          y={y}
+          saludo={saludo(perfil.nombre || undefined)}
+          titulo={entrenoHoy ? 'Ya entrenaste hoy' : 'Tu sesión de hoy'}
+          accion={{ icono: 'search', etiqueta: 'Buscar', onPress: () => irAExplorar() }}
+        />
+
+        {/* Banner fijo abajo, la unica publicidad de esta pantalla. `bottom: abajo` lo
+            apoya justo encima de la barra de pestanas flotante: no una posicion fija,
+            para no volver a tapar la barra si su alto cambia (inset del telefono). */}
+        {ANUNCIOS_ACTIVOS && (
+          <View style={[s.bannerAbajo, { bottom: abajo }]} pointerEvents="box-none">
+            <BannerAnuncio flotante />
+          </View>
         )}
-      </Animated.ScrollView>
-
-      <NubeRefresco y={y} arriba={inset.top + ALTO_HEADER} />
-
-      <HeaderColapsable
-        y={y}
-        saludo={saludo(perfil.nombre || undefined)}
-        titulo={entrenoHoy ? 'Ya entrenaste hoy' : 'Tu sesión de hoy'}
-        accion={{ icono: 'search', etiqueta: 'Buscar', onPress: () => irAExplorar() }}
-      />
-
-      {/* Banner fijo abajo, la unica publicidad de esta pantalla. `bottom: abajo` lo
-          apoya justo encima de la barra de pestanas flotante: no una posicion fija,
-          para no volver a tapar la barra si su alto cambia (inset del telefono). */}
-      {ANUNCIOS_ACTIVOS && (
-        <View style={[s.bannerAbajo, { bottom: abajo }]} pointerEvents="box-none">
-          <BannerAnuncio flotante />
-        </View>
-      )}
-    </View>
+      </View>
+    </ProveedorRevela>
   );
 }
 

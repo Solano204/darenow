@@ -16,7 +16,7 @@ import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { paleta, familia, MARGEN_PANTALLA } from '@/ui/theme';
 import { Nota } from '@/ui/components';
 import { BotonSecundario } from '@/ui/components/BotonSecundario';
-import { BloqueRevela } from '@/ui/fx/BloqueRevela';
+import { BloqueRevela, ProveedorRevela } from '@/ui/fx/BloqueRevela';
 import { TarjetaVerMas } from '@/ui/components/CarruselHoy';
 import { HeroEjercicio } from '@/features/ejercicio/components/HeroEjercicio';
 import { BarraSuperiorColapsable } from '@/ui/components/BarraSuperiorColapsable';
@@ -72,130 +72,132 @@ export default function DetalleEjercicio({ route, navigation }: Props) {
   const abrir = (id: string) => navigation.push('Ejercicio', { id });
 
   return (
-    <View style={s.raiz}>
-      <Animated.ScrollView
-        onScroll={onScroll} scrollEventThrottle={16} showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: inset.bottom + SEPARACION_SECCIONES }}
-      >
-        <HeroEjercicio ejercicio={e} y={y} alto={alturaHero} />
+    <ProveedorRevela y={y}>
+      <View style={s.raiz}>
+        <Animated.ScrollView
+          onScroll={onScroll} scrollEventThrottle={16} showsVerticalScrollIndicator={false}
+          contentContainerStyle={{ paddingBottom: inset.bottom + SEPARACION_SECCIONES }}
+        >
+          <HeroEjercicio ejercicio={e} y={y} alto={alturaHero} />
 
-        <View style={s.cabecera}>
-          <Text style={s.nombre} accessibilityRole="header">{textoVisible(e.name)}</Text>
-          {e.name_en ? <Text style={s.ingles}>{e.name_en}</Text> : null}
-          <View style={s.metadatos}><MetadatosEjercicio ejercicio={e} /></View>
+          <View style={s.cabecera}>
+            <Text style={s.nombre} accessibilityRole="header">{textoVisible(e.name)}</Text>
+            {e.name_en ? <Text style={s.ingles}>{e.name_en}</Text> : null}
+            <View style={s.metadatos}><MetadatosEjercicio ejercicio={e} /></View>
 
-          {bloqueado && (
-            <View style={s.aviso}>
-              <Nota
-                tono="cuidado" titulo="Fuera de tu plan"
-                texto="Lo quitamos por las lesiones que declaraste. Puedes verlo, pero no te lo vamos a proponer."
-              />
-            </View>
-          )}
-
-          <Text style={s.descripcion}>{textoVisible(e.desc)}</Text>
-        </View>
-
-        {/* La evidencia va aqui, con su nota al lado. Nunca suelta en una lista. */}
-        {hayEvidencia && (
-          <BloqueRevela y={y} sinMovimiento fraccion={FRACCION_TARJETA_PARA_ACTIVAR} estilo={s.seccion}>
-            {activo => (
-              <>
-                <TituloSeccion titulo="Qué dice la evidencia" />
-                <TarjetaEvidencia mapa={mapa} nota={nota} activo={activo} />
-              </>
-            )}
-          </BloqueRevela>
-        )}
-
-        <PasosLineaTiempo
-          estilo={s.seccion} pasos={e.steps.map(textoVisible)} y={y}
-          titulo={<TituloSeccion titulo="Cómo se hace" />}
-          pie={e.breathing ? <FilaRespiracion texto={e.breathing} /> : undefined}
-        />
-
-        {e.cues.length > 0 && (
-          <BloqueRevela y={y} sinMovimiento fraccion={FRACCION_LISTA_PARA_ACTIVAR} estilo={s.seccion}>
-            {activo => (
-              <>
-                <TituloSeccion titulo="Claves" />
-                <ListaClaves claves={e.cues} activo={activo} />
-              </>
-            )}
-          </BloqueRevela>
-        )}
-
-        {e.errors.length > 0 && (
-          <BloqueRevela y={y} sinMovimiento fraccion={FRACCION_LISTA_PARA_ACTIVAR} estilo={s.seccion}>
-            {activo => (
-              <>
-                <TituloSeccion titulo="Errores comunes" />
-                <ListaErrores errores={e.errors} activo={activo} />
-              </>
-            )}
-          </BloqueRevela>
-        )}
-
-        {/* Musculos en fichas cuadradas, con nombre e imagen. */}
-        <BloqueRevela y={y} sinMovimiento fraccion={FRACCION_LISTA_PARA_ACTIVAR} estilo={s.seccionLibre}>
-          {activo => (
-            <>
-              <View style={s.margen}><TituloSeccion titulo="Músculos que trabaja" /></View>
-              {musculos.length > 0 && (
-                <FlatList
-                  data={musculos} keyExtractor={m => m.id} horizontal showsHorizontalScrollIndicator={false}
-                  contentContainerStyle={s.fila}
-                  renderItem={({ item, index }) => (
-                    <FichaMusculo
-                      m={item} principal={e.primary.includes(item.id)} medidas={medidas} indice={index} activo={activo}
-                      onPress={() => navigation.push('Musculo', { id: item.id })}
-                    />
-                  )}
-                  ListFooterComponent={(
-                    <TarjetaVerMas
-                      ancho={medidas.ancho} alto={ALTO_FICHA_MUSCULO} radioEsquina={24} texto="Todos"
-                      onPress={() => navigation.navigate('Tabs', { screen: 'Explorar', merge: true, params: { tab: 'musculos' } })}
-                    />
-                  )}
+            {bloqueado && (
+              <View style={s.aviso}>
+                <Nota
+                  tono="cuidado" titulo="Fuera de tu plan"
+                  texto="Lo quitamos por las lesiones que declaraste. Puedes verlo, pero no te lo vamos a proponer."
                 />
+              </View>
+            )}
+
+            <Text style={s.descripcion}>{textoVisible(e.desc)}</Text>
+          </View>
+
+          {/* La evidencia va aqui, con su nota al lado. Nunca suelta en una lista. */}
+          {hayEvidencia && (
+            <BloqueRevela y={y} sinMovimiento fraccion={FRACCION_TARJETA_PARA_ACTIVAR} estilo={s.seccion}>
+              {activo => (
+                <>
+                  <TituloSeccion titulo="Qué dice la evidencia" />
+                  <TarjetaEvidencia mapa={mapa} nota={nota} activo={activo} />
+                </>
               )}
-              <Text style={[s.principales, s.margen]}>
-                <Text style={s.principalesEtiqueta}>Principales: </Text>
-                <Text style={s.principalesNombres}>
-                  {e.primary.map(m => textoVisible(musculoPorId.get(m)?.name ?? m)).join(', ')}
-                </Text>
-              </Text>
-            </>
+            </BloqueRevela>
           )}
-        </BloqueRevela>
 
-        <BloqueRevela y={y} sinMovimiento fraccion={FRACCION_LISTA_PARA_ACTIVAR} estilo={s.seccion}>
-          {activo => (
-            <>
-              <TituloSeccion titulo="Detalles" />
-              <RejillaDetalles ejercicio={e} familia={fam} activo={activo} />
-            </>
-          )}
-        </BloqueRevela>
-
-        <Alternativas titulo="Progresiones" ayuda="Una versión más difícil" ids={e.progressions} clase="nivel" abrir={abrir} />
-        <Alternativas titulo="Regresiones" ayuda="Una versión más fácil" ids={e.regressions} clase="nivel" abrir={abrir} />
-        <Alternativas titulo="Sustitutos" ayuda="Si no puedes hacer este" ids={e.substitutes} clase="intercambio" abrir={abrir} />
-
-        <View style={s.seccion}>
-          <BotonSecundario
-            texto={vetado ? 'Volver a proponérmelo' : 'No me lo propongas más'}
-            onPress={() => alternarVeto(e.id)}
+          <PasosLineaTiempo
+            estilo={s.seccion} pasos={e.steps.map(textoVisible)} y={y}
+            titulo={<TituloSeccion titulo="Cómo se hace" />}
+            pie={e.breathing ? <FilaRespiracion texto={e.breathing} /> : undefined}
           />
-        </View>
-      </Animated.ScrollView>
 
-      <BarraSuperiorColapsable
-        y={y} alturaHero={alturaHero} nombre={textoVisible(e.name)}
-        favoritoDe={{ tipo: 'ejercicios', id: e.id }}
-        onAtras={() => navigation.goBack()}
-      />
-    </View>
+          {e.cues.length > 0 && (
+            <BloqueRevela y={y} sinMovimiento fraccion={FRACCION_LISTA_PARA_ACTIVAR} estilo={s.seccion}>
+              {activo => (
+                <>
+                  <TituloSeccion titulo="Claves" />
+                  <ListaClaves claves={e.cues} activo={activo} />
+                </>
+              )}
+            </BloqueRevela>
+          )}
+
+          {e.errors.length > 0 && (
+            <BloqueRevela y={y} sinMovimiento fraccion={FRACCION_LISTA_PARA_ACTIVAR} estilo={s.seccion}>
+              {activo => (
+                <>
+                  <TituloSeccion titulo="Errores comunes" />
+                  <ListaErrores errores={e.errors} activo={activo} />
+                </>
+              )}
+            </BloqueRevela>
+          )}
+
+          {/* Musculos en fichas cuadradas, con nombre e imagen. */}
+          <BloqueRevela y={y} sinMovimiento fraccion={FRACCION_LISTA_PARA_ACTIVAR} estilo={s.seccionLibre}>
+            {activo => (
+              <>
+                <View style={s.margen}><TituloSeccion titulo="Músculos que trabaja" /></View>
+                {musculos.length > 0 && (
+                  <FlatList
+                    data={musculos} keyExtractor={m => m.id} horizontal showsHorizontalScrollIndicator={false}
+                    contentContainerStyle={s.fila}
+                    renderItem={({ item, index }) => (
+                      <FichaMusculo
+                        m={item} principal={e.primary.includes(item.id)} medidas={medidas} indice={index} activo={activo}
+                        onPress={() => navigation.push('Musculo', { id: item.id })}
+                      />
+                    )}
+                    ListFooterComponent={(
+                      <TarjetaVerMas
+                        ancho={medidas.ancho} alto={ALTO_FICHA_MUSCULO} radioEsquina={24} texto="Todos"
+                        onPress={() => navigation.navigate('Tabs', { screen: 'Explorar', merge: true, params: { tab: 'musculos' } })}
+                      />
+                    )}
+                  />
+                )}
+                <Text style={[s.principales, s.margen]}>
+                  <Text style={s.principalesEtiqueta}>Principales: </Text>
+                  <Text style={s.principalesNombres}>
+                    {e.primary.map(m => textoVisible(musculoPorId.get(m)?.name ?? m)).join(', ')}
+                  </Text>
+                </Text>
+              </>
+            )}
+          </BloqueRevela>
+
+          <BloqueRevela y={y} sinMovimiento fraccion={FRACCION_LISTA_PARA_ACTIVAR} estilo={s.seccion}>
+            {activo => (
+              <>
+                <TituloSeccion titulo="Detalles" />
+                <RejillaDetalles ejercicio={e} familia={fam} activo={activo} />
+              </>
+            )}
+          </BloqueRevela>
+
+          <Alternativas titulo="Progresiones" ayuda="Una versión más difícil" ids={e.progressions} clase="nivel" abrir={abrir} />
+          <Alternativas titulo="Regresiones" ayuda="Una versión más fácil" ids={e.regressions} clase="nivel" abrir={abrir} />
+          <Alternativas titulo="Sustitutos" ayuda="Si no puedes hacer este" ids={e.substitutes} clase="intercambio" abrir={abrir} />
+
+          <View style={s.seccion}>
+            <BotonSecundario
+              texto={vetado ? 'Volver a proponérmelo' : 'No me lo propongas más'}
+              onPress={() => alternarVeto(e.id)}
+            />
+          </View>
+        </Animated.ScrollView>
+
+        <BarraSuperiorColapsable
+          y={y} alturaHero={alturaHero} nombre={textoVisible(e.name)}
+          favoritoDe={{ tipo: 'ejercicios', id: e.id }}
+          onAtras={() => navigation.goBack()}
+        />
+      </View>
+    </ProveedorRevela>
   );
 }
 

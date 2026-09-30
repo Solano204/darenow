@@ -13,18 +13,24 @@ motivacion/   mot_01.jpg ...   (21)
 fondos/       intro_01.jpg  intro_02.jpg  intro_03.jpg
 ```
 
-## La imagen del ejercicio hace tres cosas
+## Originales, no lo que se empaqueta (R5)
 
-Es un solo archivo con triple uso, y por eso no es opcional:
+Esta carpeta guarda los **originales**; Metro no la lee. Lo que lleva la app
+lo genera `npm run imagenes` (WebP en `assets/img/`, miniaturas de lista y el
+blurhash de cada foto). Después de agregar o cambiar una foto aquí, corre
+`npm run imagenes` y `npm run catalogo` y commitea lo generado.
 
-1. **Miniatura** en Explorar, el editor de rutina, Hoy y todas las listas.
-2. **Portada** de la ficha del ejercicio.
-3. **Póster del video** mientras el clip decodifica su primer fotograma.
+## La imagen del ejercicio
 
-Sin ella, el reproductor enseña un rectángulo negro cada vez que cambias de
-ejercicio. No hay carpeta de thumbs: este archivo la sustituye.
+1. **Miniatura** en Explorar, el editor de rutina, Hoy y todas las listas
+   (la versión `-mini` de 192 px).
+2. **Portada** donde no hay clip.
 
-El nombre lo declara el catálogo en `asset.imagen` de cada ejercicio.
+El póster del video ya no es esta imagen: es el primer fotograma del clip
+(`npm run clips`), para que al arrancar el video no haya salto.
+
+El nombre lo declara el catálogo en `asset.imagen` de cada ejercicio; si el
+archivo no existe, `npm run catalogo` falla.
 
 ## Marcado muscular
 

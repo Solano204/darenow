@@ -81,6 +81,18 @@ Pendiente en el teléfono: arranque en frío (promedio/peor), tamaño de APK/AAB
 
 Pendiente en el telefono: FPS de JS en release, SMOKE, prueba de actualizacion con datos y temporizador con pantalla bloqueada. Ver `R4_REPORTE.md`.
 
+## Estado tras R5 (2026-09-30)
+
+| ID | Fase | Estado | Detalle |
+|---|---|---|---|
+| H-04 | R5 | ✅ Resuelto | `ClipEjercicio`: la ficha tapada pausa y suelta su video; nunca mas de 1 reproduciendo (prueba ficha sobre ficha y 5 min del reproductor) |
+| H-11 | R5 | ✅ Resuelto | FlashList en las listas largas (190 ejercicios: nunca mas de 40 filas montadas); miniaturas de 192 px; `renderItem` estable |
+| H-12 | R5 / R6 | 🟡 Parcial | Heroes de Skia con cache acotada (4 fotos) y precarga al presionar. El Canvas por hero sigue (tratamiento de color del diseno): R6 |
+| H-18 | R5 | 🟡 Parcial | Historial y Favoritos virtualizados. Glosario/FAQ (50 filas de texto) se queda en ScrollView |
+| H-27 | R5 | ✅ Resuelto | `deltoide_posterior..jpg` borrado; el catalogo avisa de medios sin uso y falla si falta uno referenciado |
+
+Pendiente en el telefono: FPS en las 5 listas, memoria tras 5 scrolls y 20 fichas, contador de players en release, AAB y SMOKE en modo avion. Ver `R5_REPORTE.md`.
+
 ## Resumen
 
 1. **H-01 Context gigante**: un favorito o un «tip leído» re-renderiza las 4 pestañas y todo lo abierto en el stack → **R4**.

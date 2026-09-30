@@ -105,6 +105,44 @@ El React Compiler esta activo (`app.json`, `experiments.reactCompiler`) y sus re
 - **`'use no memo'`**: solo con un comentario que diga por que. Hoy: `useTick` y `PantallaColapsable`. `node scripts/perf/compilador.js` lista lo que queda fuera.
 - **Medir**: `RENDERS_SALIDA=x.json npx jest tests/unit/renders/interacciones` graba los re-renders de las interacciones clave; comparar con `docs/perf/renders/despues.json`.
 
+## Listas, imagenes y clips (R5)
+
+**Que lista usar**
+
+- **Lista larga** (mas de ~20 elementos, o que crece sin tope: historial, favoritos) -> `ListaAnimada` (FlashList con el `onScroll` de Reanimated) de `ui/components/listaVirtual.tsx`, o `FlashList` si no hace falta el scroll animado. Filas y encabezados distintos -> `getItemType`. Una pantalla con titulo colapsable y lista larga -> `PantallaColapsableLista`.
+- **Lista corta y fija** (menos de ~20: pasos, opciones, logros) y **pantalla de contenido** (ficha, articulo) -> `ScrollView` con sus secciones.
+- **Carrusel horizontal**: con mas de ~10 elementos, FlashList `horizontal`; si no, `ScrollView`/`FlatList` horizontal. Con snap: `snapToInterval` + `decelerationRate="fast"` + `disableIntervalMomentum`. Profundidad y parallax, en worklets desde el shared value del scroll.
+- No se mezcla con otra libreria de listas.
+
+**Filas que se reciclan** (FlashList reusa la celda para otro elemento):
+
+- Nada de estado local del elemento sin reiniciarse al cambiar el id: mejor del store (R4). Los shared values por fila se reinician con `useReinicioPorId`.
+- Una fila con mucho estado interno (medidas, sellos) se monta por id: `key={id}` en `renderItem`.
+- Entrada de las primeras filas: `EntradaUnaVez` / `useUnaVez` con `idsAnimados('<lista>')`, una vez por elemento.
+- Al cambiar el resultado (filtro, busqueda): `useFundidoAlCambiar` (fundido de 150 ms). No se usan `entering`/`exiting`/`itemLayoutAnimation` dentro de FlashList.
+- Ninguna fila monta un player de video.
+
+**Imagenes**
+
+- Toda imagen pasa por `ui/components/Imagen.tsx` (o por `Foto`/`FotoOscura`, que la usan): cache `memory-disk`, blurhash, `transition={150}`, `recyclingKey`. Unica excepcion: la textura `goma-tile.png` (`Image` de RN por `resizeMode="repeat"`).
+- En un recuadro de 64 dp o menos se usa la miniatura (`mini`); `Foto` y `FotoOscura` lo deciden solas.
+- Heroes con tratamiento de color (Skia): `FotoTratada` con `useImagenSkia` (cache de 4). La tarjeta que abre un hero lo precarga al presionar (`alPresionar` de `Tocable` + `precargarSkia`).
+- Precarga solo lo que se va a ver enseguida (`precargar` de `Imagen`): nunca el catalogo entero.
+
+**Clips**
+
+- `ui/components/ClipEjercicio.tsx` es el unico componente de clip; `media/players.ts` crea y suelta todos los players.
+- Un player por clip en pantalla; en listas y carruseles, la foto. Al salir de la pantalla (blur) pausa y suelta el video; en segundo plano, pausa; al desmontar, se libera. Meta: 1 reproduciendo (2 vivos durante una transicion). Se comprueba con `EXPO_PUBLIC_PERF=1` (`[players]` en logcat).
+- El reproductor deja preparado el clip siguiente en el descanso (`prepararClip`).
+
+**Medios: originales y scripts**
+
+- Los originales viven en `media-fuente/` (fuera de Metro por `metro.config.js`): `media-fuente/img/<carpeta>/<id>.jpg` y `media-fuente/video/ejercicios/<id>.mp4`. Nunca se editan los archivos de `assets/img` ni `assets/video`: se generan.
+- `npm run imagenes` (`scripts/optimizar-imagenes.ts`, sharp): correrlo al agregar o cambiar una foto. Genera `assets/img/<carpeta>/<id>.webp` (q80, 800 px como maximo), las miniaturas `assets/img/{ejercicios,musculos}-mini/` (192 px, q75) y `src/data/indice/blurhash.json`, borra lo que ya no tiene original y reescribe `src/media/registry.ts`.
+- `npm run clips` (`scripts/optimizar-clips.ts`, ffmpeg-static): correrlo al agregar o cambiar un clip. Genera `assets/video/posters/<id>.webp` (primer fotograma) y `assets/video/ejercicios/<id>.mp4` (H.264 main CRF 28 24 fps sin audio con faststart si ahorra 10 %; si no, el original tal cual) y reescribe `src/media/videos.ts`.
+- `npm run catalogo` falla si un ejercicio apunta a un medio que no existe o si falta una version empaquetada, y avisa de los originales sin uso. Commitear lo generado.
+- Nada de medios remotos: la app funciona sin internet.
+
 ## Limites
 
 - Ningun archivo pasa de ~300 lineas (excepcion: `media/registry.ts`, generado). Si crece, subcomponentes a `components/`, logica a `hooks/`, funciones puras a `utils/`.

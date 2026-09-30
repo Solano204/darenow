@@ -1,7 +1,8 @@
 import React from 'react';
-import { Modal, Pressable, StyleSheet, Text, View } from 'react-native';
-import { paleta, conAlfa, tipo, familia, MARGEN_PANTALLA, haptico } from '@/ui/theme';
+import { Pressable, StyleSheet, Text } from 'react-native';
+import { paleta, tipo, haptico } from '@/ui/theme';
 import { BotonSecundario } from '@/ui/components/BotonSecundario';
+import { HojaInferior } from '@/ui/components/HojaInferior';
 
 /**
  * «Descartar cambios» como hoja inferior (la misma de salir de la sesion: `gomaAlta`, esquinas
@@ -14,34 +15,23 @@ export function HojaDescartar({ visible, onDescartar, onSeguir }: {
   onSeguir: () => void;
 }) {
   return (
-    <Modal visible={visible} animationType="slide" transparent onRequestClose={onSeguir}>
-      <View style={[s.velo, { backgroundColor: conAlfa(paleta.goma, 0.6) }]}>
-        <View style={s.hoja}>
-          <Text style={s.titulo} accessibilityRole="header">Descartar cambios</Text>
-          <Text style={s.texto}>Tienes cambios sin guardar en esta rutina. Si sales ahora se pierden.</Text>
-          <Pressable
-            onPress={() => { haptico.toque(); onDescartar(); }}
-            accessibilityRole="button" accessibilityLabel="Descartar"
-            style={({ pressed }) => [s.descartar, pressed && s.descartarPresionado]}
-          >
-            <Text style={s.descartarTexto}>Descartar</Text>
-          </Pressable>
-          <BotonSecundario texto="Seguir editando" onPress={onSeguir} estilo={s.seguir} />
-        </View>
-      </View>
-    </Modal>
+    <HojaInferior
+      visible={visible} onRequestClose={onSeguir}
+      titulo="Descartar cambios" texto="Tienes cambios sin guardar en esta rutina. Si sales ahora se pierden."
+    >
+      <Pressable
+        onPress={() => { haptico.toque(); onDescartar(); }}
+        accessibilityRole="button" accessibilityLabel="Descartar"
+        style={({ pressed }) => [s.descartar, pressed && s.descartarPresionado]}
+      >
+        <Text style={s.descartarTexto}>Descartar</Text>
+      </Pressable>
+      <BotonSecundario texto="Seguir editando" onPress={onSeguir} estilo={s.seguir} />
+    </HojaInferior>
   );
 }
 
 const s = StyleSheet.create({
-  velo: { flex: 1, justifyContent: 'flex-end' },
-  hoja: {
-    backgroundColor: paleta.gomaAlta, borderTopLeftRadius: 28, borderTopRightRadius: 28,
-    borderWidth: 1, borderBottomWidth: 0, borderColor: paleta.gomaBorde,
-    padding: MARGEN_PANTALLA, gap: 10,
-  },
-  titulo: { fontFamily: familia.titulo, fontSize: 22, lineHeight: 26, color: paleta.magnesia },
-  texto: { ...tipo.cuerpo, color: paleta.magnesia2, marginBottom: 8 },
   descartar: {
     minHeight: 56, justifyContent: 'center', paddingHorizontal: 16, borderRadius: 16,
     backgroundColor: paleta.goma, borderWidth: 1, borderColor: paleta.gomaBorde,

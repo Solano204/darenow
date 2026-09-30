@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
-import { AccessibilityInfo, Modal, Pressable, StyleSheet, Text, View, findNodeHandle } from 'react-native';
-import { paleta, conAlfa, familia, tipo, MARGEN_PANTALLA, haptico } from '@/ui/theme';
+import { AccessibilityInfo, Pressable, StyleSheet, Text, View, findNodeHandle } from 'react-native';
+import { paleta, tipo, haptico } from '@/ui/theme';
+import { HojaInferior } from '@/ui/components/HojaInferior';
 
 /** Tiempo que la hoja tarda en irse antes de ejecutar una accion que abre otra cosa (compartir, un selector). */
 const ESPERA_CIERRE_MS = 280;
@@ -45,45 +46,31 @@ export function HojaConfirmacion({ visible, onCerrar, ...contenido }: Contenido 
   };
 
   return (
-    <Modal visible={visible} animationType="slide" transparent onRequestClose={onCerrar} onShow={enfocarCancelar}>
-      <View style={[s.velo, { backgroundColor: conAlfa(paleta.goma, 0.6) }]}>
-        <View style={s.hoja}>
-          <Text style={s.titulo} accessibilityRole="header">{titulo}</Text>
-          <Text style={s.texto}>{texto}</Text>
-          {acciones.map(accion => {
-            const peligro = accion.tipo === 'peligro';
-            return (
-              <Pressable
-                key={accion.texto} onPress={() => elegir(accion)}
-                accessibilityRole="button" accessibilityLabel={accion.texto}
-                style={({ pressed }) => [s.boton, peligro ? s.peligro : s.neutro, pressed && s.presionado]}
-              >
-                <Text style={[s.botonTexto, peligro ? s.textoPeligro : s.textoNeutro]}>{accion.texto}</Text>
-              </Pressable>
-            );
-          })}
+    <HojaInferior visible={visible} onRequestClose={onCerrar} onShow={enfocarCancelar} titulo={titulo} texto={texto}>
+      {acciones.map(accion => {
+        const peligro = accion.tipo === 'peligro';
+        return (
           <Pressable
-            ref={cancelar} onPress={() => { haptico.toque(); onCerrar(); }}
-            accessibilityRole="button" accessibilityLabel={textoCancelar}
-            style={({ pressed }) => [s.boton, s.cancelar, pressed && s.presionado]}
+            key={accion.texto} onPress={() => elegir(accion)}
+            accessibilityRole="button" accessibilityLabel={accion.texto}
+            style={({ pressed }) => [s.boton, peligro ? s.peligro : s.neutro, pressed && s.presionado]}
           >
-            <Text style={[s.botonTexto, s.textoNeutro]}>{textoCancelar}</Text>
+            <Text style={[s.botonTexto, peligro ? s.textoPeligro : s.textoNeutro]}>{accion.texto}</Text>
           </Pressable>
-        </View>
-      </View>
-    </Modal>
+        );
+      })}
+      <Pressable
+        ref={cancelar} onPress={() => { haptico.toque(); onCerrar(); }}
+        accessibilityRole="button" accessibilityLabel={textoCancelar}
+        style={({ pressed }) => [s.boton, s.cancelar, pressed && s.presionado]}
+      >
+        <Text style={[s.botonTexto, s.textoNeutro]}>{textoCancelar}</Text>
+      </Pressable>
+    </HojaInferior>
   );
 }
 
 const s = StyleSheet.create({
-  velo: { flex: 1, justifyContent: 'flex-end' },
-  hoja: {
-    backgroundColor: paleta.gomaAlta, borderTopLeftRadius: 28, borderTopRightRadius: 28,
-    borderWidth: 1, borderBottomWidth: 0, borderColor: paleta.gomaBorde,
-    padding: MARGEN_PANTALLA, gap: 10,
-  },
-  titulo: { fontFamily: familia.titulo, fontSize: 22, lineHeight: 26, color: paleta.magnesia },
-  texto: { ...tipo.cuerpo, color: paleta.magnesia2, marginBottom: 8 },
   boton: { minHeight: 56, justifyContent: 'center', alignItems: 'center', paddingHorizontal: 16, borderRadius: 16 },
   peligro: { backgroundColor: paleta.placaRoja },
   neutro: { backgroundColor: paleta.goma, borderWidth: 1, borderColor: paleta.gomaBorde },

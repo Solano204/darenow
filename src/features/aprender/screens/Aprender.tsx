@@ -24,7 +24,8 @@ import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
 import { MuroCategoria, Intersticial } from '@/ui/components/Anuncio';
 import { TIPS, SALAS, tipsCompletos } from '@/data/catalog';
 import { MITOS, GLOSARIO, FAQ } from '@/data/aprender';
-import { useEstado } from '@/state/store';
+import { useEstadoSel, useFavoritos } from '@/state/store';
+import { alternarFavorito, registrarDescarga } from '@/state/acciones';
 import { RUTA_DE_RELACIONADO, nombreDeSala, type RelacionadoVista } from '@/lib/aprender';
 import { BuscadorVivo } from '@/ui/components/BuscadorVivo';
 import { SegmentosIndicador } from '@/ui/components/SegmentosIndicador';
@@ -49,7 +50,8 @@ const BAJADA_BARRA_MS = 180;
 export default function Aprender({ navigation }: BottomTabScreenProps<ParamListBase, 'Aprender'>) {
   const abajo = useHuecoAbajo();
   const reducido = useReducedMotion();
-  const { estado, alternarFavorito, esFavorito, registrarDescarga } = useEstado();
+  const desbloqueada = useEstadoSel(e => e.descargas.includes('aprender'));
+  const favoritosTips = useFavoritos('tips');
   const [tab, setTab] = useState<SegmentoAprender>('tips');
   const [sala, setSala] = useState<string | null>(null);
   const [q, setQ] = useState('');
@@ -60,8 +62,6 @@ export default function Aprender({ navigation }: BottomTabScreenProps<ParamListB
   const bajando = useSharedValue(0);
   const foco = useSharedValue(0);
   const sentido = useSharedValue(1);
-
-  const desbloqueada = estado.descargas.includes('aprender');
 
   /** Una vista nueva empieza arriba: sin scroll y con la barra de pestanas en su sitio. */
   const reiniciarScroll = () => {
@@ -103,8 +103,8 @@ export default function Aprender({ navigation }: BottomTabScreenProps<ParamListB
   // Referencias estables: cada tecla en el buscador vuelve a pintar la pantalla y sin esto se
   // invalidaria el memo de cada tarjeta.
   const onPressTip = useCallback((id: string) => navigation.navigate('Tip', { id }), [navigation]);
-  const onFavTip = useCallback((id: string) => alternarFavorito('tips', id), [alternarFavorito]);
-  const favoritoTip = useCallback((id: string) => esFavorito('tips', id), [esFavorito]);
+  const onFavTip = useCallback((id: string) => alternarFavorito('tips', id), []);
+  const favoritoTip = useCallback((id: string) => favoritosTips.includes(id), [favoritosTips]);
   const onPressMito = useCallback((id: string) => navigation.navigate('Mito', { id }), [navigation]);
   const onAbrirRelacionado = useCallback(
     (r: RelacionadoVista) => navigation.navigate(RUTA_DE_RELACIONADO[r.tipo], { id: r.id }), [navigation],

@@ -11,7 +11,8 @@ import { ICONOS_OBJETIVO } from '@/ui/components/iconosObjetivo';
 import { barraBajada } from '@/ui/hooks/useBarraFlotante';
 import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
 import { EJERCICIOS, RUTINAS, PROGRAMAS, MUSCULOS, GOALS } from '@/data/catalog';
-import { useEstado } from '@/state/store';
+import { useEstadoSel, usePerfil, useRutinasPropias } from '@/state/store';
+import { alternarFavorito, registrarDescarga } from '@/state/acciones';
 import { ChipFiltro } from '@/ui/components/ChipFiltro';
 import { InterruptorDos } from '@/features/explorar/components/InterruptorDos';
 import { type SegmentoExplorar } from '@/ui/components/EncabezadoExplorar';
@@ -33,7 +34,10 @@ const BAJADA_BARRA_MS = 180;
 export function useExplorar({ navigation, route }: BottomTabScreenProps<ParamListBase, 'Explorar'>) {
   const abajo = useHuecoAbajo();
   const reducido = useReducedMotion();
-  const { estado, alternarFavorito, esFavorito, registrarDescarga } = useEstado();
+  const perfil = usePerfil();
+  const rutinasPropias = useRutinasPropias();
+  const descargas = useEstadoSel(e => e.descargas);
+  const favoritos = useEstadoSel(e => e.favoritos);
   const parametro = (route.params as { tab?: SegmentoExplorar } | undefined)?.tab;
   const [tab, setTab] = useState<SegmentoExplorar>(parametro ?? 'ejercicios');
   const [q, setQ] = useState('');
@@ -81,11 +85,11 @@ export function useExplorar({ navigation, route }: BottomTabScreenProps<ParamLis
   });
 
   const equipoDisp = useMemo(
-    () => new Set([...estado.perfil.equipo, 'ninguno', 'pared', 'silla']),
-    [estado.perfil.equipo],
+    () => new Set([...perfil.equipo, 'ninguno', 'pared', 'silla']),
+    [perfil.equipo],
   );
-  const contra = useMemo(() => new Set(estado.perfil.contra), [estado.perfil.contra]);
-  const desbloqueada = estado.descargas.includes(tab);
+  const contra = useMemo(() => new Set(perfil.contra), [perfil.contra]);
+  const desbloqueada = descargas.includes(tab);
 
   const ejercicios = useMemo(() => {
     const t = q.trim().toLowerCase();
@@ -100,11 +104,11 @@ export function useExplorar({ navigation, route }: BottomTabScreenProps<ParamLis
       if (soloMios) {
         if (e.contra.some(c => contra.has(c))) return false;
         if (!e.equipment.every(x => equipoDisp.has(x))) return false;
-        if (estado.perfil.modoSinSaltos && (e.impact >= 2 || e.noise >= 2)) return false;
+        if (perfil.modoSinSaltos && (e.impact >= 2 || e.noise >= 2)) return false;
       }
       return true;
     });
-  }, [q, cat, goal, soloMios, equipoDisp, contra, estado.perfil.modoSinSaltos]);
+  }, [q, cat, goal, soloMios, equipoDisp, contra, perfil.modoSinSaltos]);
 
   const rutinas = useMemo(() => {
     const t = q.trim().toLowerCase();
@@ -129,16 +133,16 @@ export function useExplorar({ navigation, route }: BottomTabScreenProps<ParamLis
   const onPressEjercicio = useCallback(
     (id: string) => navigation.navigate('Ejercicio', { id }), [navigation]);
   const onFavEjercicio = useCallback(
-    (id: string) => alternarFavorito('ejercicios', id), [alternarFavorito]);
-  const favorito = (tipo: 'ejercicios' | 'rutinas' | 'programas') => (id: string) => esFavorito(tipo, id);
+    (id: string) => alternarFavorito('ejercicios', id), []);
+  const favorito = (tipo: 'ejercicios' | 'rutinas' | 'programas') => (id: string) => favoritos[tipo].includes(id);
 
   // Rutinas propias recien creadas o editadas: al volver a la pestana, su fila entra y se
   // ilumina. Se reconocen por identidad (guardar una rutina crea un objeto nuevo).
-  const vistas = useRef(new Map(estado.rutinasPropias.map(r => [r.id, r])));
+  const vistas = useRef(new Map(rutinasPropias.map(r => [r.id, r])));
   const [destacadas, setDestacadas] = useState<Record<string, number>>({});
-  const [conteoGrupo, setConteoGrupo] = useState(estado.rutinasPropias.length);
+  const [conteoGrupo, setConteoGrupo] = useState(rutinasPropias.length);
   useFocusEffect(useCallback(() => {
-    const propias = estado.rutinasPropias;
+    const propias = rutinasPropias;
     const nuevas = propias.filter(r => vistas.current.get(r.id) !== r);
     vistas.current = new Map(propias.map(r => [r.id, r]));
     if (nuevas.length > 0) {
@@ -146,7 +150,7 @@ export function useExplorar({ navigation, route }: BottomTabScreenProps<ParamLis
     }
     const id = setTimeout(() => setConteoGrupo(propias.length), RETRASO_CONTEO_MS);
     return () => clearTimeout(id);
-  }, [estado.rutinasPropias]));
+  }, [rutinasPropias]));
 
   const { entrada: entradaSegmento, salida: salidaSegmento } = useMemo(
     () => transicionesDeSegmento(reducido, sentido), [reducido, sentido],
@@ -188,7 +192,7 @@ export function useExplorar({ navigation, route }: BottomTabScreenProps<ParamLis
 
   const cabeceraRutinas = (
     <CabeceraRutinas
-      propias={estado.rutinasPropias} conteo={conteoGrupo} destacadas={destacadas}
+      propias={rutinasPropias} conteo={conteoGrupo} destacadas={destacadas}
       onCrear={() => navigation.navigate('EditorRutina')}
       onAbrir={id => navigation.navigate('RutinaPropia', { id })}
       onEditar={id => navigation.navigate('EditorRutina', { id })}

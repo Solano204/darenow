@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { Alert } from 'react-native';
 import { haptico } from '@/ui/theme';
-import { useEstado } from '@/state/store';
+import { usePerfil } from '@/state/store';
+import { guardarPerfil, borrarMedidas } from '@/state/acciones';
 import { useHapticosActivos } from '@/state/haptics';
 import { useVozActiva } from '@/state/voz';
 import { useCuenta } from '@/state/cuenta';
@@ -25,9 +26,8 @@ interface Confirmacion {
 /** La logica de `Ajustes`: estado, datos derivados y manejadores. La pantalla solo dibuja. */
 export function useAjustes() {
   const reducido = useReducedMotion();
-  const { estado, guardarPerfil, borrarMedidas } = useEstado();
+  const p = usePerfil();
   const { cuenta, salir, borrarTodosLosDatos } = useCuenta();
-  const p = estado.perfil;
   const [objetivoAbierto, setObjetivoAbierto] = useState(false);
   const [hapticosOn, setHapticosOn] = useHapticosActivos();
   const [vozOn, setVozOn] = useVozActiva();

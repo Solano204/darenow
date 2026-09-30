@@ -9,7 +9,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { ProveedorEstado } from '@/state/store';
+import { ProveedorEstado, useCargandoEstado } from '@/state/store';
+import { useTienda } from '@/state/tienda';
 import { ProveedorCuenta } from '@/state/cuenta';
 import { ProveedorAnuncios } from '@/ui/components/RelojAnuncios';
 import { ProveedorMagnesia } from '@/ui/fx/MagnesiaOverlay';
@@ -44,11 +45,18 @@ export function estadoDeEjemplo(): Estado {
 
 const Stack = createNativeStackNavigator();
 
+/** Como `Raiz` en App.tsx: nada se dibuja hasta leer lo guardado. */
+function Compuerta({ children }: { children: React.ReactNode }) {
+  return useCargandoEstado() ? null : <>{children}</>;
+}
+
 export async function montar(
   Pantalla: React.ComponentType<never>, params: object = {}, estado: Estado = estadoDeEjemplo(),
 ): Promise<ReactTestRenderer> {
   await AsyncStorage.setItem(CLAVE_ESTADO, JSON.stringify(estado));
   await AsyncStorage.setItem(CLAVE_CUENTA, JSON.stringify({ id: 'inv_1', proveedor: 'invitado', nombre: 'Ana' }));
+  // La tienda es un modulo: cada montaje empieza como al abrir la app.
+  useTienda.setState({ estado: ESTADO_INICIAL, cargando: true });
   let r!: ReactTestRenderer;
   await act(async () => {
     r = create(
@@ -57,11 +65,13 @@ export async function montar(
           <ProveedorCuenta>
             <ProveedorAnuncios>
               <ProveedorMagnesia>
+                <Compuerta>
                 <NavigationContainer>
                   <Stack.Navigator screenOptions={{ headerShown: false }}>
                     <Stack.Screen name="Prueba" component={Pantalla as React.ComponentType} initialParams={params} />
                   </Stack.Navigator>
                 </NavigationContainer>
+                </Compuerta>
               </ProveedorMagnesia>
             </ProveedorAnuncios>
           </ProveedorCuenta>

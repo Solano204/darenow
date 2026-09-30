@@ -108,3 +108,22 @@ export function minutosPorDia(s: SesionGuardada[]): Record<string, number> {
 export function diasEntrenados(s: SesionGuardada[]): string[] {
   return [...new Set(s.map(x => x.fecha))];
 }
+
+/** Ultimo rendimiento registrado de un ejercicio en estas sesiones (la serie real mas reciente). */
+export function ultimaVezEn(
+  sesiones: SesionGuardada[], id: string,
+): { reps?: number; segundos?: number; pesoKg?: number; fecha: string } | undefined {
+  for (let i = sesiones.length - 1; i >= 0; i--) {
+    const s = sesiones[i];
+    const serie = [...s.series].reverse().find(x => x.ejercicioId === id && !x.omitida);
+    if (serie) {
+      return {
+        reps: serie.reps ?? undefined,
+        segundos: serie.segundos ?? undefined,
+        pesoKg: serie.pesoKg ?? undefined,
+        fecha: s.fecha,
+      };
+    }
+  }
+  return undefined;
+}

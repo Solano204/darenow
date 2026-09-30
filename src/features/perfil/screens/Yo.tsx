@@ -19,8 +19,9 @@ import { FilaAjustes } from '@/features/perfil/components/FilaAjustes';
 import { textoVisible } from '@/lib/presentacion';
 import type { TipoFavorito } from '@/lib/perfil';
 import {
-  useEstado, estadisticas, ultimos7, minutosPorDia, diasEntrenados,
+  useEstadoSel, usePerfil, useSesiones, useRutinasPropias, estadisticas, ultimos7, minutosPorDia, diasEntrenados,
 } from '@/state/store';
+import { alternarFavorito } from '@/state/acciones';
 import { programaPorId, nombreGoal } from '@/data/catalog';
 import { LOGROS, RETOS } from '@/data/logros';
 import type { ParamListBase } from '@react-navigation/native';
@@ -43,8 +44,14 @@ export default function Yo({ navigation }: BottomTabScreenProps<ParamListBase, '
   const inset = useSafeAreaInsets();
   const abajo = useHuecoAbajo();
   const { y, onScroll } = useScrollCabecera();
-  const { estado, alternarFavorito } = useEstado();
-  const { perfil, sesiones, racha, logros, favoritos, retos } = estado;
+  const perfil = usePerfil();
+  const sesiones = useSesiones();
+  const racha = useEstadoSel(e => e.racha);
+  const logros = useEstadoSel(e => e.logros);
+  const favoritos = useEstadoSel(e => e.favoritos);
+  const retos = useEstadoSel(e => e.retos);
+  const semanaPrograma = useEstadoSel(e => e.semanaPrograma);
+  const rutinasPropias = useRutinasPropias();
   const stats = useMemo(() => estadisticas(sesiones), [sesiones]);
   const semana = useMemo(() => ultimos7(sesiones), [sesiones]);
   const entrenados = useMemo(() => diasEntrenados(sesiones), [sesiones]);
@@ -53,7 +60,7 @@ export default function Yo({ navigation }: BottomTabScreenProps<ParamListBase, '
   const ganados = useMemo(() => new Set(logros.map(l => l.id)), [logros]);
   const recientes = useMemo(() => sesiones.slice(-SESIONES_RECIENTES).reverse(), [sesiones]);
   const abrirFavorito = useCallback((ruta: string, id: string) => navigation.navigate(ruta, { id }), [navigation]);
-  const quitarFavorito = useCallback((tipo: TipoFavorito, id: string) => alternarFavorito(tipo, id), [alternarFavorito]);
+  const quitarFavorito = useCallback((tipo: TipoFavorito, id: string) => alternarFavorito(tipo, id), []);
 
   return (
     <View style={s.raiz}>
@@ -64,7 +71,7 @@ export default function Yo({ navigation }: BottomTabScreenProps<ParamListBase, '
       >
         <EncabezadoPerfil
           nombre={perfil.nombre || 'Tu progreso'} objetivoId={perfil.objetivo} objetivo={textoVisible(nombreGoal(perfil.objetivo))}
-          programa={programa} semanaActual={estado.semanaPrograma}
+          programa={programa} semanaActual={semanaPrograma}
         />
 
         <BloqueRevela y={y} sinMovimiento estilo={s.seccion}>
@@ -98,7 +105,7 @@ export default function Yo({ navigation }: BottomTabScreenProps<ParamListBase, '
             <>
               <CabeceraSeccion titulo="Favoritos" accion="Ver todos" onAccion={() => navigation.navigate('Favoritos')} />
               <FavoritosPerfil
-                favoritos={favoritos} propias={estado.rutinasPropias} activo={activo}
+                favoritos={favoritos} propias={rutinasPropias} activo={activo}
                 onAbrir={abrirFavorito} onQuitar={quitarFavorito}
               />
             </>
@@ -154,8 +161,8 @@ export default function Yo({ navigation }: BottomTabScreenProps<ParamListBase, '
 
 /** @public Pantalla del Stack: App.tsx la carga con getComponent (require), que knip no sigue. */
 export function Logros() {
-  const { estado } = useEstado();
-  const ganados = new Map(estado.logros.map(l => [l.id, l.fecha]));
+  const logros = useEstadoSel(e => e.logros);
+  const ganados = new Map(logros.map(l => [l.id, l.fecha]));
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: color.fondo }} edges={['bottom']}>
       <Pantalla>

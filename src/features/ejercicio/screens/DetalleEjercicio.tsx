@@ -31,7 +31,8 @@ import { RejillaDetalles } from '@/features/ejercicio/components/RejillaDetalles
 import { TarjetaAlternativa, ANCHO_ALTERNATIVA } from '@/features/ejercicio/components/TarjetaAlternativa';
 import { TituloSeccion } from '@/ui/components/TituloSeccion';
 import { porId, getEjercicio, musculoPorId, familiaPorId, evidenciaDe, type EjercicioIndice } from '@/data/catalog';
-import { useEstado } from '@/state/store';
+import { useEstadoSel, useEsFavorito } from '@/state/store';
+import { alternarVeto, alternarFavorito } from '@/state/acciones';
 import { textoVisible } from '@/lib/presentacion';
 
 const ALTO_HERO_FRACCION = 0.46;
@@ -48,16 +49,19 @@ export default function DetalleEjercicio({ route, navigation }: Props) {
   const { height: ventana } = useWindowDimensions();
   const y = useSharedValue(0);
   const onScroll = useAnimatedScrollHandler(ev => { y.set(ev.contentOffset.y); });
-  const { estado, alternarVeto, alternarFavorito, esFavorito } = useEstado();
+  const idEjercicio = (route.params as { id: string }).id;
+  const vetos = useEstadoSel(x => x.perfil.vetos);
+  const contraPerfil = useEstadoSel(x => x.perfil.contra);
+  const favorito = useEsFavorito('ejercicios', idEjercicio);
 
-  const e = getEjercicio((route.params as { id: string }).id);
+  const e = getEjercicio(idEjercicio);
   if (!e) return null;
 
   const alturaHero = Math.round(ventana * ALTO_HERO_FRACCION);
   const { mapa, nota } = evidenciaDe(e);
   const fam = familiaPorId.get(e.family);
-  const vetado = estado.perfil.vetos.includes(e.id);
-  const bloqueado = e.contra.some(c => estado.perfil.contra.includes(c));
+  const vetado = vetos.includes(e.id);
+  const bloqueado = e.contra.some(c => contraPerfil.includes(c));
   // Principales primero (el orden real: son los que mas carga el ejercicio),
   // acotado a 4 como todo carrusel de la app: sin esto, un ejercicio con
   // varios musculos secundarios desbordaba la fila sin limite ni "ver mas".
@@ -189,7 +193,7 @@ export default function DetalleEjercicio({ route, navigation }: Props) {
 
       <BarraSuperiorColapsable
         y={y} alturaHero={alturaHero} nombre={textoVisible(e.name)}
-        favorito={esFavorito('ejercicios', e.id)} onFavorito={() => alternarFavorito('ejercicios', e.id)}
+        favorito={favorito} onFavorito={() => alternarFavorito('ejercicios', e.id)}
         onAtras={() => navigation.goBack()}
       />
     </View>

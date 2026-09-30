@@ -18,7 +18,7 @@
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { cerrarGoogle } from './googleAuth';
-import { useEstado } from './store';
+import { reiniciar as reiniciarProgreso } from './acciones';
 import {
   CLAVE_CUENTA as CLAVE, CLAVE_ESTADO, CLAVE_VOZ, CLAVE_HAPTICS, CLAVE_MAQUINA, CLAVE_SESION_EN_CURSO as CLAVE_SESION,
   CLAVE_CONSENTIMIENTO_MEDIDAS,
@@ -77,10 +77,6 @@ function idInvitado(): string {
 export function ProveedorCuenta({ children }: { children: React.ReactNode }) {
   const [cuenta, setCuenta] = useState<Cuenta | null>(null);
   const [cargando, setCargando] = useState(true);
-  // Requiere que <ProveedorCuenta> este DENTRO de <ProveedorEstado> (ver
-  // App.tsx): asi borrarTodosLosDatos() puede resetear el progreso ademas
-  // de la cuenta, sin que store.ts tenga que saber nada de cuentas.
-  const { reiniciar: reiniciarProgreso } = useEstado();
 
   useEffect(() => {
     (async () => {
@@ -156,7 +152,7 @@ export function ProveedorCuenta({ children }: { children: React.ReactNode }) {
     reiniciarProgreso();
     await guardar(null);
     await cerrarGoogle();
-  }, [reiniciarProgreso, guardar]);
+  }, [guardar]);
 
   const borrarCuenta = useCallback(async () => {
     await borrarTodosLosDatos();

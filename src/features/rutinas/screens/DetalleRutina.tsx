@@ -25,7 +25,8 @@ import type { BloqueVista } from '@/features/rutinas/components/RielBloques';
 import { porId, rutinaPorId, type BloqueRutina } from '@/data/catalog';
 import { nombreVisible } from '@/data/nombresVisibles';
 import { fuente } from '@/media/registry';
-import { useEstado } from '@/state/store';
+import { usePerfil, useEsFavorito } from '@/state/store';
+import { ultimaVezDe, alternarFavorito, nuevaRutinaPropia, guardarRutinaPropia } from '@/state/acciones';
 import { sesionDeRutina, itemPropioPorDefecto } from '@/lib/engine/session';
 import { textoVisible } from '@/lib/presentacion';
 
@@ -47,15 +48,15 @@ function vistaDeBloque(b: BloqueRutina): BloqueVista {
 }
 
 export default function DetalleRutina({ route, navigation }: Props) {
-  const {
-    estado, ultimaVezDe, alternarFavorito, esFavorito, nuevaRutinaPropia, guardarRutinaPropia,
-  } = useEstado();
-  const r = rutinaPorId.get((route.params as { id: string }).id);
+  const idRutina = (route.params as { id: string }).id;
+  const perfil = usePerfil();
+  const favorito = useEsFavorito('rutinas', idRutina);
+  const r = rutinaPorId.get(idRutina);
   const bloques = useMemo(() => (r ? r.bloques.map(vistaDeBloque).filter(b => b.items.length > 0) : []), [r]);
   if (!r) return null;
 
   const empezar = () => {
-    const sesion = sesionDeRutina(r.id, estado.perfil, r, ultimaVezDe);
+    const sesion = sesionDeRutina(r.id, perfil, r, ultimaVezDe);
     navigation.navigate('Reproductor', { sesion });
   };
 
@@ -77,7 +78,7 @@ export default function DetalleRutina({ route, navigation }: Props) {
     <PlantillaRutina
       nombre={nombreVisible(r.name)}
       foto={fuente('rutina', r.id)}
-      favorito={esFavorito('rutinas', r.id)}
+      favorito={favorito}
       onFavorito={() => alternarFavorito('rutinas', r.id)}
       onAtras={() => navigation.goBack()}
       meta={<MetadatosRutina minutos={r.min} objetivo={r.goal} nivel={r.level} silenciosa={r.modo_sin_saltos} />}
@@ -85,7 +86,7 @@ export default function DetalleRutina({ route, navigation }: Props) {
       bloques={bloques}
       onAbrir={id => navigation.navigate('Ejercicio', { id })}
       despues={y => [
-        estado.perfil.mostrarKcal ? (
+        perfil.mostrarKcal ? (
           <BloqueRevela key="kcal" y={y} sinMovimiento fraccion={FRACCION_NOTA_PARA_ACTIVAR} estilo={s.nota}>
             {activo => <Entrada activo={activo}><NotaEstimacion kcal={r.kcal_aprox_70kg} /></Entrada>}
           </BloqueRevela>

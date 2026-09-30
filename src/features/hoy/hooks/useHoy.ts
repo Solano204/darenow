@@ -7,7 +7,10 @@ import { useHuecoAbajo, useScrollCabecera } from '@/ui/components';
 import { ALTO_HEADER } from '@/ui/fx/HeaderColapsable';
 import { useMagnesia } from '@/ui/fx/MagnesiaOverlay';
 import { type RutinaHoy } from '@/features/hoy/components/TarjetaRutina';
-import { useEstado, estadisticas, ultimos7, hoy, imagenRutina } from '@/state/store';
+import {
+  useEstadoSel, usePerfil, useSesiones, useRutinasPropias, estadisticas, ultimos7, hoy, imagenRutina, ultimaVezEn,
+} from '@/state/store';
+import { alternarFavorito } from '@/state/acciones';
 import { armarSesion, sesionDeRutina, minutosPropios, type Perfil } from '@/lib/engine/session';
 import {
   RUTINAS, PROGRAMAS, EJERCICIOS, MUSCULOS, TIPS, programaPorId, nombreGoal,
@@ -24,8 +27,15 @@ export function useHoy({ navigation }: { navigation: NavigationProp<ParamListBas
   const { width } = useWindowDimensions();
   const magnesia = useMagnesia();
   const { y, onScroll } = useScrollCabecera();
-  const { estado, ultimaVezDe, alternarFavorito, esFavorito } = useEstado();
-  const { perfil, sesiones, racha } = estado;
+  const perfil = usePerfil();
+  const sesiones = useSesiones();
+  const racha = useEstadoSel(e => e.racha);
+  const favoritos = useEstadoSel(e => e.favoritos);
+  const semanaPrograma = useEstadoSel(e => e.semanaPrograma);
+  const rutinasPropias = useRutinasPropias();
+  const esFavorito = (tipo: keyof typeof favoritos, id: string) => (favoritos[tipo] ?? []).includes(id);
+  // El «la ultima vez» de cada ejercicio sale de las sesiones: cambia cuando se guarda una.
+  const ultimaVezDe = useCallback((id: string) => ultimaVezEn(sesiones, id), [sesiones]);
 
   const [fecha, setFecha] = useState(hoy());
   const [refrescando, setRefrescando] = useState(false);
@@ -67,7 +77,7 @@ export function useHoy({ navigation }: { navigation: NavigationProp<ParamListBas
   // Las rutinas propias van primero: si el usuario se tomo el trabajo de
   // armarlas, son lo que mas probablemente quiere abrir.
   const rutinas = useMemo<RutinaHoy[]>(() => {
-    const mias = estado.rutinasPropias.map(r => ({
+    const mias = rutinasPropias.map(r => ({
       id: r.id, nombre: r.nombre, min: minutosPropios(r.items), mia: true,
       imagenId: imagenRutina(r.id, r.imagenId), ejercicios: r.items.length,
       hecha: sesiones.some(s => s.rutinaId === r.id),
@@ -77,7 +87,7 @@ export function useHoy({ navigation }: { navigation: NavigationProp<ParamListBas
       .filter(r => !perfil.modoSinSaltos || r.modo_sin_saltos)
       .map(r => ({ id: r.id, nombre: r.name, min: r.min, mia: false, subtitulo: nombreGoal(r.goal) }));
     return [...mias, ...catalogo].slice(0, 4);
-  }, [estado.rutinasPropias, sesiones, perfil.objetivo, perfil.modoSinSaltos]);
+  }, [rutinasPropias, sesiones, perfil.objetivo, perfil.modoSinSaltos]);
 
   // Primero los del objetivo activo, luego el resto, sin repetir ninguno.
   const programas = useMemo(() => {
@@ -139,7 +149,7 @@ export function useHoy({ navigation }: { navigation: NavigationProp<ParamListBas
 
 
   return {
-    abajo, inset, y, onScroll, estado, alternarFavorito, esFavorito, perfil, racha, refrescando,
+    abajo, inset, y, onScroll, semanaPrograma, alternarFavorito, esFavorito, perfil, racha, refrescando,
     stats, semana, entrenoHoy, programa, sesion, avisosSesion, sinEjercicios, rutinas, programas,
     ejercicios, musculosDeHoy, musculos, tips, sello, refrescar, irAExplorar, irAAprender, empezar,
     cincoMinutos,

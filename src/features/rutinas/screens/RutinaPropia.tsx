@@ -22,7 +22,10 @@ import { PlantillaRutina } from '@/features/rutinas/components/PlantillaRutina';
 import { MetadatosRutina } from '@/features/rutinas/components/MetadatosRutina';
 import { BotonDuplicar } from '@/features/rutinas/components/BotonDuplicar';
 import type { BloqueVista } from '@/features/rutinas/components/RielBloques';
-import { useEstado, imagenRutina, type RutinaPropia as Propia } from '@/state/store';
+import { usePerfil, useRutinasPropias, useEsFavorito, imagenRutina, type RutinaPropia as Propia } from '@/state/store';
+import {
+  ultimaVezDe, borrarRutinaPropia, guardarRutinaPropia, nuevaRutinaPropia, alternarFavorito,
+} from '@/state/acciones';
 import { sesionDePropia, minutosPropios, revisarPropia } from '@/lib/engine/session';
 import { porId } from '@/data/catalog';
 import { fuente } from '@/media/registry';
@@ -44,16 +47,16 @@ function vistaDePropia(r: Propia, minutos: number): BloqueVista {
 
 export default function RutinaPropia({ route, navigation }: Props) {
   const inset = useSafeAreaInsets();
-  const {
-    estado, ultimaVezDe, borrarRutinaPropia, guardarRutinaPropia,
-    nuevaRutinaPropia, alternarFavorito, esFavorito,
-  } = useEstado();
+  const idRutina = (route.params as { id: string }).id;
+  const perfil = usePerfil();
+  const propias = useRutinasPropias();
+  const favorito = useEsFavorito('rutinas', idRutina);
 
-  const r = estado.rutinasPropias.find(x => x.id === (route.params as { id: string }).id);
+  const r = propias.find(x => x.id === idRutina);
   const minutos = useMemo(() => (r ? minutosPropios(r.items) : 0), [r]);
   const avisos = useMemo(
-    () => (r ? revisarPropia(r.items, estado.perfil) : []),
-    [r, estado.perfil],
+    () => (r ? revisarPropia(r.items, perfil) : []),
+    [r, perfil],
   );
   const bloques = useMemo(() => (r ? [vistaDePropia(r, minutos)] : []), [r, minutos]);
 
@@ -68,7 +71,7 @@ export default function RutinaPropia({ route, navigation }: Props) {
 
   const empezar = () =>
     navigation.navigate('Reproductor', {
-      sesion: sesionDePropia(r, estado.perfil, ultimaVezDe),
+      sesion: sesionDePropia(r, perfil, ultimaVezDe),
     });
 
   const duplicar = () => {
@@ -97,7 +100,7 @@ export default function RutinaPropia({ route, navigation }: Props) {
     <PlantillaRutina
       nombre={r.nombre}
       foto={fuente('rutina', imagenRutina(r.id, r.imagenId))}
-      favorito={esFavorito('rutinas', r.id)}
+      favorito={favorito}
       onFavorito={() => alternarFavorito('rutinas', r.id)}
       onAtras={() => navigation.goBack()}
       junto={(

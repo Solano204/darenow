@@ -5,7 +5,8 @@ import Animated, {
 } from 'react-native-reanimated';
 import { haptico } from '@/ui/theme';
 import { useMagnesia } from '@/ui/fx/MagnesiaOverlay';
-import { useEstado, type RutinaPropia, type ItemPropio } from '@/state/store';
+import { usePerfil, useRutinasPropias, type RutinaPropia, type ItemPropio } from '@/state/store';
+import { guardarRutinaPropia, nuevaRutinaPropia } from '@/state/acciones';
 import { itemPropioPorDefecto, minutosPropios, revisarPropia } from '@/lib/engine/session';
 import type { EjercicioIndice } from '@/data/catalog';
 import { plural } from '@/lib/plural';
@@ -39,17 +40,18 @@ export type PropsEditorRutina = NativeStackScreenProps<
 export function useEditorRutina(
   route: PropsEditorRutina['route'], navigation: PropsEditorRutina['navigation'],
 ) {
-  const { estado, guardarRutinaPropia, nuevaRutinaPropia } = useEstado();
+  const perfil = usePerfil();
+  const propias = useRutinasPropias();
   const magnesia = useMagnesia();
   const reducido = useReducedMotion();
   const tick = useTick();
 
   const original = route.params?.id
-    ? estado.rutinasPropias.find(r => r.id === route.params?.id)
+    ? propias.find(r => r.id === route.params?.id)
     : undefined;
 
   const [r, setR] = useState<RutinaPropia>(
-    () => original ?? nuevaRutinaPropia({ objetivo: estado.perfil.objetivo }),
+    () => original ?? nuevaRutinaPropia({ objetivo: perfil.objetivo }),
   );
   // Foto fija del arranque (crear en blanco o editar lo cargado), para
   // saber si hubo cambios reales antes de dejar salir sin avisar.
@@ -74,7 +76,7 @@ export function useEditorRutina(
 
   const minutos = useMemo(() => minutosPropios(r.items), [r.items]);
   const series = useMemo(() => r.items.reduce((a, x) => a + x.series, 0), [r.items]);
-  const avisos = useMemo(() => revisarPropia(r.items, estado.perfil), [r.items, estado.perfil]);
+  const avisos = useMemo(() => revisarPropia(r.items, perfil), [r.items, perfil]);
   const hayCambios = useMemo(() => JSON.stringify(r) !== JSON.stringify(inicial), [r, inicial]);
   const frase = fraseResumen(r.items.length, series, minutos);
   const vacia = r.items.length === 0;

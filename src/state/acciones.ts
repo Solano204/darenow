@@ -1,189 +1,112 @@
 /**
  * DARENOW · acciones del estado
  *
- * Todo lo que cambia el estado del usuario. Cada accion actualiza con `setEstado(prev => ...)` y
- * pide el guardado diferido (`guardar`). Lo usa `ProveedorEstado` (store.ts), que las expone
- * por `useEstado()`.
+ * Todo lo que cambia el estado del usuario. Desde R4 son funciones de módulo (siempre las
+ * mismas: no hacen re-renderizar a quien las recibe) que cambian la tienda con `cambiar`, que
+ * aplica el cambio y pide el guardado diferido. Mismos cambios y mismo formato que antes.
  */
-
-import { useCallback, type Dispatch, type MutableRefObject, type SetStateAction } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { CLAVE_ESTADO as CLAVE } from '@/storage/claves';
+import { cambiar, reiniciarTienda, useTienda } from './tienda';
 import { ESTADO_INICIAL } from './estadoInicial';
-import { hoy, calcularRacha, mesActual } from './derivados';
-import type { Ctx, Estado, PerfilUsuario, MedicionGuardada, RutinaPropia, Favoritos } from './tipos';
+import { hoy, calcularRacha, mesActual, ultimaVezEn } from './derivados';
+import type {
+  Estado, Favoritos, MedicionGuardada, PerfilUsuario, Racha, RutinaPropia, SesionGuardada,
+} from './tipos';
 
-export function useAcciones(
-  estado: Estado,
-  setEstado: Dispatch<SetStateAction<Estado>>,
-  guardar: (e: Estado) => void,
-  pendienteRef: MutableRefObject<Estado | null>,
-  temporizadorRef: MutableRefObject<ReturnType<typeof setTimeout> | null>,
-) {
-  const guardarPerfil = useCallback((p: Partial<PerfilUsuario>) => {
-    setEstado(prev => {
-      const e = { ...prev, perfil: { ...prev.perfil, ...p } };
-      guardar(e);
-      return e;
-    });
-  }, []);
+const leer = (): Estado => useTienda.getState().estado;
 
-  const marcarPresentacion = useCallback(() => {
-    setEstado(prev => {
-      const e = { ...prev, presentacionVista: true };
-      guardar(e);
-      return e;
-    });
-  }, [guardar]);
+export function guardarPerfil(p: Partial<PerfilUsuario>) {
+  cambiar(prev => ({ ...prev, perfil: { ...prev.perfil, ...p } }));
+}
 
-  const terminarOnboarding = useCallback((p: PerfilUsuario) => {
-    setEstado(prev => {
-      const e = { ...prev, perfil: p, onboardingHecho: true };
-      guardar(e);
-      return e;
-    });
-  }, []);
+export function marcarPresentacion() {
+  cambiar(prev => ({ ...prev, presentacionVista: true }));
+}
 
-  const guardarSesion: Ctx['guardarSesion'] = useCallback((s) => {
-    let resultado = { racha: ESTADO_INICIAL.racha, logrosNuevos: [] as string[], graciaUsada: false };
+export function terminarOnboarding(p: PerfilUsuario) {
+  cambiar(prev => ({ ...prev, perfil: p, onboardingHecho: true }));
+}
 
-    setEstado(prev => {
-      const reales = s.series.filter(x => !x.omitida);
-      const cuenta = reales.length >= 1;
-      const graciaAntes = prev.racha.mesGracia === mesActual() ? prev.racha.graciaUsada : 0;
-      const racha = cuenta ? calcularRacha(prev.racha, s.fecha) : prev.racha;
+export function guardarSesion(s: Omit<SesionGuardada, 'id'>): { racha: Racha; logrosNuevos: string[]; graciaUsada: boolean } {
+  let resultado = { racha: ESTADO_INICIAL.racha, logrosNuevos: [] as string[], graciaUsada: false };
 
-      const sesiones = [...prev.sesiones, { ...s, id: `${Date.now()}` }];
-      const logros = [...prev.logros];
-      const nuevos: string[] = [];
-      const otorgar = (id: string) => {
-        if (!logros.some(l => l.id === id)) { logros.push({ id, fecha: hoy() }); nuevos.push(id); }
-      };
+  cambiar(prev => {
+    const reales = s.series.filter(x => !x.omitida);
+    const cuenta = reales.length >= 1;
+    const graciaAntes = prev.racha.mesGracia === mesActual() ? prev.racha.graciaUsada : 0;
+    const racha = cuenta ? calcularRacha(prev.racha, s.fecha) : prev.racha;
 
-      if (racha.dias >= 7) otorgar('logro_007dias');
-      if (sesiones.length >= 100) otorgar('logro_100sesiones');
-      if (sesiones.length >= 365) otorgar('logro_365sesiones');
+    const sesiones = [...prev.sesiones, { ...s, id: `${Date.now()}` }];
+    const logros = [...prev.logros];
+    const nuevos: string[] = [];
+    const otorgar = (id: string) => {
+      if (!logros.some(l => l.id === id)) { logros.push({ id, fecha: hoy() }); nuevos.push(id); }
+    };
 
-      const hace30 = new Date(Date.now() - 30 * 86400000).toISOString().slice(0, 10);
-      const diasMes = new Set(sesiones.filter(x => x.fecha >= hace30).map(x => x.fecha));
-      if (diasMes.size >= 20) otorgar('logro_030dias');
+    if (racha.dias >= 7) otorgar('logro_007dias');
+    if (sesiones.length >= 100) otorgar('logro_100sesiones');
+    if (sesiones.length >= 365) otorgar('logro_365sesiones');
 
-      const silenciosas = sesiones.filter(x => x.estado === 'completada').length;
-      if (silenciosas >= 5 && prev.perfil.modoSinSaltos) otorgar('logro_silenciosa');
-      if (sesiones.length >= 1) otorgar('logro_programa1');
+    const hace30 = new Date(Date.now() - 30 * 86400000).toISOString().slice(0, 10);
+    const diasMes = new Set(sesiones.filter(x => x.fecha >= hace30).map(x => x.fecha));
+    if (diasMes.size >= 20) otorgar('logro_030dias');
 
-      resultado = {
-        racha,
-        logrosNuevos: nuevos,
-        graciaUsada: racha.graciaUsada > graciaAntes,
-      };
+    const silenciosas = sesiones.filter(x => x.estado === 'completada').length;
+    if (silenciosas >= 5 && prev.perfil.modoSinSaltos) otorgar('logro_silenciosa');
+    if (sesiones.length >= 1) otorgar('logro_programa1');
 
-      const e = { ...prev, sesiones, racha, logros };
-      guardar(e);
-      return e;
-    });
+    resultado = {
+      racha,
+      logrosNuevos: nuevos,
+      graciaUsada: racha.graciaUsada > graciaAntes,
+    };
+    return { ...prev, sesiones, racha, logros };
+  });
 
-    return resultado;
-  }, []);
+  return resultado;
+}
 
-  const guardarMedicion = useCallback((m: Omit<MedicionGuardada, 'id'>) => {
-    setEstado(prev => {
-      const e = { ...prev, mediciones: [...prev.mediciones, { ...m, id: `${Date.now()}` }] };
-      guardar(e);
-      return e;
-    });
-  }, []);
+export function guardarMedicion(m: Omit<MedicionGuardada, 'id'>) {
+  cambiar(prev => ({ ...prev, mediciones: [...prev.mediciones, { ...m, id: `${Date.now()}` }] }));
+}
 
-  const alternarVeto = useCallback((id: string) => {
-    setEstado(prev => {
-      const vetos = prev.perfil.vetos.includes(id)
-        ? prev.perfil.vetos.filter(v => v !== id)
-        : [...prev.perfil.vetos, id];
-      const e = { ...prev, perfil: { ...prev.perfil, vetos } };
-      guardar(e);
-      return e;
-    });
-  }, []);
+export function alternarVeto(id: string) {
+  cambiar(prev => {
+    const vetos = prev.perfil.vetos.includes(id)
+      ? prev.perfil.vetos.filter(v => v !== id)
+      : [...prev.perfil.vetos, id];
+    return { ...prev, perfil: { ...prev.perfil, vetos } };
+  });
+}
 
-  const alternarFavorito = useCallback((tipo: keyof Favoritos, id: string) => {
-    setEstado(prev => {
-      const actual = prev.favoritos[tipo] ?? [];
-      const nuevo = actual.includes(id) ? actual.filter(x => x !== id) : [...actual, id];
-      const e = { ...prev, favoritos: { ...prev.favoritos, [tipo]: nuevo } };
-      guardar(e);
-      return e;
-    });
-  }, []);
+export function alternarFavorito(tipo: keyof Favoritos, id: string) {
+  cambiar(prev => {
+    const actual = prev.favoritos[tipo] ?? [];
+    const nuevo = actual.includes(id) ? actual.filter(x => x !== id) : [...actual, id];
+    return { ...prev, favoritos: { ...prev.favoritos, [tipo]: nuevo } };
+  });
+}
 
-  const esFavorito = useCallback(
-    (tipo: keyof Favoritos, id: string) => (estado.favoritos[tipo] ?? []).includes(id),
-    [estado.favoritos],
-  );
+export function marcarBienvenida() {
+  cambiar(prev => (prev.bienvenidaVista === hoy() ? prev : { ...prev, bienvenidaVista: hoy() }));
+}
 
-  const marcarBienvenida = useCallback(() => {
-    setEstado(prev => {
-      if (prev.bienvenidaVista === hoy()) return prev;
-      const e = { ...prev, bienvenidaVista: hoy() };
-      guardar(e);
-      return e;
-    });
-  }, []);
+export function registrarDescarga(seccion: string) {
+  cambiar(prev => (prev.descargas.includes(seccion)
+    ? prev
+    : { ...prev, descargas: [...prev.descargas, seccion], anunciosAceptados: true }));
+}
 
-  const marcarAnuncio = useCallback(() => {
-    setEstado(prev => {
-      const e = { ...prev, anuncioVisto: hoy() };
-      guardar(e);
-      return e;
-    });
-  }, []);
+export function marcarTipLeido(id: string) {
+  cambiar(prev => (prev.tipsLeidos.includes(id) ? prev : { ...prev, tipsLeidos: [...prev.tipsLeidos, id] }));
+}
 
-  const aceptarAnuncios = useCallback(() => {
-    setEstado(prev => {
-      const e = { ...prev, anunciosAceptados: true };
-      guardar(e);
-      return e;
-    });
-  }, []);
+export function iniciarReto(id: string) {
+  cambiar(prev => ({ ...prev, retos: { ...prev.retos, [id]: { iniciado: hoy(), progreso: 0 } } }));
+}
 
-  const registrarDescarga = useCallback((seccion: string) => {
-    setEstado(prev => {
-      if (prev.descargas.includes(seccion)) return prev;
-      const e = { ...prev, descargas: [...prev.descargas, seccion], anunciosAceptados: true };
-      guardar(e);
-      return e;
-    });
-  }, []);
-
-  const alternarTipGuardado = useCallback((id: string) => {
-    setEstado(prev => {
-      const g = prev.tipsGuardados.includes(id)
-        ? prev.tipsGuardados.filter(x => x !== id)
-        : [...prev.tipsGuardados, id];
-      const e = { ...prev, tipsGuardados: g };
-      guardar(e);
-      return e;
-    });
-  }, []);
-
-  const marcarTipLeido = useCallback((id: string) => {
-    setEstado(prev => {
-      if (prev.tipsLeidos.includes(id)) return prev;
-      const e = { ...prev, tipsLeidos: [...prev.tipsLeidos, id] };
-      guardar(e);
-      return e;
-    });
-  }, []);
-
-  const iniciarReto = useCallback((id: string) => {
-    setEstado(prev => {
-      const e = { ...prev, retos: { ...prev.retos, [id]: { iniciado: hoy(), progreso: 0 } } };
-      guardar(e);
-      return e;
-    });
-  }, []);
-
-  /** Crea el borrador en memoria. No se guarda hasta que el usuario acepta. */
-  const nuevaRutinaPropia = useCallback((base: Partial<RutinaPropia> = {}): RutinaPropia => ({
+/** Crea el borrador en memoria. No se guarda hasta que el usuario acepta. */
+export function nuevaRutinaPropia(base: Partial<RutinaPropia> = {}): RutinaPropia {
+  return {
     id: `mi_${Date.now().toString(36)}`,
     nombre: '',
     objetivo: 'bajar_peso',
@@ -194,75 +117,42 @@ export function useAcciones(
     // una rutina nueva se vea terminada de una vez, no con el marcador.
     imagenId: `rt_${String(Math.floor(Math.random() * 30) + 1).padStart(3, '0')}`,
     ...base,
-  }), []);
-
-  const guardarRutinaPropia = useCallback((r: RutinaPropia) => {
-    setEstado(prev => {
-      const existe = prev.rutinasPropias.some(x => x.id === r.id);
-      const lista = existe
-        ? prev.rutinasPropias.map(x => (x.id === r.id ? { ...r, editada: hoy() } : x))
-        : [...prev.rutinasPropias, r];
-      const e = { ...prev, rutinasPropias: lista };
-      guardar(e);
-      return e;
-    });
-  }, [guardar]);
-
-  const borrarRutinaPropia = useCallback((id: string) => {
-    setEstado(prev => {
-      const e = {
-        ...prev,
-        rutinasPropias: prev.rutinasPropias.filter(x => x.id !== id),
-        favoritos: { ...prev.favoritos, rutinas: prev.favoritos.rutinas.filter(x => x !== id) },
-      };
-      guardar(e);
-      return e;
-    });
-  }, [guardar]);
-
-  const reiniciar = useCallback(() => {
-    // Sin esto, una escritura diferida que ya estaba en el temporizadorRef de
-    // 350ms (ver `guardar` arriba) se dispara DESPUES del borrado y
-    // resucita el progreso viejo en AsyncStorage.
-    if (temporizadorRef.current) { clearTimeout(temporizadorRef.current); temporizadorRef.current = null; }
-    pendienteRef.current = null;
-    AsyncStorage.removeItem(CLAVE).catch(() => {});
-    setEstado(ESTADO_INICIAL);
-  }, []);
-
-  const borrarMedidas = useCallback(() => {
-    setEstado(prev => {
-      const e = {
-        ...prev,
-        mediciones: [],
-        perfil: { ...prev.perfil, pesoKg: undefined, pesoObjetivoKg: undefined, alturaCm: undefined },
-      };
-      guardar(e);
-      return e;
-    });
-  }, [guardar]);
-
-  /** Ultimo rendimiento registrado de un ejercicio. */
-  const ultimaVezDe = useCallback((id: string) => {
-    for (let i = estado.sesiones.length - 1; i >= 0; i--) {
-      const s = estado.sesiones[i];
-      const serie = [...s.series].reverse().find(x => x.ejercicioId === id && !x.omitida);
-      if (serie) {
-        return {
-          reps: serie.reps ?? undefined,
-          segundos: serie.segundos ?? undefined,
-          pesoKg: serie.pesoKg ?? undefined,
-          fecha: s.fecha,
-        };
-      }
-    }
-    return undefined;
-  }, [estado.sesiones]);
-
-  return {
-    guardarPerfil, terminarOnboarding, marcarPresentacion, guardarSesion, guardarMedicion,
-    alternarVeto, alternarTipGuardado, marcarTipLeido, iniciarReto, ultimaVezDe, reiniciar,
-    borrarMedidas, alternarFavorito, esFavorito, marcarBienvenida, marcarAnuncio, aceptarAnuncios,
-    registrarDescarga, guardarRutinaPropia, borrarRutinaPropia, nuevaRutinaPropia,
   };
+}
+
+export function guardarRutinaPropia(r: RutinaPropia) {
+  cambiar(prev => {
+    const existe = prev.rutinasPropias.some(x => x.id === r.id);
+    const lista = existe
+      ? prev.rutinasPropias.map(x => (x.id === r.id ? { ...r, editada: hoy() } : x))
+      : [...prev.rutinasPropias, r];
+    return { ...prev, rutinasPropias: lista };
+  });
+}
+
+export function borrarRutinaPropia(id: string) {
+  cambiar(prev => ({
+    ...prev,
+    rutinasPropias: prev.rutinasPropias.filter(x => x.id !== id),
+    favoritos: { ...prev.favoritos, rutinas: prev.favoritos.rutinas.filter(x => x !== id) },
+  }));
+}
+
+/** Borra el progreso (lo usa «borrar todos los datos» de la cuenta). */
+export function reiniciar() {
+  reiniciarTienda();
+}
+
+/** Borra peso, altura, peso objetivo y todas las mediciones. Lo usa el retiro de consentimiento en Ajustes (ver consentimientoMedidas.ts). */
+export function borrarMedidas() {
+  cambiar(prev => ({
+    ...prev,
+    mediciones: [],
+    perfil: { ...prev.perfil, pesoKg: undefined, pesoObjetivoKg: undefined, alturaCm: undefined },
+  }));
+}
+
+/** Ultimo rendimiento registrado de un ejercicio, con las sesiones de ahora (para un manejador). */
+export function ultimaVezDe(id: string): { reps?: number; segundos?: number; pesoKg?: number; fecha: string } | undefined {
+  return ultimaVezEn(leer().sesiones, id);
 }

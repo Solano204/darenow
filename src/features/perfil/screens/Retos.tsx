@@ -10,7 +10,8 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { paleta, familia, MARGEN_PANTALLA } from '@/ui/theme';
 import { RETOS } from '@/data/logros';
-import { useEstado } from '@/state/store';
+import { useEstadoSel } from '@/state/store';
+import { iniciarReto } from '@/state/acciones';
 import { PantallaColapsable } from '@/ui/components/PantallaColapsable';
 import { NotaEntrenador } from '@/ui/components/NotaEntrenador';
 import { BloqueRevela } from '@/ui/fx/BloqueRevela';
@@ -22,7 +23,7 @@ import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 const TARJETAS_ESCALONADAS = 4;
 
 export default function Retos({ navigation }: NativeStackScreenProps<ParamListBase, 'Retos'>) {
-  const { estado, iniciarReto } = useEstado();
+  const retos = useEstadoSel(e => e.retos);
 
   return (
     <PantallaColapsable
@@ -40,7 +41,7 @@ export default function Retos({ navigation }: NativeStackScreenProps<ParamListBa
             <BloqueRevela key={r.id} y={y} sinMovimiento fraccion={0.15}>
               {activo => (
                 <TarjetaRetoCompleta
-                  reto={r} estadoReto={estado.retos[r.id]} indice={Math.min(i, TARJETAS_ESCALONADAS)} activo={activo}
+                  reto={r} estadoReto={retos[r.id]} indice={Math.min(i, TARJETAS_ESCALONADAS)} activo={activo}
                   onEmpezar={iniciarReto}
                 />
               )}

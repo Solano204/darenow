@@ -2,7 +2,7 @@ import React from 'react';
 import type { ParamListBase } from '@react-navigation/native';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { faseVisual } from '@/ui/theme';
-import { useEstado } from '@/state/store';
+import { useEstadoSel } from '@/state/store';
 import { useSinAnuncios } from '@/ui/components/RelojAnuncios';
 import { logroPorId } from '@/data/logros';
 import { nombreVisible } from '@/data/nombresVisibles';
@@ -32,7 +32,7 @@ interface ParamsResumen {
 export default function Resumen({ route, navigation }: NativeStackScreenProps<ParamListBase, 'Resumen'>) {
   useSinAnuncios();   // el resumen tampoco: es el momento de mas valor
   const { estado: s, items, resultado, completada, kcal } = route.params as ParamsResumen;
-  const { estado: app } = useEstado();
+  const mostrarKcal = useEstadoSel(e => e.perfil.mostrarKcal);
 
   const reales = s.hechas.filter(h => !h.omitida);
   const ejercicios = new Set(reales.map(h => h.ejercicioId)).size;
@@ -46,7 +46,7 @@ export default function Resumen({ route, navigation }: NativeStackScreenProps<Pa
       series={reales.length}
       ejercicios={ejercicios}
       omitidas={s.hechas.length - reales.length}
-      kcal={app.perfil.mostrarKcal && kcal != null && kcal > 0 ? kcal : null}
+      kcal={mostrarKcal && kcal != null && kcal > 0 ? kcal : null}
       records={calcularRecords(s.hechas, items)}
       logros={resultado.logrosNuevos.map(id => {
         const l = logroPorId.get(id);

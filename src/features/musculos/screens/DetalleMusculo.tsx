@@ -22,7 +22,8 @@ import { TarjetaLoQueSuelePasar } from '@/ui/components/TarjetaLoQueSuelePasar';
 import { RelacionMuscular } from '@/features/musculos/components/RelacionMuscular';
 import { TituloEjercicios, SubgrupoEjercicios } from '@/features/musculos/components/ListaEjerciciosMusculo';
 import { EJERCICIOS, getMusculo, musculoPorId } from '@/data/catalog';
-import { useEstado } from '@/state/store';
+import { useFavoritos } from '@/state/store';
+import { alternarFavorito } from '@/state/acciones';
 import { textoVisible } from '@/lib/presentacion';
 import { ejerciciosDeMusculo, relacionados } from '@/features/musculos/utils/musculos';
 
@@ -36,7 +37,8 @@ export default function DetalleMusculo({ route, navigation }: Props) {
   const { height: ventana } = useWindowDimensions();
   const y = useSharedValue(0);
   const onScroll = useAnimatedScrollHandler(e => { y.set(e.contentOffset.y); });
-  const { alternarFavorito, esFavorito } = useEstado();
+  const favoritosEjercicios = useFavoritos('ejercicios');
+  const favoritosMusculos = useFavoritos('musculos');
 
   const m = getMusculo((route.params as { id: string }).id);
   const { principales, secundarios } = useMemo(
@@ -46,14 +48,14 @@ export default function DetalleMusculo({ route, navigation }: Props) {
   const sinergicos = useMemo(() => relacionados(m?.trabaja_con, musculoPorId), [m]);
   const antagonistas = useMemo(() => relacionados(m?.antagonista, musculoPorId), [m]);
   const abrirEjercicio = useCallback((id: string) => navigation.push('Ejercicio', { id }), [navigation]);
-  const alternarEjercicio = useCallback((id: string) => alternarFavorito('ejercicios', id), [alternarFavorito]);
+  const alternarEjercicio = useCallback((id: string) => alternarFavorito('ejercicios', id), []);
   if (!m) return null;
 
   const alturaHero = Math.round(ventana * FRACCION_HERO);
   const nombre = textoVisible(m.name);
   const abrirMusculo = (id: string) => navigation.push('Musculo', { id });
   const todos = () => navigation.navigate('Tabs', { screen: 'Explorar', merge: true, params: { tab: 'musculos' } });
-  const favoritoEjercicio = (id: string) => esFavorito('ejercicios', id);
+  const favoritoEjercicio = (id: string) => favoritosEjercicios.includes(id);
 
   return (
     <View style={s.raiz}>
@@ -127,7 +129,7 @@ export default function DetalleMusculo({ route, navigation }: Props) {
       </Animated.ScrollView>
 
       <BarraSuperiorColapsable
-        y={y} alturaHero={alturaHero} nombre={nombre} favorito={esFavorito('musculos', m.id)}
+        y={y} alturaHero={alturaHero} nombre={nombre} favorito={favoritosMusculos.includes(m.id)}
         onFavorito={() => alternarFavorito('musculos', m.id)} onAtras={() => navigation.goBack()}
       />
     </View>

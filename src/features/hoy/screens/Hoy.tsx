@@ -48,7 +48,7 @@ const ALTO_CARRUSEL_RUTINAS = 236;
 
 export default function Hoy({ navigation }: { navigation: NavigationProp<ParamListBase> }) {
   const {
-    abajo, inset, y, onScroll, estado, alternarFavorito, esFavorito, perfil, racha, refrescando,
+    abajo, inset, y, onScroll, semanaPrograma, alternarFavorito, esFavorito, perfil, racha, refrescando,
     stats, semana, entrenoHoy, programa, sesion, avisosSesion, sinEjercicios, rutinas, programas,
     ejercicios, musculosDeHoy, musculos, tips, sello, refrescar, irAExplorar, irAAprender, empezar,
     cincoMinutos,
@@ -138,7 +138,7 @@ export default function Hoy({ navigation }: { navigation: NavigationProp<ParamLi
                   onAccion={() => navigation.navigate('Programa', { id: programa.id })}
                 />
                 <TuPrograma
-                  programa={programa} semanaActual={estado.semanaPrograma}
+                  programa={programa} semanaActual={semanaPrograma}
                   onPress={() => navigation.navigate('Programa', { id: programa.id })}
                 />
               </>

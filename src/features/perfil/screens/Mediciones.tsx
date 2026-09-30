@@ -12,7 +12,8 @@ import { StyleSheet, Text, View } from 'react-native';
 import { paleta, familia, MARGEN_PANTALLA } from '@/ui/theme';
 import { type Protocolo } from '@/data/catalog';
 import { MEDICIONES } from '@/data/logros';
-import { useEstado, hoy } from '@/state/store';
+import { useEstadoSel, hoy } from '@/state/store';
+import { guardarMedicion } from '@/state/acciones';
 import { useConsentimientoMedidas, pedirConsentimientoMedidas } from '@/state/consentimientoMedidas';
 import { unidadDeMedicion } from '@/lib/textosVisibles';
 import { PantallaColapsable } from '@/ui/components/PantallaColapsable';
@@ -22,7 +23,7 @@ import type { ParamListBase } from '@react-navigation/native';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 export default function Mediciones({ navigation }: NativeStackScreenProps<ParamListBase, 'Mediciones'>) {
-  const { estado, guardarMedicion } = useEstado();
+  const mediciones = useEstadoSel(e => e.mediciones);
   const [abierto, setAbierto] = useState<string | null>(null);
   const [valor, setValor] = useState('');
   const [exitos, setExitos] = useState<Record<string, number>>({});
@@ -61,7 +62,7 @@ export default function Mediciones({ navigation }: NativeStackScreenProps<ParamL
               y={y} altoBarra={altoBarra} desplazarA={desplazarA}
               valor={valor} onValor={setValor} unidad={unidadDeMedicion(p.id)}
               exito={exitos[p.id] ?? 0} error={errores[p.id] ?? 0} onGuardar={guardar(p)}
-              previas={estado.mediciones.filter(m => m.protocolo === p.id)}
+              previas={mediciones.filter(m => m.protocolo === p.id)}
             />
           ))}
         </>

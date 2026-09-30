@@ -3,7 +3,7 @@ import { Alert, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, Vi
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { paleta, tipo, MARGEN_PANTALLA, esp } from '@/ui/theme';
 import { sustituir, aItem, duracion, type ItemSesion } from '@/lib/engine/session';
-import { useEstado } from '@/state/store';
+import { usePerfil } from '@/state/store';
 import { useAjustesMaquina } from '@/state/maquina';
 import { BotonPlaca } from '@/ui/components/BotonPlaca';
 import { GomaTexture } from '@/ui/fx/GomaTexture';
@@ -34,7 +34,7 @@ export function EditorAntesDeEmpezar({ items, onConfirmar }: {
 }) {
   const [lista, setLista] = useState<ItemSesion[]>(items);
   const [ajustesMaquina, guardarAjusteMaquina] = useAjustesMaquina();
-  const { estado: app } = useEstado();
+  const perfil = usePerfil();
 
   const actualizar = (i: number, cambio: Partial<ItemSesion>) =>
     setLista(prev => prev.map((it, n) => (n === i ? { ...it, ...cambio } : it)));
@@ -45,7 +45,7 @@ export function EditorAntesDeEmpezar({ items, onConfirmar }: {
   // sesion, igual que los ajustes de series/reps/descanso de aqui arriba.
   const cambiarEjercicio = (i: number) => {
     const it = lista[i];
-    const nuevo = sustituir(app.perfil, it.id, lista.map(x => x.id));
+    const nuevo = sustituir(perfil, it.id, lista.map(x => x.id));
     if (!nuevo) { Alert.alert('Sin alternativa', 'No encontramos otro ejercicio que sirva aquí.'); return; }
     setLista(prev => prev.map((x, n) => (n === i ? { ...aItem(nuevo, x.bloque), seriesPlan: x.seriesPlan } : x)));
   };

@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
-import { useEstado, estadisticas, hoy } from '@/state/store';
+import { useEstadoSel, useSesiones, estadisticas, hoy } from '@/state/store';
+import { marcarBienvenida } from '@/state/acciones';
 import { saludo, mensajeDelDia, type Mensaje } from '@/data/mensajes';
 
 const MS_POR_DIA = 86400000;
@@ -15,8 +16,9 @@ export interface WelcomeData {
 }
 
 export function useWelcomeData(navigation: { replace: (ruta: string) => void }): WelcomeData {
-  const { estado, marcarBienvenida } = useEstado();
-  const { perfil, sesiones, racha } = estado;
+  const nombre = useEstadoSel(e => e.perfil.nombre);
+  const sesiones = useSesiones();
+  const racha = useEstadoSel(e => e.racha);
 
   const stats = useMemo(() => estadisticas(sesiones), [sesiones]);
 
@@ -39,7 +41,7 @@ export function useWelcomeData(navigation: { replace: (ruta: string) => void }):
 
   return {
     fecha: new Date().toLocaleDateString('es-MX', { weekday: 'long', day: 'numeric', month: 'long' }),
-    saludo: saludo(perfil.nombre || undefined),
+    saludo: saludo(nombre || undefined),
     msg,
     racha: racha.dias,
     sesiones: stats.total,

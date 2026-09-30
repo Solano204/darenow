@@ -279,11 +279,6 @@
       "count": 1
     }
   },
-  "src/state/acciones.ts": {
-    "react-hooks/exhaustive-deps": {
-      "count": 18
-    }
-  },
   "src/ui/components/BarraRutina.tsx": {
     "react-hooks/exhaustive-deps": {
       "count": 4

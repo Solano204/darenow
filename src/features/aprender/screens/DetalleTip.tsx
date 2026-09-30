@@ -16,7 +16,8 @@ import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { paleta, familia, MARGEN_PANTALLA } from '@/ui/theme';
 import { fuente } from '@/media/registry';
 import { getTip } from '@/data/catalog';
-import { useEstado } from '@/state/store';
+import { useEsFavorito } from '@/state/store';
+import { alternarFavorito, marcarTipLeido } from '@/state/acciones';
 import { textoVisible } from '@/lib/presentacion';
 import {
   RUTA_DE_RELACIONADO, iconoDeSala, nombreDeSala, relacionadosVista, textoDeLectura, tiempoDeLectura,
@@ -47,9 +48,10 @@ export default function DetalleTip({ route, navigation }: Props) {
   const altoCuerpo = useSharedValue(0);
   const contenido = useSharedValue(0);
   const onScroll = useAnimatedScrollHandler(e => { y.set(e.contentOffset.y); });
-  const { alternarFavorito, esFavorito, marcarTipLeido } = useEstado();
+  const idTip = (route.params as { id: string }).id;
+  const favorito = useEsFavorito('tips', idTip);
 
-  const t = getTip((route.params as { id: string }).id);
+  const t = getTip(idTip);
   const relacionados = useMemo(() => relacionadosVista(t?.relacionado ?? []), [t]);
   useEffect(() => { if (t) marcarTipLeido(t.id); }, [t?.id]);
   if (!t) return null;
@@ -112,7 +114,7 @@ export default function DetalleTip({ route, navigation }: Props) {
 
       <BarraSuperiorColapsable
         y={y} alturaHero={alturaHero} nombre={titulo}
-        favorito={esFavorito('tips', t.id)} onFavorito={() => alternarFavorito('tips', t.id)}
+        favorito={favorito} onFavorito={() => alternarFavorito('tips', t.id)}
         onAtras={() => navigation.goBack()}
       >
         <BarraProgresoLectura y={y} inicio={inicioCuerpo} alto={altoCuerpo} contenido={contenido} barraAlto={barraAlto} />

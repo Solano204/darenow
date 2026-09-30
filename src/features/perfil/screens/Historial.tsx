@@ -10,7 +10,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { StyleSheet, Text } from 'react-native';
 import { paleta, familia, MARGEN_PANTALLA } from '@/ui/theme';
-import { useEstado } from '@/state/store';
+import { useSesiones } from '@/state/store';
 import { agruparPorMes } from '@/lib/perfil';
 import { PantallaColapsable } from '@/ui/components/PantallaColapsable';
 import { RANGO_SCROLL, RECORRIDO_PX } from '@/ui/fx/HeaderColapsable';
@@ -25,8 +25,8 @@ import { acumuladosPrevios } from '@/lib/acumulados';
 let historialAnimado = false;
 
 export default function Historial({ navigation }: NativeStackScreenProps<ParamListBase, 'Historial'>) {
-  const { estado } = useEstado();
-  const sesiones = useMemo(() => [...estado.sesiones].reverse(), [estado.sesiones]);
+  const guardadas = useSesiones();
+  const sesiones = useMemo(() => [...guardadas].reverse(), [guardadas]);
   const meses = useMemo(() => agruparPorMes(sesiones), [sesiones]);
   const [animar] = useState(() => !historialAnimado);
   useEffect(() => { historialAnimado = true; }, []);

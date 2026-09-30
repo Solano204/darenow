@@ -6,7 +6,8 @@ import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { haptico, PALABRA_FASE } from '@/ui/theme';
 import { useSessionPlayer, type SesionEnCurso } from '@/features/sesion/hooks/useSessionPlayer';
 import { esUnilateral } from '@/features/sesion/utils/playerMachine';
-import { useEstado, hoy } from '@/state/store';
+import { usePerfil, hoy } from '@/state/store';
+import { guardarSesion } from '@/state/acciones';
 import { useHapticosActivos } from '@/state/haptics';
 import { useVozActiva } from '@/state/voz';
 import type { Sesion, ItemSesion } from '@/lib/engine/session';
@@ -27,12 +28,12 @@ export function ReproductorActivo({ sesionInicial, restaurar, navigation }: {
 }) {
   useKeepAwake();
   useSinAnuncios();   // mientras se entrena no aparece ni un anuncio
-  const { estado: app, guardarSesion } = useEstado();
+  const perfil = usePerfil();
 
   const [items] = useState<ItemSesion[]>(restaurar?.items ?? sesionInicial.items);
   const [salida, setSalida] = useState(false);
 
-  const p = useSessionPlayer(items, app.perfil.sonido, restaurar);
+  const p = useSessionPlayer(items, perfil.sonido, restaurar);
   const { estado, ejercicio } = p;
   const [hapticosOn] = useHapticosActivos();
 
@@ -127,7 +128,7 @@ export function ReproductorActivo({ sesionInicial, restaurar, navigation }: {
 
   function finalizar(completada: boolean, motivo: string | null) {
     p.limpiarGuardado();   // completa o abandonada, ya no hay nada que continuar
-    const kcal = app.perfil.pesoKg
+    const kcal = perfil.pesoKg
       ? Math.round(sesionInicial.kcalEstimadas ?? 0)
       : null;
     const res = guardarSesion({
@@ -135,7 +136,7 @@ export function ReproductorActivo({ sesionInicial, restaurar, navigation }: {
       iniciada: new Date().toISOString(),
       duracionS: estado.transcurridoS,
       rutinaId: sesionInicial.rutinaId,
-      programaId: app.perfil.programaId,
+      programaId: perfil.programaId,
       estado: completada ? 'completada' : 'abandonada',
       kcal, rpe: null, motivoAbandono: motivo,
       series: estado.hechas.map(h => ({

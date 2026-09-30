@@ -11,7 +11,8 @@ import { NavigationBar } from 'expo-navigation-bar';
 import { color, colorSesion, peso, resorteTap } from '@/ui/theme';
 import { mantenerSplash, ocultarSplash, useSplashOculto } from '@/ui/hooks/useSplash';
 import { useFuentes } from '@/ui/theme/fuentes';
-import { ProveedorEstado, useEstado, hoy } from '@/state/store';
+import { ProveedorEstado, useCargandoEstado, useEstadoSel, hoy } from '@/state/store';
+import { terminarOnboarding, marcarPresentacion } from '@/state/acciones';
 import { ProveedorCuenta, useCuenta } from '@/state/cuenta';
 import { ProveedorAnuncios } from '@/ui/components/RelojAnuncios';
 import { ProveedorMagnesia } from '@/ui/fx/MagnesiaOverlay';
@@ -85,7 +86,7 @@ const SIN_ENTRADA = new Set(['Bienvenida', 'Tabs', 'Reproductor', 'Resumen', 'Ed
  * splash.
  */
 function Raiz() {
-  const { cargando } = useEstado();
+  const cargando = useCargandoEstado();
   const { cargando: cargandoCuenta } = useCuenta();
 
   if (cargando || cargandoCuenta) {
@@ -105,11 +106,14 @@ function Raiz() {
 
 /** La primera pantalla que toca, segun el estado guardado (docs/FUNCIONALIDAD.md §2). */
 function Pantallas() {
-  const { estado, terminarOnboarding, marcarPresentacion } = useEstado();
+  // Solo lo que decide la primera pantalla: un favorito o una sesion no re-renderizan la raiz.
+  const presentacionVista = useEstadoSel(e => e.presentacionVista);
+  const onboardingHecho = useEstadoSel(e => e.onboardingHecho);
+  const bienvenidaVista = useEstadoSel(e => e.bienvenidaVista);
   const { cuenta } = useCuenta();
 
   // La primera vez de todas: intro animada, y despues el onboarding.
-  if (!estado.presentacionVista) {
+  if (!presentacionVista) {
     const Presentacion = require('@/features/onboarding/screens/Presentacion').default;
     return <Presentacion onTerminar={marcarPresentacion} />;
   }
@@ -120,14 +124,14 @@ function Pantallas() {
     return <Acceso onListo={() => {}} />;
   }
 
-  if (!estado.onboardingHecho) {
+  if (!onboardingHecho) {
     const Onboarding = require('@/features/onboarding/screens/Onboarding').default;
     return <Onboarding onTerminar={terminarOnboarding} />;
   }
 
   // La bienvenida se muestra una vez al dia. Si ya se vio hoy, se entra
   // directo a las pestanas.
-  const inicial = estado.bienvenidaVista === hoy() ? 'Tabs' : 'Bienvenida';
+  const inicial = bienvenidaVista === hoy() ? 'Tabs' : 'Bienvenida';
 
   return (
     <Stack.Navigator
@@ -211,10 +215,8 @@ export default function App() {
 
   return (
     <SafeAreaProvider style={{ backgroundColor: color.fondo }}>
-      {/* Estado (progreso) por fuera de Cuenta: borrarTodosLosDatos() vive en
-          cuenta.ts y necesita poder resetear el progreso ademas de la
-          cuenta, asi que ProveedorCuenta tiene que quedar DENTRO de
-          ProveedorEstado para poder usar useEstado(). */}
+      {/* ProveedorEstado lee el progreso guardado; ProveedorCuenta, la cuenta. Las dos lecturas
+          van en un solo multiGet (storage/lecturaInicial.ts). */}
       <ProveedorEstado>
       <ProveedorCuenta>
         <NavigationContainer theme={tema}>

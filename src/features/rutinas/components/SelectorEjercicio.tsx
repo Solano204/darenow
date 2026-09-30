@@ -4,7 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { color, tipo, esp, radio, peso } from '@/ui/theme';
 import { Boton, Chip, Toque, Buscador, Vacio } from '@/ui/components';
 import Foto from '@/ui/components/Foto';
-import { useEstado } from '@/state/store';
+import { useEstadoSel } from '@/state/store';
 import { EJERCICIOS, CATEGORIAS, nombreEquipo, type EjercicioIndice } from '@/data/catalog';
 
 /** El modal «Agregar ejercicio» del editor de rutinas: busqueda, categoria y filtro de equipo. */
@@ -12,14 +12,14 @@ export function SelectorEjercicio({ visible, yaPuestos, onElegir, onCerrar }: {
   visible: boolean; yaPuestos: string[];
   onElegir: (e: EjercicioIndice) => void; onCerrar: () => void;
 }) {
-  const { estado } = useEstado();
+  const equipoPerfil = useEstadoSel(e => e.perfil.equipo);
   const [q, setQ] = useState('');
   const [cat, setCat] = useState<string | null>(null);
   const [soloMios, setSoloMios] = useState(true);
 
   const equipo = useMemo(
-    () => new Set([...estado.perfil.equipo, 'ninguno', 'pared', 'silla']),
-    [estado.perfil.equipo],
+    () => new Set([...equipoPerfil, 'ninguno', 'pared', 'silla']),
+    [equipoPerfil],
   );
 
   const lista = useMemo(() => {

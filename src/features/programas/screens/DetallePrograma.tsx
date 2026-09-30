@@ -32,7 +32,8 @@ import { MAX_PLACAS } from '@/ui/components/disposicionMapa';
 import { programaPorId, rutinaPorId } from '@/data/catalog';
 import { nombreVisible } from '@/data/nombresVisibles';
 import { fuente } from '@/media/registry';
-import { useEstado } from '@/state/store';
+import { useEstadoSel, useFavoritos } from '@/state/store';
+import { guardarPerfil, alternarFavorito } from '@/state/acciones';
 import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
 import { textoVisible } from '@/lib/presentacion';
 import {
@@ -58,7 +59,9 @@ export default function DetallePrograma({ route, navigation }: Props) {
   const y = useSharedValue(0);
   const zonas = useSharedValue<number[]>([]);
   const onScroll = useAnimatedScrollHandler(e => { y.set(e.contentOffset.y); });
-  const { estado, guardarPerfil, alternarFavorito, esFavorito } = useEstado();
+  const programaId = useEstadoSel(e => e.perfil.programaId);
+  const semanaPrograma = useEstadoSel(e => e.semanaPrograma);
+  const favoritosProgramas = useFavoritos('programas');
   const [hoja, setHoja] = useState(false);
   const [resaltar, setResaltar] = useState({ indice: -1, n: 0 });
 
@@ -72,10 +75,10 @@ export default function DetallePrograma({ route, navigation }: Props) {
   const abrirRutina = useCallback((id: string) => navigation.navigate('Rutina', { id }), [navigation]);
   if (!p) return null;
 
-  const activo = estado.perfil.programaId === p.id;
-  const actual = programaPorId.get(estado.perfil.programaId);
+  const activo = programaId === p.id;
+  const actual = programaPorId.get(programaId);
   // La semana en que va el usuario es la que guarda el perfil (`semanaPrograma`); solo cuenta si sigue este programa.
-  const semanaActual = activo ? Math.min(Math.max(estado.semanaPrograma, 1), p.semanas) : undefined;
+  const semanaActual = activo ? Math.min(Math.max(semanaPrograma, 1), p.semanas) : undefined;
   const faseActual = fases && semanaActual !== undefined ? faseDeSemana(fases, semanaActual) : -1;
   const resumen = fases ? resumenDePlan(fases, minutos, semanaActual, nombreVisible) : '';
   const nombre = nombreVisible(p.name);
@@ -153,7 +156,7 @@ export default function DetallePrograma({ route, navigation }: Props) {
       </Animated.ScrollView>
 
       <BarraSuperiorColapsable
-        y={y} alturaHero={alturaHero} nombre={nombre} favorito={esFavorito('programas', p.id)}
+        y={y} alturaHero={alturaHero} nombre={nombre} favorito={favoritosProgramas.includes(p.id)}
         onFavorito={() => alternarFavorito('programas', p.id)} onAtras={() => navigation.goBack()}
       />
 

@@ -12,7 +12,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { color, tipo, esp } from '@/ui/theme';
 import { Seccion, Boton, useHuecoAbajo } from '@/ui/components';
 import Carrusel from '@/features/perfil/components/Carrusel';
-import { useEstado, imagenRutina } from '@/state/store';
+import { useEstadoSel, useRutinasPropias, imagenRutina } from '@/state/store';
+import { alternarFavorito } from '@/state/acciones';
 import {
   porId, musculoPorId, rutinaPorId, programaPorId, TIPS, salaPorId,
 } from '@/data/catalog';
@@ -21,8 +22,8 @@ import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 export default function Favoritos({ navigation }: NativeStackScreenProps<ParamListBase, 'Favoritos'>) {
   const abajo = useHuecoAbajo();
-  const { estado, alternarFavorito } = useEstado();
-  const f = estado.favoritos;
+  const f = useEstadoSel(e => e.favoritos);
+  const rutinasPropias = useRutinasPropias();
   const total = Object.values(f).reduce((n, a) => n + a.length, 0);
 
   const tipPorId = useMemo(() => new Map(TIPS.map(t => [t.id, t])), []);
@@ -81,7 +82,7 @@ export default function Favoritos({ navigation }: NativeStackScreenProps<ParamLi
           <Seccion titulo="Rutinas" estilo={{ paddingLeft: esp.md }}>
             <Carrusel
               items={f.rutinas.map(id => {
-                const mia = estado.rutinasPropias.find(x => x.id === id);
+                const mia = rutinasPropias.find(x => x.id === id);
                 return {
                   id,
                   imagenId: mia ? imagenRutina(mia.id, mia.imagenId) : undefined,

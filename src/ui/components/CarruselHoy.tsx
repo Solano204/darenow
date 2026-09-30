@@ -1,6 +1,6 @@
 import React from 'react';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import Ionicons from '@expo/vector-icons/Ionicons';
 import { paleta, tipo, MARGEN_PANTALLA } from '@/ui/theme';
 import { Tocable } from './Tocable';
 

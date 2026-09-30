@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import Animated, {
   cancelAnimation, runOnJS, useAnimatedStyle, useSharedValue, withDelay, withSpring, withTiming,
 } from 'react-native-reanimated';
-import { Ionicons } from '@expo/vector-icons';
+import Ionicons from '@expo/vector-icons/Ionicons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { paleta, conAlfa, resortePlaca, easing } from '@/ui/theme';
 import { useReducedMotion } from '@/ui/hooks/useReducedMotion';

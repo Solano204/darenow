@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import Ionicons from '@expo/vector-icons/Ionicons';
 import { paleta, familia, MARGEN_PANTALLA } from '@/ui/theme';
 import { porId, musculoPorId, rutinaPorId, programaPorId, TIPS } from '@/data/catalog';
 import { nombreVisible } from '@/data/nombresVisibles';

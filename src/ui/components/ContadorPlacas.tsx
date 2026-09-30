@@ -3,7 +3,7 @@ import { Pressable, StyleSheet, Text, TextInput, View, type AccessibilityActionE
 import Animated, {
   useAnimatedStyle, useSharedValue, withSpring,
 } from 'react-native-reanimated';
-import { Ionicons } from '@expo/vector-icons';
+import Ionicons from '@expo/vector-icons/Ionicons';
 import { paleta, tipo, familia, esp, resorteTap, resortePlaca, haptico } from '@/ui/theme';
 import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
 import { useTick } from '@/ui/hooks/useTick';

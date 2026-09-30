@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
-import { Ionicons } from '@expo/vector-icons';
+import Ionicons from '@expo/vector-icons/Ionicons';
 import { paleta } from '@/ui/theme';
 import type { PerfilUsuario } from '@/state/store';
 import { GOALS, nombreGoal } from '@/data/catalog';

@@ -3,7 +3,7 @@ import { StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Ionicons } from '@expo/vector-icons';
+import Ionicons from '@expo/vector-icons/Ionicons';
 import { paleta, radio, degradado, conAlfa } from '@/ui/theme';
 import { fuente, type TipoFoto } from '@/media/registry';
 import { Esqueleto } from '@/ui/fx/Esqueleto';

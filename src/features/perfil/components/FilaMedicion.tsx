@@ -3,7 +3,7 @@ import { Keyboard, Pressable, StyleSheet, Text, View, useWindowDimensions } from
 import Animated, {
   FadeIn, FadeOut, LinearTransition, useAnimatedStyle, useDerivedValue, useSharedValue, withSpring, type SharedValue,
 } from 'react-native-reanimated';
-import { Ionicons } from '@expo/vector-icons';
+import Ionicons from '@expo/vector-icons/Ionicons';
 import { paleta, familia, resortePlaca, haptico, MARGEN_PANTALLA } from '@/ui/theme';
 import type { Protocolo } from '@/data/catalog';
 import type { MedicionGuardada } from '@/state/store';

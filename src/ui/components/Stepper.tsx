@@ -1,6 +1,6 @@
 import { Pressable, StyleSheet, Text, TextInput, View, type AccessibilityActionEvent } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
-import { Ionicons } from '@expo/vector-icons';
+import Ionicons from '@expo/vector-icons/Ionicons';
 import { paleta, tipo, familia, AREA_TACTIL_MIN, resorteTap, haptico } from '@/ui/theme';
 import { useNumeroEditable, useSacudida } from '@/ui/hooks/useNumeroEditable';
 import { Odometro } from '@/ui/fx/Odometro';

@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
-import { Ionicons } from '@expo/vector-icons';
+import Ionicons from '@expo/vector-icons/Ionicons';
 import { paleta, familia } from '@/ui/theme';
 import type { Tip } from '@/data/catalog';
 import { textoVisible } from '@/lib/presentacion';

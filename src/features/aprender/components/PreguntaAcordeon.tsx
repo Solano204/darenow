@@ -3,7 +3,7 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 import Animated, {
   LinearTransition, useAnimatedStyle, useSharedValue, withSpring, withTiming, type EntryExitAnimationFunction,
 } from 'react-native-reanimated';
-import { Ionicons } from '@expo/vector-icons';
+import Ionicons from '@expo/vector-icons/Ionicons';
 import { paleta, familia, resortePlaca, haptico } from '@/ui/theme';
 import { textoDePregunta } from '@/lib/presentacion';
 import { partirInsignias, textoDeLectura } from '@/lib/aprender';

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import Animated, { runOnJS, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
-import { Ionicons } from '@expo/vector-icons';
+import Ionicons from '@expo/vector-icons/Ionicons';
 import { paleta, tipo, familia, AREA_TACTIL_MIN, resorteMagnesia, haptico } from '@/ui/theme';
 import type { ItemSesion } from '@/lib/engine/session';
 import { nombreVisible } from '@/data/nombresVisibles';

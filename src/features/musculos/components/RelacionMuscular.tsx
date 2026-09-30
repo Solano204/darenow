@@ -3,7 +3,7 @@ import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import Animated, {
   useAnimatedStyle, useSharedValue, withDelay, withSequence, withSpring, withTiming,
 } from 'react-native-reanimated';
-import { Ionicons } from '@expo/vector-icons';
+import Ionicons from '@expo/vector-icons/Ionicons';
 import { paleta, familia, easing, resortePlaca, resorteTap, resorteMagnesia, MARGEN_PANTALLA } from '@/ui/theme';
 import type { MusculoIndice } from '@/data/catalog';
 import type { Relacionado } from '@/features/musculos/utils/musculos';

@@ -4,7 +4,7 @@ import Animated, {
   Extrapolation, interpolate, useAnimatedStyle, useDerivedValue, type SharedValue,
 } from 'react-native-reanimated';
 import { DesenfoqueIos } from './DesenfoqueIos';
-import { Ionicons } from '@expo/vector-icons';
+import Ionicons from '@expo/vector-icons/Ionicons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { paleta, conAlfa, familia, haptico } from '@/ui/theme';
 import { useReducedMotion } from '@/ui/hooks/useReducedMotion';

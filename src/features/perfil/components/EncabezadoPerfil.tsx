@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import Ionicons from '@expo/vector-icons/Ionicons';
 import { paleta, familia, MARGEN_PANTALLA } from '@/ui/theme';
 import type { Programa } from '@/data/catalog';
 import { nombreVisible } from '@/data/nombresVisibles';

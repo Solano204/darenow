@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 import Animated, {
   Extrapolation, interpolate, measure, useAnimatedRef, useAnimatedStyle, useSharedValue, type SharedValue,
 } from 'react-native-reanimated';
-import { Ionicons } from '@expo/vector-icons';
+import Ionicons from '@expo/vector-icons/Ionicons';
 import { paleta, familia } from '@/ui/theme';
 import { nombreGoal, type Rutina } from '@/data/catalog';
 import { nombreVisible } from '@/data/nombresVisibles';

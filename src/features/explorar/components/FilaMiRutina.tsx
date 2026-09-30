@@ -3,7 +3,7 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 import Animated, {
   cancelAnimation, useAnimatedStyle, useSharedValue, withDelay, withSequence, withSpring, withTiming,
 } from 'react-native-reanimated';
-import { Ionicons } from '@expo/vector-icons';
+import Ionicons from '@expo/vector-icons/Ionicons';
 import { paleta, conAlfa, familia, resortePlaca, resorteTap, haptico } from '@/ui/theme';
 import { imagenRutina, type RutinaPropia } from '@/state/store';
 import { minutosPropios } from '@/lib/engine/session';

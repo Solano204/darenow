@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import Ionicons from '@expo/vector-icons/Ionicons';
 import { paleta, tipo, familia } from '@/ui/theme';
 import { nombreEquipo, type EjercicioIndice, type Familia } from '@/data/catalog';
 import { capitalizar, textoDeZonas, textoVisible } from '@/lib/presentacion';

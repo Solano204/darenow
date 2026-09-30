@@ -8,7 +8,7 @@ import { textoVisible } from '@/lib/presentacion';
 import { iconoDeSala, nombreDeSala, textoDeLectura } from '@/lib/aprender';
 import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
 import { useTick } from '@/ui/hooks/useTick';
-import { Presionable } from '@/ui/components/Presionable';
+import { Tocable } from '@/ui/components/Tocable';
 import { FotoOscura } from '@/ui/components/FotoOscura';
 import { TextoDesvanecido } from '@/ui/components/TextoDesvanecido';
 import { EstrellaFavorito } from '@/ui/components/EstrellaFavorito';
@@ -43,7 +43,7 @@ export const TarjetaArticulo = React.memo(function TarjetaArticulo({ tip, favori
 
   return (
     <View style={s.caja}>
-      <Presionable
+      <Tocable
         onPress={() => onPress(tip.id)} etiqueta={`${titulo}. ${categoria}`} presion={presion}
         escala={ESCALA_PRESIONADA} estilo={s.tarjeta}
       >
@@ -61,7 +61,7 @@ export const TarjetaArticulo = React.memo(function TarjetaArticulo({ tip, favori
             texto={textoDeLectura(tip.cuerpo)} lineas={2} alturaLinea={ALTO_LINEA_EXTRACTO} estilo={s.extracto} horizontal
           />
         </View>
-      </Presionable>
+      </Tocable>
       <View style={s.estrella}>
         <EstrellaFavorito activo={favorito} onPress={() => onFav(tip.id)} nombre={titulo} />
       </View>

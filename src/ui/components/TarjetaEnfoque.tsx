@@ -9,7 +9,7 @@ import { nombreVisible } from '@/data/nombresVisibles';
 import type { Ejercicio } from '@/data/catalog';
 import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
 import { useTick } from '@/ui/hooks/useTick';
-import { Presionable } from './Presionable';
+import { Tocable } from './Tocable';
 import { FotoOscura } from './FotoOscura';
 import { NivelPlacas } from './NivelPlacas';
 import { BotonCompacto } from './BotonCompacto';
@@ -76,7 +76,7 @@ export function TarjetaEnfoque({ ejercicio, progreso, onPress }: {
   const oscurece = useAnimatedStyle(() => ({ opacity: OSCURECE_PRESIONADO * presion.value }), [tick]);
 
   return (
-    <Presionable
+    <Tocable
       onPress={onPress} etiqueta={`${nombre}. Nivel ${ejercicio.level} de 3`}
       escala={0} presion={presion} estilo={s.raiz}
     >
@@ -108,7 +108,7 @@ export function TarjetaEnfoque({ ejercicio, progreso, onPress }: {
           <Image source={recorte} style={s.atletaImagen} contentFit="contain" cachePolicy="memory-disk" />
         </Animated.View>
       )}
-    </Presionable>
+    </Tocable>
   );
 }
 

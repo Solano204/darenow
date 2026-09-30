@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { paleta, familia } from '@/ui/theme';
-import { Presionable } from './Presionable';
+import { Tocable } from './Tocable';
 import { FichaRender } from './FichaRender';
 
 const ESCALA_PRESIONADA = 0.06;
@@ -37,9 +37,9 @@ export function FichaMusculoNombre({ id, nombre, lado, lineas, onPress, etiqueta
     return <View style={{ width: lado }} accessible accessibilityLabel={etiqueta ?? nombre}>{cuerpo}</View>;
   }
   return (
-    <Presionable onPress={onPress} etiqueta={etiqueta ?? nombre} escala={ESCALA_PRESIONADA} estilo={{ width: lado }}>
+    <Tocable onPress={onPress} etiqueta={etiqueta ?? nombre} escala={ESCALA_PRESIONADA} estilo={{ width: lado }}>
       {cuerpo}
-    </Presionable>
+    </Tocable>
   );
 }
 

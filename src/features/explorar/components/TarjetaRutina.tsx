@@ -9,7 +9,7 @@ import { nombreGoal, type Rutina } from '@/data/catalog';
 import { nombreVisible } from '@/data/nombresVisibles';
 import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
 import { useTick } from '@/ui/hooks/useTick';
-import { Presionable } from '@/ui/components/Presionable';
+import { Tocable } from '@/ui/components/Tocable';
 import { FotoOscura } from '@/ui/components/FotoOscura';
 import { NivelPlacas } from '@/ui/components/NivelPlacas';
 import { InsigniaFoto, EtiquetaFoto } from '@/ui/components/InsigniaFoto';
@@ -67,7 +67,7 @@ export function TarjetaRutina({ r, favorito, scrollY, onPress, onFavorito }: {
 
   return (
     <View style={s.caja}>
-      <Presionable onPress={onPress} etiqueta={etiqueta} presion={presion} escala={ESCALA_PRESIONADA} estilo={s.tarjeta}>
+      <Tocable onPress={onPress} etiqueta={etiqueta} presion={presion} escala={ESCALA_PRESIONADA} estilo={s.tarjeta}>
         <Animated.View ref={marco} collapsable={false}>
           <FotoOscura
             tipo="rutina" id={r.id} ancho="100%" alto={ALTO_FOTO_TARJETA} radioEsquina={0}
@@ -89,7 +89,7 @@ export function TarjetaRutina({ r, favorito, scrollY, onPress, onFavorito }: {
             </View>
           </View>
         </View>
-      </Presionable>
+      </Tocable>
       <View style={s.estrella}>
         <EstrellaFavorito activo={favorito} onPress={onFavorito} nombre={nombre} />
       </View>

@@ -4,7 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { paleta, familia } from '@/ui/theme';
 import type { Ejercicio } from '@/data/catalog';
 import { textoVisible } from '@/lib/presentacion';
-import { Presionable } from '@/ui/components/Presionable';
+import { Tocable } from '@/ui/components/Tocable';
 import { FotoOscura } from '@/ui/components/FotoOscura';
 import { NivelPlacas } from '@/ui/components/NivelPlacas';
 
@@ -24,7 +24,7 @@ export function TarjetaAlternativa({ e, clase, onPress }: {
 }) {
   const nombre = textoVisible(e.name);
   return (
-    <Presionable
+    <Tocable
       onPress={onPress} estilo={{ width: ANCHO_ALTERNATIVA }}
       etiqueta={clase === 'nivel' ? `${nombre}, nivel ${e.level} de 3` : `${nombre}, sustituto`}
     >
@@ -40,7 +40,7 @@ export function TarjetaAlternativa({ e, clase, onPress }: {
           <Ionicons name="swap-horizontal" size={16} color={paleta.magnesia2} />
         )}
       </View>
-    </Presionable>
+    </Tocable>
   );
 }
 

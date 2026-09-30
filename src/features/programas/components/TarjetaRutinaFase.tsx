@@ -4,7 +4,7 @@ import { paleta, familia } from '@/ui/theme';
 import { rutinaPorId } from '@/data/catalog';
 import { nombreVisible } from '@/data/nombresVisibles';
 import { plural } from '@/lib/plural';
-import { Presionable } from '@/ui/components/Presionable';
+import { Tocable } from '@/ui/components/Tocable';
 import { FotoOscura } from '@/ui/components/FotoOscura';
 
 const ANCHO_TARJETA_FASE = 150;
@@ -22,10 +22,10 @@ export function TarjetaRutinaFase({ id, onPress }: { id: string; onPress: () => 
   const etiqueta = r ? `${nombre}, ${r.min} ${plural(r.min, 'minuto')}` : nombre;
 
   return (
-    <Presionable onPress={onPress} etiqueta={etiqueta} escala={ESCALA_PRESIONADA} estilo={s.caja}>
+    <Tocable onPress={onPress} etiqueta={etiqueta} escala={ESCALA_PRESIONADA} estilo={s.caja}>
       <FotoOscura tipo="rutina" id={id} ancho={ANCHO_TARJETA_FASE} alto={ALTO_FOTO} radioEsquina={16} velo={false} />
       <Text style={s.titulo} numberOfLines={2}>{nombre}</Text>
-    </Presionable>
+    </Tocable>
   );
 }
 

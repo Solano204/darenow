@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { paleta, familia, MARGEN_PANTALLA } from '@/ui/theme';
 import type { Programa } from '@/data/catalog';
 import { nombreVisible } from '@/data/nombresVisibles';
-import { Presionable } from '@/ui/components/Presionable';
+import { Tocable } from '@/ui/components/Tocable';
 import { FotoOscura } from '@/ui/components/FotoOscura';
 import { TextoDesvanecido } from '@/ui/components/TextoDesvanecido';
 import { BarraCarga13 } from '@/ui/fx/BarraCarga13';
@@ -26,7 +26,7 @@ export function TuPrograma({ programa, semanaActual, onPress }: {
   const nombre = nombreVisible(programa.name);
   return (
     <View style={s.raiz}>
-      <Presionable onPress={onPress} etiqueta={`${nombre}. Semana ${actual} de ${total}`} rol="link" estilo={s.caja}>
+      <Tocable onPress={onPress} etiqueta={`${nombre}. Semana ${actual} de ${total}`} rol="link" estilo={s.caja}>
         <View style={s.fila}>
           <FotoOscura tipo="programa" id={programa.id} ancho={LADO_FOTO} alto={LADO_FOTO} radioEsquina={16} velo={false} />
           <View style={s.textos}>
@@ -40,7 +40,7 @@ export function TuPrograma({ programa, semanaActual, onPress }: {
           </Text>
           <BarraCarga13 total={total} actual={actual} compacta />
         </View>
-      </Presionable>
+      </Tocable>
     </View>
   );
 }

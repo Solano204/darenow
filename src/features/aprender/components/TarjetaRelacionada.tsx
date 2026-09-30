@@ -3,7 +3,7 @@ import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { paleta, familia, MARGEN_PANTALLA } from '@/ui/theme';
 import type { RelacionadoVista, TipoRelacionado } from '@/lib/aprender';
-import { Presionable } from '@/ui/components/Presionable';
+import { Tocable } from '@/ui/components/Tocable';
 import { FotoOscura } from '@/ui/components/FotoOscura';
 import { TituloBloque } from './TituloBloque';
 
@@ -22,14 +22,14 @@ const TIPOS: Record<TipoRelacionado, string> = { programa: 'Programa', rutina: '
  */
 function TarjetaRelacionada({ item, onPress }: { item: RelacionadoVista; onPress: (r: RelacionadoVista) => void }) {
   return (
-    <Presionable onPress={() => onPress(item)} etiqueta={`${TIPOS[item.tipo]}: ${item.nombre}`} estilo={s.tarjeta}>
+    <Tocable onPress={() => onPress(item)} etiqueta={`${TIPOS[item.tipo]}: ${item.nombre}`} estilo={s.tarjeta}>
       <FotoOscura tipo={item.tipo} id={item.id} ancho={ANCHO} alto={ALTO_FOTO} radioEsquina={16} velo={false} />
       <View style={s.tipo}>
         <Ionicons name={ICONOS[item.tipo]} size={14} color={paleta.magnesia2} />
         <Text style={s.tipoTexto} maxFontSizeMultiplier={1.3}>{TIPOS[item.tipo]}</Text>
       </View>
       <Text style={s.nombre} numberOfLines={2} maxFontSizeMultiplier={1.3}>{item.nombre}</Text>
-    </Presionable>
+    </Tocable>
   );
 }
 

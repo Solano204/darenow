@@ -8,7 +8,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { paleta, familia, resortePlaca } from '@/ui/theme';
 import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
 import { useTick } from '@/ui/hooks/useTick';
-import { Presionable } from './Presionable';
+import { Tocable } from './Tocable';
 
 const ALTO_FILA_CREAR = 64;
 const RADIO = 20;
@@ -57,7 +57,7 @@ export function FilaCrear({ onPress, texto = 'Crear mi rutina', pulsar }: {
   }), [reducido, tick]);
 
   return (
-    <Presionable onPress={onPress} etiqueta={texto} presion={presion} escala={ESCALA_PRESIONADA} estilo={s.fila}>
+    <Tocable onPress={onPress} etiqueta={texto} presion={presion} escala={ESCALA_PRESIONADA} estilo={s.fila}>
       <View style={s.borde} onLayout={e => setAncho(e.nativeEvent.layout.width)} pointerEvents="none">
         {ancho > 0 && (
           <Canvas style={{ width: ancho, height: ALTO_FILA_CREAR }}>
@@ -75,7 +75,7 @@ export function FilaCrear({ onPress, texto = 'Crear mi rutina', pulsar }: {
       </Animated.View>
       <Text style={s.texto}>{texto}</Text>
       <Ionicons name="chevron-forward" size={16} color={paleta.magnesia3Texto} />
-    </Presionable>
+    </Tocable>
   );
 }
 

@@ -5,7 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { paleta, tipo, familia, MARGEN_PANTALLA } from '@/ui/theme';
 import { ESTADISTICAS } from '@/data/catalog';
 import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
-import { Presionable } from '@/ui/components/Presionable';
+import { Tocable } from '@/ui/components/Tocable';
 import { Odometro } from '@/ui/fx/Odometro';
 
 const ESTILO_CIFRA = { ...tipo.numero, fontSize: 18, lineHeight: 22, color: paleta.magnesia };
@@ -32,7 +32,7 @@ export function FilaExplorar({ activo, onPress }: { activo: boolean; onPress: ()
   ];
   return (
     <View style={s.raiz}>
-      <Presionable
+      <Tocable
         onPress={onPress}
         etiqueta={`Explorar todo: ${cifras.map(([n, t]) => `${n} ${t}`).join(', ')}`}
         escala={0.02} presion={presion} estilo={s.caja}
@@ -50,7 +50,7 @@ export function FilaExplorar({ activo, onPress }: { activo: boolean; onPress: ()
           </View>
         </View>
         <Animated.View style={flecha}><Ionicons name="chevron-forward" size={20} color={paleta.magnesia2} /></Animated.View>
-      </Presionable>
+      </Tocable>
     </View>
   );
 }

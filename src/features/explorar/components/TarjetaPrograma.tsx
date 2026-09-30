@@ -8,7 +8,7 @@ import { textoVisible } from '@/lib/presentacion';
 import { plural } from '@/lib/plural';
 import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
 import { useTick } from '@/ui/hooks/useTick';
-import { Presionable } from '@/ui/components/Presionable';
+import { Tocable } from '@/ui/components/Tocable';
 import { FotoOscura } from '@/ui/components/FotoOscura';
 import { DatoNumerico } from '@/ui/components/DatoNumerico';
 import { EstrellaFavorito } from '@/ui/components/EstrellaFavorito';
@@ -57,7 +57,7 @@ export function TarjetaPrograma({ p, favorito, onPress, onFavorito }: {
           style={[s.capa, { left: c.recoge, right: c.recoge, bottom: HUECO_DE_LA_PILA - c.asoma }, estilosCapa[i]]}
         />
       ))}
-      <Presionable onPress={onPress} etiqueta={etiqueta} presion={presion} escala={ESCALA_PRESIONADA} estilo={s.tarjeta}>
+      <Tocable onPress={onPress} etiqueta={etiqueta} presion={presion} escala={ESCALA_PRESIONADA} estilo={s.tarjeta}>
         <FotoOscura
           tipo="programa" id={p.id} ancho="100%" alto={ALTO_FOTO} radioEsquina={0}
           alturaVelo="25%" fondoVelo={paleta.gomaAlta}
@@ -71,7 +71,7 @@ export function TarjetaPrograma({ p, favorito, onPress, onFavorito }: {
             <DatoNumerico numero={p.min_sesion} unidad="min" />
           </View>
         </View>
-      </Presionable>
+      </Tocable>
       <View style={s.estrella}>
         <EstrellaFavorito activo={favorito} onPress={onFavorito} nombre={nombre} />
       </View>

@@ -5,7 +5,7 @@ import { paleta, familia } from '@/ui/theme';
 import { nombreVisible } from '@/data/nombresVisibles';
 import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
 import { useTick } from '@/ui/hooks/useTick';
-import { Presionable } from '@/ui/components/Presionable';
+import { Tocable } from '@/ui/components/Tocable';
 import { FotoOscura } from '@/ui/components/FotoOscura';
 import { InsigniaFoto } from '@/ui/components/InsigniaFoto';
 import { Huella } from '@/ui/fx/Huella';
@@ -69,7 +69,7 @@ export function TarjetaRutina({ r, progreso, favorito, onPress, onFavorito }: {
 
   return (
     <View style={s.caja}>
-      <Presionable onPress={onPress} etiqueta={etiqueta} presion={presion}>
+      <Tocable onPress={onPress} etiqueta={etiqueta} presion={presion}>
         <View>
           <FotoOscura
             tipo="rutina" id={r.imagenId ?? r.id} ancho={ANCHO_TARJETA_RUTINA} alto={ALTO_FOTO_RUTINA}
@@ -87,7 +87,7 @@ export function TarjetaRutina({ r, progreso, favorito, onPress, onFavorito }: {
         ) : r.subtitulo ? (
           <Text style={s.subtitulo} numberOfLines={1}>{r.subtitulo}</Text>
         ) : null}
-      </Presionable>
+      </Tocable>
       <View style={s.estrella}>
         <EstrellaFavorito activo={favorito} onPress={onFavorito} nombre={nombre} />
       </View>

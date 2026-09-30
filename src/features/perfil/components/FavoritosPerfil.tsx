@@ -9,7 +9,7 @@ import type { TipoFoto } from '@/media/registry';
 import { textoVisible } from '@/lib/presentacion';
 import { mezclarFavoritos, totalFavoritos, type ItemFavorito, type TipoFavorito } from '@/lib/perfil';
 import { FotoOscura } from '@/ui/components/FotoOscura';
-import { Presionable } from '@/ui/components/Presionable';
+import { Tocable } from '@/ui/components/Tocable';
 import { EstrellaFavorito } from '@/ui/components/EstrellaFavorito';
 import { IconoTrazo } from '@/ui/fx/IconoTrazo';
 
@@ -75,14 +75,14 @@ export function FavoritosPerfil({ favoritos, propias, activo, onAbrir, onQuitar 
         const d = detalleDe(item, propias);
         return (
           <View key={`${item.tipo}:${item.id}`} style={s.tarjeta}>
-            <Presionable onPress={() => onAbrir(d.ruta, item.id)} etiqueta={`${t.etiqueta}: ${d.nombre}`}>
+            <Tocable onPress={() => onAbrir(d.ruta, item.id)} etiqueta={`${t.etiqueta}: ${d.nombre}`}>
               <FotoOscura tipo={t.foto} id={d.fotoId} ancho={ANCHO} alto={ALTO_FOTO} radioEsquina={16} velo={false} />
               <View style={s.tipo}>
                 <Ionicons name={t.icono} size={14} color={paleta.magnesia2} />
                 <Text style={s.tipoTexto} maxFontSizeMultiplier={1.3}>{t.etiqueta}</Text>
               </View>
               <Text style={s.nombre} numberOfLines={2} maxFontSizeMultiplier={1.3}>{d.nombre}</Text>
-            </Presionable>
+            </Tocable>
             <View style={s.estrella}>
               <EstrellaFavorito activo onPress={() => onQuitar(item.tipo, item.id)} nombre={d.nombre} />
             </View>

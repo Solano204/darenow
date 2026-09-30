@@ -2,7 +2,7 @@ import React from 'react';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { paleta, tipo, MARGEN_PANTALLA } from '@/ui/theme';
-import { Presionable } from './Presionable';
+import { Tocable } from './Tocable';
 
 export interface VerMas {
   texto: string;
@@ -49,12 +49,12 @@ export function CarruselHoy<T>({ data, keyExtractor, renderItem, ancho, separaci
 export function TarjetaVerMas({ ancho, texto, onPress, alto, radioEsquina = 20 }: VerMas & { ancho: number }) {
   return (
     <View style={{ width: ancho }}>
-      <Presionable onPress={onPress} etiqueta={texto}>
+      <Tocable onPress={onPress} etiqueta={texto}>
         <View style={[s.verMas, { height: alto, borderRadius: radioEsquina }]}>
           <View style={s.flecha}><Ionicons name="arrow-forward" size={22} color={paleta.magnesia} /></View>
           <Text style={s.verMasTexto}>{texto}</Text>
         </View>
-      </Presionable>
+      </Tocable>
     </View>
   );
 }

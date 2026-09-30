@@ -11,7 +11,7 @@ import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
 import { useTick } from '@/ui/hooks/useTick';
 import { Entrada } from '@/ui/fx/Entrada';
 import { Huella } from '@/ui/fx/Huella';
-import { Presionable } from '@/ui/components/Presionable';
+import { Tocable } from '@/ui/components/Tocable';
 import { TarjetaGoma } from '@/ui/components/TarjetaGoma';
 
 const ESCALONADO_MS = 60;
@@ -53,7 +53,7 @@ export function TarjetaReto({ reto, progreso, indice, activo, onPress }: {
 
   return (
     <Entrada activo={activo} retraso={indice * ESCALONADO_MS} y={16} escala={1} estilo={s.caja}>
-      <Presionable
+      <Tocable
         onPress={onPress}
         etiqueta={`${nombre}. ${objetivo}${meta && progreso !== undefined ? `. Llevas ${hechos} de ${meta.total}` : ''}`}
       >
@@ -64,7 +64,7 @@ export function TarjetaReto({ reto, progreso, indice, activo, onPress }: {
             <View style={s.indicador}><Indicador meta={meta} hechos={hechos} llenado={llenado} /></View>
           ) : null}
         </TarjetaGoma>
-      </Presionable>
+      </Tocable>
     </Entrada>
   );
 }

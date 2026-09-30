@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { paleta, familia } from '@/ui/theme';
 import { nombreVisible } from '@/data/nombresVisibles';
-import { Presionable } from '@/ui/components/Presionable';
+import { Tocable } from '@/ui/components/Tocable';
 import { FotoOscura } from '@/ui/components/FotoOscura';
 import { InsigniaFoto } from '@/ui/components/InsigniaFoto';
 import { EstrellaFavorito } from '@/ui/components/EstrellaFavorito';
@@ -29,7 +29,7 @@ export function TarjetaPrograma({ p, onPress, onFavorito }: {
       {CAPAS_DE_LA_PILA.map(d => (
         <View key={d} style={[s.capa, { left: d * 2, right: d * 2, top: d, opacity: 1 - d * 0.04 }]} />
       ))}
-      <Presionable onPress={onPress} etiqueta={`${nombre}, ${p.semanas} semanas`}>
+      <Tocable onPress={onPress} etiqueta={`${nombre}, ${p.semanas} semanas`}>
         <View>
           <FotoOscura
             tipo="programa" id={p.id} ancho={ANCHO_TARJETA_PROGRAMA} alto={ALTO_FOTO_PROGRAMA}
@@ -38,7 +38,7 @@ export function TarjetaPrograma({ p, onPress, onFavorito }: {
           <View style={s.insignia}><InsigniaFoto numero={p.semanas} unidad="sem" /></View>
         </View>
         <Text style={s.titulo} numberOfLines={2}>{nombre}</Text>
-      </Presionable>
+      </Tocable>
       <View style={s.estrella}>
         <EstrellaFavorito activo={p.favorito} onPress={onFavorito} nombre={nombre} />
       </View>

@@ -7,7 +7,7 @@ import type { Musculo } from '@/data/catalog';
 import { textoVisible } from '@/lib/presentacion';
 import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
 import { useTick } from '@/ui/hooks/useTick';
-import { Presionable } from '@/ui/components/Presionable';
+import { Tocable } from '@/ui/components/Tocable';
 import { FotoOscura } from '@/ui/components/FotoOscura';
 import { Entrada } from '@/ui/fx/Entrada';
 
@@ -54,7 +54,7 @@ export function FichaMusculo({ m, principal, medidas, indice, activo, animar = t
   const nombre = textoVisible(m.name);
   return (
     <Entrada activo={activo} animar={animar} retraso={indice * ESCALONADO_MS} y={12}>
-      <Presionable
+      <Tocable
         onPress={onPress} escala={ESCALA_PRESIONADA} estilo={{ width: medidas.ancho }}
         etiqueta={[nombre, principal ? 'músculo principal' : '', detalle ?? ''].filter(Boolean).join(', ')}
       >
@@ -75,7 +75,7 @@ export function FichaMusculo({ m, principal, medidas, indice, activo, animar = t
           {nombre}
         </Text>
         {detalle ? <Text style={s.detalle}>{detalle}</Text> : null}
-      </Presionable>
+      </Tocable>
     </Entrada>
   );
 }

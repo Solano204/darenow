@@ -9,7 +9,7 @@ import {
 import { nombreVisible } from '@/data/nombresVisibles';
 import { textoVisible } from '@/lib/presentacion';
 import { iconoDeSala, nombreDeSala } from '@/lib/aprender';
-import { Presionable } from '@/ui/components/Presionable';
+import { Tocable } from '@/ui/components/Tocable';
 import { FotoOscura } from '@/ui/components/FotoOscura';
 import { NivelPlacas } from '@/ui/components/NivelPlacas';
 import { contarVeredictos, resumenDeConteos } from '@/ui/components/MedidorEvidencia';
@@ -42,11 +42,11 @@ function TarjetaFoto({
 }) {
   return (
     <View style={{ width: ancho }}>
-      <Presionable onPress={onPress} etiqueta={etiqueta}>
+      <Tocable onPress={onPress} etiqueta={etiqueta}>
         <FotoOscura tipo={tipoFoto} id={id} ancho={ancho} alto={altoFoto} radioEsquina={radioFoto} />
         <Text style={[s.titulo, estiloTitulo]} numberOfLines={lineas}>{titulo}</Text>
         {pie}
-      </Presionable>
+      </Tocable>
       {onFavorito ? (
         <View style={s.estrella}><EstrellaFavorito activo={!!favorito} onPress={onFavorito} nombre={titulo} /></View>
       ) : null}

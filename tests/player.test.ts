@@ -30,7 +30,7 @@ function ticks(red: any, e: any, n: number) {
 
 console.log('\n--- Ejercicio por tiempo ---');
 {
-  const items = [ej({ id: 'a', measure: 'tiempo', seg: 20, segPlan: 20, repsPlan: null, seriesPlan: 2 })];
+  const items = [ej({ id: 'a', measure: 'tiempo', segPlan: 20, repsPlan: null, seriesPlan: 2 })];
   const red = crearReducer({ items });
   let e = estadoInicial(items);
 
@@ -117,7 +117,7 @@ console.log('\n--- Descanso: +20 s y saltar ---');
 
 console.log('\n--- Pausa ---');
 {
-  const items = [ej({ id: 'e', measure: 'tiempo', seg: 30, segPlan: 30, repsPlan: null })];
+  const items = [ej({ id: 'e', measure: 'tiempo', segPlan: 30, repsPlan: null })];
   const red = crearReducer({ items });
   let e = estadoInicial(items);
   e = ticks(red, e, 9 + 10);
@@ -150,7 +150,7 @@ console.log('\n--- Sesion completa de varios ejercicios ---');
 {
   const items = [
     ej({ id: 'h1', seriesPlan: 2 }),
-    ej({ id: 'h2', measure: 'tiempo', seg: 15, segPlan: 15, repsPlan: null, seriesPlan: 1 }),
+    ej({ id: 'h2', measure: 'tiempo', segPlan: 15, repsPlan: null, seriesPlan: 1 }),
     ej({ id: 'h3', seriesPlan: 1 }),
   ];
   const red = crearReducer({ items });

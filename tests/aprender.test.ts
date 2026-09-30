@@ -88,7 +88,7 @@ console.log('\n--- Preguntas ---');
   c('el signo de apertura no se duplica', !q('¿Hago pesas?').startsWith('¿¿'));
 }
 
-console.log('\n--- Comillas y «FORJA» ---');
+console.log('\n--- Comillas y «DARENOW» ---');
 {
   c('las comillas rectas simples pasan a latinas', comillasLatinas("no muestra 'calorías restantes'.") === 'no muestra «calorías restantes».', comillasLatinas("no muestra 'calorías restantes'."));
   c('un apostrofe suelto no se toca', comillasLatinas("l'ame") === "l'ame");
@@ -96,7 +96,8 @@ console.log('\n--- Comillas y «FORJA» ---');
   c('«calorías restantes» sale con comillas latinas y con tilde', p.includes('«calorías restantes»'), p.slice(0, 160));
   c('la lista de lo que la app no hace lleva comillas latinas', NUTRICION.lo_que_la_app_no_hace.some(x => textoDeLectura(x).includes('«calorías restantes»')));
   const visibles = JSON.stringify([TIPS, MITOS, ERRORES, NUTRICION.conceptos, NUTRICION.lo_que_la_app_no_hace, NUTRICION.aviso, GLOSARIO, FAQ]);
-  c('«FORJA» aparece una sola vez en los textos de Aprender (en «Cómo funciona aquí»)', (JSON.stringify(NUTRICION.principio_de_diseno).match(/FORJA/g) ?? []).length === 1 && !/FORJA/.test(visibles));
+  // La marca cambio de FORJA a DARENOW: el texto de Aprender ya dice DARENOW y FORJA no aparece en ninguno.
+  c('«DARENOW» aparece una sola vez en los textos de Aprender (en «Cómo funciona aquí»)', (JSON.stringify(NUTRICION.principio_de_diseno).match(/DARENOW/g) ?? []).length === 1 && !/DARENOW|FORJA/.test(visibles));
 }
 
 console.log('\n--- Insignias en linea ---');

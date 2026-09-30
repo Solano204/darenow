@@ -135,7 +135,7 @@ console.log('\n--- Reloj de anuncios ---');
   enRutina = true;
   tic(15 * 60_000);
   c('entrenando no aparece ningun anuncio', mostrados === 2, String(mostrados));
-  c('pero queda pendiente', pendiente === true);
+  c('pero queda pendiente', (pendiente as boolean) === true);
 
   cerrarRutina();
   c('al terminar de entrenar si se muestra', mostrados === 3);

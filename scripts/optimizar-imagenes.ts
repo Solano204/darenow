@@ -98,6 +98,16 @@ async function main() {
     }
   }
 
+  // Lo que ya no tiene original se borra (del bundle y del indice).
+  for (const [carpeta, tipo] of Object.entries(CARPETAS)) {
+    for (const dir of [carpeta, `${carpeta}-mini`]) {
+      const ruta = path.join(DESTINO, dir);
+      if (!fs.existsSync(ruta)) continue;
+      for (const f of fs.readdirSync(ruta)) {
+        if (f.endsWith('.webp') && !vistos.has(`${tipo}/${path.basename(f, '.webp')}`)) fs.rmSync(path.join(ruta, f));
+      }
+    }
+  }
   // Lo que ya no tiene original se va del indice.
   for (const clave of Object.keys(hashes)) if (!vistos.has(clave)) delete hashes[clave];
   const ordenado = Object.fromEntries(Object.entries(hashes).sort(([a], [b]) => a.localeCompare(b)));

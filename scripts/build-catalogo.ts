@@ -112,6 +112,76 @@ function main() {
   });
 
   console.log(`catalogo: ${ejercicios.length} ejercicios, ${musculos.length} musculos, ${tips.length} tips -> src/data/indice y src/data/detalle`);
+
+  revisarMedios({
+    ejercicios, musculos, tips,
+    rutinas: rutinasFuente, programas: programasFuente, mitos: leer('31_myths_errors.json').mitos as Obj[],
+  });
+}
+
+/**
+ * Medios (R5). Falla si el catalogo apunta a un archivo que no existe (`asset.imagen` y `asset.clip`
+ * de cada ejercicio) o si una foto o un clip original no tiene su version empaquetada (hay que
+ * correr `npm run imagenes` / `npm run clips`). Avisa, sin fallar, de los originales que nadie usa:
+ * ni son de un elemento del catalogo ni su id aparece en el codigo (fondos, motivacion).
+ */
+function revisarMedios(cat: Record<'ejercicios' | 'musculos' | 'tips' | 'rutinas' | 'programas' | 'mitos', Obj[]>) {
+  const ORIG = path.join(RAIZ, 'media-fuente');
+  const errores: string[] = [];
+  const existe = (...p: string[]) => fs.existsSync(path.join(...p));
+  const base = (f: string) => f.replace(/\.[^.]+$/, '');
+  const archivos = (dir: string) => (fs.existsSync(dir) ? fs.readdirSync(dir).filter(f => !f.startsWith('.') && f !== 'LEEME.md') : []);
+
+  // 1. Referencias explicitas del catalogo.
+  for (const e of cat.ejercicios) {
+    const asset = e.asset as { imagen?: string; clip?: string } | undefined;
+    if (asset?.imagen && !existe(ORIG, 'img/ejercicios', asset.imagen)) errores.push(`${e.id}: falta la imagen ${asset.imagen}`);
+    if (asset?.clip && !existe(ORIG, 'video/ejercicios', asset.clip)) errores.push(`${e.id}: falta el clip ${asset.clip}`);
+  }
+
+  // 2. Cada original tiene su version empaquetada (y nada empaquetado sin original).
+  const carpetas: Record<string, Obj[] | null> = {
+    ejercicios: cat.ejercicios, musculos: cat.musculos, rutinas: cat.rutinas, programas: cat.programas,
+    // La carpeta de tips guarda tambien las fotos de los conceptos de alimentacion.
+    tips: [...cat.tips, ...(leer('32_nutrition.json').conceptos as Obj[])], mitos: cat.mitos, motivacion: null, fondos: null,
+  };
+  const codigo = leerCodigo(path.join(RAIZ, 'src'));
+  const sinUso: string[] = [];
+  for (const [carpeta, items] of Object.entries(carpetas)) {
+    const ids = new Set((items ?? []).map(x => String(x.id)));
+    const originales = archivos(path.join(ORIG, 'img', carpeta)).map(base);
+    const empaquetadas = new Set(archivos(path.join(RAIZ, 'assets/img', carpeta)).map(base));
+    for (const id of originales) {
+      if (!empaquetadas.has(id)) errores.push(`img/${carpeta}/${id}: sin su .webp (corre npm run imagenes)`);
+      const usado = ids.has(id) || ids.has(id.replace(/_(recorte|neutra)$/, '')) || codigo.includes(`'${id}'`);
+      if (!usado) sinUso.push(`media-fuente/img/${carpeta}/${id}`);
+    }
+    for (const id of empaquetadas) if (!originales.includes(id)) errores.push(`assets/img/${carpeta}/${id}: sin original en media-fuente`);
+  }
+  const clips = archivos(path.join(ORIG, 'video/ejercicios')).map(base);
+  const empaquetados = new Set(archivos(path.join(RAIZ, 'assets/video/ejercicios')).map(base));
+  const posters = new Set(archivos(path.join(RAIZ, 'assets/video/posters')).map(base));
+  const idsEj = new Set(cat.ejercicios.map(e => String(e.id)));
+  for (const id of clips) {
+    if (!empaquetados.has(id) || !posters.has(id)) errores.push(`video/ejercicios/${id}: sin su clip o poster (corre npm run clips)`);
+    if (!idsEj.has(id)) sinUso.push(`media-fuente/video/ejercicios/${id}`);
+  }
+
+  if (sinUso.length) console.warn(`medios sin uso (${sinUso.length}):\n  ${sinUso.join('\n  ')}`);
+  if (errores.length) {
+    console.error(`medios con problemas (${errores.length}):\n  ${errores.join('\n  ')}`);
+    process.exit(1);
+  }
+  console.log(`medios: ${clips.length} clips, referencias del catalogo OK`);
+}
+
+/** Todo el codigo de la app en un solo texto (para buscar ids escritos a mano, como 'bienvenida'). */
+function leerCodigo(dir: string): string {
+  return fs.readdirSync(dir, { withFileTypes: true }).map(d => {
+    const p = path.join(dir, d.name);
+    if (d.isDirectory()) return d.name === 'media' ? '' : leerCodigo(p);
+    return /\.tsx?$/.test(d.name) ? fs.readFileSync(p, 'utf8') : '';
+  }).join('\n');
 }
 
 main();

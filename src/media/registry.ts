@@ -210,7 +210,7 @@ const IMG_EJERCICIOS: Registro = {
   'ex_8015': require('../../assets/img/ejercicios/ex_8015.webp'),
 };
 
-/* musculos · 53 */
+/* musculos · 52 */
 const IMG_MUSCULOS: Registro = {
   'aductores': require('../../assets/img/musculos/aductores.webp'),
   'antebrazo': require('../../assets/img/musculos/antebrazo.webp'),
@@ -224,7 +224,6 @@ const IMG_MUSCULOS: Registro = {
   'deltoide_anterior': require('../../assets/img/musculos/deltoide_anterior.webp'),
   'deltoide_lateral': require('../../assets/img/musculos/deltoide_lateral.webp'),
   'deltoide_posterior': require('../../assets/img/musculos/deltoide_posterior.webp'),
-  'deltoide_posterior.': require('../../assets/img/musculos/deltoide_posterior..webp'),
   'depresor_labio': require('../../assets/img/musculos/depresor_labio.webp'),
   'diafragma': require('../../assets/img/musculos/diafragma.webp'),
   'digastrico': require('../../assets/img/musculos/digastrico.webp'),
@@ -625,7 +624,7 @@ const IMG_EJERCICIOS_MINI: Registro = {
   'ex_8015': require('../../assets/img/ejercicios-mini/ex_8015.webp'),
 };
 
-/* musculos-mini · 53 */
+/* musculos-mini · 52 */
 const IMG_MUSCULOS_MINI: Registro = {
   'aductores': require('../../assets/img/musculos-mini/aductores.webp'),
   'antebrazo': require('../../assets/img/musculos-mini/antebrazo.webp'),
@@ -639,7 +638,6 @@ const IMG_MUSCULOS_MINI: Registro = {
   'deltoide_anterior': require('../../assets/img/musculos-mini/deltoide_anterior.webp'),
   'deltoide_lateral': require('../../assets/img/musculos-mini/deltoide_lateral.webp'),
   'deltoide_posterior': require('../../assets/img/musculos-mini/deltoide_posterior.webp'),
-  'deltoide_posterior.': require('../../assets/img/musculos-mini/deltoide_posterior..webp'),
   'depresor_labio': require('../../assets/img/musculos-mini/depresor_labio.webp'),
   'diafragma': require('../../assets/img/musculos-mini/diafragma.webp'),
   'digastrico': require('../../assets/img/musculos-mini/digastrico.webp'),

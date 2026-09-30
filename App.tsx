@@ -27,7 +27,7 @@ import { mark as perfMark } from '@/dev/perfMarks'; // perf:R1
 SplashScreen.preventAutoHideAsync().catch(() => {});
 
 import Presentacion from '@/screens/Presentacion';
-import Acceso from '@/screens/Acceso';
+import Acceso from '@/features/cuenta/screens/Acceso';
 import Bienvenida from '@/screens/Bienvenida';
 import Onboarding from '@/screens/Onboarding';
 import Hoy from '@/screens/Hoy';

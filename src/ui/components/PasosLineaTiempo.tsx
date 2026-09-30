@@ -42,12 +42,15 @@ export function PasosLineaTiempo({ titulo, pasos, y, pie, estilo, compacto }: {
   const ultimoTop = useSharedValue(0);
   const base = useDerivedValue(() => raizY.value + listaY.value);
 
-  const relleno = useAnimatedStyle(() => ({
-    height: reducido
-      ? ultimoTop.value
-      : Math.min(ultimoTop.value, Math.max(0, y.value + ventana * LECTURA - base.value - centro)),
-  }), [reducido, ventana, centro, tick]);
+  // Relleno del alto de la pista, escalado desde arriba con el scroll: cada cuadro solo cambia un
+  // `transform` (R6).
   const pista = useAnimatedStyle(() => ({ height: ultimoTop.value }), [tick]);
+  const llenado = useAnimatedStyle(() => {
+    const total = ultimoTop.value;
+    if (total <= 0) return { transform: [{ scaleY: 0 }] };
+    const alto = reducido ? total : Math.min(total, Math.max(0, y.value + ventana * LECTURA - base.value - centro));
+    return { transform: [{ scaleY: alto / total }] };
+  }, [reducido, ventana, centro, tick]);
   const columna = { top: centro, left: centro - GROSOR_LINEA / 2 };
 
   return (
@@ -55,7 +58,7 @@ export function PasosLineaTiempo({ titulo, pasos, y, pie, estilo, compacto }: {
       {titulo}
       <View onLayout={e => { listaY.set(e.nativeEvent.layout.y); }} style={s.lista}>
         <Animated.View style={[s.pista, columna, pista]} pointerEvents="none" />
-        <Animated.View style={[s.relleno, columna, relleno]} pointerEvents="none" />
+        <Animated.View style={[s.relleno, columna, pista, llenado]} pointerEvents="none" />
         {pasos.map((texto, i) => (
           <Paso
             key={i} n={i + 1} texto={texto} y={y} base={base} ventana={ventana} ultimo={i === pasos.length - 1} lado={lado}
@@ -115,7 +118,7 @@ function Paso({ n, texto, y, base, ventana, ultimo, lado, compacto, alTop }: {
 const s = StyleSheet.create({
   lista: { position: 'relative' },
   pista: { position: 'absolute', width: GROSOR_LINEA, backgroundColor: paleta.gomaBorde },
-  relleno: { position: 'absolute', width: GROSOR_LINEA, backgroundColor: paleta.magnesia },
+  relleno: { position: 'absolute', width: GROSOR_LINEA, backgroundColor: paleta.magnesia, transformOrigin: 'top' },
   paso: { flexDirection: 'row', alignItems: 'flex-start', gap: 16 },
   pasoConSeparacion: { paddingBottom: 20 },
   pasoCompacto: { gap: 12 },

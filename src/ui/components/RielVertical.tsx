@@ -228,19 +228,22 @@ function TramoRiel({ inicio, largo, grosor, lleno, y, origen, top, ventana, redu
   reducido: boolean;
 }) {
   const tick = useTick();
+  // La pista y el relleno ocupan el tramo entero (top y alto cambian solo al medir); el relleno
+  // crece con el scroll escalando en vertical desde arriba: cada cuadro de scroll mueve solo un
+  // `transform`, sin volver a calcular el layout (R6).
   const pista = useAnimatedStyle(() => ({ top: inicio.value, height: largo.value }), [tick]);
-  const relleno = useAnimatedStyle(() => ({
-    top: inicio.value,
-    height: reducido || lleno
-      ? largo.value
-      : Math.min(largo.value, Math.max(0, y.value + ventana * LECTURA - (origen.value + top.value + inicio.value))),
-  }), [reducido, lleno, ventana, tick]);
+  const llenado = useAnimatedStyle(() => {
+    const total = largo.value;
+    if (reducido || lleno || total <= 0) return { transform: [{ scaleY: total <= 0 ? 0 : 1 }] };
+    const alto = Math.min(total, Math.max(0, y.value + ventana * LECTURA - (origen.value + top.value + inicio.value)));
+    return { transform: [{ scaleY: alto / total }] };
+  }, [reducido, lleno, ventana, tick]);
   const columna = { width: grosor, left: RIEL_X - grosor / 2 };
 
   return (
     <>
       <Animated.View style={[s.pista, columna, pista]} pointerEvents="none" />
-      <Animated.View style={[s.relleno, columna, relleno]} pointerEvents="none" />
+      <Animated.View style={[s.relleno, columna, pista, llenado]} pointerEvents="none" />
     </>
   );
 }
@@ -250,7 +253,7 @@ const s = StyleSheet.create({
   encabezado: { height: ALTO_ENCABEZADO, paddingLeft: SANGRIA_RIEL, marginRight: MARGEN },
   contenido: { marginRight: MARGEN },
   pista: { position: 'absolute', backgroundColor: paleta.gomaBorde },
-  relleno: { position: 'absolute', backgroundColor: paleta.magnesia2 },
+  relleno: { position: 'absolute', backgroundColor: paleta.magnesia2, transformOrigin: 'top' },
   nodoCaja: { position: 'absolute', left: 0, top: (ALTO_ENCABEZADO - LADO_NODO) / 2, width: LADO_NODO, height: LADO_NODO },
   nodo: { width: LADO_NODO, height: LADO_NODO, borderRadius: LADO_NODO / 2, borderWidth: 2, backgroundColor: paleta.goma },
   anillo: { position: 'absolute', top: 0, left: 0, backgroundColor: 'transparent' },

@@ -7,12 +7,26 @@
 
 import React, { useEffect, useState } from 'react';
 import {
-  View, Text, Pressable, StyleSheet, Animated, Easing,
+  View, Text, Pressable, StyleSheet,
   type ViewStyle, type AccessibilityRole, type AccessibilityState,
 } from 'react-native';
+import Animated, {
+  Easing, Extrapolation, cancelAnimation, interpolate, interpolateColor, useAnimatedStyle, useSharedValue,
+  withRepeat, withSequence, withSpring, withTiming,
+} from 'react-native-reanimated';
 import { color, colorSesion, tipo, esp, radio, ALTO_BOTON, anim, peso } from '@/ui/theme';
 import { useMovimientoReducido } from './movimiento';
 import { BotonPlaca } from './BotonPlaca';
+
+/**
+ * Los resortes de siempre (los del `Animated.spring` del core con `speed`/`bounciness`), pasados a
+ * rigidez y amortiguacion con la misma formula de React Native: se ven igual y corren en el hilo
+ * de UI (R6).
+ */
+const RESORTE_TOQUE = { stiffness: 936.85, damping: 47, mass: 1 };
+const RESORTE_FAVORITO = { stiffness: 724.44, damping: 27.28, mass: 1 };
+/** La curva por defecto de `Animated.timing` del core. */
+const CURVA_CORE = Easing.inOut(Easing.ease);
 
 /** Pulsable que se hunde un poco al tocarlo. */
 export function Toque({ children, onPress, estilo, escala = 0.97, etiqueta, rol = 'button', estado, oscurecer }: {
@@ -22,11 +36,15 @@ export function Toque({ children, onPress, estilo, escala = 0.97, etiqueta, rol 
   oscurecer?: number;
 }) {
   const reducido = useMovimientoReducido();
-  const [v] = useState(() => new Animated.Value(1));
+  const v = useSharedValue(1);
   const a = (to: number) => {
-    if (reducido) { v.setValue(to); return; }
-    Animated.spring(v, { toValue: to, useNativeDriver: true, speed: 40, bounciness: 4 }).start();
+    if (reducido) { v.set(to); return; }
+    v.set(withSpring(to, RESORTE_TOQUE));
   };
+  const hundido = useAnimatedStyle(() => ({ transform: [{ scale: v.value }] }));
+  const sombra = useAnimatedStyle(() => ({
+    opacity: interpolate(v.value, [escala, 1], [1, 0], Extrapolation.CLAMP),
+  }), [escala]);
   if (!onPress) return <View style={estilo}>{children}</View>;
 
   // El Pressable tiene que llevar el tamaño; si no, un hijo con flex:1
@@ -43,13 +61,12 @@ export function Toque({ children, onPress, estilo, escala = 0.97, etiqueta, rol 
       accessibilityRole={rol} accessibilityLabel={etiqueta} accessibilityState={estado}
       style={tamano}
     >
-      <Animated.View style={[estilo, { marginBottom: 0, marginRight: 0 }, { transform: [{ scale: v }] }]}>
+      <Animated.View style={[estilo, { marginBottom: 0, marginRight: 0 }, hundido]}>
         {children}
         {oscurecer !== undefined && (
           <Animated.View pointerEvents="none" style={[StyleSheet.absoluteFill, {
             backgroundColor: color.presionado, borderRadius: oscurecer,
-            opacity: v.interpolate({ inputRange: [escala, 1], outputRange: [1, 0], extrapolate: 'clamp' }),
-          }]} />
+          }, sombra]} />
         )}
       </Animated.View>
     </Pressable>
@@ -122,25 +139,25 @@ export function Boton({
  * contorno-ocupado real lo necesita mas elaborado.
  */
 function PuntoOcupado() {
-  const [v] = useState(() => new Animated.Value(0));
+  const v = useSharedValue(0);
   const [ancho, setAncho] = useState(0);
   useEffect(() => {
     if (ancho === 0) return;
-    const bucle = Animated.loop(
-      Animated.timing(v, { toValue: 1, duration: 900, easing: Easing.linear, useNativeDriver: true }),
-    );
-    bucle.start();
-    return () => bucle.stop();
+    v.set(0);
+    v.set(withRepeat(withTiming(1, { duration: 900, easing: Easing.linear }), -1, false));
+    return () => cancelAnimation(v);
   }, [ancho, v]);
+  const recorrido = useAnimatedStyle(() => ({
+    transform: [{ translateX: interpolate(v.value, [0, 1], [-2, ancho - 3]) }],
+  }), [ancho]);
   return (
     <View pointerEvents="none" style={StyleSheet.absoluteFill}
       onLayout={e => setAncho(e.nativeEvent.layout.width)}>
       {ancho > 0 && (
-        <Animated.View style={{
+        <Animated.View style={[{
           position: 'absolute', top: -2, width: 5, height: 5, borderRadius: 2.5,
           backgroundColor: color.acento,
-          transform: [{ translateX: v.interpolate({ inputRange: [0, 1], outputRange: [-2, ancho - 3] }) }],
-        }} />
+        }, recorrido]} />
       )}
     </View>
   );
@@ -152,27 +169,25 @@ export function Chip({ texto, activo, onPress, pequeno, oscuro }: {
   texto: string; activo?: boolean; onPress?: () => void; pequeno?: boolean; oscuro?: boolean;
 }) {
   const reducido = useMovimientoReducido();
-  const [v] = useState(() => new Animated.Value(activo ? 1 : 0));
+  const v = useSharedValue(activo ? 1 : 0);
   const fondoApagado = oscuro ? color.chipVidrioFondo : color.velo;
   const bordeApagado = oscuro ? color.chipVidrioBorde : color.borde;
   useEffect(() => {
-    if (reducido) { v.setValue(activo ? 1 : 0); return; }
-    // Prender es rapido; apagar cuesta mas, como el metal.
-    Animated.timing(v, {
-      toValue: activo ? 1 : 0,
-      duration: activo ? anim.rapida : anim.normal,
-      useNativeDriver: false,   // color no admite native driver
-    }).start();
+    if (reducido) { v.set(activo ? 1 : 0); return; }
+    // Prender es rapido; apagar cuesta mas, como el metal. El color se interpola en el hilo de UI
+    // (antes, `useNativeDriver: false`: el hilo JS pintaba cada cuadro, H-21).
+    v.set(withTiming(activo ? 1 : 0, { duration: activo ? anim.rapida : anim.normal, easing: CURVA_CORE }));
   }, [activo, reducido, v]);
+  const relleno = useAnimatedStyle(() => ({
+    backgroundColor: interpolateColor(v.value, [0, 1], [fondoApagado, color.carbon]),
+    borderColor: interpolateColor(v.value, [0, 1], [bordeApagado, color.carbon]),
+  }), [fondoApagado, bordeApagado]);
 
   const cuerpo = (
     <Animated.View style={[
       s.chip,
       pequeno && { paddingVertical: 4, paddingHorizontal: 7 },
-      {
-        backgroundColor: v.interpolate({ inputRange: [0, 1], outputRange: [fondoApagado, color.carbon] }),
-        borderColor: v.interpolate({ inputRange: [0, 1], outputRange: [bordeApagado, color.carbon] }),
-      },
+      relleno,
     ]}>
       <Text style={[pequeno ? tipo.micro : tipo.pie, {
         // "oscuro" es para chips sobre foto o degradado de acento: el
@@ -198,20 +213,21 @@ export function Chip({ texto, activo, onPress, pequeno, oscuro }: {
 export function Favorito({ activo, onPress, tamano = 38, sobreFoto }: {
   activo: boolean; onPress: () => void; tamano?: number; sobreFoto?: boolean;
 }) {
-  const [v] = useState(() => new Animated.Value(1));
+  const v = useSharedValue(1);
   const pulsa = () => {
-    Animated.sequence([
-      Animated.timing(v, { toValue: 1.35, duration: 120, useNativeDriver: true }),
-      Animated.spring(v, { toValue: 1, useNativeDriver: true, speed: 30, bounciness: 12 }),
-    ]).start();
+    v.set(withSequence(
+      withTiming(1.35, { duration: 120, easing: CURVA_CORE }),
+      withSpring(1, RESORTE_FAVORITO),
+    ));
     onPress();
   };
+  const latido = useAnimatedStyle(() => ({ transform: [{ scale: v.value }] }));
   return (
     <Pressable onPress={pulsa} hitSlop={10} accessibilityRole="button"
       accessibilityLabel={activo ? 'Quitar de favoritos' : 'Guardar en favoritos'}>
       <Animated.View style={[
         { width: tamano, height: tamano, alignItems: 'center', justifyContent: 'center' },
-        { transform: [{ scale: v }] },
+        latido,
       ]}>
         <Text style={{
           fontSize: tamano * 0.62,

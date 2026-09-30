@@ -65,10 +65,12 @@ export function ChipFiltro({ texto, activo, onPress, icono, variante = 'objetivo
     borderColor: interpolateColor(t.value, [0, 1], [paleta.gomaBorde, paleta.magnesia]),
   }), [tick]);
   const relleno = useAnimatedStyle(() => ({
-    left: ox.value - diametro / 2,
-    top: oy.value - diametro / 2,
     opacity: reducido ? t.value : 1,
-    transform: [{ scale: reducido ? 1 : Math.max(t.value, MIN_ESCALA) }],
+    // El circulo nace donde se toco: se coloca con translate (no con left/top) y crece con scale.
+    transform: [
+      { translateX: ox.value - diametro / 2 }, { translateY: oy.value - diametro / 2 },
+      { scale: reducido ? 1 : Math.max(t.value, MIN_ESCALA) },
+    ],
   }), [reducido, diametro, tick]);
   const colorTexto = useAnimatedStyle(() => ({
     color: interpolateColor(t.value, [0, 1], [paleta.magnesia2, paleta.goma]),
@@ -117,7 +119,7 @@ const s = StyleSheet.create({
     flexDirection: 'row', alignItems: 'center', gap: 6, paddingHorizontal: PADDING_X,
     borderWidth: 1, overflow: 'hidden',
   },
-  relleno: { position: 'absolute', backgroundColor: paleta.magnesia },
+  relleno: { position: 'absolute', top: 0, left: 0, backgroundColor: paleta.magnesia },
   icono: { width: TAMANO_ICONO, height: TAMANO_ICONO },
   iconoMarcado: { position: 'absolute', top: 0, left: 0 },
   texto: { fontSize: 14, lineHeight: 20 },

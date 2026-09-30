@@ -68,9 +68,13 @@ export function FilaSesion({ sesion, ultima, y, indice, animar, onEjercicio }: {
     const m = measure(ref);
     return m ? m.pageY + CENTRO_NODO - ventana * LECTURA : Number.POSITIVE_INFINITY;
   };
+  // El relleno mide lo mismo que la pista y crece escalando desde arriba: con el scroll solo cambia
+  // un `transform` (R6).
   const relleno = useAnimatedStyle(() => {
-    if (reducido || y.value === Number.NEGATIVE_INFINITY) return { height: alto.value };
-    return { height: Math.min(alto.value, Math.max(0, -falta())) };
+    const total = alto.value;
+    if (total <= 0) return { transform: [{ scaleY: 0 }] };
+    if (reducido || y.value === Number.NEGATIVE_INFINITY) return { transform: [{ scaleY: 1 }] };
+    return { transform: [{ scaleY: Math.min(total, Math.max(0, -falta())) / total }] };
   }, [reducido, ventana, tick]);
   const nodo = useAnimatedStyle(() => {
     const lleno = reducido || y.value === Number.NEGATIVE_INFINITY || falta() <= 0;
@@ -82,7 +86,7 @@ export function FilaSesion({ sesion, ultima, y, indice, animar, onEjercicio }: {
       {!ultima && (
         <>
           <Animated.View style={[s.pista, pista]} pointerEvents="none" />
-          <Animated.View style={[s.relleno, relleno]} pointerEvents="none" />
+          <Animated.View style={[s.relleno, pista, relleno]} pointerEvents="none" />
         </>
       )}
       <Entrada activo animar={entra} retraso={indice * ESCALONADO_MS} y={8} escala={1}>
@@ -144,7 +148,10 @@ const s = StyleSheet.create({
   encabezado: { marginHorizontal: MARGEN_PANTALLA },
   fila: { marginHorizontal: MARGEN_PANTALLA, paddingBottom: 24 },
   pista: { position: 'absolute', top: CENTRO_NODO, left: CENTRO_NODO - GROSOR_RIEL / 2, width: GROSOR_RIEL, backgroundColor: paleta.gomaBorde },
-  relleno: { position: 'absolute', top: CENTRO_NODO, left: CENTRO_NODO - GROSOR_RIEL / 2, width: GROSOR_RIEL, backgroundColor: paleta.magnesia2 },
+  relleno: {
+    position: 'absolute', top: CENTRO_NODO, left: CENTRO_NODO - GROSOR_RIEL / 2, width: GROSOR_RIEL, backgroundColor: paleta.magnesia2,
+    transformOrigin: 'top',
+  },
   nodo: {
     position: 'absolute', top: 0, left: 0, width: LADO_NODO, height: LADO_NODO, borderRadius: LADO_NODO / 2, borderWidth: 2,
     borderColor: paleta.gomaBorde, backgroundColor: paleta.goma, alignItems: 'center', justifyContent: 'center',

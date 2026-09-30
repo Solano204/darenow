@@ -7,6 +7,7 @@ import {
 import { easing, resortePlaca, haptico, COLOR_FASE, ORDEN_FASE, PALABRA_FASE, type FaseId, type FaseVisual } from '@/ui/theme';
 import { useDeSesion, useTiempoSesion, type TiendaSesion } from '@/features/sesion/hooks/useSessionPlayer';
 import { segundosHablados } from '@/features/sesion/utils/reproductor';
+import { useCalidadVisual } from '@/ui/fx/useCalidadVisual';
 
 const RESPIRO_MS = 8000;
 const RESPIRO_ESCALA = 0.08;
@@ -87,11 +88,14 @@ export function useAtmosferaFase({
     return () => cancelAnimation(respiro);
   }, [enDescanso, corriendo, reducido, respiro]);
 
+  // El latido del resplandor es ambiental: en calidad baja no corre (la respiracion del descanso si,
+  // porque guia el «Inhala / Exhala»).
+  const sinLatido = useCalidadVisual() === 'baja';
   useEffect(() => {
-    if (reducido || !enTrabajo || !corriendo) { cancelAnimation(latido); return; }
+    if (reducido || sinLatido || !enTrabajo || !corriendo) { cancelAnimation(latido); return; }
     latido.set(withRepeat(withTiming(1, { duration: 1000, easing: Easing.inOut(Easing.sin) }), -1, true));
     return () => cancelAnimation(latido);
-  }, [enTrabajo, corriendo, reducido, latido]);
+  }, [enTrabajo, corriendo, reducido, sinLatido, latido]);
 
   return { colorFase, progreso, escalaAnillo, brillo, destello, golpe, expande, desvanece, respiro };
 }

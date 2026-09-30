@@ -7,6 +7,7 @@ import {
 import { paleta, polvo } from '@/ui/theme';
 import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
 import { aparcar, crearPuntos, type Punto } from './particulas';
+import { fraccionAplauso, useCalidadVisual } from './useCalidadVisual';
 
 const VELO_SUBE_MS = 60;
 const VELO_FIJO_MS = 180;
@@ -67,9 +68,19 @@ function anguloAzar(haciaArriba: boolean): number {
   return (Math.random() < 0.5 ? 0 : Math.PI) + (Math.random() - 0.5) * 0.5;
 }
 
-function sortear(m: Motor): number[] {
+/**
+ * Angulo y velocidad de cada particula. Con `fraccion` < 1 (calidad baja) cada grupo conserva solo
+ * sus primeras particulas en esa proporcion; las demas quedan sin velocidad (`NaN`) y no se dibujan.
+ */
+function sortear(m: Motor, fraccion = 1): number[] {
   const p: number[] = [];
   for (let i = 0; i < m.particulas; i++) p.push(anguloAzar(m.haciaArriba), m.velMin + Math.random() * m.velRango);
+  if (fraccion < 1) {
+    for (const g of m.grupos) {
+      const quedan = g.desde + Math.round((g.hasta - g.desde) * fraccion);
+      for (let i = quedan; i < g.hasta; i++) p[i * 2 + 1] = Number.NaN;
+    }
+  }
   return p;
 }
 
@@ -93,6 +104,8 @@ const LIENZO_OCIOSO_MS = 1500;
 export function ProveedorMagnesia({ children }: { children: React.ReactNode }) {
   const { width, height } = useWindowDimensions();
   const reducido = useReducedMotion();
+  // Calidad baja: el aplauso lleva el 40 % de las particulas (R6).
+  const fraccion = fraccionAplauso(useCalidadVisual());
 
   // El lienzo se monta al disparar y se desmonta cuando no queda ninguna nube en el aire.
   const [lienzo, setLienzo] = useState(false);
@@ -121,7 +134,7 @@ export function ProveedorMagnesia({ children }: { children: React.ReactNode }) {
 
   const lanzar = useCallback((x: number, y: number, velo: boolean) => {
     despegar();
-    params.set(sortear(NUBE));
+    params.set(sortear(NUBE, fraccion));
     origen.set({ x, y });
     soloVelo.set(velo || reducido ? 1 : 0);
     cancelAnimation(t);
@@ -130,7 +143,7 @@ export function ProveedorMagnesia({ children }: { children: React.ReactNode }) {
     t.set(withTiming(1, { duration: velo || reducido ? REDUCIDO_MS : NUBE.duracionMs, easing: Easing.linear }, () => {
       runOnJS(aterrizar)();
     }));
-  }, [reducido, params, origen, soloVelo, t, despegar, aterrizar]);
+  }, [reducido, fraccion, params, origen, soloVelo, t, despegar, aterrizar]);
 
   const aplaudir = useCallback((x: number, y: number) => lanzar(x, y, false), [lanzar]);
   const destello = useCallback(() => lanzar(0, 0, true), [lanzar]);
@@ -204,13 +217,15 @@ function Nube({ motor, grupo, t, origen, params, soloVelo }: {
       const p = params.value;
       const o = origen.value;
       let k = 0;
-      for (let i = desde; i < hasta; i++, k++) {
+      for (let i = desde; i < hasta; i++) {
         const a = p[i * 2];
         const v = p[i * 2 + 1];
         if (v === undefined) break;
+        if (Number.isNaN(v)) continue;   // particula apagada por la calidad
         const d = v * frenadoS * (1 - Math.exp(-seg / frenadoS));
         pool[k].x = o.x + Math.cos(a) * d;
         pool[k].y = o.y + Math.sin(a) * d - elevacionPxS * seg;
+        k++;
       }
       aparcar(pool, k);
       return pool;

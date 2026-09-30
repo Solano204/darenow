@@ -10,6 +10,7 @@ import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
 import { useTick } from '@/ui/hooks/useTick';
 import { useLoopActivo } from '@/ui/hooks/useLoopActivo';
 import { Tocable } from './Tocable';
+import { useCalidadVisual } from '@/ui/fx/useCalidadVisual';
 
 const ALTO_FILA_CREAR = 64;
 const RADIO = 20;
@@ -46,7 +47,9 @@ export function FilaCrear({ onPress, texto = 'Crear mi rutina', pulsar }: {
   const [ancho, setAncho] = useState(0);
 
   // La invitacion solo pulsa con la pantalla a la vista (H-19).
-  const activo = useLoopActivo();
+  const enVista = useLoopActivo();
+  const calidad = useCalidadVisual();
+  const activo = enVista && calidad !== 'baja';
   useEffect(() => {
     if (!pulsar || reducido || !activo) { cancelAnimation(pulso); pulso.set(0); return; }
     pulso.set(withRepeat(withSequence(

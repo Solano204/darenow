@@ -5,6 +5,7 @@ import { useAnimatedReaction, useFrameCallback, useSharedValue, type SharedValue
 import { crearPuntos, type Punto } from '@/ui/fx/particulas';
 import { paleta } from '@/ui/theme';
 import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
+import { particulasAmbiente, useCalidadVisual } from '@/ui/fx/useCalidadVisual';
 
 const CLASES = [
   { cantidad: 9, ancho: 2, opacidad: 0.4 },
@@ -49,6 +50,8 @@ function generar(cantidad: number, ancho: number, alto: number, semilla: number)
  */
 export function PolvoMagnesia({ ancho, alto, pausado = false }: { ancho: number; alto: number; pausado?: boolean }) {
   const reducido = useReducedMotion();
+  // Calidad media: 60 % del polvo; baja: sin polvo (es un loop ambiental).
+  const calidad = useCalidadVisual();
   const [enPrimerPlano, setEnPrimerPlano] = useState(AppState.currentState === 'active');
   const tiempo = useSharedValue(0);
 
@@ -61,7 +64,7 @@ export function PolvoMagnesia({ ancho, alto, pausado = false }: { ancho: number;
     tiempo.set(tiempo.get() + (info.timeSincePreviousFrame ?? 0) / 1000);
   }, false);
 
-  const activo = !pausado && !reducido && enPrimerPlano;
+  const activo = !pausado && !reducido && calidad !== 'baja' && enPrimerPlano;
   const alCambiarActivo = useEffectEvent(() => {
     frame.setActive(activo);
     return () => frame.setActive(false);
@@ -69,16 +72,16 @@ export function PolvoMagnesia({ ancho, alto, pausado = false }: { ancho: number;
   useEffect(() => alCambiarActivo(), [activo]);
 
   const grupos = useMemo(
-    () => CLASES.map((c, k) => generar(c.cantidad, ancho, alto, SEMILLA + k)),
-    [ancho, alto],
+    () => CLASES.map((c, k) => generar(particulasAmbiente(c.cantidad, calidad), ancho, alto, SEMILLA + k)),
+    [ancho, alto, calidad],
   );
 
-  if (reducido) return null;
+  if (reducido || calidad === 'baja') return null;
 
   return (
     <Group>
       {CLASES.map((c, k) => (
-        <Grupo key={k} particulas={grupos[k]} tiempo={tiempo} alto={alto} ancho={c.ancho} opacidad={c.opacidad} />
+        <Grupo key={`${calidad}-${k}`} particulas={grupos[k]} tiempo={tiempo} alto={alto} ancho={c.ancho} opacidad={c.opacidad} />
       ))}
     </Group>
   );

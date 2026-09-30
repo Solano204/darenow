@@ -57,6 +57,9 @@ jest.mock('expo-video', () => ({
   },
   VideoView: () => null,
 }));
+// Nivel de calidad (R6): un telefono sin datos de hardware y sin ahorro de bateria = calidad alta.
+jest.mock('expo-battery', () => ({ useLowPowerMode: () => false }));
+jest.mock('expo-device', () => ({ totalMemory: null, deviceYearClass: null }));
 jest.mock('expo-haptics', () => new Proxy({}, { get: () => () => Promise.resolve() }));
 // La voz «termina» al instante, como si la frase durara 0 s.
 jest.mock('expo-speech', () => ({

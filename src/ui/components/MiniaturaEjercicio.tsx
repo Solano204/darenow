@@ -8,6 +8,7 @@ import { nombreVisible } from '@/data/nombresVisibles';
 import { FotoOscura } from './FotoOscura';
 import { Entrada } from '@/ui/fx/Entrada';
 import type { ItemSesion } from '@/lib/engine/session';
+import { useCalidadVisual } from '@/ui/fx/useCalidadVisual';
 
 const LADO_MINIATURA = 112;
 const LADO_MINIATURA_ANCHA = 128;
@@ -51,8 +52,10 @@ export function MiniaturaEjercicio({ item, indice, lado, letra, scrollX, animar,
   const nombre = nombreVisible(item.name);
   const paso = lado + SEPARACION_MINIATURA;
 
+  // En calidad baja, sin parallax dentro del carrusel (R6).
+  const sinParallax = useCalidadVisual() === 'baja';
   const parallax = useAnimatedStyle(() => {
-    if (reducido) return { transform: [{ scale: 1 }] };
+    if (reducido || sinParallax) return { transform: [{ scale: 1 }] };
     const d = scrollX.value - indice * paso;
     const tope = TOPE_PARALLAX / FRACCION_PARALLAX;
     return {
@@ -61,7 +64,7 @@ export function MiniaturaEjercicio({ item, indice, lado, letra, scrollX, animar,
         { translateX: interpolate(d, [-tope, tope], [-TOPE_PARALLAX, TOPE_PARALLAX], Extrapolation.CLAMP) },
       ],
     };
-  }, [reducido, indice, paso, tick]);
+  }, [reducido, sinParallax, indice, paso, tick]);
 
   return (
     <Entrada activo animar={animar} retraso={retraso} x={DESDE_LA_DERECHA_PX} resorte={resortePlaca}>

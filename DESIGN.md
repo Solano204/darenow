@@ -381,6 +381,34 @@ Las imágenes nuevas, con nombre, tamaño y prompt, están en `docs/IMAGENES.md`
 - Un callback de UI que toca JS (`haptico`) se pasa por una función suelta y `runOnJS`, nunca un método de un objeto capturado.
 - Un worklet no debe capturar el objeto de props completo: se desestructura antes (`const { y } = p`), o Reanimated intenta serializar las funciones y los datos de la sesión.
 
+## Presupuesto de Skia (R6)
+
+- **Un `Canvas` de efectos por pantalla visible.** Si una pantalla tiene foto, velo y partículas, van en el mismo lienzo (`FotoTratada` acepta `velo` y `children`: así lo hace Bienvenida). El reproductor dibuja anillo y resplandor en un solo `Canvas`. Los íconos que se trazan (`PalomitaTrazo`, `IconoTrazo`, `MarcoHoy`) son lienzos pequeños y estáticos al terminar; no cuentan como efecto.
+- **Partículas con pool.** El arreglo de puntos se crea una vez con el tamaño máximo y cada cuadro se llena en su sitio (`src/ui/fx/particulas.ts`, `sharedValue.modify`); nada de crear arreglos, objetos, rutas ni pinturas por cuadro. Las rutas animadas (placas que caen) se reusan con `useRutaAnimada`.
+- **Límites duros** (`LIMITE_PARTICULAS`): 25 en loops ambientales (polvo de Bienvenida: 25), 80 en el aplauso (usa 72), 220 en «¿Listo?» (usa 200 + 8 de polvo).
+- **Pausa.** Un loop ambiental corre solo con su pantalla enfocada y la app en primer plano (`useLoopActivo`). El overlay de magnesia monta su `Canvas` solo mientras hay una nube en el aire.
+- **Animaciones dentro de `useDerivedValue`.** Un `withTiming`/`withSpring` dentro de un derivado que depende del scroll se relanza en cada cuadro: se arranca con `useAnimatedReaction` cuando cambia el destino.
+
+## Niveles de calidad (R6)
+
+`useCalidadVisual()` (`src/ui/fx/useCalidadVisual.ts`) devuelve `alta`, `media` o `baja`.
+
+| Condición | Nivel |
+|---|---|
+| Memoria total < 3 GB o teléfono de antes de 2016 (`expo-device`: `totalMemory`, `deviceYearClass`) | baja |
+| Memoria < 6 GB o teléfono de antes de 2019 | media |
+| Lo demás (o sin datos) | alta |
+| Ahorro de batería activo (`expo-battery`) | un nivel menos |
+| Reducir movimiento activado | un nivel menos (además de lo que ya apaga por su cuenta) |
+
+| Nivel | Qué cambia |
+|---|---|
+| Alta | Nada: el diseño aprobado tal cual. |
+| Media | Polvo de magnesia al 60 % (15 de 25). Las animaciones de respuesta al usuario no cambian. |
+| Baja | Sin loops ambientales: polvo flotante, latido del resplandor de Trabaja, pulsos de invitación (`FilaCrear`, nodo del riel). Aplauso con el 40 % de las partículas (cada grupo conserva su proporción). Sin parallax en listas (tarjetas de rutina de Explorar, miniaturas de la tarjeta de hoy). Se conservan intactos odómetros, anillo del temporizador, respiración del descanso (guía «Inhala / Exhala»), estados de botones, sellos y háptica. |
+
+Para probarlos en el teléfono: `EXPO_PUBLIC_CALIDAD=alta|media|baja` al generar el build fuerza el nivel.
+
 ## Dependencias añadidas
 
-`react-native-reanimated` 4.5.1, `react-native-worklets` 0.10.1, `@shopify/react-native-skia` 2.6.2, `@expo-google-fonts/big-shoulders-display`, `@expo-google-fonts/figtree`. No se instalan `react-native-gesture-handler` ni `react-native-svg`: ningún gesto ni SVG nuevo los necesita. Requiere un build nativo nuevo (dev client o EAS); no corre en Expo Go.
+`react-native-reanimated` 4.5.1, `react-native-worklets` 0.10.1, `@shopify/react-native-skia` 2.6.2, `expo-device` y `expo-battery` (R6, nivel de calidad), `@expo-google-fonts/big-shoulders-display`, `@expo-google-fonts/figtree`. No se instalan `react-native-gesture-handler` ni `react-native-svg`: ningún gesto ni SVG nuevo los necesita. Requiere un build nativo nuevo (dev client o EAS); no corre en Expo Go.

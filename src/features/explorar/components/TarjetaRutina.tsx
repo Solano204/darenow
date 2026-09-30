@@ -18,6 +18,7 @@ import { EstrellaDe } from '@/ui/components/EstrellaFavorito';
 import { precargarSkia } from '@/ui/fx/imagenesSkia';
 import { fuente } from '@/media/registry';
 import { useReinicioPorId } from '@/ui/components/listaVirtual';
+import { useCalidadVisual } from '@/ui/fx/useCalidadVisual';
 
 const ALTO_FOTO_TARJETA = 180;
 const ZOOM_PRESIONADO = 0.04;
@@ -56,17 +57,19 @@ export const TarjetaRutina = React.memo(function TarjetaRutina({ r, scrollY, onP
   const objetivo = nombreGoal(r.goal);
   const etiqueta = `${nombre}, ${r.min} minutos, ${objetivo}, nivel ${r.level} de 3${r.modo_sin_saltos ? ', silenciosa' : ''}`;
 
+  // En calidad baja la foto no hace parallax con el scroll (R6).
+  const sinParallax = useCalidadVisual() === 'baja';
   const foto = useAnimatedStyle(() => {
     const zoom = reducido ? 1 : 1 + ZOOM_PRESIONADO * presion.value;
     // Leer `scrollY` es lo que vuelve a calcular este estilo en cada fotograma del scroll.
-    const caja = reducido || PARALLAX_PX === 0 || !Number.isFinite(scrollY.value) ? null : measure(marco);
+    const caja = reducido || sinParallax || PARALLAX_PX === 0 || !Number.isFinite(scrollY.value) ? null : measure(marco);
     if (!caja) return { transform: [{ scale: zoom }] };
     const centro = caja.pageY + caja.height / 2;
     const desplazamiento = interpolate(
       centro, [-caja.height / 2, pantalla + caja.height / 2], [PARALLAX_PX, -PARALLAX_PX], Extrapolation.CLAMP,
     );
     return { transform: [{ translateY: desplazamiento }, { scale: zoom * ESCALA_PARALLAX }] };
-  }, [reducido, pantalla, tick]);
+  }, [reducido, sinParallax, pantalla, tick]);
 
   return (
     <View style={s.caja}>

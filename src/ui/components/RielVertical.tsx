@@ -11,6 +11,7 @@ import { useLoopActivo } from '@/ui/hooks/useLoopActivo';
 import { ALTO_ENCABEZADO, CENTRO_NODO, LADO_NODO, SANGRIA_RIEL } from './EncabezadoBloque';
 import { RIEL_X, GROSOR } from './rielGeometria';
 import { FlechaRegreso } from './FlechaRegreso';
+import { useCalidadVisual } from '@/ui/fx/useCalidadVisual';
 
 /** Un tramo del riel: un nodo, su encabezado y su contenido (los ejercicios de un bloque, las rutinas de una fase). */
 export interface SegmentoRiel {
@@ -193,7 +194,9 @@ function Nodo({ color, lleno, pulsa }: { color: string; lleno: SharedValue<numbe
   const tick = useTick();
   const pulso = useSharedValue(0);
   // El pulso de la fase actual solo corre con la pantalla a la vista (H-19).
-  const activo = useLoopActivo();
+  const enVista = useLoopActivo();
+  const calidad = useCalidadVisual();
+  const activo = enVista && calidad !== 'baja';
 
   useEffect(() => {
     if (!pulsa || !activo) { cancelAnimation(pulso); pulso.set(0); return; }

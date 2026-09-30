@@ -1,9 +1,9 @@
 import React from 'react';
-import { Platform, Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 import Animated, {
   Extrapolation, interpolate, useAnimatedStyle, useDerivedValue, type SharedValue,
 } from 'react-native-reanimated';
-import { BlurView } from 'expo-blur';
+import { DesenfoqueIos } from './DesenfoqueIos';
 import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { paleta, conAlfa, familia, haptico } from '@/ui/theme';
@@ -57,7 +57,7 @@ export function BarraSuperiorColapsable({ y, alturaHero, nombre, favorito = fals
   return (
     <View style={[s.raiz, { height: top + ALTO_BARRA }]} pointerEvents="box-none">
       <Animated.View style={[s.barra, barra]} pointerEvents="none">
-        {Platform.OS === 'ios' ? <BlurView intensity={40} tint="dark" style={s.llena} /> : null}
+        <DesenfoqueIos intensidad={40} estilo={s.llena} />
         <View style={[s.llena, s.velo]} />
         <View style={s.linea} />
         {children}

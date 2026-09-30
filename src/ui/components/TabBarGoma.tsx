@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Platform, Pressable, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
-import { BlurView } from 'expo-blur';
+import { DesenfoqueIos } from './DesenfoqueIos';
 import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import type { BottomTabBarProps } from '@react-navigation/bottom-tabs';
@@ -59,7 +59,7 @@ export function TabBarGoma({ state, descriptors, navigation }: BottomTabBarProps
   return (
     <Animated.View style={[s.barra, { bottom: separacionBarra(inset.bottom) }, flota]}>
       <Animated.View style={[StyleSheet.absoluteFill, cuerpo]}>
-        {Platform.OS === 'ios' ? <BlurView intensity={40} tint="dark" style={StyleSheet.absoluteFill} /> : null}
+        <DesenfoqueIos intensidad={40} estilo={StyleSheet.absoluteFill} />
         <View style={[StyleSheet.absoluteFill, { backgroundColor: Platform.OS === 'ios' ? color.barraPestanasBlur : color.barraPestanas }]} />
       </Animated.View>
 

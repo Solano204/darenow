@@ -1,7 +1,7 @@
 import React from 'react';
-import { Platform, Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 import Animated, { Extrapolation, interpolate, useAnimatedStyle, type SharedValue } from 'react-native-reanimated';
-import { BlurView } from 'expo-blur';
+import { DesenfoqueIos } from '@/ui/components/DesenfoqueIos';
 import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { paleta, conAlfa, familia, MARGEN_PANTALLA, AREA_TACTIL_MIN, haptico } from '@/ui/theme';
@@ -71,7 +71,7 @@ export function HeaderColapsable({ y, saludo, titulo, accion, onAtras }: {
   return (
     <>
     <Animated.View style={[s.caja, { height: top + ALTO_HEADER, paddingTop: top }, contenedor]} pointerEvents="box-none">
-      {Platform.OS === 'ios' ? <BlurView intensity={40} tint="dark" style={s.llena} /> : null}
+      <DesenfoqueIos intensidad={40} estilo={s.llena} />
       <View style={s.llena} />
       <Animated.View style={[s.linea, borde]} pointerEvents="none" />
       <View style={s.fila} pointerEvents="box-none">

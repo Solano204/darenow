@@ -1,7 +1,7 @@
 import React from 'react';
 import { Platform, StyleSheet, Text, View } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
-import { BlurView } from 'expo-blur';
+import { DesenfoqueIos } from '@/ui/components/DesenfoqueIos';
 import { paleta, conAlfa, familia, MARGEN_PANTALLA } from '@/ui/theme';
 import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
 import { useTick } from '@/ui/hooks/useTick';
@@ -36,7 +36,7 @@ export function OverlayPausa({ visible, hablando, onSeguir, onSalir }: {
 
   return (
     <Animated.View style={[s.raiz, estilo]} pointerEvents={visible ? 'auto' : 'none'}>
-      {Platform.OS === 'ios' ? <BlurView intensity={30} tint="dark" style={s.llena} /> : null}
+      <DesenfoqueIos intensidad={30} estilo={s.llena} />
       <View style={[s.llena, { backgroundColor: conAlfa(paleta.goma, Platform.OS === 'ios' ? VELO_IOS : VELO_ANDROID) }]} />
       <View style={s.contenido}>
         <Text style={s.titulo} accessibilityRole="header">Pausa</Text>

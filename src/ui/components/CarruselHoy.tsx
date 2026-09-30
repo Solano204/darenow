@@ -32,6 +32,7 @@ export function CarruselHoy<T>({ data, keyExtractor, renderItem, ancho, separaci
       horizontal
       showsHorizontalScrollIndicator={false}
       decelerationRate="fast"
+      disableIntervalMomentum
       snapToInterval={paso}
       snapToAlignment="start"
       getItemLayout={(_, i) => ({ length: paso, offset: paso * i, index: i })}

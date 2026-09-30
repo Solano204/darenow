@@ -44,6 +44,7 @@ export function CarruselProfundidad<T>({ data, keyExtractor, renderItem, ancho, 
       horizontal
       showsHorizontalScrollIndicator={false}
       decelerationRate="fast"
+      disableIntervalMomentum
       snapToInterval={paso}
       snapToAlignment="start"
       onScroll={onScroll}

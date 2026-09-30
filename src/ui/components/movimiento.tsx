@@ -2,43 +2,16 @@
  * FORJA · ui / movimiento
  *
  * `useMovimientoReducido` y las animaciones reutilizables que lo consumen:
- * entrada escalonada, pulso de estado y numeros que cuentan.
+ * pulso de estado y numeros que cuentan.
  */
 
-import React, { useEffect, useEffectEvent, useState } from 'react';
-import { View, Animated, Easing, type ViewStyle } from 'react-native';
-import { color, anim } from '@/ui/theme';
+import React, { useEffect, useState } from 'react';
+import { View, Animated, Easing } from 'react-native';
+import { color } from '@/ui/theme';
 
 import { useReducedMotion as useMovimientoReducido } from '@/ui/hooks/useReducedMotion';
 
 export { useReducedMotion as useMovimientoReducido } from '@/ui/hooks/useReducedMotion';
-
-/** Entrada suave: aparece y sube unos pixeles. */
-export function Aparece({ children, retraso = 0, estilo }: {
-  children: React.ReactNode; retraso?: number; estilo?: ViewStyle;
-}) {
-  const reducido = useMovimientoReducido();
-  const [v] = useState(() => new Animated.Value(0));
-  const alCambiarReducido = useEffectEvent(() => {
-    if (reducido) { v.setValue(1); return; }
-    Animated.timing(v, {
-      toValue: 1, duration: anim.normal, delay: retraso,
-      easing: Easing.bezier(0.2, 0.7, 0.3, 1), useNativeDriver: true,
-    }).start();
-  });
-  useEffect(() => alCambiarReducido(), [reducido]);
-  return (
-    <Animated.View style={[
-      estilo,
-      {
-        opacity: v,
-        transform: [{ translateY: v.interpolate({ inputRange: [0, 1], outputRange: [16, 0] }) }],
-      },
-    ]}>
-      {children}
-    </Animated.View>
-  );
-}
 
 /** Pulso lento. Para lo que esta vivo ahora mismo: un punto de "en curso". */
 export function Pulso({ tamano = 8, tono = color.carbon }: { tamano?: number; tono?: string }) {

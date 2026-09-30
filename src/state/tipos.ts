@@ -123,3 +123,31 @@ export interface Estado {
   tipsGuardados: string[];
   semanaPrograma: number;
 }
+
+/** Lo que da `useEstado()`: el estado y todas sus acciones. */
+export interface Ctx {
+  estado: Estado;
+  cargando: boolean;
+  guardarPerfil: (p: Partial<PerfilUsuario>) => void;
+  terminarOnboarding: (p: PerfilUsuario) => void;
+  marcarPresentacion: () => void;
+  guardarSesion: (s: Omit<SesionGuardada, 'id'>) => { racha: Racha; logrosNuevos: string[]; graciaUsada: boolean };
+  guardarMedicion: (m: Omit<MedicionGuardada, 'id'>) => void;
+  alternarVeto: (id: string) => void;
+  alternarFavorito: (tipo: keyof Favoritos, id: string) => void;
+  esFavorito: (tipo: keyof Favoritos, id: string) => boolean;
+  marcarBienvenida: () => void;
+  marcarAnuncio: () => void;
+  aceptarAnuncios: () => void;
+  registrarDescarga: (seccion: string) => void;
+  guardarRutinaPropia: (r: RutinaPropia) => void;
+  borrarRutinaPropia: (id: string) => void;
+  nuevaRutinaPropia: (base?: Partial<RutinaPropia>) => RutinaPropia;
+  alternarTipGuardado: (id: string) => void;
+  marcarTipLeido: (id: string) => void;
+  iniciarReto: (id: string) => void;
+  ultimaVezDe: (id: string) => { reps?: number; segundos?: number; pesoKg?: number; fecha: string } | undefined;
+  reiniciar: () => void;
+  /** Borra peso, altura, peso objetivo y todas las mediciones. Lo usa el retiro de consentimiento en Ajustes (ver consentimientoMedidas.ts). */
+  borrarMedidas: () => void;
+}

@@ -28,7 +28,9 @@
     "lint:capas": "python3 scripts/refactor/capas.py",
     "circulares": "npx --yes madge --circular --extensions ts,tsx --ts-config tsconfig.json src App.tsx",
     "muerto": "npx --yes knip",
-    "catalogo": "esbuild --bundle --platform=node --format=cjs scripts/build-catalogo.ts | node"
+    "catalogo": "esbuild --bundle --platform=node --format=cjs scripts/build-catalogo.ts | node",
+    "imagenes": "esbuild --bundle --platform=node --format=cjs --external:sharp --external:blurhash scripts/optimizar-imagenes.ts | node",
+    "clips": "esbuild --bundle --platform=node --format=cjs --external:sharp --external:ffmpeg-static scripts/optimizar-clips.ts | node"
   },
   "dependencies": {
     "@expo-google-fonts/big-shoulders-display": "^0.2.3",
@@ -39,6 +41,7 @@
     "@react-navigation/bottom-tabs": "^7.4.0",
     "@react-navigation/native": "^7.1.6",
     "@react-navigation/native-stack": "^7.3.10",
+    "@shopify/flash-list": "^2.0.2",
     "@shopify/react-native-skia": "2.6.2",
     "expo": "~57.0.23",
     "expo-asset": "~57.0.17",
@@ -77,15 +80,17 @@
     "@types/react-test-renderer": "^19.3.0",
     "babel-jest": "^29.7.0",
     "babel-preset-expo": "~57.0.0",
+    "blurhash": "^2.0.5",
     "esbuild": "^0.25.0",
     "eslint": "^9.39.5",
     "eslint-config-expo": "~57.0.2",
     "eslint-plugin-react-hooks": "^7.1.1",
+    "ffmpeg-static": "^5.3.0",
     "globals": "^16.5.0",
     "jest": "^29.7.0",
     "jest-expo": "~57.0.5",
     "react-test-renderer": "^19.2.3",
-    "sharp": "^0.35.4",
+    "sharp": "^0.34.5",
     "typescript": "~6.0.3"
   },
   "private": true

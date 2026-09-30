@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import Animated, { Extrapolation, interpolate, useAnimatedStyle, type SharedValue } from 'react-native-reanimated';
-import { Image } from 'expo-image';
+import { Imagen } from '@/ui/components/Imagen';
 import { LinearGradient } from 'expo-linear-gradient';
 import { paleta, conAlfa, degradado, resorteMagnesia } from '@/ui/theme';
 import { fuente } from '@/media/registry';
@@ -60,7 +60,7 @@ export function HeroEjercicio({ ejercicio, y, alto }: {
           <View style={s.recorte}>
             <View style={[s.foco, { top: alto * 0.12 }]} />
             <View style={s.piso} />
-            <Image source={recorte} style={[s.modelo, { height: alto * 0.88 }]} contentFit="contain" cachePolicy="memory-disk" />
+            <Imagen source={recorte} id={`${ejercicio.id}_recorte`} style={[s.modelo, { height: alto * 0.88 }]} contentFit="contain" />
           </View>
         ) : (
           <View style={s.ficha}>

@@ -11,14 +11,16 @@ Uso, desde la carpeta app/:
     python3 generar_registry.py            # escribe los cuatro registros
     python3 generar_registry.py --dry      # solo imprime lo que haria
 
-Imagenes: .jpg, .jpeg, .webp, .png     -> assets/img/<carpeta>/<id>.<ext>
+Imagenes: .webp (o .jpg, .jpeg, .png)  -> assets/img/<carpeta>/<id>.<ext>
+          (las escribe scripts/optimizar-imagenes.ts desde media-fuente/img)
 Clips:    .mp4, .m4v, .mov             -> assets/video/ejercicios/<id>.mp4
+Posters:  .webp                        -> assets/video/posters/<id>.webp
+          (los dos los escribe scripts/optimizar-clips.ts desde media-fuente/video)
 Sonidos:  .mp3, .m4a, .wav             -> assets/snd/<nombre>.mp3
 Voz:      .mp3                         -> assets/voz/{ejercicios,fases,num}/<id>.mp3
           (generada por generar_voz.py, no a mano)
 
-Dos archivos por ejercicio: la imagen y el clip. No hay carpeta de thumbs, el
-poster del video es la misma imagen. Al terminar, el script avisa de los
+Por ejercicio: la imagen (y su miniatura), el clip y su poster. Al terminar, el script avisa de los
 ejercicios a los que les falta alguno de los dos.
 
 Si hay dos extensiones para el mismo id, gana el orden de esas listas.
@@ -37,26 +39,32 @@ CARPETAS = [
     ("IMG_MITOS",      "mitos"),
     ("IMG_MOTIVACION", "motivacion"),
     ("IMG_FONDOS",     "fondos"),
+    # Miniaturas de listas y rejillas (R5, scripts/optimizar-imagenes.ts).
+    ("IMG_EJERCICIOS_MINI", "ejercicios-mini"),
+    ("IMG_MUSCULOS_MINI",   "musculos-mini"),
 ]
 
-EXTS = [".jpg", ".jpeg", ".webp", ".png"]
+EXTS = [".webp", ".jpg", ".jpeg", ".png"]
 
 # Video. Cada entrada: (constante, subcarpeta de assets/video/, extensiones)
 CARPETAS_VIDEO = [
     ("VIDEO_EJERCICIOS", "ejercicios", [".mp4", ".m4v", ".mov"]),
+    # Primer fotograma de cada clip (R5, scripts/optimizar-clips.ts): el poster mientras decodifica.
+    ("POSTER_EJERCICIOS", "posters", [".webp"]),
 ]
 
 CABECERA_VIDEO = """/**
  * FORJA · registro de clips
  *
  * ARCHIVO GENERADO por generar_registry.py. No lo edites a mano: copia tus
- * clips a assets/video/ejercicios/<id>.mp4 y vuelve a correr el script.
+ * clips a media-fuente/video/ejercicios/<id>.mp4, corre `npm run clips` y
+ * despues este script.
  *
- * Formato de cada clip: H.264, 480p, 30 fps, SIN audio, 6-10 s pensados para
- * verse en bucle, ~400 KB.
+ * Formato de cada clip: H.264, 480p, 24 fps, SIN audio, 6-10 s pensados para
+ * verse en bucle, con faststart.
  *
- * No hay registro de thumbs: el poster que tapa el video mientras decodifica
- * es la misma imagen del ejercicio, que ya vive en registry.ts.
+ * El poster que tapa el video mientras decodifica es su primer fotograma
+ * (assets/video/posters/<id>.webp): al empezar el video no hay salto.
  */
 
 type Registro = Record<string, number>;
@@ -84,6 +92,11 @@ export function usarCDN(url: string | null): void {
   baseRemota = url ? url.replace(/\\/*$/, '/') : null;
 }
 
+/** Primer fotograma del clip (WebP), o null si no hay. */
+export function posterFuente(id: string): number | null {
+  return POSTER_EJERCICIOS[id] ?? null;
+}
+
 /** Clip del ejercicio: local si esta en el bundle, remoto si hay CDN, si no null. */
 export function clipFuente(id: string): FuenteClip {
   const local = VIDEO_EJERCICIOS[id];
@@ -97,15 +110,15 @@ CABECERA = """/**
  * FORJA · registro de imagenes
  *
  * ARCHIVO GENERADO por generar_registry.py. No lo edites a mano: copia tus
- * imagenes a assets/img/<carpeta>/<id>.jpg y vuelve a correr el script.
+ * imagenes originales a media-fuente/img/<carpeta>/<id>.jpg y corre
+ * `npm run imagenes` (optimiza a WebP y vuelve a correr este script).
  *
  * React Native no permite require() con ruta variable, por eso cada archivo
  * se declara aqui una vez. Lo que no este registrado se dibuja con un
  * marcador generado del id, asi que la app funciona con cero imagenes.
  *
- * La imagen del ejercicio hace doble funcion: miniatura en las listas y
- * poster del video mientras decodifica el primer fotograma. Por eso no hay
- * carpeta de thumbs.
+ * Ejercicios y musculos tienen ademas una miniatura (`-mini`) para las
+ * listas y rejillas: `fuenteMini` la devuelve, o la grande si no hay.
  */
 
 type Registro = Record<string, number>;
@@ -125,9 +138,19 @@ const MAPAS: Record<TipoFoto, Registro> = {
   motivacion: IMG_MOTIVACION,
 };
 
+const MINIS: Partial<Record<TipoFoto, Registro>> = {
+  ejercicio: IMG_EJERCICIOS_MINI,
+  musculo: IMG_MUSCULOS_MINI,
+};
+
 /** Fuente de una imagen, o null si el archivo todavia no esta. */
 export function fuente(tipo: TipoFoto, id: string): number | null {
   return MAPAS[tipo][id] ?? null;
+}
+
+/** La miniatura de lista (lado corto de 192 px), o la imagen grande si ese tipo no tiene. */
+export function fuenteMini(tipo: TipoFoto, id: string): number | null {
+  return MINIS[tipo]?.[id] ?? fuente(tipo, id);
 }
 """
 
@@ -194,8 +217,8 @@ def revisar_faltantes():
     """Ejercicios sin imagen o sin clip. Lee los ids del catalogo real."""
     import json
     faltan = []
-    imgs = os.path.join("assets", "img", "ejercicios")
-    vids = os.path.join("assets", "video", "ejercicios")
+    imgs = os.path.join("media-fuente", "img", "ejercicios")
+    vids = os.path.join("media-fuente", "video", "ejercicios")
     hay_img = {os.path.splitext(f)[0] for f in os.listdir(imgs)} if os.path.isdir(imgs) else set()
     hay_vid = {os.path.splitext(f)[0] for f in os.listdir(vids)} if os.path.isdir(vids) else set()
     datos = os.path.join("assets", "data")

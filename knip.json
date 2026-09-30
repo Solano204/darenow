@@ -2,13 +2,15 @@
   "$schema": "https://unpkg.com/knip@5/schema.json",
   "entry": [
     "tests/**/*.ts",
-    "scripts/**/*.js"
+    "scripts/**/*.js",
+    "scripts/*.ts"
   ],
   "project": [
     "App.tsx",
     "src/**/*.{ts,tsx}",
     "tests/**/*.ts",
-    "scripts/**/*.js"
+    "scripts/**/*.js",
+    "scripts/*.ts"
   ],
   "ignoreDependencies": [
     "expo-system-ui",

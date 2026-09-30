@@ -12,6 +12,8 @@ import { Huella } from '@/ui/fx/Huella';
 import { EstrellaDe } from '@/ui/components/EstrellaFavorito';
 import { BarraRutina } from '@/ui/components/BarraRutinaTarjeta';
 import type { Progreso } from '@/ui/fx/CarruselProfundidad';
+import { precargarSkia } from '@/ui/fx/imagenesSkia';
+import { fuente } from '@/media/registry';
 
 export const ANCHO_TARJETA_RUTINA = 240;
 export const ALTO_FOTO_RUTINA = 150;
@@ -68,7 +70,7 @@ export const TarjetaRutina = React.memo(function TarjetaRutina({ r, progreso, on
 
   return (
     <View style={s.caja}>
-      <Tocable onPress={() => onPress(r)} etiqueta={etiqueta} presion={presion}>
+      <Tocable onPress={() => onPress(r)} alPresionar={() => precargarSkia(fuente('rutina', r.imagenId ?? r.id))} etiqueta={etiqueta} presion={presion}>
         <View>
           <FotoOscura
             tipo="rutina" id={r.imagenId ?? r.id} ancho={ANCHO_TARJETA_RUTINA} alto={ALTO_FOTO_RUTINA}

@@ -1,6 +1,8 @@
 import React from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
+import { precargarSkia } from '@/ui/fx/imagenesSkia';
+import { fuente } from '@/media/registry';
 import { paleta, familia, insignia, resorteTap, haptico } from '@/ui/theme';
 import type { Mito } from '@/data/catalog';
 import { textoVisible } from '@/lib/presentacion';
@@ -57,7 +59,7 @@ export const FilaMito = React.memo(function FilaMito({ mito, activacion, animar,
     <View style={s.fila}>
       <Pressable
         style={s.cuerpo}
-        onPressIn={() => { presion.set(withSpring(1, resorteTap)); haptico.toque(); }}
+        onPressIn={() => { presion.set(withSpring(1, resorteTap)); haptico.toque(); precargarSkia(fuente('mito', mito.id)); }}
         onPressOut={() => { presion.set(withSpring(0, resorteTap)); }}
         onPress={() => onPress(mito.id)}
         accessibilityRole="button" accessibilityLabel={`${afirmacion}. ${insignia[mito.veredicto].texto}.`}

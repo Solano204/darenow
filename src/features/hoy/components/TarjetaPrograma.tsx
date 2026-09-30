@@ -6,6 +6,8 @@ import { Tocable } from '@/ui/components/Tocable';
 import { FotoOscura } from '@/ui/components/FotoOscura';
 import { InsigniaFoto } from '@/ui/components/InsigniaFoto';
 import { EstrellaDe } from '@/ui/components/EstrellaFavorito';
+import { precargarSkia } from '@/ui/fx/imagenesSkia';
+import { fuente } from '@/media/registry';
 
 export const ANCHO_TARJETA_PROGRAMA = 240;
 export const ALTO_FOTO_PROGRAMA = 150;
@@ -29,7 +31,7 @@ export const TarjetaPrograma = React.memo(function TarjetaPrograma({ p, onPress 
       {CAPAS_DE_LA_PILA.map(d => (
         <View key={d} style={[s.capa, { left: d * 2, right: d * 2, top: d, opacity: 1 - d * 0.04 }]} />
       ))}
-      <Tocable onPress={() => onPress(p.id)} etiqueta={`${nombre}, ${p.semanas} semanas`}>
+      <Tocable onPress={() => onPress(p.id)} alPresionar={() => precargarSkia(fuente('programa', p.id))} etiqueta={`${nombre}, ${p.semanas} semanas`}>
         <View>
           <FotoOscura
             tipo="programa" id={p.id} ancho={ANCHO_TARJETA_PROGRAMA} alto={ALTO_FOTO_PROGRAMA}

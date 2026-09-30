@@ -1,5 +1,6 @@
 import React from 'react';
-import { Canvas, ColorMatrix, Group, Image as SkiaImage, useImage, type SkImage } from '@shopify/react-native-skia';
+import { Canvas, ColorMatrix, Group, Image as SkiaImage, type SkImage } from '@shopify/react-native-skia';
+import { useImagenSkia } from './imagenesSkia';
 import { useDerivedValue, type SharedValue } from 'react-native-reanimated';
 
 const LUMA = { r: 0.2126, g: 0.7152, b: 0.0722 };
@@ -78,7 +79,7 @@ export function FotoTratada({ fuente, ancho, alto, tratar = TRATAR_FOTOS, matriz
   foco?: Foco;
   escala?: SharedValue<number>;
 }) {
-  const imagen = useImage(fuente);
+  const imagen = useImagenSkia(fuente);
   const transform = useDerivedValue(() => [{ scale: escala ? escala.value : 1 }]);
 
   return (

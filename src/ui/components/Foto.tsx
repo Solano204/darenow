@@ -8,9 +8,9 @@
 
 import React from 'react';
 import { View, type ViewStyle } from 'react-native';
-import { Image } from 'expo-image';
 import { color, radio } from '@/ui/theme';
 import { fuente, type TipoFoto } from '@/media/registry';
+import { Imagen, LADO_MINIATURA_MAX } from './Imagen';
 
 export interface FotoProps {
   tipo: TipoFoto;
@@ -44,7 +44,12 @@ export default function Foto({
       overflow: 'hidden',
       backgroundColor: color.lienzo,
     }, estilo]}>
-      <Image source={src} style={{ width: '100%', height: '100%' }} contentFit="cover" transition={200} />
+      <Imagen
+        tipo={t} id={id} style={LLENA}
+        mini={typeof w === 'number' && w <= LADO_MINIATURA_MAX && alto <= LADO_MINIATURA_MAX}
+      />
     </View>
   );
 }
+
+const LLENA = { width: '100%', height: '100%' } as const;

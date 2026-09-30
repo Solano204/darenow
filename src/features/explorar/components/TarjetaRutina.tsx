@@ -15,6 +15,8 @@ import { NivelPlacas } from '@/ui/components/NivelPlacas';
 import { InsigniaFoto, EtiquetaFoto } from '@/ui/components/InsigniaFoto';
 import { ICONOS_OBJETIVO } from '@/ui/components/iconosObjetivo';
 import { EstrellaDe } from '@/ui/components/EstrellaFavorito';
+import { precargarSkia } from '@/ui/fx/imagenesSkia';
+import { fuente } from '@/media/registry';
 
 const ALTO_FOTO_TARJETA = 180;
 const ZOOM_PRESIONADO = 0.04;
@@ -66,7 +68,7 @@ export const TarjetaRutina = React.memo(function TarjetaRutina({ r, scrollY, onP
 
   return (
     <View style={s.caja}>
-      <Tocable onPress={() => onPress(r.id)} etiqueta={etiqueta} presion={presion} escala={ESCALA_PRESIONADA} estilo={s.tarjeta}>
+      <Tocable onPress={() => onPress(r.id)} alPresionar={() => precargarSkia(fuente('rutina', r.id))} etiqueta={etiqueta} presion={presion} escala={ESCALA_PRESIONADA} estilo={s.tarjeta}>
         <Animated.View ref={marco} collapsable={false}>
           <FotoOscura
             tipo="rutina" id={r.id} ancho="100%" alto={ALTO_FOTO_TARJETA} radioEsquina={0}

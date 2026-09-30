@@ -1,5 +1,6 @@
 import React, { useEffect, useEffectEvent, useRef } from 'react';
-import { Canvas, Group, LinearGradient, Rect, useImage, vec } from '@shopify/react-native-skia';
+import { Canvas, Group, LinearGradient, Rect, vec } from '@shopify/react-native-skia';
+import { useImagenSkia } from '@/ui/fx/imagenesSkia';
 import { useDerivedValue, useSharedValue, withSequence, withTiming, type SharedValue } from 'react-native-reanimated';
 import { degradado, paleta } from '@/ui/theme';
 import { ImagenTratada, FOCO_ARRIBA, ANCLAS_VELO, ALTO_VELO_ARRIBA, TRATAR_FOTOS, type Foco } from '@/ui/fx/FotoTratada';
@@ -67,7 +68,7 @@ export function FotoParallax({ fotos, recortes, progreso, indice, ancho, alto, t
 function CapaFoto({ fuente, k, progreso, medidas, tratar, foco, sinParallax }: {
   fuente: number; k: number; progreso: SharedValue<number>; medidas: Medidas; tratar: boolean; foco: Foco; sinParallax: boolean;
 }) {
-  const imagen = useImage(fuente);
+  const imagen = useImagenSkia(fuente);
   const { ancho, alto } = medidas;
 
   // La foto de abajo se queda fija; la que entra se funde encima mientras llega desde la derecha.
@@ -87,7 +88,7 @@ function CapaFoto({ fuente, k, progreso, medidas, tratar, foco, sinParallax }: {
 function CapaRecorte({ fuente, k, progreso, medidas, foco, sinParallax }: {
   fuente: number; k: number; progreso: SharedValue<number>; medidas: Medidas; foco: Foco; sinParallax: boolean;
 }) {
-  const imagen = useImage(fuente);
+  const imagen = useImagenSkia(fuente);
   const { ancho, alto } = medidas;
 
   const opacidad = useDerivedValue(() => Math.min(1, Math.max(0, 1 - Math.abs(k - progreso.value))));

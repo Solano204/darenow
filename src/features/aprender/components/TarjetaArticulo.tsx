@@ -12,6 +12,8 @@ import { Tocable } from '@/ui/components/Tocable';
 import { FotoOscura } from '@/ui/components/FotoOscura';
 import { TextoDesvanecido } from '@/ui/components/TextoDesvanecido';
 import { EstrellaDe } from '@/ui/components/EstrellaFavorito';
+import { precargarSkia } from '@/ui/fx/imagenesSkia';
+import { fuente } from '@/media/registry';
 
 const ALTO_FOTO_ARTICULO = 170;
 const ZOOM_PRESIONADO = 0.04;
@@ -43,7 +45,7 @@ export const TarjetaArticulo = React.memo(function TarjetaArticulo({ tip, onPres
   return (
     <View style={s.caja}>
       <Tocable
-        onPress={() => onPress(tip.id)} etiqueta={`${titulo}. ${categoria}`} presion={presion}
+        onPress={() => onPress(tip.id)} alPresionar={() => precargarSkia(fuente('tip', tip.id))} etiqueta={`${titulo}. ${categoria}`} presion={presion}
         escala={ESCALA_PRESIONADA} estilo={s.tarjeta}
       >
         <FotoOscura

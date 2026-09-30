@@ -16,7 +16,7 @@ const ESCALA_PRESIONADO = 0.03;
  */
 export function Tocable({
   onPress, onLongPress, etiqueta, pista, rol = 'button', estado, estilo, escala = ESCALA_PRESIONADO,
-  haptica = true, deshabilitado = false, hitSlop, presion: externa, children,
+  haptica = true, deshabilitado = false, hitSlop, presion: externa, alPresionar, children,
 }: {
   onPress: () => void;
   onLongPress?: () => void;
@@ -36,6 +36,8 @@ export function Tocable({
   hitSlop?: number | Insets;
   /** Si viene, `Tocable` escribe aqui su presion (0 a 1) para que el contenido reaccione. */
   presion?: SharedValue<number>;
+  /** Al empezar a presionar, antes de soltar: sirve para precargar lo que abre el toque (R5). */
+  alPresionar?: () => void;
   children: React.ReactNode;
 }) {
   const reducido = useReducedMotion();
@@ -47,7 +49,7 @@ export function Tocable({
 
   return (
     <Pressable
-      onPressIn={() => { presion.set(withSpring(1, resorteTap)); if (haptica) haptico.toque(); }}
+      onPressIn={() => { presion.set(withSpring(1, resorteTap)); if (haptica) haptico.toque(); alPresionar?.(); }}
       onPressOut={() => { presion.set(withSpring(0, resorteTap)); }}
       onPress={onPress}
       onLongPress={onLongPress}

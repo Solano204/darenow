@@ -1,7 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Animated, { Extrapolation, interpolate, useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
-import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
 import { paleta, conAlfa, familia, tipo } from '@/ui/theme';
 import { fuente } from '@/media/registry';
@@ -15,6 +14,7 @@ import { NivelPlacas } from './NivelPlacas';
 import { BotonCompacto } from './BotonCompacto';
 import { GomaTexture } from '@/ui/fx/GomaTexture';
 import type { Progreso } from '@/ui/fx/CarruselProfundidad';
+import { Imagen } from './Imagen';
 
 export const ANCHO_ENFOQUE = 280;
 export const ALTO_ENFOQUE = 300;
@@ -105,7 +105,7 @@ export function TarjetaEnfoque({ ejercicio, progreso, onPress }: {
       </View>
       {recorte && (
         <Animated.View style={[s.atleta, atleta]} pointerEvents="none">
-          <Image source={recorte} style={s.atletaImagen} contentFit="contain" cachePolicy="memory-disk" />
+          <Imagen source={recorte} id={`${ejercicio.id}_recorte`} style={s.atletaImagen} contentFit="contain" />
         </Animated.View>
       )}
     </Tocable>

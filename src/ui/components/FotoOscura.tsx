@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
 import Animated from 'react-native-reanimated';
-import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { paleta, radio, degradado, conAlfa } from '@/ui/theme';
 import { fuente, type TipoFoto } from '@/media/registry';
+import { Imagen, LADO_MINIATURA_MAX } from './Imagen';
 import { Esqueleto } from '@/ui/fx/Esqueleto';
 
 /** Exposicion de las fotos claras del catalogo sobre la goma: el equivalente barato al tratamiento de Skia. */
@@ -41,14 +41,23 @@ export function FotoOscura({
 }) {
   const src = fuente(tipo, id);
   const [lista, setLista] = useState(false);
+  // En una lista que recicla filas (FlashList) la misma instancia pasa a otro elemento: el
+  // esqueleto vuelve a salir hasta que cargue la foto nueva (se reinicia en el render, no en un
+  // efecto, para que no llegue a pintarse un cuadro con el estado del elemento anterior).
+  const [idVisto, setIdVisto] = useState(id);
+  if (idVisto !== id) {
+    setIdVisto(id);
+    setLista(false);
+  }
+  const mini = typeof ancho === 'number' && ancho <= LADO_MINIATURA_MAX && alto <= LADO_MINIATURA_MAX;
 
   return (
     <View style={[{ width: ancho, height: alto, borderRadius: radioEsquina }, s.caja, fondo ? { backgroundColor: fondo } : null, estilo]}>
       {src ? (
         <Animated.View style={[s.llena, estiloImagen]}>
-          <Image
-            source={src} style={exposicion === undefined ? s.imagen : [s.imagen, { opacity: exposicion }]} contentFit="cover" transition={200}
-            cachePolicy="memory-disk" recyclingKey={id} onLoad={() => setLista(true)}
+          <Imagen
+            tipo={tipo} id={id} mini={mini} placeholder={null}
+            style={exposicion === undefined ? s.imagen : [s.imagen, { opacity: exposicion }]} onLoad={() => setLista(true)}
           />
         </Animated.View>
       ) : (

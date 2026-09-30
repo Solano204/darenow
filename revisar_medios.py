@@ -14,8 +14,8 @@ Uso, desde la carpeta app/:
     python3 revisar_medios.py ~/Descargas/hoy              # informe
     python3 revisar_medios.py ~/Descargas/hoy --renombrar  # copia y renombra
 
-Con --renombrar, los archivos reconocidos se copian a assets/video/ejercicios/
-y assets/img/ejercicios/ con el nombre que la app espera (ex_1001.mp4). Los
+Con --renombrar, los archivos reconocidos se copian a media-fuente/video/ejercicios/
+y media-fuente/img/ejercicios/ con el nombre que la app espera (ex_1001.mp4). Los
 originales no se tocan.
 
 Las imagenes que se llaman image.png.<timestamp>.jpeg no llevan el nombre del
@@ -243,8 +243,8 @@ def main():
 
     # ---------------------------------------------------------------- copiar
     if renombrar:
-        destino_v = os.path.join("assets", "video", "ejercicios")
-        destino_i = os.path.join("assets", "img", "ejercicios")
+        destino_v = os.path.join("media-fuente", "video", "ejercicios")
+        destino_i = os.path.join("media-fuente", "img", "ejercicios")
         os.makedirs(destino_v, exist_ok=True)
         os.makedirs(destino_i, exist_ok=True)
         n = 0

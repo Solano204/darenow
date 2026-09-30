@@ -57,7 +57,12 @@ RENOMBRAR = {
 }
 
 
+CAPAS = ('src/ui/', 'src/state/', 'src/storage/', 'src/lib/', 'src/data/', 'src/media/', 'src/dev/')
+
+
 def destino_fijo(f):
+    if f.startswith(CAPAS):
+        return f
     for viejo, nuevo in FIJOS:
         if f == viejo or (viejo.endswith('/') and f.startswith(viejo)):
             return nuevo + f[len(viejo):] if viejo.endswith('/') else nuevo
@@ -93,7 +98,9 @@ def main():
     feature = {}
     for f in archivos:
         nombre = os.path.splitext(os.path.basename(f))[0]
-        if f.startswith('src/screens/'):
+        if f.startswith('src/features/'):
+            feature[f] = f.split('/')[2]
+        elif f.startswith('src/screens/'):
             feature[f] = PANTALLAS[nombre]
         elif destino_fijo(f):
             feature[f] = 'shared'
@@ -101,7 +108,7 @@ def main():
     while cambio:
         cambio = False
         for f in archivos:
-            if f.startswith('src/screens/') or destino_fijo(f):
+            if f.startswith(('src/screens/', 'src/features/')) or destino_fijo(f):
                 continue
             usos = set()
             for i in importadores[f]:
@@ -118,7 +125,7 @@ def main():
         for f in archivos:
             if feature.get(f) == 'shared':
                 for d in importa[f]:
-                    if feature.get(d) not in ('shared', None) and not d.startswith('src/screens/'):
+                    if feature.get(d) not in ('shared', None) and not d.startswith(('src/screens/', 'src/features/')):
                         feature[d] = 'shared'
                         cambio = True
 
@@ -129,6 +136,8 @@ def main():
         feat = feature.get(f)
         if fijo:
             nuevo = fijo
+        elif f.startswith('src/features/'):
+            nuevo = f
         elif f.startswith('src/screens/'):
             nuevo = f'src/features/{feat}/screens/{base}'
         elif feat == 'shared':

@@ -22,7 +22,8 @@
     "test:musculos": "esbuild --bundle --platform=node --format=cjs tests/musculos.test.ts | node",
     "test:aprender": "esbuild --bundle --platform=node --format=cjs tests/aprender.test.ts | node",
     "test:perfil": "esbuild --bundle --platform=node --format=cjs tests/perfil.test.ts | node",
-    "test:ajustes": "esbuild --bundle --platform=node --format=cjs tests/ajustes.test.ts | node"
+    "test:ajustes": "esbuild --bundle --platform=node --format=cjs tests/ajustes.test.ts | node",
+    "test:unit": "jest"
   },
   "dependencies": {
     "@expo-google-fonts/big-shoulders-display": "^0.2.3",
@@ -61,9 +62,13 @@
     "react-native-worklets": "0.10.1"
   },
   "devDependencies": {
+    "@jest/globals": "^29.7.0",
+    "@react-native/jest-preset": "^0.86.3",
     "@types/react": "~19.2.3",
     "babel-preset-expo": "~57.0.0",
     "esbuild": "^0.25.0",
+    "jest": "^29.7.0",
+    "jest-expo": "~57.0.5",
     "sharp": "^0.35.4",
     "typescript": "~6.0.3"
   },

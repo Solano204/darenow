@@ -9,7 +9,7 @@ import { textoVisible } from '@/lib/presentacion';
 import { plural } from '@/lib/plural';
 import {
   ESPACIOS, ETIQUETAS_ESPACIO, indiceDeEspacio, LESIONES, equipoElegible, contarMarcados,
-} from '@/utils/ajustes';
+} from '@/features/ajustes/utils/ajustes';
 
 let ok = 0, fallos = 0;
 const c = (n: string, cond: boolean, d = '') => {

@@ -36,7 +36,7 @@ import Aprender from '@/screens/Aprender';
 import DetalleTip from '@/screens/DetalleTip';
 import DetalleMito from '@/screens/DetalleMito';
 import Yo, { Logros } from '@/screens/Yo';
-import Ajustes from '@/screens/Ajustes';
+import Ajustes from '@/features/ajustes/screens/Ajustes';
 import Retos from '@/screens/Retos';
 import Mediciones from '@/screens/Mediciones';
 import Historial from '@/screens/Historial';

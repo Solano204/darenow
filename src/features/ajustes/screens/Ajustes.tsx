@@ -21,7 +21,7 @@ import { exportarProgreso, elegirRespaldo, aplicarRespaldo } from '@/state/respa
 import { URL_PRIVACIDAD, URL_TERMINOS, URL_BORRAR_CUENTA } from '@/lib/legal';
 import { EQUIPO, GOALS, porId, nombreGoal } from '@/data/catalog';
 import { textoVisible } from '@/lib/presentacion';
-import { ESPACIOS, ETIQUETAS_ESPACIO, LESIONES, indiceDeEspacio, equipoElegible, contarMarcados } from '@/utils/ajustes';
+import { ESPACIOS, ETIQUETAS_ESPACIO, LESIONES, indiceDeEspacio, equipoElegible, contarMarcados } from '@/features/ajustes/utils/ajustes';
 import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
 import { PantallaColapsable } from '@/ui/components/PantallaColapsable';
 import { ContadorPlacas } from '@/ui/components/ContadorPlacas';
@@ -31,19 +31,19 @@ import { DialTiempo } from '@/ui/fx/DialTiempo';
 import { IconoTrazo } from '@/ui/fx/IconoTrazo';
 import { TarjetaLoQueSuelePasar } from '@/ui/components/TarjetaLoQueSuelePasar';
 import { ChipCategoria } from '@/ui/components/ChipCategoria';
-import { IndiceSecciones, ALTO_INDICE } from '@/components/settings/IndiceSecciones';
-import { SeccionAjustes, ContadorDe, ContadorMarcadas } from '@/components/settings/SeccionAjustes';
-import { GrupoFilas } from '@/components/settings/GrupoFilas';
-import { FilaAjuste, BloqueControl, ChevronGiratorio, SANGRIA_CON_ICONO } from '@/components/settings/FilaAjuste';
-import { SelectorNivel } from '@/components/settings/SelectorNivel';
-import { SegmentadoTres } from '@/components/settings/SegmentadoTres';
-import { FilaEquipo } from '@/components/settings/FilaEquipo';
-import { FilaLesion } from '@/components/settings/FilaLesion';
-import { ContadorEstatura } from '@/components/settings/ContadorEstatura';
-import { RejillaCatalogo } from '@/components/settings/RejillaCatalogo';
-import { FilaCuenta } from '@/components/settings/FilaCuenta';
-import { FilaDestructiva } from '@/components/settings/FilaDestructiva';
-import { HojaConfirmacion, type AccionHoja } from '@/components/settings/HojaConfirmacion';
+import { IndiceSecciones, ALTO_INDICE } from '@/features/ajustes/components/IndiceSecciones';
+import { SeccionAjustes, ContadorDe, ContadorMarcadas } from '@/features/ajustes/components/SeccionAjustes';
+import { GrupoFilas } from '@/features/ajustes/components/GrupoFilas';
+import { FilaAjuste, BloqueControl, ChevronGiratorio, SANGRIA_CON_ICONO } from '@/features/ajustes/components/FilaAjuste';
+import { SelectorNivel } from '@/features/ajustes/components/SelectorNivel';
+import { SegmentadoTres } from '@/features/ajustes/components/SegmentadoTres';
+import { FilaEquipo } from '@/features/ajustes/components/FilaEquipo';
+import { FilaLesion } from '@/features/ajustes/components/FilaLesion';
+import { ContadorEstatura } from '@/features/ajustes/components/ContadorEstatura';
+import { RejillaCatalogo } from '@/features/ajustes/components/RejillaCatalogo';
+import { FilaCuenta } from '@/features/ajustes/components/FilaCuenta';
+import { FilaDestructiva } from '@/features/ajustes/components/FilaDestructiva';
+import { HojaConfirmacion, type AccionHoja } from '@/features/ajustes/components/HojaConfirmacion';
 
 /** Las secciones que llevan un chip en el indice, en el orden en que aparecen. */
 const INDICE = [

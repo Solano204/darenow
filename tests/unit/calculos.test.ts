@@ -8,7 +8,7 @@ import {
   placasPorDia, semanaEnCero, fechaDeDia, celdasDelMes, diaDelCalendario, diasDelMes, etiquetasDeEstadisticas,
   totalFavoritos, mezclarFavoritos, progresoAcotado, vistaPreviaDeReto, agruparPorMes, filaDeHistorial,
 } from '@/lib/perfil';
-import { indiceDeEspacio, equipoElegible, contarMarcados } from '@/utils/ajustes';
+import { indiceDeEspacio, equipoElegible, contarMarcados } from '@/features/ajustes/utils/ajustes';
 
 describe('fechas', () => {
   it('fechaLocal crea medianoche local', () => {

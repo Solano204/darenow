@@ -1,14 +1,15 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { StyleSheet, View, useWindowDimensions } from 'react-native';
 import Animated, {
   cancelAnimation, runOnJS, useAnimatedReaction, useAnimatedStyle, useDerivedValue, useSharedValue, withRepeat,
   withSequence, withSpring, withTiming, type SharedValue,
 } from 'react-native-reanimated';
-import { Canvas, Group, Path, Skia, vec } from '@shopify/react-native-skia';
 import { paleta, conAlfa, easing, resortePlaca } from '@/ui/theme';
 import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
 import { useTick } from '@/ui/hooks/useTick';
 import { ALTO_ENCABEZADO, CENTRO_NODO, LADO_NODO, SANGRIA_RIEL } from './EncabezadoBloque';
+import { RIEL_X, GROSOR } from './rielGeometria';
+import { FlechaRegreso } from './FlechaRegreso';
 
 /** Un tramo del riel: un nodo, su encabezado y su contenido (los ejercicios de un bloque, las rutinas de una fase). */
 export interface SegmentoRiel {
@@ -30,8 +31,6 @@ export interface SegmentoRiel {
   contenido: (e: { visto: boolean }) => React.ReactNode;
 }
 
-const RIEL_X = LADO_NODO / 2;
-const GROSOR = 2;
 const GROSOR_REPITE = 4;
 const MARGEN = 24;
 /** El punto de la pantalla, a esta fraccion desde arriba, hasta donde se llena el riel. */
@@ -45,14 +44,6 @@ const PULSO_MS = 2000;
 const BRILLO_SUBE_MS = 200;
 const BRILLO_BAJA_MS = 400;
 const OPACIDAD_BRILLO = 0.4;
-
-/** La flecha de regreso se dibuja en un lienzo de 40 con su trazo desplazado (8, 6) para que al girar no se recorte. */
-const LIENZO_FLECHA = 40;
-const DESPL_FLECHA = { x: 8, y: 6 };
-const INICIO_FLECHA = { x: 6, y: 4 };
-const CENTRO_GIRO = vec(21.5, 19);
-/** Baja de la raiz del riel, sale a la derecha y sube con la punta hacia arriba: «esto se repite». */
-const RUTA_FLECHA = 'M6 4 L6 10 C6 26 18 26 18 14 M14.5 17.5 L18 14 L21.5 17.5';
 
 /**
  * El riel vertical de 2 px a la izquierda que une los tramos de una lista (los bloques de una
@@ -254,39 +245,6 @@ function TramoRiel({ inicio, largo, grosor, lleno, y, origen, top, ventana, redu
   );
 }
 
-/** La flecha curva que cierra el tramo repetido. Da una vuelta completa al llenarse el riel hasta ella. */
-function FlechaRegreso({ filasFin, lleno, giro }: {
-  filasFin: SharedValue<number>;
-  lleno: SharedValue<number>;
-  giro: SharedValue<number>;
-}) {
-  const tick = useTick();
-  const ruta = useMemo(() => Skia.Path.MakeFromSVGString(RUTA_FLECHA), []);
-  const posicion = useAnimatedStyle(() => ({ top: filasFin.value - (INICIO_FLECHA.y + DESPL_FLECHA.y) }), [tick]);
-  const desplazar = useDerivedValue(() => [{ translateX: DESPL_FLECHA.x }, { translateY: DESPL_FLECHA.y }]);
-  const girar = useDerivedValue(() => [{ rotate: giro.value * 2 * Math.PI }]);
-  if (!ruta) return null;
-
-  return (
-    <Animated.View
-      style={[s.flecha, posicion]} pointerEvents="none"
-      importantForAccessibility="no-hide-descendants" accessibilityElementsHidden
-    >
-      <Canvas style={{ width: LIENZO_FLECHA, height: LIENZO_FLECHA }}>
-        <Group transform={girar} origin={CENTRO_GIRO}>
-          <Group transform={desplazar}>
-            <Path path={ruta} style="stroke" strokeWidth={GROSOR} strokeCap="round" strokeJoin="round" color={paleta.gomaBorde} />
-            <Path
-              path={ruta} style="stroke" strokeWidth={GROSOR} strokeCap="round" strokeJoin="round" color={paleta.magnesia2}
-              opacity={lleno}
-            />
-          </Group>
-        </Group>
-      </Canvas>
-    </Animated.View>
-  );
-}
-
 const s = StyleSheet.create({
   raiz: { marginLeft: MARGEN, marginTop: 24 },
   encabezado: { height: ALTO_ENCABEZADO, paddingLeft: SANGRIA_RIEL, marginRight: MARGEN },
@@ -297,7 +255,6 @@ const s = StyleSheet.create({
   nodo: { width: LADO_NODO, height: LADO_NODO, borderRadius: LADO_NODO / 2, borderWidth: 2, backgroundColor: paleta.goma },
   anillo: { position: 'absolute', top: 0, left: 0, backgroundColor: 'transparent' },
   nodoRelleno: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, borderRadius: LADO_NODO / 2 },
-  flecha: { position: 'absolute', left: RIEL_X - (INICIO_FLECHA.x + DESPL_FLECHA.x), width: LIENZO_FLECHA, height: LIENZO_FLECHA },
   halo: {
     position: 'absolute', top: -4, left: -8, right: MARGEN - 12, borderRadius: 16,
     borderWidth: 1.5, borderColor: conAlfa(paleta.magnesia, OPACIDAD_BRILLO),

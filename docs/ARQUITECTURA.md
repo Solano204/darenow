@@ -88,6 +88,23 @@ Lo que se evalua al abrir la app es lo que cuelga de `index.ts` por `import` est
 - **Iconos**: `import Ionicons from '@expo/vector-icons/Ionicons'`, nunca el indice del paquete.
 - **`freezeOnBlur`** esta activo en pestañas y Stack. Una pantalla que deba seguir corriendo efectos tapada (como el Reproductor) lo apaga en sus `options`.
 
+## Estado y renders (R4)
+
+El React Compiler esta activo (`app.json`, `experiments.reactCompiler`) y sus reglas de ESLint son error. Para que una interaccion vuelva a dibujar solo lo que cambio:
+
+- **Estado global**: vive en `useTienda` (`state/tienda.ts`). Se lee con un selector del trozo que se pinta (`useEstadoSel(e => e.racha)`, `usePerfil()`, `useEsFavorito(tipo, id)`), nunca el estado entero. Varios valores a la vez: `useShallow`. Se cambia con las funciones de `state/acciones.ts` (de modulo, estables); no se pasan por props ni por contexto.
+- **Persistencia**: `cambiar()` guarda `forja:v1` agrupado. Una clave o un formato nuevo no entra sin migracion y su prueba en `tests/unit/persistencia.test.ts`.
+- **Contextos**: solo para valores que casi no cambian (cuenta, anuncios, magnesia). Un valor que cambia seguido va a un store con selectores.
+- **Derivar, no copiar**: lo que se calcula de otro estado se calcula en el render (o en `state/derivados.ts`, que guarda el resultado por arreglo de sesiones). Nada de `useState` + `useEffect` para copiarlo. Lo que no se pinta va en `useRef`.
+- **Efectos**: solo para sincronizar con algo externo (animacion, temporizador, sonido, suscripcion, almacenamiento), siempre con su limpieza. Lo que dispara el usuario va en el manejador. Si el efecto necesita leer algo sin volver a correr, `useEffectEvent`; nunca se silencia `exhaustive-deps`. `node scripts/perf/efectos.js` los clasifica.
+- **Actualizaciones inmutables**: arreglos y objetos nuevos (`[...a, x]`, `{ ...o, k }`). `derivados.ts` depende de esto.
+- **Listas**: filas en `React.memo` sin comparador; callbacks por id (`onPress(id)`), no un closure por fila; `renderItem`/`keyExtractor` fuera del JSX; sin estilos en linea en filas. Keys por contenido; por indice solo en listas estaticas que nunca se reordenan. La estrella de favorito de una fila es `EstrellaDe({ tipo, id })`.
+- **Busqueda y filtros**: el campo y el chip se actualizan al instante; la lista se filtra con `useDeferredValue` (o `startTransition`). Textos normalizados precalculados en `data/indice/busqueda.json`.
+- **Lo que cambia cada segundo o cada frame**: un componente hoja que lee solo ese valor (como `NumeroSesion` o `SonidoDeSesion` del reproductor, que leen el store de la sesion con `useTiempoSesion`/`useDeSesion`), o un shared value de Reanimated. La pantalla no se suscribe al reloj.
+- **Render props**: el compilador no memoriza el JSX dentro de una funcion que se pasa como prop. Si el contenido es grande, se saca a un componente (como `CuerpoAjustes`).
+- **`'use no memo'`**: solo con un comentario que diga por que. Hoy: `useTick` y `PantallaColapsable`. `node scripts/perf/compilador.js` lista lo que queda fuera.
+- **Medir**: `RENDERS_SALIDA=x.json npx jest tests/unit/renders/interacciones` graba los re-renders de las interacciones clave; comparar con `docs/perf/renders/despues.json`.
+
 ## Limites
 
 - Ningun archivo pasa de ~300 lineas (excepcion: `media/registry.ts`, generado). Si crece, subcomponentes a `components/`, logica a `hooks/`, funciones puras a `utils/`.
@@ -97,7 +114,7 @@ Lo que se evalua al abrir la app es lo que cuelga de `index.ts` por `import` est
 
 ```bash
 npx tsc --noEmit          # 0 errores
-npm run lint              # 0 errores (los avisos del React Compiler son trabajo de R4)
+npm run lint              # 0 errores (reglas del React Compiler como error, sin supresiones)
 npm run lint:color
 npm run test:unit         # Jest
 for t in player engine ui rutinas borrarTodo detalleRutina detallePrograma musculos aprender perfil ajustes; do npm run -s test:$t | tail -1; done

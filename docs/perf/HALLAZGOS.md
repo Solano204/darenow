@@ -69,6 +69,18 @@ Nuevos, descubiertos en R2:
 
 Pendiente en el teléfono: arranque en frío (promedio/peor), tamaño de APK/AAB con R8 y SMOKE del build de release. Ver `R3_REPORTE.md`.
 
+## Estado tras R4 (2026-09-30)
+
+| ID | Fase | Estado | Detalle |
+|---|---|---|---|
+| H-01 | R4 | ✅ Resuelto | Store de Zustand con selectores; un favorito dibuja 4 componentes (antes 86) y, con las 4 pestañas montadas, 50 (antes 1084) |
+| H-02 | R4 | ✅ Resuelto | Store por sesion; por segundo solo 8 componentes hoja (numero, placa en curso, reloj de atmosfera, sonido). Linea de tiempo de 5 min identica a la de antes |
+| H-03 | R4 / R6 | 🟡 Parcial | El compilador memoriza 423 componentes y hooks, asi que hay muchos menos re-renders que re-creen el mapper. `useTick` sigue (fuera del compilador) y se quita en R6 |
+| H-24 | R4 / R6 | 🟡 Parcial | `GuiaRespiracion` guarda su `inhala` (el layout ya no se dibuja cada 4 s). `IndiceSecciones`/`EncabezadoPegado` solo cambian al cambiar la seccion visible |
+| H-25 | R4 | ✅ Resuelto | 135 supresiones → 0; reglas del compilador como error; `eslint-suppressions.json` eliminado |
+
+Pendiente en el telefono: FPS de JS en release, SMOKE, prueba de actualizacion con datos y temporizador con pantalla bloqueada. Ver `R4_REPORTE.md`.
+
 ## Resumen
 
 1. **H-01 Context gigante**: un favorito o un «tip leído» re-renderiza las 4 pestañas y todo lo abierto en el stack → **R4**.

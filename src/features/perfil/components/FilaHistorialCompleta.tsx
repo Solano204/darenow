@@ -1,12 +1,14 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import { Pressable, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
-import Animated, { interpolateColor, useAnimatedStyle, useSharedValue, type SharedValue } from 'react-native-reanimated';
+import Animated, {
+  interpolateColor, measure, useAnimatedRef, useAnimatedStyle, useSharedValue, type SharedValue,
+} from 'react-native-reanimated';
 import { paleta, familia, MARGEN_PANTALLA } from '@/ui/theme';
 import { porId } from '@/data/catalog';
 import type { SesionGuardada } from '@/state/store';
 import { textoVisible } from '@/lib/presentacion';
 import { diaCorto } from '@/lib/fechas';
-import { filaDeHistorial, type MesDeHistorial } from '@/lib/perfil';
+import { filaDeHistorial } from '@/lib/perfil';
 import { plural } from '@/lib/plural';
 import { textoDeMotivo } from '@/lib/textosVisibles';
 import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
@@ -14,6 +16,7 @@ import { useTick } from '@/ui/hooks/useTick';
 import { Entrada } from '@/ui/fx/Entrada';
 import { Huella } from '@/ui/fx/Huella';
 import { EncabezadoMes } from './EncabezadoMes';
+import { useUnaVez } from '@/ui/components/listaVirtual';
 import { EtiquetaEstadoSesion } from './EtiquetaEstadoSesion';
 
 const LADO_NODO = 28;
@@ -26,79 +29,63 @@ const ESCALONADO_MS = 40;
 const FILAS_CON_ENTRADA = 8;
 const MAX_EJERCICIOS = 6;
 
-/**
- * Un mes del historial: su encabezado y sus sesiones sobre el riel de la Parte 8 (un riel de 2 px a la izquierda con
- * un nodo por sesion). Con el scroll el riel pasa de `gomaBorde` a `magnesia2` y cada nodo se llena al ser
- * alcanzado; con movimiento reducido ya esta lleno. Las primeras filas entran escalonadas 40 ms (`animar`, solo la
- * primera vez en la sesion). Es hijo directo del scroll: mide su posicion para el encabezado pegajoso (`onMedir`).
- */
-export function MesHistorial({ mes, y, indiceInicial, animar, onMedir, onEjercicio }: {
-  mes: MesDeHistorial<SesionGuardada>;
-  y: SharedValue<number>;
-  /** Cuantas sesiones hay en los meses de arriba (solo las primeras filas de la lista llevan entrada). */
-  indiceInicial: number;
-  animar: boolean;
-  onMedir: (arriba: number) => void;
-  onEjercicio: (id: string) => void;
-}) {
-  const origen = useSharedValue(Number.POSITIVE_INFINITY);
-  const mesArriba = useRef(0);
-  const filasArriba = useRef(0);
-  const situar = () => { origen.set(mesArriba.current + filasArriba.current); };
+/** Las filas del historial que ya entraron escalonadas: al reciclar (FlashList) no se repite. */
+const ANIMADAS = new Set<string>();
 
-  return (
-    <View onLayout={e => { mesArriba.current = e.nativeEvent.layout.y; situar(); onMedir(e.nativeEvent.layout.y); }}>
-      <View style={s.encabezado}><EncabezadoMes nombre={mes.nombre} /></View>
-      <View onLayout={e => { filasArriba.current = e.nativeEvent.layout.y; situar(); }}>
-        {mes.items.map((x, i) => (
-          <FilaSesion
-            key={x.id} sesion={x} ultima={i === mes.items.length - 1} origen={origen} y={y}
-            indice={indiceInicial + i} animar={animar} onEjercicio={onEjercicio}
-          />
-        ))}
-      </View>
-    </View>
-  );
+/** El encabezado de un mes: una fila mas de la lista (R5), el mismo que se pega bajo la cabecera. */
+export function EncabezadoMesHistorial({ nombre }: { nombre: string }) {
+  return <View style={s.encabezado}><EncabezadoMes nombre={nombre} /></View>;
 }
 
-function FilaSesion({ sesion, ultima, origen, y, indice, animar, onEjercicio }: {
-  sesion: SesionGuardada; ultima: boolean; origen: SharedValue<number>; y: SharedValue<number>;
+/**
+ * Una sesion del historial sobre el riel de la Parte 8 (un riel de 2 px a la izquierda con un nodo
+ * por sesion). Con el scroll el riel pasa de `gomaBorde` a `magnesia2` y cada nodo se llena al ser
+ * alcanzado (su posicion en pantalla llega al 60 % de la ventana); con movimiento reducido ya esta
+ * lleno. Las primeras filas entran escalonadas 40 ms (`animar`, solo la primera vez en la sesion y
+ * una sola vez por fila). Es una celda de FlashList: lee su posicion en pantalla con `measure`, no
+ * la suma de los `onLayout` de los de arriba.
+ */
+export function FilaSesion({ sesion, ultima, y, indice, animar, onEjercicio }: {
+  sesion: SesionGuardada; ultima: boolean; y: SharedValue<number>;
   indice: number; animar: boolean; onEjercicio: (id: string) => void;
 }) {
   const reducido = useReducedMotion();
   const tick = useTick();
   const { height: ventana } = useWindowDimensions();
-  const arriba = useSharedValue(0);
+  const ref = useAnimatedRef<Animated.View>();
   const alto = useSharedValue(0);
+  const entra = useUnaVez(ANIMADAS, sesion.id, animar && indice < FILAS_CON_ENTRADA);
   const f = filaDeHistorial(sesion);
   const series = plural(f.series, 'serie', 'series');
   const ejercicios = [...new Set(sesion.series.map(x => x.ejercicioId))].slice(0, MAX_EJERCICIOS);
 
   const pista = useAnimatedStyle(() => ({ height: alto.value }), [tick]);
-  const relleno = useAnimatedStyle(() => ({
-    height: reducido
-      ? alto.value
-      : Math.min(alto.value, Math.max(0, y.value + ventana * LECTURA - (origen.value + arriba.value + CENTRO_NODO))),
-  }), [reducido, ventana, tick]);
-  const nodo = useAnimatedStyle(() => ({
-    borderColor: interpolateColor(
-      reducido || y.value + ventana * LECTURA >= origen.value + arriba.value + CENTRO_NODO ? 1 : 0,
-      [0, 1], [paleta.gomaBorde, paleta.magnesia2],
-    ),
-  }), [reducido, ventana, tick]);
+  // Cuanto le falta al nodo para llegar a la linea de lectura (60 % de la ventana); sin medida
+  // todavia, no la alcanzo. Los dos estilos leen `y` (la comparacion con -infinito nunca es cierta:
+  // solo hace que Reanimated los recalcule con cada movimiento del scroll).
+  const falta = (): number => {
+    'worklet';
+    const m = measure(ref);
+    return m ? m.pageY + CENTRO_NODO - ventana * LECTURA : Number.POSITIVE_INFINITY;
+  };
+  const relleno = useAnimatedStyle(() => {
+    if (reducido || y.value === Number.NEGATIVE_INFINITY) return { height: alto.value };
+    return { height: Math.min(alto.value, Math.max(0, -falta())) };
+  }, [reducido, ventana, tick]);
+  const nodo = useAnimatedStyle(() => {
+    const lleno = reducido || y.value === Number.NEGATIVE_INFINITY || falta() <= 0;
+    return { borderColor: interpolateColor(lleno ? 1 : 0, [0, 1], [paleta.gomaBorde, paleta.magnesia2]) };
+  }, [reducido, ventana, tick]);
 
   return (
-    <View
-      style={s.fila}
-      onLayout={e => { arriba.set(e.nativeEvent.layout.y); alto.set(e.nativeEvent.layout.height); }}
-    >
+    <Animated.View ref={ref} style={s.fila} onLayout={e => { alto.set(e.nativeEvent.layout.height); }}>
       {!ultima && (
         <>
           <Animated.View style={[s.pista, pista]} pointerEvents="none" />
           <Animated.View style={[s.relleno, relleno]} pointerEvents="none" />
         </>
       )}
-      <Entrada activo animar={animar && indice < FILAS_CON_ENTRADA} retraso={indice * ESCALONADO_MS} y={8} escala={1}>
+      <Entrada activo animar={entra} retraso={indice * ESCALONADO_MS} y={8} escala={1}>
         <Animated.View style={[s.nodo, nodo]} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>
           <Huella lado={14} contorno={!f.largo} color={f.largo ? paleta.magnesia : paleta.magnesia2} opacidad={1} />
         </Animated.View>
@@ -149,7 +136,7 @@ function FilaSesion({ sesion, ultima, origen, y, indice, animar, onEjercicio }: 
           ) : null}
         </View>
       </Entrada>
-    </View>
+    </Animated.View>
   );
 }
 

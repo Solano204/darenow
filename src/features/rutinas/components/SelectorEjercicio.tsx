@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo, useState } from 'react';
-import type { ListRenderItemInfo } from 'react-native';
-import { View, Text, StyleSheet, ScrollView, Modal, FlatList, Pressable } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Modal, Pressable } from 'react-native';
+import { FlashList, type ListRenderItemInfo } from '@shopify/flash-list';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { color, tipo, esp, radio, peso } from '@/ui/theme';
 import { Boton, Chip, Toque, Buscador, Vacio } from '@/ui/components';
@@ -87,12 +87,11 @@ export function SelectorEjercicio({ visible, yaPuestos, onElegir, onCerrar }: {
           </Text>
         </View>
 
-        <FlatList
+        <FlashList
           data={lista}
           extraData={yaPuestos}
           keyExtractor={e => e.id}
           contentContainerStyle={s.contenidoLista}
-          initialNumToRender={14}
           ListEmptyComponent={soloMios ? (
             <View style={{ alignItems: 'center', gap: esp.sm }}>
               <Vacio texto="Nada con tu equipo actual." />

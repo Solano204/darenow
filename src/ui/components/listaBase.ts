@@ -1,6 +1,6 @@
 import type { StyleProp, ViewStyle } from 'react-native';
 import {
-  FadeIn, FadeOut, LinearTransition, withDelay, withTiming,
+  withTiming,
   type EntryExitAnimationFunction, type SharedValue, type useAnimatedScrollHandler,
 } from 'react-native-reanimated';
 
@@ -23,33 +23,11 @@ export const PROPS_FIJAS = {
   windowSize: 7,
 } as const;
 
-/** Solo las primeras filas visibles llevan entrada, salida y reacomodo: el resto no cuesta nada. */
+/** Solo las primeras filas visibles llevan entrada: el resto no cuesta nada. */
 export const FILAS_ANIMADAS = 8;
 /** Las primeras tarjetas de una lista de fotos aparecen escalonadas. */
 export const TARJETAS_ESCALONADAS = 4;
-const ESCALONADO_TARJETA_MS = 60;
-const MOVIMIENTO_MS = 200;
-const TARJETA_MS = 260;
 const FUNDIDO_REDUCIDO_MS = 150;
-
-export const reacomodo = LinearTransition.duration(MOVIMIENTO_MS);
-export const salida = FadeOut.duration(MOVIMIENTO_MS);
-export const salidaReducida = FadeOut.duration(FUNDIDO_REDUCIDO_MS);
-export const entradaReducida = FadeIn.duration(FUNDIDO_REDUCIDO_MS);
-
-/** Aparece con un fundido mientras sube desde `y` px, tras `retraso` ms. */
-function entradaDesde(y: number, retraso: number, duracion: number): EntryExitAnimationFunction {
-  return () => {
-    'worklet';
-    return {
-      initialValues: { opacity: 0, transform: [{ translateY: y }] },
-      animations: {
-        opacity: withDelay(retraso, withTiming(1, { duration: duracion })),
-        transform: [{ translateY: withDelay(retraso, withTiming(0, { duration: duracion })) }],
-      },
-    };
-  };
-}
 
 const SEGMENTO_MS = 220;
 const DESPLAZAMIENTO_SEGMENTO = 16;
@@ -87,10 +65,3 @@ export function transicionesDeSegmento(reducido: boolean, sentido: SharedValue<n
   };
   return { entrada, salida };
 }
-
-/** Fila que llega a la lista: fundido y 8 px de recorrido. */
-export const entradaFila = entradaDesde(8, 0, MOVIMIENTO_MS);
-/** Tarjeta que llega a la lista: fundido y 16 px de recorrido, escalonada 60 ms segun su posicion. */
-export const entradaTarjeta = Array.from(
-  { length: TARJETAS_ESCALONADAS }, (_, i) => entradaDesde(16, i * ESCALONADO_TARJETA_MS, TARJETA_MS),
-);

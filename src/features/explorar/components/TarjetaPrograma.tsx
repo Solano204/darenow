@@ -14,6 +14,7 @@ import { DatoNumerico } from '@/ui/components/DatoNumerico';
 import { EstrellaDe } from '@/ui/components/EstrellaFavorito';
 import { precargarSkia } from '@/ui/fx/imagenesSkia';
 import { fuente } from '@/media/registry';
+import { useReinicioPorId } from '@/ui/components/listaVirtual';
 
 const ALTO_FOTO = 180;
 const ESCALA_PRESIONADA = 0.02;
@@ -38,6 +39,7 @@ export const TarjetaPrograma = React.memo(function TarjetaPrograma({ p, onPress 
   const reducido = useReducedMotion();
   const tick = useTick();
   const presion = useSharedValue(0);
+  useReinicioPorId(p.id, presion);   // fila reciclada (FlashList): sin la presion de la anterior
   const apertura = useDerivedValue(() => withSpring(presion.value, resortePlaca));
   const nombre = nombreVisible(p.name);
   const etiqueta = `${nombre}, ${p.semanas} ${plural(p.semanas, 'semana')}, ${p.dias_semana} ${plural(p.dias_semana, 'día')} por semana, ${p.min_sesion} minutos por sesión`;

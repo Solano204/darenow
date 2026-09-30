@@ -1,12 +1,13 @@
 import React, { useCallback, useState } from 'react';
-import { StyleSheet, Text, View, type ListRenderItemInfo, type ViewToken } from 'react-native';
-import Animated from 'react-native-reanimated';
+import { StyleSheet, Text, View } from 'react-native';
+import type { ListRenderItemInfo, ViewToken } from '@shopify/flash-list';
 import { paleta, familia, MARGEN_PANTALLA } from '@/ui/theme';
 import type { Mito } from '@/data/catalog';
 import type { RelacionadoVista } from '@/lib/aprender';
 import { NotaEntrenador } from '@/ui/components/NotaEntrenador';
 import { TextoVacio } from '@/ui/components/TextoVacio';
-import { PROPS_FIJAS, type PropsLista } from '@/ui/components/listaBase';
+import type { PropsLista } from '@/ui/components/listaBase';
+import { ListaAnimada, PROPS_LISTA } from '@/ui/components/listaVirtual';
 import { FilaMito, type Activacion } from './FilaMito';
 import { BloqueErrores } from './BloqueErrores';
 
@@ -35,7 +36,7 @@ export function ListaMitos({ mitos, propsLista, onPress, onAbrirRelacionado }: {
   const [previas] = useState(() => new Set(ANIMADOS));
   const [configuracion] = useState(() => ({ itemVisiblePercentThreshold: FRACCION_VISIBLE }));
 
-  // Estable a proposito: FlatList no admite cambiar `onViewableItemsChanged` en caliente.
+  // Estable a proposito: la lista no admite cambiar `onViewableItemsChanged` en caliente.
   const alVer = useCallback(({ viewableItems }: { viewableItems: ViewToken<Mito>[] }) => {
     const nuevas = viewableItems.flatMap(v => (v.item && !ANIMADOS.has(v.item.id) ? [v.item.id] : []));
     if (nuevas.length === 0) return;
@@ -48,13 +49,15 @@ export function ListaMitos({ mitos, propsLista, onPress, onAbrirRelacionado }: {
     setActivas(previa => ({ ...previa, ...Object.fromEntries(entradas) }));
   }, []);
 
+  // `key` por mito: la fila tiene sello, tachon y lineas medidas; si FlashList recicla la celda para
+  // otro mito, se monta de nuevo y empieza limpia (la lista sigue virtualizada).
   const renderItem = useCallback(({ item }: ListRenderItemInfo<Mito>) => (
-    <FilaMito mito={item} activacion={activas[item.id]} animar={!previas.has(item.id)} onPress={onPress} />
+    <FilaMito key={item.id} mito={item} activacion={activas[item.id]} animar={!previas.has(item.id)} onPress={onPress} />
   ), [activas, previas, onPress]);
 
   return (
-    <Animated.FlatList
-      {...PROPS_FIJAS} {...propsLista}
+    <ListaAnimada
+      {...PROPS_LISTA} {...propsLista}
       data={mitos}
       extraData={activas}
       keyExtractor={(m: Mito) => m.id}

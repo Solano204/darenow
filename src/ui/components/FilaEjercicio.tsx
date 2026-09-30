@@ -14,6 +14,7 @@ import { NivelPlacas } from './NivelPlacas';
 import { EstrellaDe } from './EstrellaFavorito';
 import { contarVeredictos, resumenDeConteos } from './MedidorEvidencia';
 import { MiniMedidorEvidencia } from './MiniMedidorEvidencia';
+import { useReinicioPorId } from './listaVirtual';
 
 const LADO_MINIATURA = 64;
 const ESCALA_MINIATURA = 0.96;
@@ -44,6 +45,7 @@ export const FilaEjercicio = React.memo(function FilaEjercicio({ e, onPress }: {
   const reducido = useReducedMotion();
   const tick = useTick();
   const presion = useSharedValue(0);
+  useReinicioPorId(e.id, presion);   // fila reciclada (FlashList): sin la presion de la anterior
   const nombre = textoVisible(e.name);
   const equipo = textoDeEquipo(e.equipment);
   const sinEquipo = e.equipment.every(q => q === 'ninguno');

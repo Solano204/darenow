@@ -14,6 +14,7 @@ import { TextoDesvanecido } from '@/ui/components/TextoDesvanecido';
 import { EstrellaDe } from '@/ui/components/EstrellaFavorito';
 import { precargarSkia } from '@/ui/fx/imagenesSkia';
 import { fuente } from '@/media/registry';
+import { useReinicioPorId } from '@/ui/components/listaVirtual';
 
 const ALTO_FOTO_ARTICULO = 170;
 const ZOOM_PRESIONADO = 0.04;
@@ -35,6 +36,7 @@ export const TarjetaArticulo = React.memo(function TarjetaArticulo({ tip, onPres
   const reducido = useReducedMotion();
   const tick = useTick();
   const presion = useSharedValue(0);
+  useReinicioPorId(tip.id, presion);   // fila reciclada (FlashList): sin la presion de la anterior
   const titulo = textoVisible(tip.titulo);
   const categoria = nombreDeSala(tip.sala);
 

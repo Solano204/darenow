@@ -17,6 +17,7 @@ import { ICONOS_OBJETIVO } from '@/ui/components/iconosObjetivo';
 import { EstrellaDe } from '@/ui/components/EstrellaFavorito';
 import { precargarSkia } from '@/ui/fx/imagenesSkia';
 import { fuente } from '@/media/registry';
+import { useReinicioPorId } from '@/ui/components/listaVirtual';
 
 const ALTO_FOTO_TARJETA = 180;
 const ZOOM_PRESIONADO = 0.04;
@@ -50,6 +51,7 @@ export const TarjetaRutina = React.memo(function TarjetaRutina({ r, scrollY, onP
   const { height: pantalla } = useWindowDimensions();
   const marco = useAnimatedRef<Animated.View>();
   const presion = useSharedValue(0);
+  useReinicioPorId(r.id, presion);   // fila reciclada (FlashList): sin la presion de la anterior
   const nombre = nombreVisible(r.name);
   const objetivo = nombreGoal(r.goal);
   const etiqueta = `${nombre}, ${r.min} minutos, ${objetivo}, nivel ${r.level} de 3${r.modo_sin_saltos ? ', silenciosa' : ''}`;

@@ -41,7 +41,9 @@ export const EstrellaDe = React.memo(function EstrellaDe({ tipo, id, ...resto }:
   tipo: keyof Favoritos; id: string;
 } & Omit<PropsEstrella, 'activo' | 'onPress'>) {
   const activo = useEsFavorito(tipo, id);
-  return <EstrellaFavorito {...resto} activo={activo} onPress={() => alternarFavorito(tipo, id)} />;
+  // `key`: si la fila se recicla para otro elemento, la estrella empieza de cero (sin animar el
+  // cambio de favorito como si lo hubieran tocado).
+  return <EstrellaFavorito key={`${tipo}/${id}`} {...resto} activo={activo} onPress={() => alternarFavorito(tipo, id)} />;
 });
 
 /**

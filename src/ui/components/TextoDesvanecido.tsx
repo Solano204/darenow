@@ -28,6 +28,13 @@ export function TextoDesvanecido({ texto, lineas = 2, alturaLinea = 20, estilo, 
 }) {
   const [recortado, setRecortado] = useState(false);
   const [fin, setFin] = useState<FinDeLinea | null>(null);
+  // Otro texto en la misma instancia (fila reciclada): se mide de nuevo desde cero.
+  const [textoMedido, setTextoMedido] = useState(texto);
+  if (textoMedido !== texto) {
+    setTextoMedido(texto);
+    setRecortado(false);
+    setFin(null);
+  }
 
   const alMedir = (e: NativeSyntheticEvent<TextLayoutEventData>) => {
     const medidas = e.nativeEvent.lines;

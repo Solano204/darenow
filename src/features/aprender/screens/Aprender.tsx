@@ -31,10 +31,10 @@ import { ChipCategoria } from '@/ui/components/ChipCategoria';
 import { FilaChips, ALTO_FILA_CATEGORIA, SEPARACION_FILAS } from '@/ui/components/EncabezadoFiltrosColapsable';
 import { EncabezadoExplorar, SEP_SEGMENTOS } from '@/ui/components/EncabezadoExplorar';
 import { transicionesDeSegmento, type PropsLista } from '@/ui/components/listaBase';
-import { ListaTips } from '@/components/learn/ListaTips';
-import { ListaMitos } from '@/components/learn/ListaMitos';
-import { VistaAlimentacion } from '@/components/learn/VistaAlimentacion';
-import { VistaGlosario } from '@/components/learn/VistaGlosario';
+import { ListaTips } from '@/features/aprender/components/ListaTips';
+import { ListaMitos } from '@/features/aprender/components/ListaMitos';
+import { VistaAlimentacion } from '@/features/aprender/components/VistaAlimentacion';
+import { VistaGlosario } from '@/features/aprender/components/VistaGlosario';
 
 type SegmentoAprender = 'tips' | 'mitos' | 'nutricion' | 'glosario';
 

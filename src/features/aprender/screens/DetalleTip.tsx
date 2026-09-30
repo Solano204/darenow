@@ -27,10 +27,10 @@ import { TituloMascara } from '@/ui/fx/TituloMascara';
 import { BarraSuperiorColapsable } from '@/ui/components/BarraSuperiorColapsable';
 import { HeroRutina } from '@/ui/components/HeroRutina';
 import { LineaDeEtiquetas } from '@/ui/components/EtiquetasMusculo';
-import { CuerpoLectura } from '@/components/learn/CuerpoLectura';
-import { BarraProgresoLectura } from '@/components/learn/BarraProgresoLectura';
-import { MarcaFin } from '@/components/learn/MarcaFin';
-import { BloqueRelacionado } from '@/components/learn/TarjetaRelacionada';
+import { CuerpoLectura } from '@/features/aprender/components/CuerpoLectura';
+import { BarraProgresoLectura } from '@/features/aprender/components/BarraProgresoLectura';
+import { MarcaFin } from '@/features/aprender/components/MarcaFin';
+import { BloqueRelacionado } from '@/features/aprender/components/TarjetaRelacionada';
 
 const FRACCION_HERO = 0.38;
 const ALTO_BARRA_SUPERIOR = 52;

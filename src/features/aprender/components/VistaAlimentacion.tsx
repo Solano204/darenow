@@ -6,7 +6,7 @@ import { NUTRICION } from '@/data/catalog';
 import { textoDeLectura } from '@/lib/aprender';
 import { BloqueRevela } from '@/ui/fx/BloqueRevela';
 import { Entrada } from '@/ui/fx/Entrada';
-import { IconoProhibido } from '@/components/fx/IconoProhibido';
+import { IconoProhibido } from './IconoProhibido';
 import { PROPS_FIJAS, type PropsLista } from '@/ui/components/listaBase';
 import { TarjetaAlimentacion } from './TarjetaAlimentacion';
 import { TituloBloque } from './TituloBloque';

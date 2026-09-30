@@ -27,12 +27,12 @@ import { InsigniaEvidencia } from '@/ui/components/InsigniaEvidencia';
 import { BarraSuperiorColapsable } from '@/ui/components/BarraSuperiorColapsable';
 import { HeroRutina } from '@/ui/components/HeroRutina';
 import { FilaEjercicio } from '@/ui/components/FilaEjercicio';
-import { AfirmacionTachada } from '@/components/learn/AfirmacionTachada';
-import { CitaLoQueSeDice } from '@/components/learn/CitaLoQueSeDice';
-import { CuerpoLectura } from '@/components/learn/CuerpoLectura';
-import { TarjetaEnSuLugar } from '@/components/learn/TarjetaEnSuLugar';
-import { FilaRelacionados } from '@/components/learn/TarjetaRelacionada';
-import { TituloBloque } from '@/components/learn/TituloBloque';
+import { AfirmacionTachada } from '@/features/aprender/components/AfirmacionTachada';
+import { CitaLoQueSeDice } from '@/features/aprender/components/CitaLoQueSeDice';
+import { CuerpoLectura } from '@/features/aprender/components/CuerpoLectura';
+import { TarjetaEnSuLugar } from '@/features/aprender/components/TarjetaEnSuLugar';
+import { FilaRelacionados } from '@/features/aprender/components/TarjetaRelacionada';
+import { TituloBloque } from '@/features/aprender/components/TituloBloque';
 
 const FRACCION_HERO = 0.34;
 const ALTO_BARRA_SUPERIOR = 52;

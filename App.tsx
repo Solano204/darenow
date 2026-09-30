@@ -48,7 +48,7 @@ import Resumen from '@/screens/Resumen';
 import DetalleEjercicio from '@/screens/DetalleEjercicio';
 import DetalleRutina from '@/screens/DetalleRutina';
 import DetallePrograma from '@/screens/DetallePrograma';
-import DetalleMusculo from '@/screens/DetalleMusculo';
+import DetalleMusculo from '@/features/musculos/screens/DetalleMusculo';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();

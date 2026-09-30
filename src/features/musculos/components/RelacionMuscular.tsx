@@ -6,7 +6,7 @@ import Animated, {
 import { Ionicons } from '@expo/vector-icons';
 import { paleta, familia, easing, resortePlaca, resorteTap, resorteMagnesia, MARGEN_PANTALLA } from '@/ui/theme';
 import type { Musculo } from '@/data/catalog';
-import type { Relacionado } from '@/utils/musculos';
+import type { Relacionado } from '@/features/musculos/utils/musculos';
 import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
 import { useTick } from '@/ui/hooks/useTick';
 import { Entrada } from '@/ui/fx/Entrada';

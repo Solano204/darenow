@@ -8,7 +8,7 @@ import { fuente } from '@/media/registry';
 import type { EjercicioIndice } from '@/data/catalog';
 import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
 import { useTick } from '@/ui/hooks/useTick';
-import Clip from '@/ui/components/Clip';
+import ClipEjercicio from '@/ui/components/ClipEjercicio';
 import { Entrada } from '@/ui/fx/Entrada';
 import { ALTO_VELO_ARRIBA } from '@/ui/fx/FotoTratada';
 
@@ -64,7 +64,7 @@ export function HeroEjercicio({ ejercicio, y, alto }: {
           </View>
         ) : (
           <View style={s.ficha}>
-            <Clip
+            <ClipEjercicio
               id={ejercicio.id} nombre={ejercicio.name} alto={alto} ancho="100%" forma="tarjeta"
               estilo={{ borderRadius: 0 }}
             />

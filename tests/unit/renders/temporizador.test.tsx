@@ -7,7 +7,7 @@
  *
  * `TIMELINE_SALIDA=archivo.json` guarda la línea de tiempo (así se grabó la de antes).
  */
-import './mocks';
+import { playersVideo } from './mocks';
 import fs from 'fs';
 import path from 'path';
 import { afterEach, describe, expect, it, jest } from '@jest/globals';
@@ -80,6 +80,11 @@ describe('temporizador del reproductor', () => {
 
     const linea: Linea[] = [];
     eventos = [];
+    // Politica de clips (R5): cada segundo, como mucho 1 reproduciendo y 2 vivos (el del
+    // ejercicio en pantalla y el que se deja preparado en el descanso).
+    let maxVivos = 0;
+    let maxReproduciendo = 0;
+    let conPreparado = false;
     for (let s = 1; s <= 300; s++) {
       await esperar(1000);
       if (s === 20) await tocar('onPausa');
@@ -95,6 +100,10 @@ describe('temporizador del reproductor', () => {
       if (s === 140) await emitir('active');
       if (s === 200) await tocar('onPausa');
       if (s === 205) await tocar('onReanudar');
+      const vivos = playersVideo();
+      maxVivos = Math.max(maxVivos, vivos.length);
+      maxReproduciendo = Math.max(maxReproduciendo, vivos.filter(v => v.playing).length);
+      if (estado().fase === 'descanso' && vivos.length === 1 && !vivos[0].playing) conPreparado = true;
       const e = estado();
       linea.push({
         s, fase: e.fase, indice: e.indice, serie: e.serieNum, lado: e.lado, restante: e.restanteS,
@@ -112,6 +121,11 @@ describe('temporizador del reproductor', () => {
     expect(linea[linea.length - 1].transcurrido).toBeGreaterThan(150);
     expect(linea.flatMap(l => l.eventos).some(x => x.startsWith('sonido:cuenta_'))).toBe(true);
     expect(linea.flatMap(l => l.eventos).some(x => x.startsWith('voz:'))).toBe(true);
+
+    // (En Jest el modelo no mide su alto y no monta el clip: aqui solo se ve el preparado.)
+    expect(maxReproduciendo).toBeLessThanOrEqual(1);
+    expect(maxVivos).toBeLessThanOrEqual(2);
+    expect(conPreparado).toBe(true);
 
     const antes = JSON.parse(fs.readFileSync(path.join(__dirname, '../fixtures/temporizador-antes.json'), 'utf8'));
     expect(linea).toEqual(antes);

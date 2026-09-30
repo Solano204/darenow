@@ -16,6 +16,7 @@ import { useHapticosActivos } from '@/state/haptics';
 import { useVozActiva } from '@/state/voz';
 import type { Sesion, ItemSesion } from '@/lib/engine/session';
 import { reproducir } from '@/media/sonido';
+import { prepararClip } from '@/media/players';
 import { useSinAnuncios } from '@/ui/components/RelojAnuncios';
 import { ReproductorLayout } from '@/features/sesion/components/ReproductorLayout';
 import { HojaSalida } from '@/features/sesion/components/HojaSalida';
@@ -62,6 +63,16 @@ export function ReproductorActivo({ sesionInicial, restaurar, navigation }: {
   // Cuenta final hablada: la de siempre (preparate/cambio de lado/trabajo por
   // tiempo) mas el descanso, que se anuncia igual.
   const cuentaHablada = cuentaFinal || cuentaEnDescanso;
+
+  // En el descanso se deja listo (pausado) el clip de lo que viene: la misma serie otra vez o el
+  // siguiente ejercicio, igual que decide la maquina. Asi empieza sin espera en «preparate» (R5).
+  // Al salir del reproductor se suelta.
+  useEffect(() => {
+    if (estado.fase !== 'descanso') return;
+    const it = items[estado.indice];
+    prepararClip((it && estado.serieNum >= it.seriesPlan ? items[estado.indice + 1] : it)?.id);
+  }, [estado.fase, estado.indice, estado.serieNum, items]);
+  useEffect(() => () => prepararClip(null), []);
 
   // Si se sale de la pantalla con la voz a mitad de frase, se corta:
   // nadie quiere seguir oyendo instrucciones de un ejercicio que ya dejo.

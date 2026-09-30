@@ -41,8 +41,20 @@ jest.mock('@shopify/react-native-skia', () => {
   });
 });
 
+// Players de video falsos que se pueden contar (R5): `playersVideo()` da los vivos.
+const mockPlayersVideo = new Set<{ playing: boolean; src: unknown }>();
+export const playersVideo = () => [...mockPlayersVideo];
 jest.mock('expo-video', () => ({
-  useVideoPlayer: () => ({ play() {}, pause() {}, release() {}, addListener: () => ({ remove() {} }) }),
+  createVideoPlayer: (src: unknown) => {
+    const p = {
+      src, playing: false, status: 'idle', loop: false, muted: false, timeUpdateEventInterval: 1,
+      play() { p.playing = true; }, pause() { p.playing = false; },
+      release() { mockPlayersVideo.delete(p); }, replace(s: unknown) { p.src = s; },
+      addListener: () => ({ remove() {} }),
+    };
+    mockPlayersVideo.add(p);
+    return p;
+  },
   VideoView: () => null,
 }));
 jest.mock('expo-haptics', () => new Proxy({}, { get: () => () => Promise.resolve() }));

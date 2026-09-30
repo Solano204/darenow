@@ -52,6 +52,8 @@ function Compuerta({ children }: { children: React.ReactNode }) {
 
 export async function montar(
   Pantalla: React.ComponentType<never>, params: object = {}, estado: Estado = estadoDeEjemplo(),
+  /** Otras pantallas del stack, por nombre de ruta (para navegar desde la de prueba). */
+  otras: Record<string, React.ComponentType<never>> = {},
 ): Promise<ReactTestRenderer> {
   await AsyncStorage.setItem(CLAVE_ESTADO, JSON.stringify(estado));
   await AsyncStorage.setItem(CLAVE_CUENTA, JSON.stringify({ id: 'inv_1', proveedor: 'invitado', nombre: 'Ana' }));
@@ -69,6 +71,9 @@ export async function montar(
                 <NavigationContainer>
                   <Stack.Navigator screenOptions={{ headerShown: false }}>
                     <Stack.Screen name="Prueba" component={Pantalla as React.ComponentType} initialParams={params} />
+                    {Object.entries(otras).map(([nombre, C]) => (
+                      <Stack.Screen key={nombre} name={nombre} component={C as React.ComponentType} />
+                    ))}
                   </Stack.Navigator>
                 </NavigationContainer>
                 </Compuerta>

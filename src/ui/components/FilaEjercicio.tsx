@@ -8,6 +8,8 @@ import { textoDeEquipo, textoVisible } from '@/lib/presentacion';
 import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
 import { useTick } from '@/ui/hooks/useTick';
 import { FotoOscura } from './FotoOscura';
+import { precargar } from './Imagen';
+import { posterFuente } from '@/media/videos';
 import { NivelPlacas } from './NivelPlacas';
 import { EstrellaDe } from './EstrellaFavorito';
 import { contarVeredictos, resumenDeConteos } from './MedidorEvidencia';
@@ -59,7 +61,7 @@ export const FilaEjercicio = React.memo(function FilaEjercicio({ e, onPress }: {
     <View style={s.fila}>
       <Pressable
         style={s.cuerpo}
-        onPressIn={() => { presion.set(withSpring(1, resorteTap)); }}
+        onPressIn={() => { presion.set(withSpring(1, resorteTap)); precargar([posterFuente(e.id)]); }}
         onPressOut={() => { presion.set(withSpring(0, resorteTap)); }}
         onPress={() => onPress(e.id)}
         accessibilityRole="button" accessibilityLabel={etiqueta}

@@ -4,7 +4,7 @@ import Animated, { runOnJS, useAnimatedStyle, useSharedValue, withTiming } from 
 import { easing } from '@/ui/theme';
 import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
 import { useTick } from '@/ui/hooks/useTick';
-import Clip from '@/ui/components/Clip';
+import ClipEjercicio from '@/ui/components/ClipEjercicio';
 import Foto from '@/ui/components/Foto';
 
 /** El modelo: el clip del ejercicio en bucle. Al cambiar de ejercicio el saliente se desliza a la izquierda y el nuevo entra por la derecha. */
@@ -38,7 +38,7 @@ export function ModeloEjercicio({ id, nombre, alto, activo }: { id: string; nomb
   return (
     <View style={StyleSheet.absoluteFill}>
       <Animated.View style={[StyleSheet.absoluteFill, entrante]}>
-        <Clip id={id} nombre={nombre} alto={alto} ancho="100%" forma="tarjeta" activo={activo} />
+        <ClipEjercicio id={id} nombre={nombre} alto={alto} ancho="100%" forma="tarjeta" activo={activo} />
       </Animated.View>
       {saliente && (
         <Animated.View style={[StyleSheet.absoluteFill, saliendo]} pointerEvents="none">

@@ -12,7 +12,7 @@ import { barraBajada } from '@/ui/hooks/useBarraFlotante';
 import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
 import { EJERCICIOS, RUTINAS, PROGRAMAS, MUSCULOS, GOALS } from '@/data/catalog';
 import { useEstadoSel, usePerfil, useRutinasPropias } from '@/state/store';
-import { alternarFavorito, registrarDescarga } from '@/state/acciones';
+import { registrarDescarga } from '@/state/acciones';
 import { ChipFiltro } from '@/ui/components/ChipFiltro';
 import { InterruptorDos } from '@/features/explorar/components/InterruptorDos';
 import { type SegmentoExplorar } from '@/ui/components/EncabezadoExplorar';
@@ -37,7 +37,6 @@ export function useExplorar({ navigation, route }: BottomTabScreenProps<ParamLis
   const perfil = usePerfil();
   const rutinasPropias = useRutinasPropias();
   const descargas = useEstadoSel(e => e.descargas);
-  const favoritos = useEstadoSel(e => e.favoritos);
   const parametro = (route.params as { tab?: SegmentoExplorar } | undefined)?.tab;
   const [tab, setTab] = useState<SegmentoExplorar>(parametro ?? 'ejercicios');
   const [q, setQ] = useState('');
@@ -128,13 +127,12 @@ export function useExplorar({ navigation, route }: BottomTabScreenProps<ParamLis
   const cuantos = { ejercicios: ejercicios.length, rutinas: rutinas.length,
     programas: programas.length, musculos: musculos.length }[tab];
 
-  // Referencias estables: si no, cada tecla en el buscador crea una funcion
-  // nueva por fila y invalida el memo de FilaEjercicio para las 190 filas.
+  // Referencias estables (reciben el id): si no, cada tecla en el buscador crea una funcion
+  // nueva por fila e invalida el memo de las filas. El favorito lo lee cada estrella.
   const onPressEjercicio = useCallback(
     (id: string) => navigation.navigate('Ejercicio', { id }), [navigation]);
-  const onFavEjercicio = useCallback(
-    (id: string) => alternarFavorito('ejercicios', id), []);
-  const favorito = (tipo: 'ejercicios' | 'rutinas' | 'programas') => (id: string) => favoritos[tipo].includes(id);
+  const onPressRutina = useCallback((id: string) => navigation.navigate('Rutina', { id }), [navigation]);
+  const onPressPrograma = useCallback((id: string) => navigation.navigate('Programa', { id }), [navigation]);
 
   // Rutinas propias recien creadas o editadas: al volver a la pestana, su fila entra y se
   // ilumina. Se reconocen por identidad (guardar una rutina crea un objeto nuevo).
@@ -201,9 +199,9 @@ export function useExplorar({ navigation, route }: BottomTabScreenProps<ParamLis
 
 
   return {
-    alternarFavorito, registrarDescarga, tab, q, setQ, cat, setCat, verAnuncio, setVerAnuncio, y,
+    registrarDescarga, tab, q, setQ, cat, setCat, verAnuncio, setVerAnuncio, y,
     foco, esEjercicios, irATab, desbloqueada, ejercicios, rutinas, programas, musculos, cuantos,
-    onPressEjercicio, onFavEjercicio, favorito, entradaSegmento, salidaSegmento, propsLista,
+    onPressEjercicio, onPressRutina, onPressPrograma, entradaSegmento, salidaSegmento, propsLista,
     chipsObjetivo, sinConexion, derecha, cabeceraRutinas,
   };
 }

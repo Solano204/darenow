@@ -11,7 +11,7 @@ import { useTick } from '@/ui/hooks/useTick';
 import { Tocable } from '@/ui/components/Tocable';
 import { FotoOscura } from '@/ui/components/FotoOscura';
 import { DatoNumerico } from '@/ui/components/DatoNumerico';
-import { EstrellaFavorito } from '@/ui/components/EstrellaFavorito';
+import { EstrellaDe } from '@/ui/components/EstrellaFavorito';
 
 const ALTO_FOTO = 180;
 const ESCALA_PRESIONADA = 0.02;
@@ -28,11 +28,10 @@ const HUECO_DE_LA_PILA = 12;
  * de favorito; debajo, titulo, descripcion (2 lineas) y los numeros del programa
  * (semanas, dias por semana y minutos por sesion) con plural correcto.
  */
-export function TarjetaPrograma({ p, favorito, onPress, onFavorito }: {
+export const TarjetaPrograma = React.memo(function TarjetaPrograma({ p, onPress }: {
   p: Programa;
-  favorito: boolean;
-  onPress: () => void;
-  onFavorito: () => void;
+  /** Recibe el id: la misma funcion sirve para todas las tarjetas de la lista. */
+  onPress: (id: string) => void;
 }) {
   const reducido = useReducedMotion();
   const tick = useTick();
@@ -57,7 +56,7 @@ export function TarjetaPrograma({ p, favorito, onPress, onFavorito }: {
           style={[s.capa, { left: c.recoge, right: c.recoge, bottom: HUECO_DE_LA_PILA - c.asoma }, estilosCapa[i]]}
         />
       ))}
-      <Tocable onPress={onPress} etiqueta={etiqueta} presion={presion} escala={ESCALA_PRESIONADA} estilo={s.tarjeta}>
+      <Tocable onPress={() => onPress(p.id)} etiqueta={etiqueta} presion={presion} escala={ESCALA_PRESIONADA} estilo={s.tarjeta}>
         <FotoOscura
           tipo="programa" id={p.id} ancho="100%" alto={ALTO_FOTO} radioEsquina={0}
           alturaVelo="25%" fondoVelo={paleta.gomaAlta}
@@ -73,11 +72,11 @@ export function TarjetaPrograma({ p, favorito, onPress, onFavorito }: {
         </View>
       </Tocable>
       <View style={s.estrella}>
-        <EstrellaFavorito activo={favorito} onPress={onFavorito} nombre={nombre} />
+        <EstrellaDe tipo="programas" id={p.id} nombre={nombre} />
       </View>
     </View>
   );
-}
+});
 
 const s = StyleSheet.create({
   caja: { marginBottom: 16, paddingBottom: HUECO_DE_LA_PILA },

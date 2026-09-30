@@ -17,15 +17,16 @@ const ALTO_FOTO = 120;
  * muestra su nivel en placas (se ve de un vistazo si es mas facil o mas dificil);
  * un sustituto, un icono de intercambio. Al presionar se hunde y da un toque suave.
  */
-export function TarjetaAlternativa({ e, clase, onPress }: {
+export const TarjetaAlternativa = React.memo(function TarjetaAlternativa({ e, clase, onPress }: {
   e: EjercicioIndice;
   clase: 'nivel' | 'intercambio';
-  onPress: () => void;
+  /** Recibe el id: la misma funcion sirve para todas las tarjetas de la fila. */
+  onPress: (id: string) => void;
 }) {
   const nombre = textoVisible(e.name);
   return (
     <Tocable
-      onPress={onPress} estilo={{ width: ANCHO_ALTERNATIVA }}
+      onPress={() => onPress(e.id)} estilo={s.ancho}
       etiqueta={clase === 'nivel' ? `${nombre}, nivel ${e.level} de 3` : `${nombre}, sustituto`}
     >
       <FotoOscura tipo="ejercicio" id={e.id} ancho={ANCHO_ALTERNATIVA} alto={ALTO_FOTO} radioEsquina={20} />
@@ -42,9 +43,10 @@ export function TarjetaAlternativa({ e, clase, onPress }: {
       </View>
     </Tocable>
   );
-}
+});
 
 const s = StyleSheet.create({
+  ancho: { width: ANCHO_ALTERNATIVA },
   nombre: { fontFamily: familia.enfasis, fontSize: 15, lineHeight: 20, color: paleta.magnesia, marginTop: 10 },
   indicador: { flexDirection: 'row', alignItems: 'flex-end', gap: 8, marginTop: 6, minHeight: 18 },
   nivel: { fontFamily: familia.medio, fontSize: 13, lineHeight: 18, color: paleta.magnesia2 },

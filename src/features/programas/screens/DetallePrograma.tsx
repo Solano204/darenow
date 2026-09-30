@@ -32,8 +32,8 @@ import { MAX_PLACAS } from '@/ui/components/disposicionMapa';
 import { programaPorId, rutinaPorId } from '@/data/catalog';
 import { nombreVisible } from '@/data/nombresVisibles';
 import { fuente } from '@/media/registry';
-import { useEstadoSel, useFavoritos } from '@/state/store';
-import { guardarPerfil, alternarFavorito } from '@/state/acciones';
+import { useEstadoSel } from '@/state/store';
+import { guardarPerfil } from '@/state/acciones';
 import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
 import { textoVisible } from '@/lib/presentacion';
 import {
@@ -61,7 +61,6 @@ export default function DetallePrograma({ route, navigation }: Props) {
   const onScroll = useAnimatedScrollHandler(e => { y.set(e.contentOffset.y); });
   const programaId = useEstadoSel(e => e.perfil.programaId);
   const semanaPrograma = useEstadoSel(e => e.semanaPrograma);
-  const favoritosProgramas = useFavoritos('programas');
   const [hoja, setHoja] = useState(false);
   const [resaltar, setResaltar] = useState({ indice: -1, n: 0 });
 
@@ -156,8 +155,7 @@ export default function DetallePrograma({ route, navigation }: Props) {
       </Animated.ScrollView>
 
       <BarraSuperiorColapsable
-        y={y} alturaHero={alturaHero} nombre={nombre} favorito={favoritosProgramas.includes(p.id)}
-        onFavorito={() => alternarFavorito('programas', p.id)} onAtras={() => navigation.goBack()}
+        y={y} alturaHero={alturaHero} nombre={nombre} favoritoDe={{ tipo: 'programas', id: p.id }} onAtras={() => navigation.goBack()}
       />
 
       <BarraInferiorFija>

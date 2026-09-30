@@ -48,6 +48,10 @@ export function ListaMitos({ mitos, propsLista, onPress, onAbrirRelacionado }: {
     setActivas(previa => ({ ...previa, ...Object.fromEntries(entradas) }));
   }, []);
 
+  const renderItem = useCallback(({ item }: ListRenderItemInfo<Mito>) => (
+    <FilaMito mito={item} activacion={activas[item.id]} animar={!previas.has(item.id)} onPress={onPress} />
+  ), [activas, previas, onPress]);
+
   return (
     <Animated.FlatList
       {...PROPS_FIJAS} {...propsLista}
@@ -65,9 +69,7 @@ export function ListaMitos({ mitos, propsLista, onPress, onAbrirRelacionado }: {
       )}
       ListEmptyComponent={<TextoVacio texto="Ningún mito coincide. Prueba con otra palabra." />}
       ListFooterComponent={<View style={s.pie}><BloqueErrores onAbrir={onAbrirRelacionado} /></View>}
-      renderItem={({ item }: ListRenderItemInfo<Mito>) => (
-        <FilaMito mito={item} activacion={activas[item.id]} animar={!previas.has(item.id)} onPress={onPress} />
-      )}
+      renderItem={renderItem}
     />
   );
 }

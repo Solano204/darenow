@@ -37,9 +37,9 @@ const UNIDADES: Record<SegmentoExplorar, [singular: string, plural: string]> = {
 // se ve la version corta y el lector de pantalla oye la completa.
 export default function Explorar({ navigation, route }: BottomTabScreenProps<ParamListBase, 'Explorar'>) {
   const {
-    alternarFavorito, registrarDescarga, tab, q, setQ, cat, setCat, verAnuncio, setVerAnuncio, y,
+    registrarDescarga, tab, q, setQ, cat, setCat, verAnuncio, setVerAnuncio, y,
     foco, esEjercicios, irATab, desbloqueada, ejercicios, rutinas, programas, musculos, cuantos,
-    onPressEjercicio, onFavEjercicio, favorito, entradaSegmento, salidaSegmento, propsLista,
+    onPressEjercicio, onPressRutina, onPressPrograma, entradaSegmento, salidaSegmento, propsLista,
     chipsObjetivo, sinConexion, derecha, cabeceraRutinas,
   } = useExplorar({ navigation, route });
   return (
@@ -79,20 +79,17 @@ export default function Explorar({ navigation, route }: BottomTabScreenProps<Par
         <Animated.View key={tab} style={s.pantalla} entering={entradaSegmento} exiting={salidaSegmento}>
           {tab === 'ejercicios' && (
             <ListaEjercicios
-              ejercicios={ejercicios} propsLista={propsLista} favorito={favorito('ejercicios')}
-              onFav={onFavEjercicio} onPress={onPressEjercicio}
+              ejercicios={ejercicios} propsLista={propsLista} onPress={onPressEjercicio}
             />
           )}
           {tab === 'rutinas' && (
             <ListaRutinas
-              rutinas={rutinas} cabecera={cabeceraRutinas} propsLista={propsLista} scrollY={y} favorito={favorito('rutinas')}
-              onFav={id => alternarFavorito('rutinas', id)} onPress={id => navigation.navigate('Rutina', { id })}
+              rutinas={rutinas} cabecera={cabeceraRutinas} propsLista={propsLista} scrollY={y} onPress={onPressRutina}
             />
           )}
           {tab === 'programas' && (
             <ListaProgramas
-              programas={programas} propsLista={propsLista} favorito={favorito('programas')}
-              onFav={id => alternarFavorito('programas', id)} onPress={id => navigation.navigate('Programa', { id })}
+              programas={programas} propsLista={propsLista} onPress={onPressPrograma}
             />
           )}
           {tab === 'musculos' && (

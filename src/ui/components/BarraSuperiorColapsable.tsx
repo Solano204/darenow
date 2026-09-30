@@ -9,7 +9,8 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { paleta, conAlfa, familia, haptico } from '@/ui/theme';
 import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
 import { useTick } from '@/ui/hooks/useTick';
-import { EstrellaFavorito } from './EstrellaFavorito';
+import { EstrellaDe } from './EstrellaFavorito';
+import type { Favoritos } from '@/state/store';
 
 const LADO_BOTON = 44;
 const ALTO_BARRA = 52;
@@ -25,13 +26,12 @@ const DESPLAZA_TITULO_PX = 8;
  * el nombre del ejercicio al centro (fundido y 8 px), y los botones pierden su
  * fondo circular. Con movimiento reducido la barra aparece en un solo paso.
  */
-export function BarraSuperiorColapsable({ y, alturaHero, nombre, favorito = false, onFavorito, onAtras, children }: {
+export function BarraSuperiorColapsable({ y, alturaHero, nombre, favoritoDe, onAtras, children }: {
   y: SharedValue<number>;
   alturaHero: number;
   nombre: string;
-  favorito?: boolean;
-  /** Sin el, no hay estrella (un mito no se guarda en favoritos). */
-  onFavorito?: () => void;
+  /** El favorito que marca la estrella (la estrella lo lee y lo cambia). Sin el, no hay estrella (un mito no se guarda). */
+  favoritoDe?: { tipo: keyof Favoritos; id: string };
   onAtras: () => void;
   /** Lo que va pegado al borde inferior de la barra y aparece con ella (la linea de progreso de lectura). */
   children?: React.ReactNode;
@@ -79,8 +79,8 @@ export function BarraSuperiorColapsable({ y, alturaHero, nombre, favorito = fals
           {nombre}
         </Animated.Text>
 
-        {onFavorito ? (
-          <EstrellaFavorito activo={favorito} onPress={onFavorito} nombre={nombre} lado={LADO_BOTON} fondo={sinFondo} />
+        {favoritoDe ? (
+          <EstrellaDe tipo={favoritoDe.tipo} id={favoritoDe.id} nombre={nombre} lado={LADO_BOTON} fondo={sinFondo} />
         ) : <View style={s.boton} />}
       </View>
     </View>

@@ -8,6 +8,8 @@ import { paleta, conAlfa, resortePlaca, haptico } from '@/ui/theme';
 import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
 import { useTick } from '@/ui/hooks/useTick';
 import { useMiniMagnesia } from '@/ui/fx/MiniMagnesia';
+import { useEsFavorito, type Favoritos } from '@/state/store';
+import { alternarFavorito } from '@/state/acciones';
 
 const LADO = 40;
 const SOBREIMPULSO = 1.2;
@@ -15,14 +17,7 @@ const ENCOGE_AL_QUITAR = 0.85;
 const TAMANO_ICONO = 20;
 const SALIDA_MS = 140;
 
-/**
- * Estrella de favorito sobre una foto (40 px, `goma` al 70 %). El contorno
- * siempre esta; al marcarla se llena (escala 0 a 1.2 a 1 con `resortePlaca`) y
- * suelta una nube pequena de magnesia. Al quitarla se vacia (1 a 0.85 a 1) sin
- * particulas. El estado y el efecto sobre los datos son los de siempre:
- * `onPress` alterna el favorito y `activo` viene del almacen.
- */
-export function EstrellaFavorito({ activo, onPress, nombre, lado = LADO, fondo, sinFondo, tamanoIcono = TAMANO_ICONO, contorno = paleta.magnesia }: {
+type PropsEstrella = {
   activo: boolean;
   onPress: () => void;
   nombre: string;
@@ -36,7 +31,27 @@ export function EstrellaFavorito({ activo, onPress, nombre, lado = LADO, fondo, 
   tamanoIcono?: number;
   /** Color del contorno cuando no esta marcada (el relleno siempre es `magnesia`). */
   contorno?: string;
-}) {
+};
+
+/**
+ * La estrella de un elemento del catalogo: lee y cambia SU favorito en la tienda. Al marcarlo solo
+ * se re-renderiza esta estrella; la fila, la lista y la pantalla no se enteran (R4).
+ */
+export const EstrellaDe = React.memo(function EstrellaDe({ tipo, id, ...resto }: {
+  tipo: keyof Favoritos; id: string;
+} & Omit<PropsEstrella, 'activo' | 'onPress'>) {
+  const activo = useEsFavorito(tipo, id);
+  return <EstrellaFavorito {...resto} activo={activo} onPress={() => alternarFavorito(tipo, id)} />;
+});
+
+/**
+ * Estrella de favorito sobre una foto (40 px, `goma` al 70 %). El contorno
+ * siempre esta; al marcarla se llena (escala 0 a 1.2 a 1 con `resortePlaca`) y
+ * suelta una nube pequena de magnesia. Al quitarla se vacia (1 a 0.85 a 1) sin
+ * particulas. El estado y el efecto sobre los datos son los de siempre:
+ * `onPress` alterna el favorito y `activo` viene del almacen.
+ */
+export function EstrellaFavorito({ activo, onPress, nombre, lado = LADO, fondo, sinFondo, tamanoIcono = TAMANO_ICONO, contorno = paleta.magnesia }: PropsEstrella) {
   const reducido = useReducedMotion();
   const tick = useTick();
   const { ref: magnesiaRef, disparar: dispararMagnesia } = useMiniMagnesia();

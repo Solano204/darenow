@@ -14,7 +14,8 @@ import { FotoOscura } from '@/ui/components/FotoOscura';
 import { NivelPlacas } from '@/ui/components/NivelPlacas';
 import { contarVeredictos, resumenDeConteos } from '@/ui/components/MedidorEvidencia';
 import { MiniMedidorEvidencia } from '@/ui/components/MiniMedidorEvidencia';
-import { EstrellaFavorito } from '@/ui/components/EstrellaFavorito';
+import { EstrellaDe } from '@/ui/components/EstrellaFavorito';
+import type { Favoritos } from '@/state/store';
 
 export const ANCHO_EJERCICIO_MINI = 150;
 export const ALTO_EJERCICIO_MINI = 120;
@@ -24,7 +25,7 @@ export const ALTO_ARTICULO = 130;
 
 /** Tarjeta comun de las filas de descubrimiento: foto tratada, titulo completo y, si se pide, estrella y un pie. */
 function TarjetaFoto({
-  tipoFoto, id, ancho, altoFoto, radioFoto, titulo, estiloTitulo, lineas, pie, favorito, onFavorito, onPress, etiqueta,
+  tipoFoto, id, ancho, altoFoto, radioFoto, titulo, estiloTitulo, lineas, pie, favoritoDe, onPress, etiqueta,
 }: {
   tipoFoto: TipoFoto;
   id: string;
@@ -35,8 +36,8 @@ function TarjetaFoto({
   estiloTitulo: StyleProp<TextStyle>;
   lineas: number;
   pie?: React.ReactNode;
-  favorito?: boolean;
-  onFavorito?: () => void;
+  /** Con estrella: el tipo de favorito (la estrella lee y cambia el del `id`). */
+  favoritoDe?: keyof Favoritos;
   onPress: () => void;
   etiqueta: string;
 }) {
@@ -47,8 +48,8 @@ function TarjetaFoto({
         <Text style={[s.titulo, estiloTitulo]} numberOfLines={lineas}>{titulo}</Text>
         {pie}
       </Tocable>
-      {onFavorito ? (
-        <View style={s.estrella}><EstrellaFavorito activo={!!favorito} onPress={onFavorito} nombre={titulo} /></View>
+      {favoritoDe ? (
+        <View style={s.estrella}><EstrellaDe tipo={favoritoDe} id={id} nombre={titulo} /></View>
       ) : null}
     </View>
   );
@@ -60,9 +61,7 @@ function TarjetaFoto({
  * el mini medidor de evidencia de Explorar (32x4, un segmento por veredicto) si el
  * ejercicio tiene afirmaciones.
  */
-export function TarjetaEjercicioMini({ e, favorito, onPress, onFavorito }: {
-  e: EjercicioIndice; favorito: boolean; onPress: () => void; onFavorito: () => void;
-}) {
+export const TarjetaEjercicioMini = React.memo(function TarjetaEjercicioMini({ e, onPress }: { e: EjercicioIndice; onPress: (id: string) => void }) {
   const nombre = nombreVisible(e.name);
   const categoria = CATEGORIAS.find(c => c.id === e.category)?.nombre ?? e.category;
   const conteos = useMemo(() => contarVeredictos(evidenciaDe(e).mapa), [e]);
@@ -80,37 +79,35 @@ export function TarjetaEjercicioMini({ e, favorito, onPress, onFavorito }: {
           <MiniMedidorEvidencia conteos={conteos} />
         </View>
       )}
-      favorito={favorito} onFavorito={onFavorito}
-      onPress={onPress} etiqueta={`${nombre}, ${categoria}, nivel ${e.level} de 3${evidencia ? `. Evidencia: ${evidencia}` : ''}`}
+      favoritoDe="ejercicios"
+      onPress={() => onPress(e.id)} etiqueta={`${nombre}, ${categoria}, nivel ${e.level} de 3${evidencia ? `. Evidencia: ${evidencia}` : ''}`}
     />
   );
-}
+});
 
 /**
  * Ficha de un musculo: cuadrada de 112 con radio 24 y el nombre debajo, completo
  * (hasta 2 lineas). Si el musculo trabaja en la sesion de hoy y existe `<id>_hoy`
  * (la version con el musculo resaltado, ver `docs/IMAGENES.md`), se usa esa imagen.
  */
-export function FichaMusculo({ m, trabajaHoy, onPress }: { m: MusculoIndice; trabajaHoy: boolean; onPress: () => void }) {
+export const FichaMusculo = React.memo(function FichaMusculo({ m, trabajaHoy, onPress }: { m: MusculoIndice; trabajaHoy: boolean; onPress: (id: string) => void }) {
   const idFoto = trabajaHoy && fuente('musculo', `${m.id}_hoy`) ? `${m.id}_hoy` : m.id;
   const nombre = nombreVisible(m.name);
   return (
     <TarjetaFoto
       tipoFoto="musculo" id={idFoto} ancho={LADO_MUSCULO} altoFoto={LADO_MUSCULO} radioFoto={24}
       titulo={nombre} estiloTitulo={s.tituloChico} lineas={2}
-      onPress={onPress} etiqueta={trabajaHoy ? `${nombre}, se trabaja hoy` : nombre}
+      onPress={() => onPress(m.id)} etiqueta={trabajaHoy ? `${nombre}, se trabaja hoy` : nombre}
     />
   );
-}
+});
 
 /**
  * Articulo de «Para leer hoy» (240 de ancho): foto de 240x130, la categoria en tipo oracion con el icono de su sala
  * (el mismo de Aprender) y el titulo en Big Shoulders, hasta 3 lineas. Lo que dice y el icono salen de los mismos
  * ayudantes que la tarjeta de Aprender, para que un articulo se lea igual en las dos pestanas.
  */
-export function TarjetaArticulo({ t, favorito, onPress, onFavorito }: {
-  t: TipIndice; favorito: boolean; onPress: () => void; onFavorito: () => void;
-}) {
+export const TarjetaArticulo = React.memo(function TarjetaArticulo({ t, onPress }: { t: TipIndice; onPress: (id: string) => void }) {
   const titulo = textoVisible(t.titulo);
   const categoria = nombreDeSala(t.sala);
   return (
@@ -123,11 +120,11 @@ export function TarjetaArticulo({ t, favorito, onPress, onFavorito }: {
           <Text style={s.categoria} numberOfLines={1}>{categoria}</Text>
         </View>
       ) : undefined}
-      favorito={favorito} onFavorito={onFavorito}
-      onPress={onPress} etiqueta={categoria ? `${titulo}, ${categoria}` : titulo}
+      favoritoDe="tips"
+      onPress={() => onPress(t.id)} etiqueta={categoria ? `${titulo}, ${categoria}` : titulo}
     />
   );
-}
+});
 
 const s = StyleSheet.create({
   titulo: { color: paleta.magnesia, marginTop: 10 },

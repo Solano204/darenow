@@ -11,7 +11,7 @@ import { useTick } from '@/ui/hooks/useTick';
 import { Tocable } from '@/ui/components/Tocable';
 import { FotoOscura } from '@/ui/components/FotoOscura';
 import { TextoDesvanecido } from '@/ui/components/TextoDesvanecido';
-import { EstrellaFavorito } from '@/ui/components/EstrellaFavorito';
+import { EstrellaDe } from '@/ui/components/EstrellaFavorito';
 
 const ALTO_FOTO_ARTICULO = 170;
 const ZOOM_PRESIONADO = 0.04;
@@ -23,13 +23,12 @@ const ALTO_LINEA_EXTRACTO = 22;
  * abajo y la estrella de favorito arriba a la derecha. Debajo, la categoria en tipo oracion con su
  * icono, el titulo (hasta 3 lineas) y el extracto en dos lineas, cuya segunda se desvanece hacia la
  * derecha en vez de cortarse con puntos suspensivos. Al presionar se hunde un 2 %, la foto hace
- * zoom a 1.04 y da un toque suave. Memoizada: `onPress` y `onFav` toman el id y llegan estables.
+ * zoom a 1.04 y da un toque suave. Memoizada: `onPress` toma el id y llega estable; la estrella
+ * lee su propio favorito.
  */
-export const TarjetaArticulo = React.memo(function TarjetaArticulo({ tip, favorito, onPress, onFav }: {
+export const TarjetaArticulo = React.memo(function TarjetaArticulo({ tip, onPress }: {
   tip: Tip;
-  favorito: boolean;
   onPress: (id: string) => void;
-  onFav: (id: string) => void;
 }) {
   const reducido = useReducedMotion();
   const tick = useTick();
@@ -63,7 +62,7 @@ export const TarjetaArticulo = React.memo(function TarjetaArticulo({ tip, favori
         </View>
       </Tocable>
       <View style={s.estrella}>
-        <EstrellaFavorito activo={favorito} onPress={() => onFav(tip.id)} nombre={titulo} />
+        <EstrellaDe tipo="tips" id={tip.id} nombre={titulo} />
       </View>
     </View>
   );

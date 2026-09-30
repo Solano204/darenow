@@ -34,13 +34,13 @@ const AIRE_AL_IR_A_BLOQUE_PX = 32;
  * nombre de un tramo del perfil lleva hasta su bloque.
  */
 export function PlantillaRutina({
-  nombre, foto, favorito, onFavorito, onAtras, meta, junto, antes, bloques, onAbrir, despues, barraInferior,
+  nombre, foto, idFavorito, onAtras, meta, junto, antes, bloques, onAbrir, despues, barraInferior,
 }: {
   nombre: string;
   /** La foto de la rutina (la fuente de la imagen) o `null`. */
   foto: number | null;
-  favorito: boolean;
-  onFavorito: () => void;
+  /** La rutina que marca la estrella (la estrella lee y cambia su favorito). */
+  idFavorito: string;
   onAtras: () => void;
   meta: React.ReactNode;
   /** Va a la derecha del nombre (el lapiz de editar de una rutina propia). */
@@ -145,7 +145,7 @@ export function PlantillaRutina({
       )}
 
       <BarraSuperiorColapsable
-        y={y} alturaHero={alturaHero} nombre={nombre} favorito={favorito} onFavorito={onFavorito} onAtras={onAtras}
+        y={y} alturaHero={alturaHero} nombre={nombre} favoritoDe={{ tipo: 'rutinas', id: idFavorito }} onAtras={onAtras}
       />
 
       <BarraInferiorFija>{barraInferior}</BarraInferiorFija>

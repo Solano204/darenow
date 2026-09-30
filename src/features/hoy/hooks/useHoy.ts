@@ -10,7 +10,6 @@ import { type RutinaHoy } from '@/features/hoy/components/TarjetaRutina';
 import {
   useEstadoSel, usePerfil, useSesiones, useRutinasPropias, estadisticas, ultimos7, hoy, imagenRutina, ultimaVezEn,
 } from '@/state/store';
-import { alternarFavorito } from '@/state/acciones';
 import { armarSesion, sesionDeRutina, minutosPropios, type Perfil } from '@/lib/engine/session';
 import {
   RUTINAS, PROGRAMAS, EJERCICIOS, MUSCULOS, TIPS, programaPorId, nombreGoal,
@@ -30,10 +29,8 @@ export function useHoy({ navigation }: { navigation: NavigationProp<ParamListBas
   const perfil = usePerfil();
   const sesiones = useSesiones();
   const racha = useEstadoSel(e => e.racha);
-  const favoritos = useEstadoSel(e => e.favoritos);
   const semanaPrograma = useEstadoSel(e => e.semanaPrograma);
   const rutinasPropias = useRutinasPropias();
-  const esFavorito = (tipo: keyof typeof favoritos, id: string) => (favoritos[tipo] ?? []).includes(id);
   // El «la ultima vez» de cada ejercicio sale de las sesiones: cambia cuando se guarda una.
   const ultimaVezDe = useCallback((id: string) => ultimaVezEn(sesiones, id), [sesiones]);
 
@@ -96,7 +93,8 @@ export function useHoy({ navigation }: { navigation: NavigationProp<ParamListBas
       ...PROGRAMAS.filter(p => p.goal === perfil.objetivo),
       ...PROGRAMAS.filter(p => p.goal !== perfil.objetivo),
     ];
-    return orden.filter(p => !vistos.has(p.id) && vistos.add(p.id)).slice(0, 4);
+    return orden.filter(p => !vistos.has(p.id) && vistos.add(p.id)).slice(0, 4)
+      .map(p => ({ id: p.id, nombre: p.name, semanas: p.semanas }));
   }, [perfil.objetivo]);
 
   const ejercicios = useMemo(() => {
@@ -138,6 +136,13 @@ export function useHoy({ navigation }: { navigation: NavigationProp<ParamListBas
   const irAExplorar = (tab?: 'rutinas' | 'programas' | 'ejercicios' | 'musculos') => navigation.navigate(
     'Tabs', tab ? { screen: 'Explorar', merge: true, params: { tab } } : { screen: 'Explorar' },
   );
+  // Una funcion por tipo, igual para todas las tarjetas (reciben el id): las tarjetas son memo.
+  const abrirRutina = useCallback((r: RutinaHoy) => navigation.navigate(r.id.startsWith('mi_') ? 'RutinaPropia' : 'Rutina', { id: r.id }), [navigation]);
+  const abrirPrograma = useCallback((id: string) => navigation.navigate('Programa', { id }), [navigation]);
+  const abrirEjercicio = useCallback((id: string) => navigation.navigate('Ejercicio', { id }), [navigation]);
+  const abrirMusculo = useCallback((id: string) => navigation.navigate('Musculo', { id }), [navigation]);
+  const abrirTip = useCallback((id: string) => navigation.navigate('Tip', { id }), [navigation]);
+
   const irAAprender = () => navigation.navigate('Tabs', { screen: 'Aprender' });
 
   const empezar = () => navigation.navigate('Reproductor', { sesion });
@@ -149,9 +154,9 @@ export function useHoy({ navigation }: { navigation: NavigationProp<ParamListBas
 
 
   return {
-    abajo, inset, y, onScroll, semanaPrograma, alternarFavorito, esFavorito, perfil, racha, refrescando,
+    abajo, inset, y, onScroll, semanaPrograma, perfil, racha, refrescando,
     stats, semana, entrenoHoy, programa, sesion, avisosSesion, sinEjercicios, rutinas, programas,
     ejercicios, musculosDeHoy, musculos, tips, sello, refrescar, irAExplorar, irAAprender, empezar,
-    cincoMinutos,
+    cincoMinutos, abrirRutina, abrirPrograma, abrirEjercicio, abrirMusculo, abrirTip,
   };
 }

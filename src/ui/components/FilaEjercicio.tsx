@@ -9,7 +9,7 @@ import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
 import { useTick } from '@/ui/hooks/useTick';
 import { FotoOscura } from './FotoOscura';
 import { NivelPlacas } from './NivelPlacas';
-import { EstrellaFavorito } from './EstrellaFavorito';
+import { EstrellaDe } from './EstrellaFavorito';
 import { contarVeredictos, resumenDeConteos } from './MedidorEvidencia';
 import { MiniMedidorEvidencia } from './MiniMedidorEvidencia';
 
@@ -31,14 +31,12 @@ const ALTO_NIVEL = 12;
  * favorito (44 de area, 22 de glifo). El separador empieza despues de la miniatura. Al presionar, un fondo
  * `gomaAlta` al 60 % cubre la fila y la miniatura se hunde a 0.96.
  *
- * Memoizada: cada tecla en el buscador re-renderiza `Explorar` y sin esto React
- * reconciliaria las filas montadas aunque ninguna cambie. `onFav` y `onPress` toman el
- * id y llegan estables desde el padre.
+ * Memoizada: la lista se re-renderiza al filtrar y sin esto React reconciliaria las filas
+ * montadas aunque ninguna cambie. `onPress` toma el id y llega estable desde el padre; la
+ * estrella lee su propio favorito (`EstrellaDe`), asi que marcarlo no re-renderiza la fila.
  */
-export const FilaEjercicio = React.memo(function FilaEjercicio({ e, favorito, onFav, onPress }: {
+export const FilaEjercicio = React.memo(function FilaEjercicio({ e, onPress }: {
   e: EjercicioIndice;
-  favorito: boolean;
-  onFav: (id: string) => void;
   onPress: (id: string) => void;
 }) {
   const reducido = useReducedMotion();
@@ -82,8 +80,8 @@ export const FilaEjercicio = React.memo(function FilaEjercicio({ e, favorito, on
         </View>
       </Pressable>
       <View style={s.estrella}>
-        <EstrellaFavorito
-          activo={favorito} onPress={() => onFav(e.id)} nombre={nombre}
+        <EstrellaDe
+          tipo="ejercicios" id={e.id} nombre={nombre}
           lado={LADO_ESTRELLA} tamanoIcono={TAMANO_ESTRELLA} sinFondo contorno={paleta.magnesia3}
         />
       </View>

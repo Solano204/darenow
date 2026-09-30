@@ -9,7 +9,7 @@ import { Tocable } from '@/ui/components/Tocable';
 import { FotoOscura } from '@/ui/components/FotoOscura';
 import { InsigniaFoto } from '@/ui/components/InsigniaFoto';
 import { Huella } from '@/ui/fx/Huella';
-import { EstrellaFavorito } from '@/ui/components/EstrellaFavorito';
+import { EstrellaDe } from '@/ui/components/EstrellaFavorito';
 import { BarraRutina } from '@/ui/components/BarraRutinaTarjeta';
 import type { Progreso } from '@/ui/fx/CarruselProfundidad';
 
@@ -43,12 +43,11 @@ export interface RutinaHoy {
  * ejercicios y, si ya se hicieron, una huella de 12 px. Al presionar se hunde un
  * 3 % y la foto hace un zoom de 1.04.
  */
-export function TarjetaRutina({ r, progreso, favorito, onPress, onFavorito }: {
+export const TarjetaRutina = React.memo(function TarjetaRutina({ r, progreso, onPress }: {
   r: RutinaHoy;
   progreso: Progreso;
-  favorito: boolean;
-  onPress: () => void;
-  onFavorito: () => void;
+  /** Recibe la rutina: la misma funcion sirve para todas las tarjetas del carrusel. */
+  onPress: (r: RutinaHoy) => void;
 }) {
   const reducido = useReducedMotion();
   const tick = useTick();
@@ -69,7 +68,7 @@ export function TarjetaRutina({ r, progreso, favorito, onPress, onFavorito }: {
 
   return (
     <View style={s.caja}>
-      <Tocable onPress={onPress} etiqueta={etiqueta} presion={presion}>
+      <Tocable onPress={() => onPress(r)} etiqueta={etiqueta} presion={presion}>
         <View>
           <FotoOscura
             tipo="rutina" id={r.imagenId ?? r.id} ancho={ANCHO_TARJETA_RUTINA} alto={ALTO_FOTO_RUTINA}
@@ -89,11 +88,11 @@ export function TarjetaRutina({ r, progreso, favorito, onPress, onFavorito }: {
         ) : null}
       </Tocable>
       <View style={s.estrella}>
-        <EstrellaFavorito activo={favorito} onPress={onFavorito} nombre={nombre} />
+        <EstrellaDe tipo="rutinas" id={r.id} nombre={nombre} />
       </View>
     </View>
   );
-}
+});
 
 const s = StyleSheet.create({
   caja: { width: ANCHO_TARJETA_RUTINA },

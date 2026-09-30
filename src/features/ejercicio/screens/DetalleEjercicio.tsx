@@ -7,7 +7,7 @@
  * `docs/FUNCIONALIDAD.md`, seccion 14); cambia como se ve y se mueve.
  */
 
-import React from 'react';
+import React, { useCallback } from 'react';
 import { FlatList, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 import Animated, { useAnimatedScrollHandler, useSharedValue } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -31,8 +31,8 @@ import { RejillaDetalles } from '@/features/ejercicio/components/RejillaDetalles
 import { TarjetaAlternativa, ANCHO_ALTERNATIVA } from '@/features/ejercicio/components/TarjetaAlternativa';
 import { TituloSeccion } from '@/ui/components/TituloSeccion';
 import { porId, getEjercicio, musculoPorId, familiaPorId, evidenciaDe, type EjercicioIndice } from '@/data/catalog';
-import { useEstadoSel, useEsFavorito } from '@/state/store';
-import { alternarVeto, alternarFavorito } from '@/state/acciones';
+import { useEstadoSel } from '@/state/store';
+import { alternarVeto } from '@/state/acciones';
 import { textoVisible } from '@/lib/presentacion';
 
 const ALTO_HERO_FRACCION = 0.46;
@@ -52,7 +52,6 @@ export default function DetalleEjercicio({ route, navigation }: Props) {
   const idEjercicio = (route.params as { id: string }).id;
   const vetos = useEstadoSel(x => x.perfil.vetos);
   const contraPerfil = useEstadoSel(x => x.perfil.contra);
-  const favorito = useEsFavorito('ejercicios', idEjercicio);
 
   const e = getEjercicio(idEjercicio);
   if (!e) return null;
@@ -193,7 +192,7 @@ export default function DetalleEjercicio({ route, navigation }: Props) {
 
       <BarraSuperiorColapsable
         y={y} alturaHero={alturaHero} nombre={textoVisible(e.name)}
-        favorito={favorito} onFavorito={() => alternarFavorito('ejercicios', e.id)}
+        favoritoDe={{ tipo: 'ejercicios', id: e.id }}
         onAtras={() => navigation.goBack()}
       />
     </View>
@@ -205,6 +204,10 @@ function Alternativas({ titulo, ayuda, ids, clase, abrir }: {
   titulo: string; ayuda: string; ids: string[]; clase: 'nivel' | 'intercambio'; abrir: (id: string) => void;
 }) {
   const items = ids.map(i => porId.get(i)).filter((x): x is EjercicioIndice => !!x);
+  const renderItem = useCallback(
+    ({ item }: { item: EjercicioIndice }) => <TarjetaAlternativa e={item} clase={clase} onPress={abrir} />,
+    [clase, abrir],
+  );
   if (!items.length) return null;
   return (
     <View style={s.seccionLibre}>
@@ -213,7 +216,7 @@ function Alternativas({ titulo, ayuda, ids, clase, abrir }: {
         data={items} keyExtractor={x => x.id} horizontal showsHorizontalScrollIndicator={false}
         contentContainerStyle={s.fila}
         getItemLayout={(_, i) => ({ length: ANCHO_ALTERNATIVA, offset: (ANCHO_ALTERNATIVA + SEPARACION_TARJETAS) * i, index: i })}
-        renderItem={({ item }) => <TarjetaAlternativa e={item} clase={clase} onPress={() => abrir(item.id)} />}
+        renderItem={renderItem}
       />
     </View>
   );

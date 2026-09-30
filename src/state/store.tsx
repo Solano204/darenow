@@ -60,9 +60,6 @@ export const usePerfil = (): PerfilUsuario => useTienda(s => s.estado.perfil);
 export const useSesiones = (): SesionGuardada[] => useTienda(s => s.estado.sesiones);
 export const useRutinasPropias = (): RutinaPropia[] => useTienda(s => s.estado.rutinasPropias);
 
-/** Los favoritos de un tipo (para una lista: cada fila recibe su booleano). */
-export const useFavoritos = (tipo: keyof Favoritos): string[] => useTienda(s => s.estado.favoritos[tipo] ?? VACIO);
-
 /** Si un elemento es favorito. Solo re-renderiza cuando cambia ESTE elemento. */
 export const useEsFavorito = (tipo: keyof Favoritos, id: string): boolean =>
   useTienda(s => (s.estado.favoritos[tipo] ?? VACIO).includes(id));

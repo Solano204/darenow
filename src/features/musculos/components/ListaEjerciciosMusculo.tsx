@@ -28,13 +28,11 @@ export function TituloEjercicios() {
  * secundarios, `magnesia3`. Las primeras filas entran escalonadas 40 ms al llegar a la pantalla
  * (`activo`, una vez). Un subgrupo sin ejercicios no se dibuja.
  */
-export function SubgrupoEjercicios({ titulo, ejercicios, principal, activo, favorito, onFav, onPress }: {
+export function SubgrupoEjercicios({ titulo, ejercicios, principal, activo, onPress }: {
   titulo: string;
   ejercicios: EjercicioIndice[];
   principal: boolean;
   activo: boolean;
-  favorito: (id: string) => boolean;
-  onFav: (id: string) => void;
   onPress: (id: string) => void;
 }) {
   const reducido = useReducedMotion();
@@ -55,7 +53,7 @@ export function SubgrupoEjercicios({ titulo, ejercicios, principal, activo, favo
             <View style={s.zonaMarca} pointerEvents="none">
               <View style={[s.marca, { backgroundColor: principal ? paleta.magnesia : paleta.magnesia3 }]} />
             </View>
-            <FilaEjercicio e={e} favorito={favorito(e.id)} onFav={onFav} onPress={onPress} />
+            <FilaEjercicio e={e} onPress={onPress} />
           </View>
         </Entrada>
       ))}

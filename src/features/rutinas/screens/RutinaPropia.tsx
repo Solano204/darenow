@@ -22,10 +22,8 @@ import { PlantillaRutina } from '@/features/rutinas/components/PlantillaRutina';
 import { MetadatosRutina } from '@/features/rutinas/components/MetadatosRutina';
 import { BotonDuplicar } from '@/features/rutinas/components/BotonDuplicar';
 import type { BloqueVista } from '@/features/rutinas/components/RielBloques';
-import { usePerfil, useRutinasPropias, useEsFavorito, imagenRutina, type RutinaPropia as Propia } from '@/state/store';
-import {
-  ultimaVezDe, borrarRutinaPropia, guardarRutinaPropia, nuevaRutinaPropia, alternarFavorito,
-} from '@/state/acciones';
+import { usePerfil, useRutinasPropias, imagenRutina, type RutinaPropia as Propia } from '@/state/store';
+import { ultimaVezDe, borrarRutinaPropia, guardarRutinaPropia, nuevaRutinaPropia } from '@/state/acciones';
 import { sesionDePropia, minutosPropios, revisarPropia } from '@/lib/engine/session';
 import { porId } from '@/data/catalog';
 import { fuente } from '@/media/registry';
@@ -50,7 +48,6 @@ export default function RutinaPropia({ route, navigation }: Props) {
   const idRutina = (route.params as { id: string }).id;
   const perfil = usePerfil();
   const propias = useRutinasPropias();
-  const favorito = useEsFavorito('rutinas', idRutina);
 
   const r = propias.find(x => x.id === idRutina);
   const minutos = useMemo(() => (r ? minutosPropios(r.items) : 0), [r]);
@@ -100,8 +97,7 @@ export default function RutinaPropia({ route, navigation }: Props) {
     <PlantillaRutina
       nombre={r.nombre}
       foto={fuente('rutina', imagenRutina(r.id, r.imagenId))}
-      favorito={favorito}
-      onFavorito={() => alternarFavorito('rutinas', r.id)}
+      idFavorito={r.id}
       onAtras={() => navigation.goBack()}
       junto={(
         <Pressable

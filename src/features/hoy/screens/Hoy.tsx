@@ -48,10 +48,10 @@ const ALTO_CARRUSEL_RUTINAS = 236;
 
 export default function Hoy({ navigation }: { navigation: NavigationProp<ParamListBase> }) {
   const {
-    abajo, inset, y, onScroll, semanaPrograma, alternarFavorito, esFavorito, perfil, racha, refrescando,
+    abajo, inset, y, onScroll, semanaPrograma, perfil, racha, refrescando,
     stats, semana, entrenoHoy, programa, sesion, avisosSesion, sinEjercicios, rutinas, programas,
     ejercicios, musculosDeHoy, musculos, tips, sello, refrescar, irAExplorar, irAAprender, empezar,
-    cincoMinutos,
+    cincoMinutos, abrirRutina, abrirPrograma, abrirEjercicio, abrirMusculo, abrirTip,
   } = useHoy({ navigation });
   return (
     <View style={s.raiz}>
@@ -104,11 +104,7 @@ export default function Hoy({ navigation }: { navigation: NavigationProp<ParamLi
             data={rutinas} keyExtractor={r => r.id}
             ancho={ANCHO_TARJETA_RUTINA} alto={ALTO_CARRUSEL_RUTINAS} suave
             renderItem={(r, _, progreso) => (
-              <TarjetaRutina
-                r={r} progreso={progreso} favorito={esFavorito('rutinas', r.id)}
-                onPress={() => navigation.navigate(r.id.startsWith('mi_') ? 'RutinaPropia' : 'Rutina', { id: r.id })}
-                onFavorito={() => alternarFavorito('rutinas', r.id)}
-              />
+              <TarjetaRutina r={r} progreso={progreso} onPress={abrirRutina} />
             )}
             pie={<TarjetaVerMas ancho={ANCHO_TARJETA_RUTINA} texto="Ver todas" alto={ALTO_FOTO_RUTINA} onPress={() => irAExplorar('rutinas')} />}
           />
@@ -151,11 +147,7 @@ export default function Hoy({ navigation }: { navigation: NavigationProp<ParamLi
           <CarruselHoy
             data={programas} keyExtractor={p => p.id} ancho={ANCHO_TARJETA_PROGRAMA} separacion={SEPARACION_CARRUSEL}
             renderItem={p => (
-              <TarjetaPrograma
-                p={{ id: p.id, nombre: p.name, semanas: p.semanas, favorito: esFavorito('programas', p.id) }}
-                onPress={() => navigation.navigate('Programa', { id: p.id })}
-                onFavorito={() => alternarFavorito('programas', p.id)}
-              />
+              <TarjetaPrograma p={p} onPress={abrirPrograma} />
             )}
             verMas={{ texto: 'Ver todos', onPress: () => irAExplorar('programas'), alto: ALTO_FOTO_PROGRAMA }}
           />
@@ -166,11 +158,7 @@ export default function Hoy({ navigation }: { navigation: NavigationProp<ParamLi
           <CarruselHoy
             data={ejercicios} keyExtractor={e => e.id} ancho={ANCHO_EJERCICIO_MINI}
             renderItem={e => (
-              <TarjetaEjercicioMini
-                e={e} favorito={esFavorito('ejercicios', e.id)}
-                onPress={() => navigation.navigate('Ejercicio', { id: e.id })}
-                onFavorito={() => alternarFavorito('ejercicios', e.id)}
-              />
+              <TarjetaEjercicioMini e={e} onPress={abrirEjercicio} />
             )}
             verMas={{ texto: 'Ver todos', onPress: () => irAExplorar('ejercicios'), alto: ALTO_EJERCICIO_MINI }}
           />
@@ -181,10 +169,7 @@ export default function Hoy({ navigation }: { navigation: NavigationProp<ParamLi
           <CarruselHoy
             data={musculos} keyExtractor={m => m.id} ancho={LADO_MUSCULO}
             renderItem={m => (
-              <FichaMusculo
-                m={m} trabajaHoy={musculosDeHoy.has(m.id)}
-                onPress={() => navigation.navigate('Musculo', { id: m.id })}
-              />
+              <FichaMusculo m={m} trabajaHoy={musculosDeHoy.has(m.id)} onPress={abrirMusculo} />
             )}
             verMas={{ texto: 'Ver todos', onPress: () => irAExplorar('musculos'), alto: LADO_MUSCULO, radioEsquina: 24 }}
           />
@@ -195,11 +180,7 @@ export default function Hoy({ navigation }: { navigation: NavigationProp<ParamLi
           <CarruselHoy
             data={tips} keyExtractor={t => t.id} ancho={ANCHO_ARTICULO} separacion={SEPARACION_CARRUSEL}
             renderItem={t => (
-              <TarjetaArticulo
-                t={t} favorito={esFavorito('tips', t.id)}
-                onPress={() => navigation.navigate('Tip', { id: t.id })}
-                onFavorito={() => alternarFavorito('tips', t.id)}
-              />
+              <TarjetaArticulo t={t} onPress={abrirTip} />
             )}
             verMas={{ texto: 'Ver más', onPress: irAAprender, alto: ALTO_ARTICULO }}
           />

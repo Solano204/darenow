@@ -14,7 +14,7 @@ import { FotoOscura } from '@/ui/components/FotoOscura';
 import { NivelPlacas } from '@/ui/components/NivelPlacas';
 import { InsigniaFoto, EtiquetaFoto } from '@/ui/components/InsigniaFoto';
 import { ICONOS_OBJETIVO } from '@/ui/components/iconosObjetivo';
-import { EstrellaFavorito } from '@/ui/components/EstrellaFavorito';
+import { EstrellaDe } from '@/ui/components/EstrellaFavorito';
 
 const ALTO_FOTO_TARJETA = 180;
 const ZOOM_PRESIONADO = 0.04;
@@ -37,12 +37,11 @@ const ESCALA_PARALLAX = 1 + (2 * PARALLAX_PX) / ALTO_FOTO_TARJETA;
  * segun donde este la tarjeta en pantalla (se mide en el hilo de UI, sin pasar por React).
  * Si en un Android de gama media no sostiene 60 fps, se apaga con `PARALLAX_PX` en 0.
  */
-export function TarjetaRutina({ r, favorito, scrollY, onPress, onFavorito }: {
+export const TarjetaRutina = React.memo(function TarjetaRutina({ r, scrollY, onPress }: {
   r: Rutina;
-  favorito: boolean;
   scrollY: SharedValue<number>;
-  onPress: () => void;
-  onFavorito: () => void;
+  /** Recibe el id: la misma funcion sirve para todas las tarjetas de la lista. */
+  onPress: (id: string) => void;
 }) {
   const reducido = useReducedMotion();
   const tick = useTick();
@@ -67,7 +66,7 @@ export function TarjetaRutina({ r, favorito, scrollY, onPress, onFavorito }: {
 
   return (
     <View style={s.caja}>
-      <Tocable onPress={onPress} etiqueta={etiqueta} presion={presion} escala={ESCALA_PRESIONADA} estilo={s.tarjeta}>
+      <Tocable onPress={() => onPress(r.id)} etiqueta={etiqueta} presion={presion} escala={ESCALA_PRESIONADA} estilo={s.tarjeta}>
         <Animated.View ref={marco} collapsable={false}>
           <FotoOscura
             tipo="rutina" id={r.id} ancho="100%" alto={ALTO_FOTO_TARJETA} radioEsquina={0}
@@ -91,11 +90,11 @@ export function TarjetaRutina({ r, favorito, scrollY, onPress, onFavorito }: {
         </View>
       </Tocable>
       <View style={s.estrella}>
-        <EstrellaFavorito activo={favorito} onPress={onFavorito} nombre={nombre} />
+        <EstrellaDe tipo="rutinas" id={r.id} nombre={nombre} />
       </View>
     </View>
   );
-}
+});
 
 const s = StyleSheet.create({
   caja: { marginBottom: 16 },

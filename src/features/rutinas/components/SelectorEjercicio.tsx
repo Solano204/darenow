@@ -1,4 +1,5 @@
-import React, { useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
+import type { ListRenderItemInfo } from 'react-native';
 import { View, Text, StyleSheet, ScrollView, Modal, FlatList, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { color, tipo, esp, radio, peso } from '@/ui/theme';
@@ -31,6 +32,10 @@ export function SelectorEjercicio({ visible, yaPuestos, onElegir, onCerrar }: {
       return true;
     });
   }, [q, cat, soloMios, equipo]);
+
+  const renderItem = useCallback(({ item }: ListRenderItemInfo<EjercicioIndice>) => (
+    <FilaSelector item={item} puesto={yaPuestos.includes(item.id)} onElegir={onElegir} />
+  ), [yaPuestos, onElegir]);
 
   return (
     <Modal visible={visible} animationType="slide" onRequestClose={onCerrar}>
@@ -84,8 +89,9 @@ export function SelectorEjercicio({ visible, yaPuestos, onElegir, onCerrar }: {
 
         <FlatList
           data={lista}
+          extraData={yaPuestos}
           keyExtractor={e => e.id}
-          contentContainerStyle={{ paddingHorizontal: esp.md, paddingBottom: esp.xl }}
+          contentContainerStyle={s.contenidoLista}
           initialNumToRender={14}
           ListEmptyComponent={soloMios ? (
             <View style={{ alignItems: 'center', gap: esp.sm }}>
@@ -93,9 +99,7 @@ export function SelectorEjercicio({ visible, yaPuestos, onElegir, onCerrar }: {
               <Boton texto="Ver catálogo completo" variante="contorno" onPress={() => setSoloMios(false)} />
             </View>
           ) : <Vacio texto="Nada con esa búsqueda." />}
-          renderItem={({ item }) => (
-            <FilaSelector item={item} puesto={yaPuestos.includes(item.id)} onElegir={onElegir} />
-          )}
+          renderItem={renderItem}
         />
       </SafeAreaView>
     </Modal>
@@ -110,17 +114,17 @@ const FilaSelector = React.memo(function FilaSelector({ item, puesto, onElegir }
   return (
     <Toque onPress={puesto ? undefined : () => onElegir(item)} estilo={s.filaSelector as never}>
       <Foto tipo="ejercicio" id={item.id} nombre={item.name} alto={50} ancho={50} />
-      <View style={{ flex: 1, opacity: puesto ? 0.5 : 1 }}>
-        <Text style={[tipo.cuerpo, { color: color.texto, fontFamily: peso.semibold }]} numberOfLines={1}>
+      <View style={puesto ? s.infoPuesta : s.info}>
+        <Text style={s.nombreFila} numberOfLines={1}>
           {item.name}
         </Text>
-        <Text style={[tipo.pie, { color: color.textoSuave }]} numberOfLines={1}>
+        <Text style={s.equipoFila} numberOfLines={1}>
           {nombreEquipo(item.equipment)} · nivel {item.level}
         </Text>
       </View>
       {puesto
-        ? <Text style={[tipo.micro, { color: color.textoTenue }]}>ya está</Text>
-        : <Text style={{ color: color.acento, fontSize: 20 }}>+</Text>}
+        ? <Text style={s.yaEsta}>ya está</Text>
+        : <Text style={s.mas}>+</Text>}
     </Toque>
   );
 });
@@ -136,4 +140,11 @@ const s = StyleSheet.create({
     borderRadius: radio.pastilla,
   },
   segmentoActivo: { backgroundColor: color.carbon, borderColor: color.carbon },
+  contenidoLista: { paddingHorizontal: esp.md, paddingBottom: esp.xl },
+  info: { flex: 1 },
+  infoPuesta: { flex: 1, opacity: 0.5 },
+  nombreFila: { ...tipo.cuerpo, color: color.texto, fontFamily: peso.semibold },
+  equipoFila: { ...tipo.pie, color: color.textoSuave },
+  yaEsta: { ...tipo.micro, color: color.textoTenue },
+  mas: { color: color.acento, fontSize: 20 },
 });

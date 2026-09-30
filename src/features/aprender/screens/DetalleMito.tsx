@@ -17,8 +17,6 @@ import { paleta, familia, insignia, haptico, MARGEN_PANTALLA } from '@/ui/theme'
 import { fuente } from '@/media/registry';
 import { porId } from '@/data/catalog';
 import { MITOS } from '@/data/aprender';
-import { useFavoritos } from '@/state/store';
-import { alternarFavorito } from '@/state/acciones';
 import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
 import { textoVisible } from '@/lib/presentacion';
 import { RUTA_DE_RELACIONADO, relacionadosVista, textoDeLectura } from '@/lib/aprender';
@@ -54,7 +52,6 @@ export default function DetalleMito({ route, navigation }: Props) {
   const { height: ventana } = useWindowDimensions();
   const y = useSharedValue(0);
   const onScroll = useAnimatedScrollHandler(e => { y.set(e.contentOffset.y); });
-  const favoritosEjercicios = useFavoritos('ejercicios');
 
   const m = MITOS.find(x => x.id === (route.params as { id: string }).id);
   // Los ids de familia (fam_...) no llevan a ninguna parte: `relacionadosVista` los deja fuera.
@@ -62,7 +59,6 @@ export default function DetalleMito({ route, navigation }: Props) {
   const ejercicios = useMemo(() => relacionados.filter(r => r.tipo === 'ejercicio').flatMap(r => porId.get(r.id) ?? []), [relacionados]);
   const otros = useMemo(() => relacionados.filter(r => r.tipo !== 'ejercicio'), [relacionados]);
   const abrirEjercicio = useCallback((id: string) => navigation.navigate('Ejercicio', { id }), [navigation]);
-  const alternarEjercicio = useCallback((id: string) => alternarFavorito('ejercicios', id), []);
 
   useEffect(() => {
     if (reducido) return;
@@ -127,10 +123,7 @@ export default function DetalleMito({ route, navigation }: Props) {
             {ejercicios.length > 0 && (
               <View style={s.margen}>
                 {ejercicios.map(e => (
-                  <FilaEjercicio
-                    key={e.id} e={e} favorito={favoritosEjercicios.includes(e.id)}
-                    onFav={alternarEjercicio} onPress={abrirEjercicio}
-                  />
+                  <FilaEjercicio key={e.id} e={e} onPress={abrirEjercicio} />
                 ))}
               </View>
             )}

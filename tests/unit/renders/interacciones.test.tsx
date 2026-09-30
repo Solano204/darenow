@@ -13,6 +13,7 @@ import { act, type ReactTestRenderer } from 'react-test-renderer';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { grabar, detener, type Grabacion } from './contador';
 import { montar, esperar, tocar, usarRelojFalso } from './montar';
+import { useTienda } from '@/state/tienda';
 import Explorar from '@/features/explorar/screens/Explorar';
 import Hoy from '@/features/hoy/screens/Hoy';
 import Yo from '@/features/perfil/screens/Yo';
@@ -61,7 +62,17 @@ afterAll(() => {
 
 /** Id de la n-ésima fila de ejercicio que la lista ya pintó (y que no es favorito). */
 const filaVisible = (r: ReactTestRenderer, n: number): string =>
-  r.root.findAll(x => x.props.e?.id && typeof x.props.onFav === 'function' && x.props.favorito === false)[n].props.e.id;
+  r.root.findAll(x => x.props.e?.id && typeof x.props.onPress === 'function')
+    .map(x => x.props.e.id as string)
+    .filter(id => !useTienda.getState().estado.favoritos.ejercicios.includes(id))[n];
+/** Toca la estrella de favorito de un ejercicio (la de su fila en la lista). */
+const tocarEstrella = async (r: ReactTestRenderer, id: string) => {
+  // La primera (con las 4 pestañas el mismo ejercicio puede salir tambien en Hoy).
+  const estrella = r.root.findAll(x => x.props.tipo === 'ejercicios' && x.props.id === id)[0]
+    .find(x => typeof x.props.onPress === 'function' && typeof x.props.activo === 'boolean');
+  await act(async () => { estrella.props.onPress(); });
+};
+const esFavorito = (id: string) => useTienda.getState().estado.favoritos.ejercicios.includes(id);
 
 describe('re-renders por interacción', () => {
   it('1 · tocar 3 chips seguidos en Explorar → Ejercicios', async () => {
@@ -88,14 +99,13 @@ describe('re-renders por interacción', () => {
   it('3 · marcar y desmarcar un favorito en la lista de Explorar', async () => {
     vivo = await montar(Explorar as never);
     const id = filaVisible(vivo, 3);
-    const fila = () => vivo!.root.find(n => n.props.e?.id === id && typeof n.props.onFav === 'function');
     grabar();
-    await act(async () => { fila().props.onFav(id); });
+    await tocarEstrella(vivo, id);
     await esperar();
-    expect(fila().props.favorito).toBe(true);
-    await act(async () => { fila().props.onFav(id); });
+    expect(esFavorito(id)).toBe(true);
+    await tocarEstrella(vivo, id);
     await esperar();
-    expect(fila().props.favorito).toBe(false);
+    expect(esFavorito(id)).toBe(false);
     guardar('favorito', detener());
   });
 
@@ -111,11 +121,11 @@ describe('re-renders por interacción', () => {
     );
     vivo = await montar(Pestanas as never);
     const id = filaVisible(vivo, 3);
-    const fila = () => vivo!.root.find(n => n.props.e?.id === id && typeof n.props.onFav === 'function');
     grabar();
-    await act(async () => { fila().props.onFav(id); });
+    await tocarEstrella(vivo, id);
     await esperar();
-    await act(async () => { fila().props.onFav(id); });
+    expect(esFavorito(id)).toBe(true);
+    await tocarEstrella(vivo, id);
     await esperar();
     guardar('favorito4pestanas', detener());
   });

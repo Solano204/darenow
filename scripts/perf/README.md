@@ -129,9 +129,28 @@ Profiler → "Highlight updates when components render". Exportar cada perfil a
 `docs/perf/profiles/<escenario>-<n>.json`. Los tiempos absolutos de un build dev no se
 comparan con release; lo que interesa es **qué** se re-renderiza y cuántas veces.
 
+## 8. Animaciones, hilo JS y memoria (R6)
+
+Build de release con `EXPO_PUBLIC_PERF=1`. En logcat (`adb logcat -s ReactNativeJS`):
+
+- `[bloqueo-js] N ms`: el hilo JS llego N ms tarde a su reloj de 100 ms (bloqueos de más de 50 ms).
+- `[players] vivos N · reproduciendo M`: la política de clips (R5).
+
+Niveles de calidad: generar el build con `EXPO_PUBLIC_CALIDAD=alta`, `media` o `baja` para forzarlo (DESIGN.md, «Niveles de calidad»).
+
+**Prueba de fugas** (por pantalla: Bienvenida, Hoy, Reproductor, Resumen, Ficha, Explorar, Detalle de rutina, Programa, Mitos, Yo, Ajustes): anotar la memoria, abrir y cerrar la pantalla 20 veces y anotar a las 10 y a las 20.
+
+```bash
+adb shell dumpsys meminfo app.forja.fitness | grep -E "TOTAL PSS|TOTAL:" | head -1
+```
+
+La parte que no necesita teléfono (temporizadores, escuchas, players y callbacks por cuadro que quedan vivos) la cubre `tests/unit/renders/fugas.test.tsx`.
+
+**Sesión de 10 minutos**: pantalla encendida, reproductor corriendo. Flashlight durante toda la sesión (FPS UI/JS en los minutos 1, 5 y 10), memoria al inicio y al final con `dumpsys meminfo`, batería con `adb shell dumpsys battery | grep level` al inicio y al final, y temperatura al tacto.
+
 ## Quitar la instrumentación
 
-Toda la instrumentación está en `src/dev/perfMarks.ts` y en líneas marcadas con `// perf:R1`.
+Toda la instrumentación está en `src/dev/perfMarks.ts` (marcas de arranque y vigilancia de bloqueos del hilo JS) y en líneas marcadas con `// perf:R1`.
 Un solo paso:
 
 ```bash

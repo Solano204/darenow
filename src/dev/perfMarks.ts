@@ -74,5 +74,24 @@ function reportar(): void {
   console.log(`[perf] ${JSON.stringify({ ...extra, ...resumen() })}`);
 }
 
+/**
+ * R6 · bloqueos del hilo JS. Con la instrumentacion activa, un reloj de 100 ms mide cuanto tarda
+ * de verdad cada vuelta: si llega mas de 50 ms tarde, el hilo JS estuvo ocupado ese tiempo y se
+ * imprime `[bloqueo-js] N ms`. Se ve con `adb logcat -s ReactNativeJS | grep bloqueo-js`.
+ */
+const VUELTA_MS = 100;
+const BLOQUEO_MS = 50;
+function vigilarBloqueos(): void {
+  let anterior = ahora();
+  setInterval(() => {
+    const t = ahora();
+    const tarde = t - anterior - VUELTA_MS;
+    anterior = t;
+    // eslint-disable-next-line no-console
+    if (tarde > BLOQUEO_MS) console.log(`[bloqueo-js] ${Math.round(tarde)} ms`);
+  }, VUELTA_MS);
+}
+
 // Este modulo es el primer import de index.ts: evaluarlo ES el inicio del JS.
 mark('js-start');
+if (ACTIVO) vigilarBloqueos();

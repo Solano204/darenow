@@ -1,4 +1,3 @@
-/* eslint-disable */
 /**
  * Copia CONGELADA de src/data/catalog.ts tal como estaba antes de R3 (commit 2c3239e).
  * Es el «camino viejo» contra el que tests/unit/catalogo.test.ts compara el catálogo nuevo

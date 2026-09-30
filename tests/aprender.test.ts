@@ -5,14 +5,14 @@
  */
 
 import { SALAS, tipsCompletos } from '@/data/catalog';
-
-const TIPS = tipsCompletos();
 import { MITOS, ERRORES, NUTRICION, GLOSARIO, FAQ } from '@/data/aprender';
 import { nombreVisible } from '@/data/nombresVisibles';
 import { textoDePregunta, comillasLatinas, textoDeEtiqueta } from '@/lib/presentacion';
 import {
   tiempoDeLectura, textoDeLectura, nombreDeSala, iconoDeSala, relacionadosVista, agruparPorLetra, letraDe, partirInsignias,
 } from '@/lib/aprender';
+
+const TIPS = tipsCompletos();
 
 let ok = 0, fallos = 0;
 const c = (n: string, cond: boolean, d = '') => {

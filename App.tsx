@@ -7,12 +7,10 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
 import { NavigationBar } from 'expo-navigation-bar';
-import { useFonts } from 'expo-font';
-import { BigShouldersDisplay_700Bold, BigShouldersDisplay_800ExtraBold } from '@expo-google-fonts/big-shoulders-display';
-import { Figtree_400Regular, Figtree_500Medium, Figtree_600SemiBold, Figtree_700Bold } from '@expo-google-fonts/figtree';
 
 import { color, colorSesion, peso, resorteTap } from '@/ui/theme';
 import { mantenerSplash, ocultarSplash, useSplashOculto } from '@/ui/hooks/useSplash';
+import { useFuentes } from '@/ui/theme/fuentes';
 import { ProveedorEstado, useEstado, hoy } from '@/state/store';
 import { ProveedorCuenta, useCuenta } from '@/state/cuenta';
 import { ProveedorAnuncios } from '@/ui/components/RelojAnuncios';
@@ -195,10 +193,8 @@ function Pantallas() {
 
 export default function App() {
   perfMark('app-render'); // perf:R1
-  const [fontsLoaded, fontError] = useFonts({
-    BigShouldersDisplay_700Bold, BigShouldersDisplay_800ExtraBold,
-    Figtree_400Regular, Figtree_500Medium, Figtree_600SemiBold, Figtree_700Bold,
-  });
+  // Android: fuentes incrustadas en el APK, ya estan (fuentes.android.ts). iOS: se cargan aqui.
+  const [fontsLoaded, fontError] = useFuentes();
 
   useEffect(() => {
     // Con exito O con error se sigue: si la carga falla, `tipo` cae a la

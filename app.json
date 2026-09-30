@@ -46,7 +46,19 @@
           "supportsPictureInPicture": false
         }
       ],
-      "expo-font",
+      [
+        "expo-font",
+        {
+          "fonts": [
+            "node_modules/@expo-google-fonts/big-shoulders-display/BigShouldersDisplay_700Bold.ttf",
+            "node_modules/@expo-google-fonts/big-shoulders-display/BigShouldersDisplay_800ExtraBold.ttf",
+            "node_modules/@expo-google-fonts/figtree/400Regular/Figtree_400Regular.ttf",
+            "node_modules/@expo-google-fonts/figtree/500Medium/Figtree_500Medium.ttf",
+            "node_modules/@expo-google-fonts/figtree/600SemiBold/Figtree_600SemiBold.ttf",
+            "node_modules/@expo-google-fonts/figtree/700Bold/Figtree_700Bold.ttf"
+          ]
+        }
+      ],
       [
         "expo-splash-screen",
         {

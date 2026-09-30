@@ -28,9 +28,9 @@ SplashScreen.preventAutoHideAsync().catch(() => {});
 
 import Presentacion from '@/screens/Presentacion';
 import Acceso from '@/features/cuenta/screens/Acceso';
-import Bienvenida from '@/screens/Bienvenida';
+import Bienvenida from '@/features/hoy/screens/Bienvenida';
 import Onboarding from '@/screens/Onboarding';
-import Hoy from '@/screens/Hoy';
+import Hoy from '@/features/hoy/screens/Hoy';
 import Explorar from '@/features/explorar/screens/Explorar';
 import Aprender from '@/screens/Aprender';
 import DetalleTip from '@/screens/DetalleTip';

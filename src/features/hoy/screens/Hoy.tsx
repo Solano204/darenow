@@ -26,19 +26,19 @@ import { TarjetaSesionHoy, TarjetaSesionVacia } from '@/ui/components/TarjetaSes
 import { TarjetaEnfoque, ANCHO_ENFOQUE, ALTO_ENFOQUE, CABEZA_ENFOQUE } from '@/ui/components/TarjetaEnfoque';
 import { CarruselProfundidad } from '@/ui/fx/CarruselProfundidad';
 import { CarruselHoy, TarjetaVerMas } from '@/ui/components/CarruselHoy';
-import { TarjetaRutina, ANCHO_TARJETA_RUTINA, ALTO_FOTO_RUTINA, type RutinaHoy } from '@/components/hoy/TarjetaRutina';
-import { NubeRefresco } from '@/components/hoy/NubeRefresco';
+import { TarjetaRutina, ANCHO_TARJETA_RUTINA, ALTO_FOTO_RUTINA, type RutinaHoy } from '@/features/hoy/components/TarjetaRutina';
+import { NubeRefresco } from '@/features/hoy/components/NubeRefresco';
 import { FilaSemana } from '@/ui/components/FilaSemana';
 import { BloqueRevela } from '@/ui/fx/BloqueRevela';
-import { TuSemana } from '@/components/hoy/TuSemana';
-import { FilaExplorar } from '@/components/hoy/FilaExplorar';
-import { TuPrograma } from '@/components/hoy/TuPrograma';
-import { TarjetaPrograma, ANCHO_TARJETA_PROGRAMA, ALTO_FOTO_PROGRAMA } from '@/components/hoy/TarjetaPrograma';
+import { TuSemana } from '@/features/hoy/components/TuSemana';
+import { FilaExplorar } from '@/features/hoy/components/FilaExplorar';
+import { TuPrograma } from '@/features/hoy/components/TuPrograma';
+import { TarjetaPrograma, ANCHO_TARJETA_PROGRAMA, ALTO_FOTO_PROGRAMA } from '@/features/hoy/components/TarjetaPrograma';
 import {
   TarjetaEjercicioMini, FichaMusculo, TarjetaArticulo,
   ANCHO_EJERCICIO_MINI, ALTO_EJERCICIO_MINI, LADO_MUSCULO, ANCHO_ARTICULO, ALTO_ARTICULO,
-} from '@/components/hoy/TarjetasHoy';
-import { EstadisticasHoy } from '@/components/hoy/EstadisticasHoy';
+} from '@/features/hoy/components/TarjetasHoy';
+import { EstadisticasHoy } from '@/features/hoy/components/EstadisticasHoy';
 import { useEstado, estadisticas, ultimos7, hoy, imagenRutina } from '@/state/store';
 import { armarSesion, sesionDeRutina, minutosPropios, type Perfil } from '@/lib/engine/session';
 import {

@@ -10,7 +10,7 @@
 export interface Punto { x: number; y: number }
 
 /** Donde se aparcan las particulas que no se dibujan en este cuadro. */
-export const FUERA = -10000;
+const FUERA = -10000;
 
 /** Un pool de `n` puntos, todos aparcados. Se crea una vez por sistema (no por cuadro). */
 export function crearPuntos(n: number): Punto[] {

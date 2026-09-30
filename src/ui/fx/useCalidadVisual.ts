@@ -20,7 +20,7 @@ export type CalidadVisual = 'alta' | 'media' | 'baja';
 
 const GB = 1024 * 1024 * 1024;
 /** Umbrales (DESIGN.md): menos de 3 GB o un telefono de antes de 2016 es gama baja. */
-export const UMBRALES_CALIDAD = {
+const UMBRALES_CALIDAD = {
   baja: { memoriaGB: 3, año: 2016 },
   media: { memoriaGB: 6, año: 2019 },
 } as const;

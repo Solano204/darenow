@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { Keyboard, Pressable, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
+import { Keyboard, Pressable, StyleSheet, Text, View, useWindowDimensions, type EmitterSubscription } from 'react-native';
 import Animated, {
   FadeIn, FadeOut, LinearTransition, useAnimatedStyle, useDerivedValue, useSharedValue, withSpring, type SharedValue,
 } from 'react-native-reanimated';
@@ -15,6 +15,7 @@ import { useTick } from '@/ui/hooks/useTick';
 import { BotonCompacto } from '@/ui/components/BotonCompacto';
 import { CampoValor } from './CampoValor';
 import { ProtocoloMedicion } from './ProtocoloMedicion';
+import { useTemporizador } from '@/ui/hooks/useTemporizador';
 
 type Icono = React.ComponentProps<typeof Ionicons>['name'];
 
@@ -71,6 +72,8 @@ export function FilaMedicion({ p, abierta, onAlternar, y, altoBarra, desplazarA,
   const yFila = useDerivedValue(() => y.value - cardTop.value - contenidoTop.value) as unknown as SharedValue<number>;
   const giro = useSharedValue(abierta ? 1 : 0);
   const campoRef = useRef<View>(null);
+  const teclado = useRef<EmitterSubscription | null>(null);
+  useEffect(() => () => teclado.current?.remove(), []);
   const sinValor = PROTOCOLOS_SIN_VALOR.includes(p.id);
   const frecuencia = textoDeFrecuencia(p.frecuencia);
   const ultimo = previas[previas.length - 1];
@@ -84,12 +87,13 @@ export function FilaMedicion({ p, abierta, onAlternar, y, altoBarra, desplazarA,
 
   const chevron = useAnimatedStyle(() => ({ transform: [{ rotate: `${90 * giro.value}deg` }] }), [tick]);
 
+  const asentar = useTemporizador();
   const alternar = () => {
     haptico.seleccion();
     const abre = !abierta;
     onAlternar();
-    if (!abre) return;
-    setTimeout(() => {
+    if (!abre) { asentar.cancelar(); return; }
+    asentar.programar(() => {
       if (cardTop.value - y.value < ventana * FRACCION_PARA_CORRER) return;
       desplazarA(Math.max(0, cardTop.value - altoBarra - AIRE_AL_MOSTRAR_PX), !reducido);
     }, reducido ? 0 : ESPERA_ASENTAR_MS);
@@ -101,8 +105,16 @@ export function FilaMedicion({ p, abierta, onAlternar, y, altoBarra, desplazarA,
       const exceso = arriba + alto - (ventana - teclado - AIRE_AL_MOSTRAR_PX);
       if (exceso > 0) desplazarA(y.value + exceso, !reducido);
     });
+    teclado.current?.remove();
+    teclado.current = null;
     if (Keyboard.isVisible()) { medir(Keyboard.metrics()?.height ?? TECLADO_SUPUESTO_PX); return; }
-    const suscripcion = Keyboard.addListener('keyboardDidShow', e => { suscripcion.remove(); medir(e.endCoordinates.height); });
+    // Una sola escucha a la vez, quitada al usarse o al desmontar (antes se acumulaban si el teclado
+    // no llegaba a subir, H-20).
+    teclado.current = Keyboard.addListener('keyboardDidShow', e => {
+      teclado.current?.remove();
+      teclado.current = null;
+      medir(e.endCoordinates.height);
+    });
   };
 
   const campo = sinValor ? undefined : (

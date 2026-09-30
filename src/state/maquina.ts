@@ -16,10 +16,17 @@ export function useAjustesMaquina(): [Record<string, string>, (ejercicioId: stri
   const [ajustes, setAjustes] = useState<Record<string, string>>({});
 
   useEffect(() => {
+    let vivo = true;
     AsyncStorage.getItem(CLAVE).then(v => {
-      if (!v) return;
-      try { setAjustes(JSON.parse(v)); } catch { /* dato corrupto, se ignora */ }
+      if (!vivo || !v) return;
+      // Lo leido va debajo de lo que el usuario ya haya guardado mientras llegaba (R6: antes la
+      // lectura vieja borraba la nota recien escrita).
+      try {
+        const leido = JSON.parse(v) as Record<string, string>;
+        setAjustes(prev => ({ ...leido, ...prev }));
+      } catch { /* dato corrupto, se ignora */ }
     }).catch(() => {});
+    return () => { vivo = false; };
   }, []);
 
   const guardar = useCallback((ejercicioId: string, valor: string) => {

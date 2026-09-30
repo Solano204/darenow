@@ -39,6 +39,7 @@ import { textoVisible } from '@/lib/presentacion';
 import {
   fasesDePrograma, faseDeSemana, minutosPorSemana, placasPorSemana, resumenDePlan,
 } from '@/features/programas/utils/minutosPorSemana';
+import { useTemporizador } from '@/ui/hooks/useTemporizador';
 
 const ALTO_BARRA_SUPERIOR = 52;
 const FRACCION_HERO = 0.38;
@@ -55,6 +56,7 @@ export default function DetallePrograma({ route, navigation }: Props) {
   const inset = useSafeAreaInsets();
   const { height: ventana } = useWindowDimensions();
   const reducido = useReducedMotion();
+  const resalte = useTemporizador();
   const scroll = useRef<Animated.ScrollView>(null);
   const y = useSharedValue(0);
   const zonas = useSharedValue<number[]>([]);
@@ -98,7 +100,7 @@ export default function DetallePrograma({ route, navigation }: Props) {
     const arriba = zonas.value[2 * i];
     if (arriba === undefined) return;
     scroll.current?.scrollTo({ y: Math.max(0, arriba - (barraTop + AIRE_AL_IR_A_FASE_PX)), animated: !reducido });
-    setTimeout(() => setResaltar(r => ({ indice: i, n: r.n + 1 })), reducido ? 0 : RETRASO_RESALTE_MS);
+    resalte.programar(() => setResaltar(r => ({ indice: i, n: r.n + 1 })), reducido ? 0 : RETRASO_RESALTE_MS);
   };
 
   return (

@@ -67,7 +67,9 @@ export function useEditorRutina(
   const scroll = useRef<Animated.ScrollView>(null);
   const botonCrear = useRef<View>(null);
   const montada = useRef(false);
-  const espera = useRef<ReturnType<typeof setTimeout> | null>(null);
+  // Cada ejercicio agregado espera a que cierre el selector; dos seguidos son dos esperas distintas y
+  // al salir del editor se cancelan todas (antes solo la ultima, H-20).
+  const [esperas] = useState(() => new Set<ReturnType<typeof setTimeout>>());
   const pendiente = useRef<string | null>(null);
   const medidas = useRef(new Map<string, { y: number; alto: number }>());
   const posicionesRef = useRef({ lista: 0, ejercicios: 0, vista: 0 });
@@ -93,7 +95,7 @@ export function useEditorRutina(
   }, [r.items]);
 
   useEffect(() => { montada.current = true; }, []);
-  useEffect(() => () => { if (espera.current) clearTimeout(espera.current); }, []);
+  useEffect(() => () => { esperas.forEach(clearTimeout); esperas.clear(); }, [esperas]);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('beforeRemove', e => {
@@ -164,13 +166,15 @@ export function useEditorRutina(
     if (r.items.some(it => it.ejercicioId === e.id)) return;
     const nuevo = itemPropioPorDefecto(e);
     const total = r.items.length + 1;
-    espera.current = setTimeout(() => {
+    const id = setTimeout(() => {
+      esperas.delete(id);
       setR(prev => (prev.items.some(it => it.ejercicioId === e.id) ? prev : { ...prev, items: [...prev.items, nuevo] }));
       setRecien(m => ({ id: e.id, n: m.n + 1 }));
       setErrores(x => ({ ...x, items: undefined }));
       pendiente.current = e.id;
       AccessibilityInfo.announceForAccessibility(`Ejercicio agregado, ${total} ${plural(total, 'ejercicio', 'ejercicios')}`);
     }, CIERRE_SELECTOR_MS);
+    esperas.add(id);
   };
 
   const celebrar = () => {

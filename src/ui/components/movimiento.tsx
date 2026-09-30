@@ -13,6 +13,7 @@ import Animated, {
 import { color } from '@/ui/theme';
 
 import { useReducedMotion as useMovimientoReducido } from '@/ui/hooks/useReducedMotion';
+import { useLoopActivo } from '@/ui/hooks/useLoopActivo';
 
 export { useReducedMotion as useMovimientoReducido } from '@/ui/hooks/useReducedMotion';
 
@@ -20,15 +21,18 @@ export { useReducedMotion as useMovimientoReducido } from '@/ui/hooks/useReduced
 export function Pulso({ tamano = 8, tono = color.carbon }: { tamano?: number; tono?: string }) {
   const reducido = useMovimientoReducido();
   const v = useSharedValue(0);
-  // En el hilo de UI (R6) y detenido al desmontar (antes el loop del core seguia vivo, H-20).
+  // En el hilo de UI (R6), detenido al desmontar (antes el loop del core seguia vivo, H-20) y en pausa
+  // con la pantalla tapada (vive en la pestana Yo, que no se desmonta).
+  const activo = useLoopActivo();
   useEffect(() => {
-    if (reducido) return;
+    if (reducido || !activo) { cancelAnimation(v); return; }
+    v.set(0);
     v.set(withRepeat(withSequence(
       withTiming(1, { duration: 900, easing: Easing.out(Easing.quad) }),
       withTiming(0, { duration: 900, easing: Easing.in(Easing.quad) }),
     ), -1, false));
     return () => cancelAnimation(v);
-  }, [reducido, v]);
+  }, [reducido, v, activo]);
   const halo = useAnimatedStyle(() => ({
     opacity: interpolate(v.value, [0, 1], [0.30, 0]),
     transform: [{ scale: interpolate(v.value, [0, 1], [0.5, 1]) }],

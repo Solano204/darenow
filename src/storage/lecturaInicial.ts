@@ -22,5 +22,13 @@ export function leerAlArrancar(clave: ClaveInicial): Promise<string | null> {
   if (entregadas.has(clave)) return AsyncStorage.getItem(clave);
   entregadas.add(clave);
   lote ??= AsyncStorage.multiGet([...CLAVES]).then(pares => new Map(pares));
-  return lote.then(m => m.get(clave) ?? null);
+  const pendiente = lote;
+  // Entregada la ultima clave, el lote se suelta: guardaba el JSON completo del estado (todo el
+  // historial) durante toda la vida de la app sin que nadie volviera a leerlo (R6).
+  if (entregadas.size === CLAVES.length) lote = null;
+  return pendiente.then(m => {
+    const valor = m.get(clave) ?? null;
+    m.delete(clave);
+    return valor;
+  });
 }

@@ -8,6 +8,7 @@ import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
 import { useTick } from '@/ui/hooks/useTick';
 import { indiceRegionActiva } from '@/ui/components/disposicionCatalogo';
 import { ChipCategoria } from '@/ui/components/ChipCategoria';
+import { useTemporizador } from '@/ui/hooks/useTemporizador';
 
 /** Alto de la fila de chips: el contenido de la pantalla deja este hueco bajo el titulo. */
 export const ALTO_INDICE = 48;
@@ -54,12 +55,13 @@ export function IndiceSecciones({ nombres, arriba, y, desplazarA, altoBarra, rel
   });
   useEffect(() => alCambiarActivo(), [activo]);
 
+  const bloqueo = useTemporizador();
   const ir = (indice: number) => {
     tocado.current = true;
     setActivo(indice);
     const destino = arriba[indice];
     if (Number.isFinite(destino)) desplazarA(Math.max(0, destino - linea), !reducido);
-    setTimeout(() => { tocado.current = false; }, BLOQUEO_TRAS_TOQUE_MS);
+    bloqueo.programar(() => { tocado.current = false; }, BLOQUEO_TRAS_TOQUE_MS);
   };
 
   const sube = useAnimatedStyle(() => ({

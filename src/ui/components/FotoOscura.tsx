@@ -58,6 +58,8 @@ export function FotoOscura({
           <Imagen
             tipo={tipo} id={id} mini={mini} placeholder={null}
             style={exposicion === undefined ? s.imagen : [s.imagen, { opacity: exposicion }]} onLoad={() => setLista(true)}
+            // Si la foto falla, el esqueleto se va igual: antes brillaba para siempre (H-19).
+            onError={() => setLista(true)}
           />
         </Animated.View>
       ) : (

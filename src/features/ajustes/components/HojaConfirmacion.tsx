@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react';
 import { AccessibilityInfo, Pressable, StyleSheet, Text, View, findNodeHandle } from 'react-native';
 import { paleta, tipo, haptico } from '@/ui/theme';
 import { HojaInferior } from '@/ui/components/HojaInferior';
+import { useTemporizador } from '@/ui/hooks/useTemporizador';
 
 /** Tiempo que la hoja tarda en irse antes de ejecutar una accion que abre otra cosa (compartir, un selector). */
 const ESPERA_CIERRE_MS = 280;
@@ -43,10 +44,15 @@ export function HojaConfirmacion({ visible, onCerrar, ...contenido }: Contenido 
     const nodo = findNodeHandle(cancelar.current);
     if (nodo !== null) AccessibilityInfo.setAccessibilityFocus(nodo);
   };
+  // La accion corre cuando la hoja ya salio. Un segundo toque mientras tanto no la repite, y si la
+  // pantalla se cierra antes, la accion ya confirmada corre en ese momento (no queda un
+  // temporizador suelto que la dispare despues sobre otra pantalla, H-20).
+  const espera = useTemporizador({ alDesmontar: 'ejecutar' });
   const elegir = (accion: AccionHoja) => {
+    if (espera.ocupado()) return;
     haptico.toque();
     onCerrar();
-    setTimeout(accion.onPress, ESPERA_CIERRE_MS);
+    espera.programar(accion.onPress, ESPERA_CIERRE_MS);
   };
 
   return (

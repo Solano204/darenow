@@ -10,7 +10,7 @@
  *
  * Ubicacion: src/store/consentimientoMedidas.ts
  */
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Alert, Linking } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { URL_PRIVACIDAD } from '@/lib/legal';
@@ -19,12 +19,17 @@ import { CLAVE_CONSENTIMIENTO_MEDIDAS as CLAVE } from '@/storage/claves';
 
 export function useConsentimientoMedidas(): [boolean, (v: boolean) => void] {
   const [dado, setDado] = useState(false);
+  // La lectura no pisa un cambio hecho mientras llegaba, ni escribe tras desmontar (R6).
+  const tocado = useRef(false);
 
   useEffect(() => {
-    AsyncStorage.getItem(CLAVE).then(v => { if (v === '1') setDado(true); }).catch(() => {});
+    let vivo = true;
+    AsyncStorage.getItem(CLAVE).then(v => { if (vivo && !tocado.current && v === '1') setDado(true); }).catch(() => {});
+    return () => { vivo = false; };
   }, []);
 
   const cambiar = useCallback((v: boolean) => {
+    tocado.current = true;
     setDado(v);
     if (v) AsyncStorage.setItem(CLAVE, '1').catch(() => {});
     else AsyncStorage.removeItem(CLAVE).catch(() => {});

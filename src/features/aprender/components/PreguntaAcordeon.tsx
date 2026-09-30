@@ -10,6 +10,7 @@ import { partirInsignias, textoDeLectura } from '@/lib/aprender';
 import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
 import { useTick } from '@/ui/hooks/useTick';
 import { InsigniaEvidencia } from '@/ui/components/InsigniaEvidencia';
+import { useTemporizador } from '@/ui/hooks/useTemporizador';
 
 const ABRIR_MS = 260;
 const CERRAR_MS = 200;
@@ -71,11 +72,13 @@ export function PreguntaAcordeon({ pregunta, respuesta, onAbierta }: {
 
   const icono = useAnimatedStyle(() => ({ transform: [{ rotate: `${45 * giro.value}deg` }] }), [tick]);
 
+  const asentar = useTemporizador();
   const alternar = () => {
     haptico.seleccion();
     const abre = !abierta;
     setAbierta(abre);
-    if (abre) setTimeout(() => onAbierta(fila.current), reducido ? 0 : ESPERA_ASENTAR_MS);
+    if (abre) asentar.programar(() => onAbierta(fila.current), reducido ? 0 : ESPERA_ASENTAR_MS);
+    else asentar.cancelar();
   };
 
   return (

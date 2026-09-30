@@ -7,6 +7,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { paleta, tinte, radio, easing } from '@/ui/theme';
 import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
 import { useTick } from '@/ui/hooks/useTick';
+import { useLoopActivo } from '@/ui/hooks/useLoopActivo';
 
 const BARRIDO_MS = 1200;
 const ANCHO_BANDA = 0.6;
@@ -26,13 +27,15 @@ export function Esqueleto({ ancho, alto, radioEsquina = radio.foto, estilo }: {
   const tick = useTick();
   const [medida, setMedida] = useState(0);
   const t = useSharedValue(0);
+  // El brillo solo corre con la pantalla a la vista (R6).
+  const activo = useLoopActivo();
 
   useEffect(() => {
-    if (reducido || medida === 0) return;
+    if (reducido || medida === 0 || !activo) { cancelAnimation(t); return; }
     t.set(0);
     t.set(withRepeat(withTiming(1, { duration: BARRIDO_MS, easing: easing.salida }), -1, false));
     return () => cancelAnimation(t);
-  }, [reducido, medida, t]);
+  }, [reducido, medida, t, activo]);
 
   const banda = useAnimatedStyle(() => ({
     transform: [{ translateX: -medida * ANCHO_BANDA + t.value * medida * (1 + ANCHO_BANDA) }],

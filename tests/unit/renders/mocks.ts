@@ -14,6 +14,21 @@ jest.mock('react-native-reanimated', () => {
     ReduceMotion: { System: 'system', Always: 'always', Never: 'never' },
     // El makeMutable real trae get/set (compatibles con el React Compiler); el del mock no.
     makeMutable: (v: unknown) => m.useSharedValue(v),
+    // Callbacks por cuadro: se cuentan los activos (la prueba de fugas pide cero al desmontar).
+    useFrameCallback: (_cb: unknown, autostart = true) => {
+      const React = require('react');
+      const [f] = React.useState(() => {
+        const cb = { activo: false, setActive(a: boolean) {
+          if (a && !cb.activo) mockFrameActivos.n++;
+          if (!a && cb.activo) mockFrameActivos.n--;
+          cb.activo = a;
+        } };
+        if (autostart) cb.setActive(true);
+        return cb;
+      });
+      React.useEffect(() => () => f.setActive(false), [f]);
+      return { setActive: f.setActive, get isActive() { return f.activo; }, callbackId: 0 };
+    },
   };
   return { ...m, ...extra, default: { ...m.default, ...extra }, __esModule: true };
 });
@@ -40,6 +55,10 @@ jest.mock('@shopify/react-native-skia', () => {
     },
   });
 });
+
+/** Cuantos `useFrameCallback` estan activos ahora. */
+const mockFrameActivos = { n: 0 };
+export const framesActivos = () => mockFrameActivos.n;
 
 // Players de video falsos que se pueden contar (R5): `playersVideo()` da los vivos.
 const mockPlayersVideo = new Set<{ playing: boolean; src: unknown }>();

@@ -31,7 +31,7 @@ import Acceso from '@/features/cuenta/screens/Acceso';
 import Bienvenida from '@/screens/Bienvenida';
 import Onboarding from '@/screens/Onboarding';
 import Hoy from '@/screens/Hoy';
-import Explorar from '@/screens/Explorar';
+import Explorar from '@/features/explorar/screens/Explorar';
 import Aprender from '@/screens/Aprender';
 import DetalleTip from '@/screens/DetalleTip';
 import DetalleMito from '@/screens/DetalleMito';

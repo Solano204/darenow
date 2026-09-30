@@ -33,13 +33,13 @@ import { BuscadorVivo } from '@/ui/components/BuscadorVivo';
 import { SegmentosIndicador } from '@/ui/components/SegmentosIndicador';
 import { ChipFiltro } from '@/ui/components/ChipFiltro';
 import { ChipCategoria } from '@/ui/components/ChipCategoria';
-import { InterruptorDos } from '@/components/explore/InterruptorDos';
-import { ContadorResultados } from '@/components/explore/ContadorResultados';
+import { InterruptorDos } from '@/features/explorar/components/InterruptorDos';
+import { ContadorResultados } from '@/features/explorar/components/ContadorResultados';
 import { FilaChips, ALTO_FILA_CATEGORIA, ALTO_FILA_OBJETIVO, SEPARACION_FILAS } from '@/ui/components/EncabezadoFiltrosColapsable';
 import { EncabezadoExplorar, SEP_SEGMENTOS, SEP_CONTADOR, type SegmentoExplorar } from '@/ui/components/EncabezadoExplorar';
-import { CabeceraRutinas } from '@/components/explore/CabeceraRutinas';
-import { RejillaMusculos } from '@/components/muscles/RejillaMusculos';
-import { ListaEjercicios, ListaRutinas, ListaProgramas } from '@/components/explore/listas';
+import { CabeceraRutinas } from '@/features/explorar/components/CabeceraRutinas';
+import { RejillaMusculos } from '@/features/explorar/components/RejillaMusculos';
+import { ListaEjercicios, ListaRutinas, ListaProgramas } from '@/features/explorar/components/listas';
 import { transicionesDeSegmento, type PropsLista } from '@/ui/components/listaBase';
 
 const SEGMENTOS: readonly { id: SegmentoExplorar; texto: string }[] = [

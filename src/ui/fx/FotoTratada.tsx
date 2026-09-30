@@ -1,5 +1,6 @@
 import React from 'react';
-import { Canvas, ColorMatrix, Group, Image as SkiaImage, type SkImage } from '@shopify/react-native-skia';
+import { Canvas, ColorMatrix, Group, Image as SkiaImage, LinearGradient, Rect, vec, type SkImage } from '@shopify/react-native-skia';
+import { degradado } from '@/ui/theme';
 import { useImagenSkia } from './imagenesSkia';
 import { useDerivedValue, type SharedValue } from 'react-native-reanimated';
 
@@ -70,7 +71,13 @@ export function ImagenTratada({ imagen, ancho, alto, tratar = TRATAR_FOTOS, matr
   );
 }
 
-export function FotoTratada({ fuente, ancho, alto, tratar = TRATAR_FOTOS, matriz, foco, escala }: {
+/**
+ * Una foto a sangre con el tratamiento de color, en su propio `Canvas`. Con `velo`, el degradado
+ * foto a goma (el mismo `degradado.velo` con `ANCLAS_VELO`) se pinta en el mismo lienzo, y
+ * `children` (elementos de Skia, como el polvo de magnesia) va encima de todo: una pantalla con
+ * foto, velo y particulas usa un solo `Canvas` (R6).
+ */
+export function FotoTratada({ fuente, ancho, alto, tratar = TRATAR_FOTOS, matriz, foco, escala, velo = false, children }: {
   fuente: number;
   ancho: number;
   alto: number;
@@ -78,6 +85,8 @@ export function FotoTratada({ fuente, ancho, alto, tratar = TRATAR_FOTOS, matriz
   matriz?: number[];
   foco?: Foco;
   escala?: SharedValue<number>;
+  velo?: boolean;
+  children?: React.ReactNode;
 }) {
   const imagen = useImagenSkia(fuente);
   const transform = useDerivedValue(() => [{ scale: escala ? escala.value : 1 }]);
@@ -87,6 +96,12 @@ export function FotoTratada({ fuente, ancho, alto, tratar = TRATAR_FOTOS, matriz
       <Group transform={transform} origin={{ x: ancho / 2, y: alto / 2 }}>
         <ImagenTratada imagen={imagen} ancho={ancho} alto={alto} tratar={tratar} matriz={matriz} foco={foco} />
       </Group>
+      {velo && (
+        <Rect x={0} y={0} width={ancho} height={alto}>
+          <LinearGradient start={vec(0, 0)} end={vec(0, alto)} colors={[...degradado.velo]} positions={[...ANCLAS_VELO]} />
+        </Rect>
+      )}
+      {children}
     </Canvas>
   );
 }

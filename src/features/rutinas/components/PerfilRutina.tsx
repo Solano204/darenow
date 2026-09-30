@@ -2,7 +2,7 @@ import React, { useEffect, useMemo } from 'react';
 import { Pressable, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 import { Canvas, Circle, Group, LinearGradient, Path, Skia, vec } from '@shopify/react-native-skia';
 import {
-  cancelAnimation, useDerivedValue, useSharedValue, withDelay, withTiming, type SharedValue,
+  cancelAnimation, useAnimatedReaction, useDerivedValue, useSharedValue, withDelay, withTiming, type SharedValue,
 } from 'react-native-reanimated';
 import { paleta, conAlfa, familia, easing, MARGEN_PANTALLA } from '@/ui/theme';
 import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
@@ -137,8 +137,15 @@ export function PerfilRutina({ tramos, resumen, y, zonas, compacto, onTramo }: {
   );
   const py = useDerivedValue(() => altura(ys, paso, px.value), [ys, paso]);
   const activo = useDerivedValue(() => tramoDe(zonas.value, y.value + ventana * LECTURA, n), [n, ventana]);
-  const activoX = useDerivedValue(() => withTiming(inicios[activo.value] ?? 0, { duration: TRAMO_ACTIVO_MS }), [inicios]);
-  const activoAncho = useDerivedValue(() => withTiming(anchos[activo.value] ?? 0, { duration: TRAMO_ACTIVO_MS }), [anchos]);
+  // El resalte del tramo activo se desliza solo cuando cambia de tramo (antes el `withTiming` vivia
+  // dentro de un `useDerivedValue` y se relanzaba en cada cuadro de scroll).
+  const activoX = useSharedValue(0);
+  const activoAncho = useSharedValue(0);
+  useAnimatedReaction(() => activo.value, (tramo, previo) => {
+    if (tramo === previo) return;
+    activoX.set(withTiming(inicios[tramo] ?? 0, { duration: TRAMO_ACTIVO_MS }));
+    activoAncho.set(withTiming(anchos[tramo] ?? 0, { duration: TRAMO_ACTIVO_MS }));
+  }, [inicios, anchos]);
   const rectActivo = useDerivedValue(() => Skia.XYWHRect(activoX.value, 0, activoAncho.value, alto), [alto]);
   const opacidadActivo = useDerivedValue(() => (zonas.value.length === 0 ? 0 : relleno.value));
 

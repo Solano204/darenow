@@ -2,8 +2,9 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { StyleSheet, useWindowDimensions } from 'react-native';
 import { Canvas, Path, Points, Skia, useFont, type SkPoint } from '@shopify/react-native-skia';
 import {
-  Easing, cancelAnimation, useDerivedValue, useSharedValue, withDelay, withRepeat, withTiming,
+  Easing, cancelAnimation, useAnimatedReaction, useDerivedValue, useSharedValue, withDelay, withRepeat, withTiming,
 } from 'react-native-reanimated';
+import { aparcar, crearPuntos, LIMITE_PARTICULAS, type Punto } from '@/ui/fx/particulas';
 import { easing } from '@/ui/theme';
 import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
 
@@ -124,13 +125,19 @@ export function TextoDeParticulas({
   const dx = geo?.dx ?? []; const vel = geo?.vel ?? [];
   const polvoX = geo?.polvoX ?? []; const polvoY = geo?.polvoY ?? []; const polvoFase = geo?.polvoFase ?? [];
 
-  const nube = useDerivedValue<SkPoint[]>(() => {
-    const e = ensamble.value; const u = disuelve.value;
-    const salida: SkPoint[] = [];
-    for (let i = 0; i < tx.length; i++) {
-      salida.push({ x: sx[i] + (tx[i] - sx[i]) * e + dx[i] * u, y: sy[i] + (ty[i] - sy[i]) * e - vel[i] * u });
-    }
-    return salida;
+  // Pools creados una vez, del tamano maximo (R6): cada cuadro mueve las mismas particulas.
+  const nube = useSharedValue<Punto[]>(crearPuntos(Math.min(cantidad, LIMITE_PARTICULAS.listo)));
+  useAnimatedReaction(() => [ensamble.value, disuelve.value], ([e, u]) => {
+    nube.modify(pool => {
+      'worklet';
+      const n = Math.min(tx.length, pool.length);
+      for (let i = 0; i < n; i++) {
+        pool[i].x = sx[i] + (tx[i] - sx[i]) * e + dx[i] * u;
+        pool[i].y = sy[i] + (ty[i] - sy[i]) * e - vel[i] * u;
+      }
+      aparcar(pool, n);
+      return pool;
+    }, true);
   });
   const opacidadNube = useDerivedValue(() => {
     const u = disuelve.value;
@@ -139,13 +146,19 @@ export function TextoDeParticulas({
     return Math.max(armando, deshaciendo);
   });
   const opacidadTexto = useDerivedValue(() => solido.value * (1 - Math.min(1, disuelve.value * 3)));
-  const polvo = useDerivedValue<SkPoint[]>(() => {
-    const salida: SkPoint[] = [];
-    for (let i = 0; i < polvoX.length; i++) {
-      const f = (caida.value + polvoFase[i]) % 1;
-      salida.push({ x: polvoX[i] + Math.sin(f * 6.28) * 4, y: polvoY[i] + f * POLVO_CAIDA_PX });
-    }
-    return salida;
+  const polvo = useSharedValue<Punto[]>(crearPuntos(POLVO_PARTICULAS));
+  useAnimatedReaction(() => caida.value, c => {
+    polvo.modify(pool => {
+      'worklet';
+      const n = Math.min(polvoX.length, pool.length);
+      for (let i = 0; i < n; i++) {
+        const f = (c + polvoFase[i]) % 1;
+        pool[i].x = polvoX[i] + Math.sin(f * 6.28) * 4;
+        pool[i].y = polvoY[i] + f * POLVO_CAIDA_PX;
+      }
+      aparcar(pool, n);
+      return pool;
+    }, true);
   });
   const opacidadPolvo = useDerivedValue(() => 0.45 * solido.value * (1 - disuelve.value));
 

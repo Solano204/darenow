@@ -1,7 +1,8 @@
 import React, { useEffect, useEffectEvent, useMemo, useState } from 'react';
 import { AppState } from 'react-native';
-import { Canvas, Points } from '@shopify/react-native-skia';
-import { useDerivedValue, useFrameCallback, useSharedValue, type SharedValue } from 'react-native-reanimated';
+import { Group, Points } from '@shopify/react-native-skia';
+import { useAnimatedReaction, useFrameCallback, useSharedValue, type SharedValue } from 'react-native-reanimated';
+import { crearPuntos, type Punto } from '@/ui/fx/particulas';
 import { paleta } from '@/ui/theme';
 import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
 
@@ -40,11 +41,13 @@ function generar(cantidad: number, ancho: number, alto: number, semilla: number)
 
 /**
  * Polvo de magnesia flotando muy lento (6 a 12 px/s) dentro del haz de la
- * foto: 25 particulas en un solo Canvas, sin estado por fotograma. Se pausa
- * si la pantalla pierde foco (`pausado`) o la app pasa a segundo plano, y no
- * se dibuja con movimiento reducido.
+ * foto: 25 particulas, sin estado por fotograma. Se pausa si la pantalla
+ * pierde foco (`pausado`) o la app pasa a segundo plano, y no se dibuja con
+ * movimiento reducido. Son elementos de Skia sin `Canvas` propio: van dentro
+ * del lienzo de la foto (`FotoTratada`), un solo `Canvas` para foto, velo y
+ * polvo (R6).
  */
-export function MagnesiaParticles({ ancho, alto, pausado = false }: { ancho: number; alto: number; pausado?: boolean }) {
+export function PolvoMagnesia({ ancho, alto, pausado = false }: { ancho: number; alto: number; pausado?: boolean }) {
   const reducido = useReducedMotion();
   const [enPrimerPlano, setEnPrimerPlano] = useState(AppState.currentState === 'active');
   const tiempo = useSharedValue(0);
@@ -55,7 +58,7 @@ export function MagnesiaParticles({ ancho, alto, pausado = false }: { ancho: num
   }, []);
 
   const frame = useFrameCallback(info => {
-    tiempo.value += (info.timeSincePreviousFrame ?? 0) / 1000;
+    tiempo.set(tiempo.get() + (info.timeSincePreviousFrame ?? 0) / 1000);
   }, false);
 
   const activo = !pausado && !reducido && enPrimerPlano;
@@ -73,28 +76,29 @@ export function MagnesiaParticles({ ancho, alto, pausado = false }: { ancho: num
   if (reducido) return null;
 
   return (
-    <Canvas
-      style={{ position: 'absolute', top: 0, left: 0, width: ancho, height: alto }}
-      pointerEvents="none"
-      accessibilityElementsHidden
-      importantForAccessibility="no-hide-descendants"
-    >
+    <Group>
       {CLASES.map((c, k) => (
         <Grupo key={k} particulas={grupos[k]} tiempo={tiempo} alto={alto} ancho={c.ancho} opacidad={c.opacidad} />
       ))}
-    </Canvas>
+    </Group>
   );
 }
 
 function Grupo({ particulas, tiempo, alto, ancho, opacidad }: {
   particulas: Particula[]; tiempo: SharedValue<number>; alto: number; ancho: number; opacidad: number;
 }) {
-  const puntos = useDerivedValue(() => {
-    const t = tiempo.value;
-    return particulas.map(p => ({
-      x: p.x0 + Math.sin(t * p.freq + p.fase) * p.amp,
-      y: (((p.y0 - p.v * t) % alto) + alto) % alto,
-    }));
+  // Pool creado una vez (R6): cada cuadro mueve las mismas particulas, sin crear objetos.
+  const puntos = useSharedValue<Punto[]>(crearPuntos(particulas.length));
+  useAnimatedReaction(() => tiempo.value, t => {
+    puntos.modify(pool => {
+      'worklet';
+      for (let i = 0; i < particulas.length && i < pool.length; i++) {
+        const p = particulas[i];
+        pool[i].x = p.x0 + Math.sin(t * p.freq + p.fase) * p.amp;
+        pool[i].y = (((p.y0 - p.v * t) % alto) + alto) % alto;
+      }
+      return pool;
+    }, true);
   });
 
   return (

@@ -1,10 +1,11 @@
 import React, { useEffect, useMemo, useRef } from 'react';
 import { Pressable, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
-import { Canvas, Group, Path, Skia } from '@shopify/react-native-skia';
+import { Canvas, Group, Path } from '@shopify/react-native-skia';
 import {
-  Easing, runOnJS, useDerivedValue, useSharedValue, withTiming, type SharedValue,
+  Easing, runOnJS, useAnimatedReaction, useDerivedValue, useSharedValue, withTiming, type SharedValue,
 } from 'react-native-reanimated';
 import { paleta, familia, haptico, MARGEN_PANTALLA } from '@/ui/theme';
+import { useRutaAnimada, agregarPlaca } from '@/ui/fx/caminos';
 import { nombreVisible } from '@/data/nombresVisibles';
 import type { FasePrograma } from '@/features/programas/utils/minutosPorSemana';
 import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
@@ -150,8 +151,9 @@ function PlacasDeFase({ indice, desde, hasta, placas, geo, tiempo, columnaMs, co
   activa: SharedValue<number>;
 }) {
   const reducido = useReducedMotion();
-  const trazo = useDerivedValue(() => {
-    const p = Skia.Path.Make();
+  // Una sola ruta, redibujada en su sitio mientras caen las placas (R6).
+  const trazo = useRutaAnimada(() => tiempo.value, p => {
+    'worklet';
     for (let semana = desde; semana <= hasta; semana++) {
       const salida = semana * columnaMs;
       const x = semana * geo.paso;
@@ -161,15 +163,19 @@ function PlacasDeFase({ indice, desde, hasta, placas, geo, tiempo, columnaMs, co
         const reposo = ALTO_MAPA - k * PASO_PLACA - ALTO_PLACA;
         const suave = 1 - (1 - u) * (1 - u) * (1 - u);
         const altura = reposo - (1 - suave) * (reposo + ALTO_PLACA + 4);
-        p.addRRect(Skia.RRectXY(Skia.XYWHRect(x, altura, geo.colW, ALTO_PLACA), RADIO_PLACA, RADIO_PLACA));
+        agregarPlaca(p, x, altura, geo.colW, ALTO_PLACA, RADIO_PLACA);
       }
     }
-    return p;
-  }, [desde, hasta, placas, geo, columnaMs]);
+  });
 
-  const opacidad = useDerivedValue(() => (
-    withTiming(reducido || activa.value < 0 || activa.value === indice ? 1 : OPACIDAD_APAGADA, { duration: APAGA_MS })
-  ), [reducido, indice]);
+  // La fase fuera de foco se apaga: la animacion arranca solo cuando cambia su destino, no en cada
+  // cuadro de scroll (antes un `withTiming` dentro de `useDerivedValue` se relanzaba con el scroll).
+  const opacidad = useSharedValue(1);
+  useAnimatedReaction(
+    () => (reducido || activa.value < 0 || activa.value === indice ? 1 : OPACIDAD_APAGADA),
+    (destino, previo) => { if (destino !== previo) opacidad.set(withTiming(destino, { duration: APAGA_MS })); },
+    [reducido, indice],
+  );
 
   return (
     <Group opacity={opacidad}>

@@ -8,6 +8,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { paleta, familia, resortePlaca } from '@/ui/theme';
 import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
 import { useTick } from '@/ui/hooks/useTick';
+import { useLoopActivo } from '@/ui/hooks/useLoopActivo';
 import { Tocable } from './Tocable';
 
 const ALTO_FILA_CREAR = 64;
@@ -44,13 +45,15 @@ export function FilaCrear({ onPress, texto = 'Crear mi rutina', pulsar }: {
   const giro = useDerivedValue(() => withSpring(presion.value * GIRO_GRADOS, resortePlaca));
   const [ancho, setAncho] = useState(0);
 
+  // La invitacion solo pulsa con la pantalla a la vista (H-19).
+  const activo = useLoopActivo();
   useEffect(() => {
-    if (!pulsar || reducido) { cancelAnimation(pulso); pulso.set(0); return; }
+    if (!pulsar || reducido || !activo) { cancelAnimation(pulso); pulso.set(0); return; }
     pulso.set(withRepeat(withSequence(
       withTiming(1, { duration: PULSO_SUBE_MS }), withTiming(0, { duration: PULSO_SUBE_MS }), withTiming(0, { duration: PULSO_PAUSA_MS }),
     ), -1));
     return () => cancelAnimation(pulso);
-  }, [pulsar, pulso, reducido]);
+  }, [pulsar, pulso, reducido, activo]);
 
   const placa = useAnimatedStyle(() => ({
     transform: [{ rotate: `${reducido ? 0 : giro.value}deg` }, { scale: 1 + ESCALA_PULSO * pulso.value }],

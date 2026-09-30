@@ -1,8 +1,9 @@
 import React, { useEffect, useEffectEvent, useMemo, useRef, useState } from 'react';
 import { StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 import { Canvas, Path, Skia } from '@shopify/react-native-skia';
-import { Easing, runOnJS, useDerivedValue, useSharedValue, withTiming } from 'react-native-reanimated';
+import { Easing, runOnJS, useSharedValue, withTiming } from 'react-native-reanimated';
 import { paleta, familia, haptico, MARGEN_PANTALLA } from '@/ui/theme';
+import { useRutaAnimada, agregarPlaca } from '@/ui/fx/caminos';
 import { hoy } from '@/state/store';
 import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
 import { fechaLocal } from '@/lib/fechas';
@@ -88,8 +89,9 @@ export function SieteDias({ semana, activo, compacto }: {
     return p;
   }, [placas, geo, alto]);
 
-  const trazo = useDerivedValue(() => {
-    const p = Skia.Path.Make();
+  // Una sola ruta, redibujada en su sitio mientras caen las placas (R6).
+  const trazo = useRutaAnimada(() => tiempo.value, p => {
+    'worklet';
     for (let d = 0; d < placas.length; d++) {
       const x = d * geo.paso;
       for (let k = 0; k < placas[d]; k++) {
@@ -98,11 +100,10 @@ export function SieteDias({ semana, activo, compacto }: {
         const reposo = alto - k * PASO_PLACA - ALTO_PLACA;
         const suave = 1 - (1 - u) * (1 - u) * (1 - u);
         const arriba = reposo - (1 - suave) * (reposo + ALTO_PLACA + 4);
-        p.addRRect(Skia.RRectXY(Skia.XYWHRect(x, arriba, geo.colW, ALTO_PLACA), RADIO_PLACA, RADIO_PLACA));
+        agregarPlaca(p, x, arriba, geo.colW, ALTO_PLACA, RADIO_PLACA);
       }
     }
-    return p;
-  }, [placas, salidas, geo, alto]);
+  });
 
   return (
     <View

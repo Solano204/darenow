@@ -7,6 +7,7 @@ import { paleta, familia } from '@/ui/theme';
 import { textoVisible } from '@/lib/presentacion';
 import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
 import { useTick } from '@/ui/hooks/useTick';
+import { useLoopActivo } from '@/ui/hooks/useLoopActivo';
 
 const LADO_ANILLO = 44;
 const CICLO_MS = 8000;
@@ -23,12 +24,15 @@ export function FilaRespiracion({ texto }: { texto: string }) {
   const tick = useTick();
   const ciclo = useSharedValue(0);
   const conFases = /inhal|exhal/i.test(texto);
+  // Solo respira con la ficha a la vista (tapada por otra ficha o en segundo plano, se detiene).
+  const activo = useLoopActivo();
 
   useEffect(() => {
-    if (reducido) { cancelAnimation(ciclo); ciclo.set(0); return; }
+    if (reducido || !activo) { cancelAnimation(ciclo); ciclo.set(0); return; }
+    ciclo.set(0);
     ciclo.set(withRepeat(withTiming(1, { duration: CICLO_MS, easing: Easing.linear }), -1, false));
     return () => cancelAnimation(ciclo);
-  }, [ciclo, reducido]);
+  }, [ciclo, reducido, activo]);
 
   const anillo = useAnimatedStyle(() => {
     const r = ciclo.value;

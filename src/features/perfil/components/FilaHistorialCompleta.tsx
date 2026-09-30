@@ -1,7 +1,7 @@
 import React from 'react';
 import { Pressable, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 import Animated, {
-  interpolateColor, measure, useAnimatedRef, useAnimatedStyle, useSharedValue, type SharedValue,
+  interpolateColor, measure, useAnimatedRef, useAnimatedStyle, useDerivedValue, useSharedValue, type SharedValue,
 } from 'react-native-reanimated';
 import { paleta, familia, MARGEN_PANTALLA } from '@/ui/theme';
 import { porId } from '@/data/catalog';
@@ -60,27 +60,26 @@ export function FilaSesion({ sesion, ultima, y, indice, animar, onEjercicio }: {
   const ejercicios = [...new Set(sesion.series.map(x => x.ejercicioId))].slice(0, MAX_EJERCICIOS);
 
   const pista = useAnimatedStyle(() => ({ height: alto.value }), [tick]);
-  // Cuanto le falta al nodo para llegar a la linea de lectura (60 % de la ventana); sin medida
-  // todavia, no la alcanzo. Los dos estilos leen `y` (la comparacion con -infinito nunca es cierta:
-  // solo hace que Reanimated los recalcule con cada movimiento del scroll).
-  const falta = (): number => {
-    'worklet';
+  // Cuanto le falta al nodo para llegar a la linea de lectura (60 % de la ventana), medido una vez
+  // por cuadro de scroll y compartido por los dos estilos; sin medida todavia, no la alcanzo. Lee `y`
+  // para recalcularse con cada movimiento del scroll (la comparacion con -infinito nunca es cierta).
+  const falta = useDerivedValue(() => {
+    if (y.value === Number.NEGATIVE_INFINITY) return Number.POSITIVE_INFINITY;
     const m = measure(ref);
     return m ? m.pageY + CENTRO_NODO - ventana * LECTURA : Number.POSITIVE_INFINITY;
-  };
+  }, [ventana]);
   // El relleno mide lo mismo que la pista y crece escalando desde arriba: con el scroll solo cambia
   // un `transform` (R6).
   const relleno = useAnimatedStyle(() => {
     const total = alto.value;
     if (total <= 0) return { transform: [{ scaleY: 0 }] };
-    if (reducido || y.value === Number.NEGATIVE_INFINITY) return { transform: [{ scaleY: 1 }] };
-    return { transform: [{ scaleY: Math.min(total, Math.max(0, -falta())) / total }] };
-  }, [reducido, ventana, tick]);
+    if (reducido) return { transform: [{ scaleY: 1 }] };
+    return { transform: [{ scaleY: Math.min(total, Math.max(0, -falta.value)) / total }] };
+  }, [reducido, tick]);
   const nodo = useAnimatedStyle(() => {
-    const lleno = reducido || y.value === Number.NEGATIVE_INFINITY || falta() <= 0;
+    const lleno = reducido || falta.value <= 0;
     return { borderColor: interpolateColor(lleno ? 1 : 0, [0, 1], [paleta.gomaBorde, paleta.magnesia2]) };
-  }, [reducido, ventana, tick]);
-
+  }, [reducido, tick]);
   return (
     <Animated.View ref={ref} style={s.fila} onLayout={e => { alto.set(e.nativeEvent.layout.height); }}>
       {!ultima && (

@@ -7,6 +7,7 @@ import Animated, {
 import { paleta, conAlfa, easing, resortePlaca } from '@/ui/theme';
 import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
 import { useTick } from '@/ui/hooks/useTick';
+import { useLoopActivo } from '@/ui/hooks/useLoopActivo';
 import { ALTO_ENCABEZADO, CENTRO_NODO, LADO_NODO, SANGRIA_RIEL } from './EncabezadoBloque';
 import { RIEL_X, GROSOR } from './rielGeometria';
 import { FlechaRegreso } from './FlechaRegreso';
@@ -191,12 +192,14 @@ function TramoConNodo({ seg, esUltimo, respiro, y, origen, alMedir }: {
 function Nodo({ color, lleno, pulsa }: { color: string; lleno: SharedValue<number>; pulsa: boolean }) {
   const tick = useTick();
   const pulso = useSharedValue(0);
+  // El pulso de la fase actual solo corre con la pantalla a la vista (H-19).
+  const activo = useLoopActivo();
 
   useEffect(() => {
-    if (!pulsa) { cancelAnimation(pulso); pulso.set(0); return; }
+    if (!pulsa || !activo) { cancelAnimation(pulso); pulso.set(0); return; }
     pulso.set(withRepeat(withTiming(1, { duration: PULSO_MS, easing: easing.salida }), -1, false));
     return () => cancelAnimation(pulso);
-  }, [pulsa, pulso]);
+  }, [pulsa, pulso, activo]);
 
   const relleno = useAnimatedStyle(() => ({
     opacity: lleno.value, transform: [{ scale: 0.5 + 0.5 * lleno.value }],

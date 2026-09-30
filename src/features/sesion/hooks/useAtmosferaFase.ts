@@ -83,11 +83,14 @@ export function useAtmosferaFase({
     respiro.set(withRepeat(
       withTiming(1, { duration: RESPIRO_MS, easing: Easing.linear }), -1, false,
     ));
+    // Al salir del reproductor el loop se detiene (antes seguia hasta el siguiente cambio de fase).
+    return () => cancelAnimation(respiro);
   }, [enDescanso, corriendo, reducido, respiro]);
 
   useEffect(() => {
     if (reducido || !enTrabajo || !corriendo) { cancelAnimation(latido); return; }
     latido.set(withRepeat(withTiming(1, { duration: 1000, easing: Easing.inOut(Easing.sin) }), -1, true));
+    return () => cancelAnimation(latido);
   }, [enTrabajo, corriendo, reducido, latido]);
 
   return { colorFase, progreso, escalaAnillo, brillo, destello, golpe, expande, desvanece, respiro };

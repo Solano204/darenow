@@ -19,7 +19,7 @@ import { BotonPlaca } from '@/ui/components/BotonPlaca';
 import { TarjetaGoma } from '@/ui/components/TarjetaGoma';
 import { GomaTexture } from '@/ui/fx/GomaTexture';
 import { FotoTratada, ANCLAS_VELO } from '@/ui/fx/FotoTratada';
-import { MagnesiaParticles } from '@/features/hoy/components/MagnesiaParticles';
+import { PolvoMagnesia } from '@/features/hoy/components/MagnesiaParticles';
 import { TituloLetras } from '@/ui/fx/TituloMascara';
 import { Odometro } from '@/ui/fx/Odometro';
 import { Entrada } from '@/ui/fx/Entrada';
@@ -79,9 +79,14 @@ export default function Bienvenida({ navigation }: { navigation: { replace: (rut
   return (
     <View style={s.raiz}>
       <Animated.View style={[s.foto, { width, height: alturaFoto }, estiloFoto]} pointerEvents="none">
-        {bg !== null && <FotoTratada fuente={bg} ancho={width} alto={alturaFoto} foco={FOCO_BIENVENIDA} escala={escala} />}
-        <LinearGradient colors={degradado.velo} locations={ANCLAS_VELO} style={StyleSheet.absoluteFill} />
-        <MagnesiaParticles ancho={width} alto={alturaFoto} pausado={!enFoco} />
+        {/* Foto, velo y polvo en un solo Canvas (R6). */}
+        {bg !== null ? (
+          <FotoTratada fuente={bg} ancho={width} alto={alturaFoto} foco={FOCO_BIENVENIDA} escala={escala} velo>
+            <PolvoMagnesia ancho={width} alto={alturaFoto} pausado={!enFoco} />
+          </FotoTratada>
+        ) : (
+          <LinearGradient colors={degradado.velo} locations={ANCLAS_VELO} style={StyleSheet.absoluteFill} />
+        )}
       </Animated.View>
       <GomaTexture />
 

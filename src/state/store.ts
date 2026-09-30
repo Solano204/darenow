@@ -16,6 +16,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { PERFIL_INICIAL, ESTADO_INICIAL } from './estadoInicial';
 import { mark as perfMark } from '@/dev/perfMarks'; // perf:R1
 import { CLAVE_ESTADO as CLAVE } from '@/storage/claves';
+import { leerAlArrancar } from '@/storage/lecturaInicial';
 import { revisarPausa } from './derivados';
 import { useAcciones } from './acciones';
 import type {
@@ -41,7 +42,7 @@ export function ProveedorEstado({ children }: { children: React.ReactNode }) {
     perfMark('providers-montados'); // perf:R1
     (async () => {
       try {
-        const raw = await AsyncStorage.getItem(CLAVE);
+        const raw = await leerAlArrancar(CLAVE);
         if (raw) {
           const cargado = { ...ESTADO_INICIAL, ...JSON.parse(raw) } as Estado;
           // El merge de arriba es superficial: un perfil guardado antes de

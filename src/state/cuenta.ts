@@ -23,6 +23,7 @@ import {
   CLAVE_CUENTA as CLAVE, CLAVE_ESTADO, CLAVE_VOZ, CLAVE_HAPTICS, CLAVE_MAQUINA, CLAVE_SESION_EN_CURSO as CLAVE_SESION,
   CLAVE_CONSENTIMIENTO_MEDIDAS,
 } from '@/storage/claves';
+import { leerAlArrancar } from '@/storage/lecturaInicial';
 import { borrarRespaldosCache } from '@/storage/respaldo';
 import { seleccionarClavesForja } from '@/storage/clavesForja';
 
@@ -84,7 +85,7 @@ export function ProveedorCuenta({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     (async () => {
       try {
-        const raw = await AsyncStorage.getItem(CLAVE);
+        const raw = await leerAlArrancar(CLAVE);
         if (raw) {
           // Minimizacion de datos: cuentas guardadas antes de este cambio
           // traian la foto de Google en AsyncStorage sin usarla en ningun

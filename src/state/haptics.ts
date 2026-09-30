@@ -11,10 +11,11 @@ import { useCallback, useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { CLAVE_HAPTICS as CLAVE } from '@/storage/claves';
+import { leerAlArrancar } from '@/storage/lecturaInicial';
 
 // Lectura sincrona para los golpes que se disparan fuera de React (theme/haptics.ts).
 let activos = true;
-AsyncStorage.getItem(CLAVE).then(v => { if (v != null) activos = v === '1'; }).catch(() => {});
+leerAlArrancar(CLAVE).then(v => { if (v != null) activos = v === '1'; }).catch(() => {});
 export const hapticosActivos = () => activos;
 
 export function useHapticosActivos(): [boolean, (v: boolean) => void] {

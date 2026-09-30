@@ -23,7 +23,11 @@
     "test:aprender": "esbuild --bundle --platform=node --format=cjs tests/aprender.test.ts | node",
     "test:perfil": "esbuild --bundle --platform=node --format=cjs tests/perfil.test.ts | node",
     "test:ajustes": "esbuild --bundle --platform=node --format=cjs tests/ajustes.test.ts | node",
-    "test:unit": "jest"
+    "test:unit": "jest",
+    "lint": "eslint .",
+    "lint:capas": "python3 scripts/refactor/capas.py",
+    "circulares": "npx --yes madge --circular --extensions ts,tsx --ts-config tsconfig.json src App.tsx",
+    "muerto": "npx --yes knip"
   },
   "dependencies": {
     "@expo-google-fonts/big-shoulders-display": "^0.2.3",
@@ -66,6 +70,9 @@
     "@types/react": "~19.2.3",
     "babel-preset-expo": "~57.0.0",
     "esbuild": "^0.25.0",
+    "eslint": "^9.39.5",
+    "eslint-config-expo": "~57.0.2",
+    "globals": "^16.5.0",
     "jest": "^29.7.0",
     "jest-expo": "~57.0.5",
     "sharp": "^0.35.4",

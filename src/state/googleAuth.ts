@@ -26,6 +26,7 @@ type GoogleModulo = typeof import('@react-native-google-signin/google-signin');
 // captura para que la app siga en modo invitado en vez de romper.
 function cargarGoogle(): GoogleModulo | null {
   try {
+    // eslint-disable-next-line @typescript-eslint/no-require-imports -- require dinamico: en Expo Go el modulo no existe
     return require('@react-native-google-signin/google-signin') as GoogleModulo;
   } catch {
     return null;

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Alert } from 'react-native';
 import { haptico } from '@/ui/theme';
 import { useEstado } from '@/state/store';

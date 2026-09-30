@@ -83,8 +83,8 @@ export default function Acceso({ onListo }: { onListo: () => void }) {
               </Punto>
               <Punto icono="exportar" n={2}>
                 <Text style={s.punto}>
-                  Todo vive en este teléfono. Para pasarlo a otro, usa "
-                  <Text style={s.puntoEnfasis}>Exportar mi progreso</Text>" en Ajustes.
+                  Todo vive en este teléfono. Para pasarlo a otro, usa {'"'}
+                  <Text style={s.puntoEnfasis}>Exportar mi progreso</Text>{'"'} en Ajustes.
                 </Text>
               </Punto>
             </TarjetaGoma>

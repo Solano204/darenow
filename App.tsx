@@ -1,3 +1,4 @@
+/* eslint-disable import/first -- preventAutoHideAsync va antes de importar las pantallas a proposito (ver abajo) */
 import React, { useEffect } from 'react';
 import { View, ActivityIndicator, StyleSheet, Platform } from 'react-native';
 import { NavigationContainer, DarkTheme } from '@react-navigation/native';
@@ -11,14 +12,13 @@ import { useFonts } from 'expo-font';
 import { BigShouldersDisplay_700Bold, BigShouldersDisplay_800ExtraBold } from '@expo-google-fonts/big-shoulders-display';
 import { Figtree_400Regular, Figtree_500Medium, Figtree_600SemiBold, Figtree_700Bold } from '@expo-google-fonts/figtree';
 
-import { color, colorSesion, peso } from '@/ui/theme';
+import { color, colorSesion, peso, resorteTap } from '@/ui/theme';
 import { ProveedorEstado, useEstado, hoy } from '@/state/store';
 import { ProveedorCuenta, useCuenta } from '@/state/cuenta';
 import { ProveedorAnuncios } from '@/ui/components/RelojAnuncios';
 import { ProveedorMagnesia } from '@/ui/fx/MagnesiaOverlay';
 import { Entrada } from '@/ui/fx/Entrada';
 import { TabBarGoma } from '@/ui/components/TabBarGoma';
-import { resorteTap } from '@/ui/theme';
 import { mark as perfMark } from '@/dev/perfMarks'; // perf:R1
 
 // Se queda visible hasta que las fuentes resuelvan (cargadas o no): nada

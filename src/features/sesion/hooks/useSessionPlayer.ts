@@ -37,10 +37,10 @@ import type { ItemSesion } from '@/lib/engine/session';
 import { crearReducer, estadoInicial, esUnilateral, avanzarReloj } from '@/features/sesion/utils/playerMachine';
 import type { EstadoPlayer, Fase } from '@/features/sesion/utils/playerMachine';
 import { prepararSonido, soltarSonido, activarSonido, reproducir } from '@/media/sonido';
+import { CLAVE_SESION_EN_CURSO as CLAVE_GUARDADO } from '@/storage/claves';
 
 export type { Fase };
 
-import { CLAVE_SESION_EN_CURSO as CLAVE_GUARDADO } from '@/storage/claves';
 
 export interface SesionEnCurso {
   items: ItemSesion[];

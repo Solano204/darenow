@@ -20,12 +20,12 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { cerrarGoogle } from './googleAuth';
 import { useEstado } from './store';
 import {
-  CLAVE_ESTADO, CLAVE_VOZ, CLAVE_HAPTICS, CLAVE_MAQUINA, CLAVE_SESION_EN_CURSO as CLAVE_SESION, CLAVE_CONSENTIMIENTO_MEDIDAS,
+  CLAVE_CUENTA as CLAVE, CLAVE_ESTADO, CLAVE_VOZ, CLAVE_HAPTICS, CLAVE_MAQUINA, CLAVE_SESION_EN_CURSO as CLAVE_SESION,
+  CLAVE_CONSENTIMIENTO_MEDIDAS,
 } from '@/storage/claves';
 import { borrarRespaldosCache } from '@/storage/respaldo';
 import { seleccionarClavesForja } from '@/storage/clavesForja';
 
-import { CLAVE_CUENTA as CLAVE } from '@/storage/claves';
 
 type Proveedor = 'google' | 'invitado';
 

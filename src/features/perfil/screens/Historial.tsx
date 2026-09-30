@@ -17,11 +17,13 @@ import { RANGO_SCROLL, RECORRIDO_PX } from '@/ui/fx/HeaderColapsable';
 import { EncabezadoPegado } from '@/ui/components/EncabezadoPegado';
 import { EncabezadoMes } from '@/features/perfil/components/EncabezadoMes';
 import { MesHistorial } from '@/features/perfil/components/FilaHistorialCompleta';
+import type { ParamListBase } from '@react-navigation/native';
+import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 /** Las primeras filas ya entraron escalonadas en esta sesion de la app: las siguientes veces aparecen puestas. */
 let historialAnimado = false;
 
-export default function Historial({ navigation }: any) {
+export default function Historial({ navigation }: NativeStackScreenProps<ParamListBase, 'Historial'>) {
   const { estado } = useEstado();
   const sesiones = useMemo(() => [...estado.sesiones].reverse(), [estado.sesiones]);
   const meses = useMemo(() => agruparPorMes(sesiones), [sesiones]);

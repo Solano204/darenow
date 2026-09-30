@@ -16,8 +16,10 @@ import { useEstado, imagenRutina } from '@/state/store';
 import {
   porId, musculoPorId, rutinaPorId, programaPorId, TIPS, salaPorId,
 } from '@/data/catalog';
+import type { ParamListBase } from '@react-navigation/native';
+import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 
-export default function Favoritos({ navigation }: any) {
+export default function Favoritos({ navigation }: NativeStackScreenProps<ParamListBase, 'Favoritos'>) {
   const abajo = useHuecoAbajo();
   const { estado, alternarFavorito } = useEstado();
   const f = estado.favoritos;

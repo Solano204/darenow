@@ -13,6 +13,8 @@ import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
 import { useTick } from '@/ui/hooks/useTick';
 import { ALTO_BARRA_COMPACTA } from '@/ui/components/BarraRutina';
 import { fraseResumen, ALTO_RESUMEN_COMPACTO } from '@/features/rutinas/components/ResumenRutina';
+import type { NavigationAction, ParamListBase } from '@react-navigation/native';
+import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 export const PADDING_PEGAJOSO = 8;
 export const ALTO_PEGAJOSO = 2 * PADDING_PEGAJOSO + ALTO_BARRA_COMPACTA + 4 + ALTO_RESUMEN_COMPACTO;
@@ -24,19 +26,26 @@ const CIERRE_SELECTOR_MS = 300;
 interface Errores { nombre?: string; items?: string; intento: number }
 interface Marca { id: string; n: number }
 
+/** Lo que recibe «EditorRutina»: `id` de la rutina a editar y si viene de duplicar una del catalogo. */
+export type PropsEditorRutina = NativeStackScreenProps<
+  ParamListBase & { EditorRutina: { id?: string; desdeCopia?: boolean } | undefined }, 'EditorRutina'
+>;
+
 /**
  * El estado del editor de rutinas: la rutina en edicion, los errores en linea, la cabecera
  * pegajosa, el desplazamiento hasta la tarjeta tocada, el selector y la hoja de descartar.
  * La pantalla (`EditorRutina`) solo dibuja.
  */
-export function useEditorRutina(route: any, navigation: any) {
+export function useEditorRutina(
+  route: PropsEditorRutina['route'], navigation: PropsEditorRutina['navigation'],
+) {
   const { estado, guardarRutinaPropia, nuevaRutinaPropia } = useEstado();
   const magnesia = useMagnesia();
   const reducido = useReducedMotion();
   const tick = useTick();
 
   const original = route.params?.id
-    ? estado.rutinasPropias.find(r => r.id === route.params.id)
+    ? estado.rutinasPropias.find(r => r.id === route.params?.id)
     : undefined;
 
   const [r, setR] = useState<RutinaPropia>(
@@ -47,7 +56,7 @@ export function useEditorRutina(route: any, navigation: any) {
   const inicial = useRef(r).current;
   const salidaLibre = useRef(false);
   const [selector, setSelector] = useState(false);
-  const [accionPendiente, setAccionPendiente] = useState<unknown>(null);
+  const [accionPendiente, setAccionPendiente] = useState<NavigationAction | null>(null);
   const [errores, setErrores] = useState<Errores>({ intento: 0 });
   const [levantar, setLevantar] = useState(0);
   const [recien, setRecien] = useState<Marca>({ id: '', n: 0 });
@@ -85,7 +94,7 @@ export function useEditorRutina(route: any, navigation: any) {
   useEffect(() => () => { if (espera.current) clearTimeout(espera.current); }, []);
 
   useEffect(() => {
-    const unsubscribe = navigation.addListener('beforeRemove', (e: any) => {
+    const unsubscribe = navigation.addListener('beforeRemove', e => {
       if (salidaLibre.current || !hayCambios) return;
       e.preventDefault();
       setAccionPendiente(e.data.action);
@@ -190,7 +199,7 @@ export function useEditorRutina(route: any, navigation: any) {
     const accion = accionPendiente;
     salidaLibre.current = true;
     setAccionPendiente(null);
-    navigation.dispatch(accion);
+    navigation.dispatch(accion!);
   };
 
 

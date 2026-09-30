@@ -15,11 +15,13 @@ import { PantallaColapsable } from '@/ui/components/PantallaColapsable';
 import { NotaEntrenador } from '@/ui/components/NotaEntrenador';
 import { BloqueRevela } from '@/ui/fx/BloqueRevela';
 import { TarjetaRetoCompleta } from '@/features/perfil/components/TarjetaRetoCompleta';
+import type { ParamListBase } from '@react-navigation/native';
+import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 /** Las primeras tarjetas entran escalonadas; una que llega por scroll no espera a las de arriba. */
 const TARJETAS_ESCALONADAS = 4;
 
-export default function Retos({ navigation }: any) {
+export default function Retos({ navigation }: NativeStackScreenProps<ParamListBase, 'Retos'>) {
   const { estado, iniciarReto } = useEstado();
 
   return (

@@ -32,13 +32,15 @@ import { HojaConfirmacion } from '@/features/ajustes/components/HojaConfirmacion
 import { SeccionTuPlan } from '@/features/ajustes/components/SeccionTuPlan';
 import { SeccionPesoYMedidas } from '@/features/ajustes/components/SeccionPesoYMedidas';
 import { useAjustes, INDICE } from '@/features/ajustes/hooks/useAjustes';
+import type { ParamListBase } from '@react-navigation/native';
+import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 const SEC = {
   plan: 0, donde: 1, equipo: 2, lesiones: 3, sesion: 4, ver: 5, medidas: 6, catalogo: 7, cuenta: 8, datos: 9, legal: 10,
 } as const;
 
 
-export default function Ajustes({ navigation }: any) {
+export default function Ajustes({ navigation }: NativeStackScreenProps<ParamListBase, 'Ajustes'>) {
   const {
     guardarPerfil, cuenta, p, objetivoAbierto, setObjetivoAbierto, hapticosOn, vozOn, setVozOn,
     consentimientoMedidas, cambiarConsentimientoMedidas, exportando, importando, hoja, setHoja,

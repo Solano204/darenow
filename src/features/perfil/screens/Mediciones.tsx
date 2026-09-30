@@ -17,8 +17,10 @@ import { unidadDeMedicion } from '@/lib/textosVisibles';
 import { PantallaColapsable } from '@/ui/components/PantallaColapsable';
 import { NotaEntrenador } from '@/ui/components/NotaEntrenador';
 import { FilaMedicion } from '@/features/perfil/components/FilaMedicion';
+import type { ParamListBase } from '@react-navigation/native';
+import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 
-export default function Mediciones({ navigation }: any) {
+export default function Mediciones({ navigation }: NativeStackScreenProps<ParamListBase, 'Mediciones'>) {
   const { estado, guardarMedicion } = useEstado();
   const [abierto, setAbierto] = useState<string | null>(null);
   const [valor, setValor] = useState('');

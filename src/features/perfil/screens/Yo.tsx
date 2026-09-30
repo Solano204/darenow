@@ -22,6 +22,8 @@ import {
   useEstado, estadisticas, ultimos7, minutosPorDia, diasEntrenados,
 } from '@/state/store';
 import { LOGROS, RETOS, programaPorId, nombreGoal } from '@/data/catalog';
+import type { ParamListBase } from '@react-navigation/native';
+import type { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 
 /* ==================================================================== YO */
 
@@ -36,7 +38,7 @@ const RETOS_VISIBLES = 3;
  * como se ven: cada seccion es un bloque que se revela una vez al entrar en pantalla y todas sus acciones
  * («Ver todos», «Todos», «Ver», «Registrar», «Ver todo») son el mismo enlace de texto.
  */
-export default function Yo({ navigation }: any) {
+export default function Yo({ navigation }: BottomTabScreenProps<ParamListBase, 'Yo'>) {
   const inset = useSafeAreaInsets();
   const abajo = useHuecoAbajo();
   const { y, onScroll } = useScrollCabecera();

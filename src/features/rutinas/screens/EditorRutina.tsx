@@ -38,12 +38,14 @@ import { CampoTitulo, TextoError } from '@/features/rutinas/components/CampoTitu
 import { TarjetaEjercicioRutina } from '@/features/rutinas/components/TarjetaEjercicioRutina';
 import { HojaDescartar } from '@/features/rutinas/components/HojaDescartar';
 import { SelectorEjercicio } from '@/features/rutinas/components/SelectorEjercicio';
-import { useEditorRutina, ALTO_PEGAJOSO, PADDING_PEGAJOSO } from '@/features/rutinas/hooks/useEditorRutina';
+import {
+  useEditorRutina, ALTO_PEGAJOSO, PADDING_PEGAJOSO, type PropsEditorRutina,
+} from '@/features/rutinas/hooks/useEditorRutina';
 
 const ALTO_FILA_OBJETIVO = 36;
 
 
-export default function EditorRutina({ route, navigation }: any) {
+export default function EditorRutina({ route, navigation }: PropsEditorRutina) {
   const {
     original, r, set, errores, setErrores, claves, frase, levantar, series, minutos, avisos, vacia,
     posiciones, umbral, scroll, alDesplazar, pegajoso, montada, movida, recien, cambiarItem, mover, quitar, alMedir,

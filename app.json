@@ -70,7 +70,17 @@
       ],
       "expo-asset",
       "expo-sharing",
-      "@react-native-google-signin/google-signin"
+      "@react-native-google-signin/google-signin",
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "enableMinifyInReleaseBuilds": true,
+            "enableShrinkResourcesInReleaseBuilds": true,
+            "enableBundleCompression": false
+          }
+        }
+      ]
     ],
     "extra": {
       "eas": {

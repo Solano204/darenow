@@ -38,6 +38,7 @@ export function ProveedorEstado({ children }: { children: React.ReactNode }) {
   const [cargando, setCargando] = useState(true);
 
   useEffect(() => {
+    perfMark('providers-montados'); // perf:R1
     (async () => {
       try {
         const raw = await AsyncStorage.getItem(CLAVE);

@@ -2,7 +2,10 @@
  * DARENOW · marcas de rendimiento (SOLO DESARROLLO / MEDICION)
  *
  * Serie de rendimiento R1. Mide el arranque en JS con `performance.now()`:
- *   js-start -> catalog-ready -> fonts-ready -> storage-ready -> hoy-interactive
+ *   js-start -> catalog-ready -> app-render -> providers-montados -> fonts-ready -> storage-ready
+ *   -> primer-layout (se oculta el splash) -> hoy-interactive
+ *
+ * `app-render` es el primer render de App: todo lo que va antes es evaluar modulos.
  *
  * Solo hace algo si la build se genero con `EXPO_PUBLIC_PERF=1`. Expo sustituye
  * `process.env.EXPO_PUBLIC_*` por su valor al empaquetar, asi que sin esa
@@ -19,7 +22,9 @@
 
 const ACTIVO = process.env.EXPO_PUBLIC_PERF === '1';
 
-type Marca = 'js-start' | 'fonts-ready' | 'storage-ready' | 'catalog-ready' | 'hoy-interactive' | (string & {});
+type Marca =
+  | 'js-start' | 'catalog-ready' | 'app-render' | 'providers-montados' | 'fonts-ready' | 'storage-ready'
+  | 'primer-layout' | 'hoy-interactive' | (string & {});
 
 const marcas = new Map<string, number>();
 const medidas: { nombre: string; ms: number }[] = [];

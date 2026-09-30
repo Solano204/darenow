@@ -176,6 +176,7 @@ function Raiz() {
 }
 
 export default function App() {
+  perfMark('app-render'); // perf:R1
   const [fontsLoaded, fontError] = useFonts({
     BigShouldersDisplay_700Bold, BigShouldersDisplay_800ExtraBold,
     Figtree_400Regular, Figtree_500Medium, Figtree_600SemiBold, Figtree_700Bold,

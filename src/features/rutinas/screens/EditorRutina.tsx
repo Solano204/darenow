@@ -20,216 +20,35 @@
  *    presentacion, los errores en linea (antes eran alertas) y la hoja de descartar.
  */
 
-import React, { useEffect, useMemo, useRef, useState } from 'react';
-import {
-  View, Text, StyleSheet, ScrollView, Modal, FlatList, Pressable, KeyboardAvoidingView, Platform,
-  AccessibilityInfo, type LayoutChangeEvent,
-} from 'react-native';
-import Animated, {
-  Extrapolation, interpolate, useAnimatedScrollHandler, useAnimatedStyle, useSharedValue,
-} from 'react-native-reanimated';
+import { View, Text, StyleSheet, Pressable, KeyboardAvoidingView, Platform, type LayoutChangeEvent } from 'react-native';
+import Animated from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { color, tipo, esp, radio, peso, paleta, familia, conAlfa, MARGEN_PANTALLA, haptico } from '@/ui/theme';
-import { Boton, Chip, Toque, Nota, Buscador, Vacio } from '@/ui/components';
+import { tipo, paleta, familia, conAlfa, MARGEN_PANTALLA, haptico } from '@/ui/theme';
+import { Nota } from '@/ui/components';
 import { ICONOS_OBJETIVO } from '@/ui/components/iconosObjetivo';
 import { BotonPlaca } from '@/ui/components/BotonPlaca';
 import { GomaTexture } from '@/ui/fx/GomaTexture';
-import { useMagnesia } from '@/ui/fx/MagnesiaOverlay';
-import Foto from '@/ui/components/Foto';
-import { useEstado, type RutinaPropia, type ItemPropio } from '@/state/store';
-import {
-  itemPropioPorDefecto, minutosPropios, revisarPropia,
-} from '@/lib/engine/session';
-import {
-  EJERCICIOS, porId, GOALS, CATEGORIAS, nombreEquipo, type Ejercicio,
-} from '@/data/catalog';
-import { plural } from '@/lib/plural';
-import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
-import { useTick } from '@/ui/hooks/useTick';
+import { porId, GOALS } from '@/data/catalog';
 import { ChipFiltro } from '@/ui/components/ChipFiltro';
 import { FilaChips } from '@/ui/components/EncabezadoFiltrosColapsable';
 import { FilaCrear } from '@/ui/components/FilaCrear';
-import { BarraRutina, ALTO_BARRA_COMPACTA } from '@/ui/components/BarraRutina';
-import { ResumenRutina, fraseResumen, ALTO_RESUMEN_COMPACTO } from '@/features/rutinas/components/ResumenRutina';
+import { BarraRutina } from '@/ui/components/BarraRutina';
+import { ResumenRutina } from '@/features/rutinas/components/ResumenRutina';
 import { CampoTitulo, TextoError } from '@/features/rutinas/components/CampoTitulo';
 import { TarjetaEjercicioRutina } from '@/features/rutinas/components/TarjetaEjercicioRutina';
 import { HojaDescartar } from '@/features/rutinas/components/HojaDescartar';
+import { SelectorEjercicio } from '@/features/rutinas/components/SelectorEjercicio';
+import { useEditorRutina, ALTO_PEGAJOSO, PADDING_PEGAJOSO } from '@/features/rutinas/hooks/useEditorRutina';
 
 const ALTO_FILA_OBJETIVO = 36;
-const PADDING_PEGAJOSO = 8;
-const ALTO_PEGAJOSO = 2 * PADDING_PEGAJOSO + ALTO_BARRA_COMPACTA + 4 + ALTO_RESUMEN_COMPACTO;
-const APARICION_PEGAJOSO_PX = 24;
-const AIRE_SCROLL = 12;
-/** Lo que tarda en cerrarse el selector: el ejercicio elegido entra cuando ya se ve la pantalla. */
-const CIERRE_SELECTOR_MS = 300;
 
-interface Errores { nombre?: string; items?: string; intento: number }
-interface Marca { id: string; n: number }
 
 export default function EditorRutina({ route, navigation }: any) {
-  const { estado, guardarRutinaPropia, nuevaRutinaPropia } = useEstado();
-  const magnesia = useMagnesia();
-  const reducido = useReducedMotion();
-  const tick = useTick();
-
-  const original = route.params?.id
-    ? estado.rutinasPropias.find(r => r.id === route.params.id)
-    : undefined;
-
-  const [r, setR] = useState<RutinaPropia>(
-    () => original ?? nuevaRutinaPropia({ objetivo: estado.perfil.objetivo }),
-  );
-  // Foto fija del arranque (crear en blanco o editar lo cargado), para
-  // saber si hubo cambios reales antes de dejar salir sin avisar.
-  const inicial = useRef(r).current;
-  const salidaLibre = useRef(false);
-  const [selector, setSelector] = useState(false);
-  const [accionPendiente, setAccionPendiente] = useState<unknown>(null);
-  const [errores, setErrores] = useState<Errores>({ intento: 0 });
-  const [levantar, setLevantar] = useState(0);
-  const [recien, setRecien] = useState<Marca>({ id: '', n: 0 });
-  const [movida, setMovida] = useState<Marca>({ id: '', n: 0 });
-
-  const scroll = useRef<Animated.ScrollView>(null);
-  const botonCrear = useRef<View>(null);
-  const montada = useRef(false);
-  const espera = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const pendiente = useRef<string | null>(null);
-  const medidas = useRef(new Map<string, { y: number; alto: number }>());
-  const posiciones = useRef({ lista: 0, ejercicios: 0, vista: 0 });
-  const y = useSharedValue(0);
-  const umbral = useSharedValue(1e6);
-
-  const minutos = useMemo(() => minutosPropios(r.items), [r.items]);
-  const series = useMemo(() => r.items.reduce((a, x) => a + x.series, 0), [r.items]);
-  const avisos = useMemo(() => revisarPropia(r.items, estado.perfil), [r.items, estado.perfil]);
-  const hayCambios = useMemo(() => JSON.stringify(r) !== JSON.stringify(inicial), [r, inicial]);
-  const frase = fraseResumen(r.items.length, series, minutos);
-  const vacia = r.items.length === 0;
-
-  // Clave estable por ejercicio (con el numero de repeticion si una rutina copiada lo trae dos veces):
-  // asi reordenar mueve la tarjeta y su placa en lugar de recrearlas.
-  const claves = useMemo(() => {
-    const vistos = new Map<string, number>();
-    return r.items.map(it => {
-      const n = vistos.get(it.ejercicioId) ?? 0;
-      vistos.set(it.ejercicioId, n + 1);
-      return n ? `${it.ejercicioId}#${n}` : it.ejercicioId;
-    });
-  }, [r.items]);
-
-  useEffect(() => { montada.current = true; }, []);
-  useEffect(() => () => { if (espera.current) clearTimeout(espera.current); }, []);
-
-  useEffect(() => {
-    const unsubscribe = navigation.addListener('beforeRemove', (e: any) => {
-      if (salidaLibre.current || !hayCambios) return;
-      e.preventDefault();
-      setAccionPendiente(e.data.action);
-    });
-    return unsubscribe;
-  }, [navigation, hayCambios]);
-
-  const alDesplazar = useAnimatedScrollHandler(e => { y.value = e.contentOffset.y; });
-
-  const pegajoso = useAnimatedStyle(() => {
-    const p = interpolate(y.value, [umbral.value - APARICION_PEGAJOSO_PX, umbral.value], [0, 1], Extrapolation.CLAMP);
-    return { opacity: p, transform: [{ translateY: reducido ? 0 : (1 - p) * -8 }] };
-  }, [reducido, tick]);
-
-  const set = (cambio: Partial<RutinaPropia>) => setR(prev => ({ ...prev, ...cambio }));
-
-  const cambiarItem = (i: number, cambio: Partial<ItemPropio>) =>
-    setR(prev => ({
-      ...prev,
-      items: prev.items.map((x, n) => (n === i ? { ...x, ...cambio } : x)),
-    }));
-
-  /** Si la tarjeta queda tapada por la cabecera pegajosa o por el borde de abajo, la lista se corre hasta ella. */
-  const mostrar = (clave: string) => {
-    const m = medidas.current.get(clave);
-    const p = posiciones.current;
-    if (!m || p.vista === 0) return;
-    const arriba = m.y + p.lista;
-    const abajo = arriba + m.alto;
-    const actual = y.value;
-    if (arriba < actual + ALTO_PEGAJOSO + AIRE_SCROLL) {
-      scroll.current?.scrollTo({ y: Math.max(0, arriba - ALTO_PEGAJOSO - AIRE_SCROLL), animated: !reducido });
-    } else if (abajo > actual + p.vista - AIRE_SCROLL) {
-      scroll.current?.scrollTo({ y: abajo - p.vista + AIRE_SCROLL, animated: !reducido });
-    }
-  };
-
-  const alMedir = (clave: string) => (yy: number, alto: number) => {
-    medidas.current.set(clave, { y: yy, alto });
-    if (pendiente.current !== clave) return;
-    pendiente.current = null;
-    requestAnimationFrame(() => mostrar(clave));
-  };
-
-  const mover = (i: number, dir: -1 | 1) => {
-    const j = i + dir;
-    if (j < 0 || j >= r.items.length) return;
-    const copia = [...r.items];
-    [copia[i], copia[j]] = [copia[j], copia[i]];
-    set({ items: copia });
-    haptico.seleccion();
-    setMovida(m => ({ id: claves[i], n: m.n + 1 }));
-    pendiente.current = claves[i];
-    AccessibilityInfo.announceForAccessibility(`Ejercicio movido a posición ${j + 1}`);
-  };
-
-  const quitar = (i: number) => {
-    const quedan = r.items.length - 1;
-    set({ items: r.items.filter((_, n) => n !== i) });
-    AccessibilityInfo.announceForAccessibility(`Ejercicio quitado, ${quedan} ${plural(quedan, 'ejercicio', 'ejercicios')}`);
-  };
-
-  const anadir = (e: Ejercicio) => {
-    setSelector(false);
-    if (r.items.some(it => it.ejercicioId === e.id)) return;
-    const nuevo = itemPropioPorDefecto(e);
-    const total = r.items.length + 1;
-    espera.current = setTimeout(() => {
-      setR(prev => (prev.items.some(it => it.ejercicioId === e.id) ? prev : { ...prev, items: [...prev.items, nuevo] }));
-      setRecien(m => ({ id: e.id, n: m.n + 1 }));
-      setErrores(x => ({ ...x, items: undefined }));
-      pendiente.current = e.id;
-      AccessibilityInfo.announceForAccessibility(`Ejercicio agregado, ${total} ${plural(total, 'ejercicio', 'ejercicios')}`);
-    }, CIERRE_SELECTOR_MS);
-  };
-
-  const celebrar = () => {
-    haptico.aplauso();
-    botonCrear.current?.measureInWindow((x, yy, w, h) => magnesia.aplaudir(x + w / 2, yy + h / 2));
-  };
-
-  const guardar = () => {
-    const nombre = r.nombre.trim();
-    if (!nombre) {
-      setErrores(x => ({ nombre: 'Ponle nombre. Así la reconoces después en tu lista.', intento: x.intento + 1 }));
-      scroll.current?.scrollTo({ y: 0, animated: !reducido });
-      return;
-    }
-    if (r.items.length === 0) {
-      setErrores(x => ({ items: 'Falta contenido. Agrega al menos un ejercicio.', intento: x.intento + 1 }));
-      scroll.current?.scrollTo({ y: Math.max(0, posiciones.current.ejercicios - ALTO_PEGAJOSO), animated: !reducido });
-      return;
-    }
-    salidaLibre.current = true;
-    guardarRutinaPropia({ ...r, nombre });
-    setLevantar(n => n + 1);
-    celebrar();
-    navigation.goBack();
-  };
-
-  const descartar = () => {
-    const accion = accionPendiente;
-    salidaLibre.current = true;
-    setAccionPendiente(null);
-    navigation.dispatch(accion);
-  };
-
+  const {
+    original, r, set, errores, setErrores, claves, frase, levantar, series, minutos, avisos, vacia,
+    posiciones, umbral, scroll, alDesplazar, pegajoso, montada, movida, recien, cambiarItem, mover, quitar, alMedir,
+    selector, setSelector, anadir, botonCrear, guardar, accionPendiente, setAccionPendiente, descartar,
+  } = useEditorRutina(route, navigation);
   return (
     <View style={s.raiz}>
       <GomaTexture />
@@ -364,125 +183,6 @@ export default function EditorRutina({ route, navigation }: any) {
 
 /* ------------------------------------------------------------------ */
 
-function SelectorEjercicio({ visible, yaPuestos, onElegir, onCerrar }: {
-  visible: boolean; yaPuestos: string[];
-  onElegir: (e: Ejercicio) => void; onCerrar: () => void;
-}) {
-  const { estado } = useEstado();
-  const [q, setQ] = useState('');
-  const [cat, setCat] = useState<string | null>(null);
-  const [soloMios, setSoloMios] = useState(true);
-
-  const equipo = useMemo(
-    () => new Set([...estado.perfil.equipo, 'ninguno', 'pared', 'silla']),
-    [estado.perfil.equipo],
-  );
-
-  const lista = useMemo(() => {
-    const t = q.trim().toLowerCase();
-    return EJERCICIOS.filter(e => {
-      if (t && !(e.name.toLowerCase().includes(t) || (e.name_en ?? '').toLowerCase().includes(t))) return false;
-      if (cat && e.category !== cat) return false;
-      if (soloMios && !e.equipment.every(x => equipo.has(x))) return false;
-      return true;
-    });
-  }, [q, cat, soloMios, equipo]);
-
-  return (
-    <Modal visible={visible} animationType="slide" onRequestClose={onCerrar}>
-      <SafeAreaView style={{ flex: 1, backgroundColor: color.fondo }}>
-        <View style={{ padding: esp.md, gap: esp.sm }}>
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <Text style={[tipo.h2, { color: color.texto, flex: 1 }]}>Agregar ejercicio</Text>
-            <Pressable onPress={onCerrar} hitSlop={12} accessibilityRole="button" accessibilityLabel="Cerrar">
-              <Text style={[tipo.dato, { color: color.textoSuave }]}>Cerrar</Text>
-            </Pressable>
-          </View>
-          <Buscador valor={q} onCambio={setQ} placeholder="Buscar entre 190 ejercicios" />
-          <ScrollView horizontal showsHorizontalScrollIndicator={false}
-            contentContainerStyle={{ gap: esp.xs }}>
-            {[{ id: null, nombre: 'Todo' }, ...CATEGORIAS].map((c, i) => (
-              <Chip key={i} texto={c.nombre} pequeno activo={cat === c.id}
-                onPress={() => setCat(c.id as string | null)} />
-            ))}
-          </ScrollView>
-          <View style={{ flexDirection: 'row', gap: esp.xs }}>
-            <Pressable
-              onPress={() => setSoloMios(true)}
-              accessibilityRole="radio"
-              accessibilityState={{ selected: soloMios }}
-              accessibilityLabel="Solo con mi equipo"
-              style={[s.segmento, soloMios && s.segmentoActivo]}
-            >
-              <Text style={[tipo.micro, {
-                fontFamily: soloMios ? peso.bold : peso.semibold,
-                color: soloMios ? color.sobreOscuro : color.textoSuave,
-              }]}>Solo con mi equipo</Text>
-            </Pressable>
-            <Pressable
-              onPress={() => setSoloMios(false)}
-              accessibilityRole="radio"
-              accessibilityState={{ selected: !soloMios }}
-              accessibilityLabel="Catálogo completo"
-              style={[s.segmento, !soloMios && s.segmentoActivo]}
-            >
-              <Text style={[tipo.micro, {
-                fontFamily: !soloMios ? peso.bold : peso.semibold,
-                color: !soloMios ? color.sobreOscuro : color.textoSuave,
-              }]}>Catálogo completo</Text>
-            </Pressable>
-          </View>
-          <Text style={[tipo.pie, { color: color.textoSuave }]}>
-            Mostrando {lista.length} {lista.length === 1 ? 'ejercicio' : 'ejercicios'}
-            {soloMios ? ' para tu equipo' : ''}
-          </Text>
-        </View>
-
-        <FlatList
-          data={lista}
-          keyExtractor={e => e.id}
-          contentContainerStyle={{ paddingHorizontal: esp.md, paddingBottom: esp.xl }}
-          initialNumToRender={14}
-          ListEmptyComponent={soloMios ? (
-            <View style={{ alignItems: 'center', gap: esp.sm }}>
-              <Vacio texto="Nada con tu equipo actual." />
-              <Boton texto="Ver catálogo completo" variante="contorno" onPress={() => setSoloMios(false)} />
-            </View>
-          ) : <Vacio texto="Nada con esa búsqueda." />}
-          renderItem={({ item }) => (
-            <FilaSelector item={item} puesto={yaPuestos.includes(item.id)} onElegir={onElegir} />
-          )}
-        />
-      </SafeAreaView>
-    </Modal>
-  );
-}
-
-/** Memoizada: la busqueda re-renderiza el selector en cada tecla sobre las
- *  190 filas posibles; `onElegir` llega estable desde el padre. */
-const FilaSelector = React.memo(function FilaSelector({ item, puesto, onElegir }: {
-  item: Ejercicio; puesto: boolean; onElegir: (e: Ejercicio) => void;
-}) {
-  return (
-    <Toque onPress={puesto ? undefined : () => onElegir(item)} estilo={s.filaSelector as never}>
-      <Foto tipo="ejercicio" id={item.id} nombre={item.name} alto={50} ancho={50} />
-      <View style={{ flex: 1, opacity: puesto ? 0.5 : 1 }}>
-        <Text style={[tipo.cuerpo, { color: color.texto, fontFamily: peso.semibold }]} numberOfLines={1}>
-          {item.name}
-        </Text>
-        <Text style={[tipo.pie, { color: color.textoSuave }]} numberOfLines={1}>
-          {nombreEquipo(item.equipment)} · nivel {item.level}
-        </Text>
-      </View>
-      {puesto
-        ? <Text style={[tipo.micro, { color: color.textoTenue }]}>ya está</Text>
-        : <Text style={{ color: color.acento, fontSize: 20 }}>+</Text>}
-    </Toque>
-  );
-});
-
-/* ------------------------------------------------------------------ */
-
 const s = StyleSheet.create({
   raiz: { flex: 1, backgroundColor: paleta.goma },
   llena: { flex: 1 },
@@ -513,14 +213,4 @@ const s = StyleSheet.create({
     backgroundColor: conAlfa(paleta.goma, 0.92), borderBottomWidth: 1, borderBottomColor: paleta.gomaBorde,
   },
   resumenPegajoso: { marginTop: 4 },
-  filaSelector: {
-    flexDirection: 'row', alignItems: 'center', gap: esp.sm, paddingVertical: esp.sm,
-    borderBottomWidth: 1, borderBottomColor: color.borde,
-  },
-  segmento: {
-    minHeight: 24, justifyContent: 'center', paddingHorizontal: esp.sm, paddingVertical: 6,
-    borderWidth: 1, borderColor: color.borde, backgroundColor: color.velo,
-    borderRadius: radio.pastilla,
-  },
-  segmentoActivo: { backgroundColor: color.carbon, borderColor: color.carbon },
 });

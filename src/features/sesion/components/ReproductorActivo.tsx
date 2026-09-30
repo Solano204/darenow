@@ -1,6 +1,5 @@
 import React, { useEffect, useEffectEvent, useRef, useState, useSyncExternalStore } from 'react';
 import { useKeepAwake } from 'expo-keep-awake';
-import * as Haptics from 'expo-haptics';
 import type { ParamListBase } from '@react-navigation/native';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { haptico, PALABRA_FASE } from '@/ui/theme';
@@ -12,7 +11,6 @@ import {
 import { esUnilateral, type EstadoPlayer, type Fase } from '@/features/sesion/utils/playerMachine';
 import { usePerfil, hoy } from '@/state/store';
 import { guardarSesion } from '@/state/acciones';
-import { useHapticosActivos } from '@/state/haptics';
 import { useVozActiva } from '@/state/voz';
 import type { Sesion, ItemSesion } from '@/lib/engine/session';
 import { reproducir } from '@/media/sonido';
@@ -40,7 +38,6 @@ export function ReproductorActivo({ sesionInicial, restaurar, navigation }: {
 
   const p = useSessionPlayer(items, perfil.sonido, restaurar);
   const { estado, ejercicio } = p;
-  const [hapticosOn] = useHapticosActivos();
 
   // Cuenta final 3-2-1: mismas condiciones que disparan cuenta_3/2/1 en
   // useSessionPlayer. Aqui solo deshabilita los botones mientras dura. Se leen del store como
@@ -116,7 +113,7 @@ export function ReproductorActivo({ sesionInicial, restaurar, navigation }: {
   // Al terminar, guarda y pasa al resumen.
   const alCambiarEstadoFase2 = useEffectEvent(() => {
     if (estado.fase !== 'fin') return;
-    if (hapticosOn) Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+    haptico.exito();   // por la puerta comun: respeta el ajuste de hapticas y el limitador
     finalizar(true, null);
   });
   useEffect(() => alCambiarEstadoFase2(), [estado.fase]);

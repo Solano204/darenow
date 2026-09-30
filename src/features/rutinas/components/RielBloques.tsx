@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import type { SharedValue } from 'react-native-reanimated';
 import { paleta } from '@/ui/theme';
-import type { TipoTramo } from '@/utils/estimarTramos';
+import type { TipoTramo } from '@/features/rutinas/utils/estimarTramos';
 import { EncabezadoBloque } from '@/ui/components/EncabezadoBloque';
 import { FilaEjercicioRutina, type ItemVista } from './FilaEjercicioRutina';
 import { RielVertical, type SegmentoRiel } from '@/ui/components/RielVertical';

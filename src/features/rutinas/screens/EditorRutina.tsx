@@ -50,10 +50,10 @@ import { ChipFiltro } from '@/ui/components/ChipFiltro';
 import { FilaChips } from '@/ui/components/EncabezadoFiltrosColapsable';
 import { FilaCrear } from '@/ui/components/FilaCrear';
 import { BarraRutina, ALTO_BARRA_COMPACTA } from '@/ui/components/BarraRutina';
-import { ResumenRutina, fraseResumen, ALTO_RESUMEN_COMPACTO } from '@/components/routine-builder/ResumenRutina';
-import { CampoTitulo, TextoError } from '@/components/routine-builder/CampoTitulo';
-import { TarjetaEjercicioRutina } from '@/components/routine-builder/TarjetaEjercicioRutina';
-import { HojaDescartar } from '@/components/routine-builder/HojaDescartar';
+import { ResumenRutina, fraseResumen, ALTO_RESUMEN_COMPACTO } from '@/features/rutinas/components/ResumenRutina';
+import { CampoTitulo, TextoError } from '@/features/rutinas/components/CampoTitulo';
+import { TarjetaEjercicioRutina } from '@/features/rutinas/components/TarjetaEjercicioRutina';
+import { HojaDescartar } from '@/features/rutinas/components/HojaDescartar';
 
 const ALTO_FILA_OBJETIVO = 36;
 const PADDING_PEGAJOSO = 8;

@@ -4,8 +4,8 @@
  * esbuild --bundle --platform=node --format=cjs tests/detalleRutina.test.ts | node
  */
 
-import { estimarTramos, resumenDeTramos, PISO_TRAMO } from '@/utils/estimarTramos';
-import { muestrasPerfil } from '@/components/routine-detail/curvaPerfil';
+import { estimarTramos, resumenDeTramos, PISO_TRAMO } from '@/features/rutinas/utils/estimarTramos';
+import { muestrasPerfil } from '@/features/rutinas/components/curvaPerfil';
 import { RUTINAS } from '@/data/catalog';
 
 let ok = 0, fallos = 0;

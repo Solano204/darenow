@@ -7,7 +7,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { paleta, conAlfa, familia, MARGEN_PANTALLA } from '@/ui/theme';
 import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
 import { useTick } from '@/ui/hooks/useTick';
-import { estimarTramos, resumenDeTramos } from '@/utils/estimarTramos';
+import { estimarTramos, resumenDeTramos } from '@/features/rutinas/utils/estimarTramos';
 import { GomaTexture } from '@/ui/fx/GomaTexture';
 import { BarraInferiorFija, ALTO_BARRA_INFERIOR } from '@/ui/components/BarraInferiorFija';
 import { BarraSuperiorColapsable } from '@/ui/components/BarraSuperiorColapsable';

@@ -1,6 +1,6 @@
 import { describe, expect, it } from '@jest/globals';
 import { fechaLocal, fechaLarga, diaCorto, esSesionLarga } from '@/lib/fechas';
-import { etiquetaDeTramo, estimarTramos, resumenDeTramos, PISO_TRAMO } from '@/utils/estimarTramos';
+import { etiquetaDeTramo, estimarTramos, resumenDeTramos, PISO_TRAMO } from '@/features/rutinas/utils/estimarTramos';
 import {
   parsearRango, fasesDePrograma, faseDeSemana, minutosPorSemana, placasPorSemana, textoDeRango, palabrasDeRango, resumenDePlan,
 } from '@/features/programas/utils/minutosPorSemana';

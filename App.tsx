@@ -41,12 +41,12 @@ import Retos from '@/screens/Retos';
 import Mediciones from '@/screens/Mediciones';
 import Historial from '@/screens/Historial';
 import Favoritos from '@/screens/Favoritos';
-import EditorRutina from '@/screens/EditorRutina';
-import RutinaPropia from '@/screens/RutinaPropia';
+import EditorRutina from '@/features/rutinas/screens/EditorRutina';
+import RutinaPropia from '@/features/rutinas/screens/RutinaPropia';
 import Reproductor from '@/screens/Reproductor';
 import Resumen from '@/screens/Resumen';
 import DetalleEjercicio from '@/features/ejercicio/screens/DetalleEjercicio';
-import DetalleRutina from '@/screens/DetalleRutina';
+import DetalleRutina from '@/features/rutinas/screens/DetalleRutina';
 import DetallePrograma from '@/features/programas/screens/DetallePrograma';
 import DetalleMusculo from '@/features/musculos/screens/DetalleMusculo';
 

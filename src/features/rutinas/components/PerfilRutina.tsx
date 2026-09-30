@@ -6,7 +6,7 @@ import {
 } from 'react-native-reanimated';
 import { paleta, conAlfa, familia, easing, MARGEN_PANTALLA } from '@/ui/theme';
 import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
-import type { Tramo } from '@/utils/estimarTramos';
+import type { Tramo } from '@/features/rutinas/utils/estimarTramos';
 import { muestrasPerfil } from './curvaPerfil';
 
 const ALTO_PERFIL = 96;

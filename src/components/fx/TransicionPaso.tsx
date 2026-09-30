@@ -1,8 +1,8 @@
 import React, { useCallback, useRef } from 'react';
 import Animated, { runOnJS, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
-import { easing } from '@/theme';
-import { useReducedMotion } from '@/hooks/useReducedMotion';
-import { useTick } from '@/hooks/useTick';
+import { easing } from '@/ui/theme';
+import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
+import { useTick } from '@/ui/hooks/useTick';
 
 const SALIDA_MS = 180;
 const REDUCIDO_MS = 150;

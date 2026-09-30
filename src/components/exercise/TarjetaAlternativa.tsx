@@ -1,12 +1,12 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { paleta, familia } from '@/theme';
+import { paleta, familia } from '@/ui/theme';
 import type { Ejercicio } from '@/data/catalog';
 import { textoVisible } from '@/utils/presentacion';
-import { Presionable } from '@/components/ui/Presionable';
-import { FotoOscura } from '@/components/ui/FotoOscura';
-import { NivelPlacas } from '@/components/ui/NivelPlacas';
+import { Presionable } from '@/ui/components/Presionable';
+import { FotoOscura } from '@/ui/components/FotoOscura';
+import { NivelPlacas } from '@/ui/components/NivelPlacas';
 
 export const ANCHO_ALTERNATIVA = 160;
 const ALTO_FOTO = 120;

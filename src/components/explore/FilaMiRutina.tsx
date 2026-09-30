@@ -4,15 +4,15 @@ import Animated, {
   cancelAnimation, useAnimatedStyle, useSharedValue, withDelay, withSequence, withSpring, withTiming,
 } from 'react-native-reanimated';
 import { Ionicons } from '@expo/vector-icons';
-import { paleta, conAlfa, familia, resortePlaca, resorteTap, haptico } from '@/theme';
+import { paleta, conAlfa, familia, resortePlaca, resorteTap, haptico } from '@/ui/theme';
 import { imagenRutina, type RutinaPropia } from '@/store/store';
 import { minutosPropios } from '@/engine/session';
 import { plural } from '@/utils/plural';
-import { useReducedMotion } from '@/hooks/useReducedMotion';
-import { useTick } from '@/hooks/useTick';
-import { FotoOscura } from '@/components/ui/FotoOscura';
-import { DatoNumerico } from '@/components/ui/DatoNumerico';
-import { MiniBarraRutina } from '@/components/hoy/BarraRutina';
+import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
+import { useTick } from '@/ui/hooks/useTick';
+import { FotoOscura } from '@/ui/components/FotoOscura';
+import { DatoNumerico } from '@/ui/components/DatoNumerico';
+import { MiniBarraRutina } from '@/ui/components/BarraRutinaTarjeta';
 
 const LADO_MINIATURA = 64;
 const ESCALA_PRESIONADA = 0.02;

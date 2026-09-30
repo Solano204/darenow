@@ -1,10 +1,10 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Animated, { LinearTransition } from 'react-native-reanimated';
-import { paleta, familia, MARGEN_PANTALLA } from '@/theme';
+import { paleta, familia, MARGEN_PANTALLA } from '@/ui/theme';
 import { plural } from '@/utils/plural';
-import { useReducedMotion } from '@/hooks/useReducedMotion';
-import { Odometro } from '@/components/fx/Odometro';
+import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
+import { Odometro } from '@/ui/fx/Odometro';
 
 const SEPARACION_SECCIONES = 40;
 const AIRE_PRIMERA_SECCION = 16;

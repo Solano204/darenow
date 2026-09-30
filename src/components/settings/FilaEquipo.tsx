@@ -2,9 +2,9 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Animated, { useAnimatedStyle } from 'react-native-reanimated';
 import { Ionicons } from '@expo/vector-icons';
-import { paleta, familia } from '@/theme';
-import { useTick } from '@/hooks/useTick';
-import { useMiniMagnesia } from '@/components/fx/MiniMagnesia';
+import { paleta, familia } from '@/ui/theme';
+import { useTick } from '@/ui/hooks/useTick';
+import { useMiniMagnesia } from '@/ui/fx/MiniMagnesia';
 import { FilaAjuste, type IconoAjuste } from './FilaAjuste';
 import { CasillaMarca, useProgresoMarca } from './CasillaMarca';
 

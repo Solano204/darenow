@@ -10,17 +10,17 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import {
   paleta, familia, esp, ALTO_BOTON, MARGEN_PANTALLA, radio, easing, resortePlaca, resorteTap, haptico,
   COLOR_FASE, ORDEN_FASE, PALABRA_FASE, faseVisual, type FaseId,
-} from '@/theme';
+} from '@/ui/theme';
 import type { ItemSesion } from '@/engine/session';
 import { PREPARACION_S, esUnilateral, type EstadoPlayer } from '@/session/playerMachine';
 import { nombreVisible } from '@/data/nombresVisibles';
-import { useReducedMotion } from '@/hooks/useReducedMotion';
-import { useTick } from '@/hooks/useTick';
-import Clip from '@/components/Clip';
-import Foto from '@/components/Foto';
-import { GomaTexture } from '@/components/fx/GomaTexture';
-import { BotonPlaca } from '@/components/ui/BotonPlaca';
-import { BotonSecundario } from '@/components/ui/BotonSecundario';
+import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
+import { useTick } from '@/ui/hooks/useTick';
+import Clip from '@/ui/components/Clip';
+import Foto from '@/ui/components/Foto';
+import { GomaTexture } from '@/ui/fx/GomaTexture';
+import { BotonPlaca } from '@/ui/components/BotonPlaca';
+import { BotonSecundario } from '@/ui/components/BotonSecundario';
 import { AnilloTemporizador } from './AnilloTemporizador';
 import { NumeroTemporizador } from './NumeroTemporizador';
 import { PalabraFase } from './PalabraFase';

@@ -1,12 +1,12 @@
 import React, { useEffect, useRef } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { paleta, familia, MARGEN_PANTALLA } from '@/theme';
+import { paleta, familia, MARGEN_PANTALLA } from '@/ui/theme';
 import type { Programa } from '@/data/catalog';
 import { nombreVisible } from '@/data/nombresVisibles';
-import { ICONOS_OBJETIVO } from '@/components/ui/iconosObjetivo';
-import { TituloLetras } from '@/components/fx/TituloMascara';
-import { BarraCarga13 } from '@/components/fx/BarraCarga13';
+import { ICONOS_OBJETIVO } from '@/ui/components/iconosObjetivo';
+import { TituloLetras } from '@/ui/fx/TituloMascara';
+import { BarraCarga13 } from '@/ui/fx/BarraCarga13';
 
 /** El nombre ya entro por mascara de letras en esta sesion de la app: las siguientes veces aparece puesto. */
 let nombreAnimado = false;

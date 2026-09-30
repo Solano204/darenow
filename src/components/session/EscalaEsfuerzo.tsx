@@ -3,9 +3,9 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 import Animated, {
   cancelAnimation, useAnimatedStyle, useSharedValue, withDelay, withSpring,
 } from 'react-native-reanimated';
-import { paleta, conAlfa, familia, resortePlaca, haptico } from '@/theme';
-import { useReducedMotion } from '@/hooks/useReducedMotion';
-import { useTick } from '@/hooks/useTick';
+import { paleta, conAlfa, familia, resortePlaca, haptico } from '@/ui/theme';
+import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
+import { useTick } from '@/ui/hooks/useTick';
 
 const ESCALONADO_MS = 60;
 const SEGUNDO_GOLPE_MS = 70;

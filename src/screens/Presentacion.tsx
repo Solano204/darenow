@@ -16,23 +16,23 @@ import Animated, {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import {
   paleta, color, tipo, esp, MARGEN_PANTALLA, AREA_TACTIL_MIN, peso, dur, easing, resortePlaca,
-} from '@/theme';
-import { BotonPlaca } from '@/components/ui/BotonPlaca';
-import { NotaEntrenador, estiloNota } from '@/components/ui/NotaEntrenador';
-import { InsigniaEvidencia } from '@/components/ui/InsigniaEvidencia';
+} from '@/ui/theme';
+import { BotonPlaca } from '@/ui/components/BotonPlaca';
+import { NotaEntrenador, estiloNota } from '@/ui/components/NotaEntrenador';
+import { InsigniaEvidencia } from '@/ui/components/InsigniaEvidencia';
 import { BarraPlacas } from '@/components/fx/BarraPlacas';
-import { GomaTexture } from '@/components/fx/GomaTexture';
+import { GomaTexture } from '@/ui/fx/GomaTexture';
 import { FotoParallax } from '@/components/fx/FotoParallax';
 import { TituloEstampado } from '@/components/fx/TituloEstampado';
-import { TituloMascara } from '@/components/fx/TituloMascara';
-import { Odometro } from '@/components/fx/Odometro';
-import { DialTiempo } from '@/components/fx/DialTiempo';
-import { TachadoMito } from '@/components/fx/TachadoMito';
-import { Entrada } from '@/components/fx/Entrada';
+import { TituloMascara } from '@/ui/fx/TituloMascara';
+import { Odometro } from '@/ui/fx/Odometro';
+import { DialTiempo } from '@/ui/fx/DialTiempo';
+import { TachadoMito } from '@/ui/fx/TachadoMito';
+import { Entrada } from '@/ui/fx/Entrada';
 import { fuente } from '@/media/registry';
 import { usePresentacion, type Lamina } from '@/hooks/usePresentacion';
 import { useFirstView } from '@/hooks/useFirstView';
-import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
 
 const FRACCION_FOTO = 0.62;
 const FACTOR_CUERPO = 1.15;

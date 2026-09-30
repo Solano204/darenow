@@ -1,7 +1,7 @@
 import React from 'react';
 import { Pressable, StyleSheet, Text } from 'react-native';
-import { paleta, familia, haptico, AREA_TACTIL_MIN } from '@/theme';
-import { PistaSwitch } from '@/components/settings/SwitchDarenow';
+import { paleta, familia, haptico, AREA_TACTIL_MIN } from '@/ui/theme';
+import { PistaSwitch } from '@/ui/components/SwitchDarenow';
 
 /**
  * «Medir por tiempo» como interruptor de verdad: la pista y la perilla son las de `PistaSwitch` (el interruptor de

@@ -4,15 +4,15 @@ import Animated, {
   FadeIn, FadeOut, LinearTransition, useAnimatedStyle, useDerivedValue, useSharedValue, withSpring, type SharedValue,
 } from 'react-native-reanimated';
 import { Ionicons } from '@expo/vector-icons';
-import { paleta, familia, resortePlaca, haptico, MARGEN_PANTALLA } from '@/theme';
+import { paleta, familia, resortePlaca, haptico, MARGEN_PANTALLA } from '@/ui/theme';
 import type { Protocolo } from '@/data/catalog';
 import type { MedicionGuardada } from '@/store/store';
 import { textoVisible } from '@/utils/presentacion';
 import { plural } from '@/utils/plural';
 import { PROTOCOLOS_SIN_VALOR, textoDeFrecuencia } from '@/utils/textosVisibles';
-import { useReducedMotion } from '@/hooks/useReducedMotion';
-import { useTick } from '@/hooks/useTick';
-import { BotonCompacto } from '@/components/ui/BotonCompacto';
+import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
+import { useTick } from '@/ui/hooks/useTick';
+import { BotonCompacto } from '@/ui/components/BotonCompacto';
 import { CampoValor } from './CampoValor';
 import { ProtocoloMedicion } from './ProtocoloMedicion';
 

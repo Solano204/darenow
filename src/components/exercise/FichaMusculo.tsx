@@ -1,15 +1,15 @@
 import React, { useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
-import { paleta, familia, easing } from '@/theme';
+import { paleta, familia, easing } from '@/ui/theme';
 import { fuente } from '@/media/registry';
 import type { Musculo } from '@/data/catalog';
 import { textoVisible } from '@/utils/presentacion';
-import { useReducedMotion } from '@/hooks/useReducedMotion';
-import { useTick } from '@/hooks/useTick';
-import { Presionable } from '@/components/ui/Presionable';
-import { FotoOscura } from '@/components/ui/FotoOscura';
-import { Entrada } from '@/components/fx/Entrada';
+import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
+import { useTick } from '@/ui/hooks/useTick';
+import { Presionable } from '@/ui/components/Presionable';
+import { FotoOscura } from '@/ui/components/FotoOscura';
+import { Entrada } from '@/ui/fx/Entrada';
 
 const ALTO_FICHA = 104;
 const RADIO = 24;

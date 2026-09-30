@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
-import { paleta, familia, resortePlaca } from '@/theme';
+import { paleta, familia, resortePlaca } from '@/ui/theme';
 import { nombreVisible } from '@/data/nombresVisibles';
 import { palabrasDeRango } from '@/utils/minutosPorSemana';
-import { useReducedMotion } from '@/hooks/useReducedMotion';
-import { useTick } from '@/hooks/useTick';
+import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
+import { useTick } from '@/ui/hooks/useTick';
 
 const ESCALA_SELLO = 1.3;
 

@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { paleta, familia, resorteMagnesia } from '@/theme';
+import { paleta, familia, resorteMagnesia } from '@/ui/theme';
 import type { Evidencia } from '@/data/catalog';
 import { textoDeAfirmacion, textoVisible } from '@/utils/presentacion';
-import { useReducedMotion } from '@/hooks/useReducedMotion';
-import { TarjetaGoma } from '@/components/ui/TarjetaGoma';
-import { InsigniaEvidencia } from '@/components/ui/InsigniaEvidencia';
-import { NotaEntrenador } from '@/components/ui/NotaEntrenador';
-import { Entrada } from '@/components/fx/Entrada';
-import { Tachon, type Linea } from '@/components/fx/TachadoMito';
+import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
+import { TarjetaGoma } from '@/ui/components/TarjetaGoma';
+import { InsigniaEvidencia } from '@/ui/components/InsigniaEvidencia';
+import { NotaEntrenador } from '@/ui/components/NotaEntrenador';
+import { Entrada } from '@/ui/fx/Entrada';
+import { Tachon, type Linea } from '@/ui/fx/TachadoMito';
 import {
   MedidorEvidencia, COLOR_VEREDICTO, contarVeredictos, veredictoDominante,
-} from './MedidorEvidencia';
+} from '@/ui/components/MedidorEvidencia';
 
 const RELLENO = 20;
 const RETRASO_FILAS_MS = 700;

@@ -1,8 +1,8 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import Animated, { useAnimatedStyle } from 'react-native-reanimated';
-import { paleta } from '@/theme';
-import { useTick } from '@/hooks/useTick';
+import { paleta } from '@/ui/theme';
+import { useTick } from '@/ui/hooks/useTick';
 import { FilaAjuste } from './FilaAjuste';
 import { CasillaMarca, useProgresoMarca } from './CasillaMarca';
 

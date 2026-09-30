@@ -3,8 +3,8 @@ import { StyleSheet, View } from 'react-native';
 import Animated, {
   runOnJS, useAnimatedStyle, useSharedValue, withDelay, withSequence, withSpring, withTiming, type SharedValue,
 } from 'react-native-reanimated';
-import { paleta, PLACAS, resortePlaca, resorteTap, haptico } from '@/theme';
-import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { paleta, PLACAS, resortePlaca, resorteTap, haptico } from '@/ui/theme';
+import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
 
 const ANCHO = 128;
 const ALTO = 36;

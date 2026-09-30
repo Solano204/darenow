@@ -1,11 +1,11 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { paleta, familia } from '@/theme';
+import { paleta, familia } from '@/ui/theme';
 import { nombreGoal } from '@/data/catalog';
 import { plural } from '@/utils/plural';
-import { PlacaDato } from '@/components/ui/PlacaDato';
-import { ICONOS_OBJETIVO } from '@/components/ui/iconosObjetivo';
+import { PlacaDato } from '@/ui/components/PlacaDato';
+import { ICONOS_OBJETIVO } from '@/ui/components/iconosObjetivo';
 
 const ESPERA_MS = 250;
 const ESCALONADO_MS = 80;

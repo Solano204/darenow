@@ -29,13 +29,13 @@ import Animated, {
   Extrapolation, interpolate, useAnimatedScrollHandler, useAnimatedStyle, useSharedValue,
 } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { color, tipo, esp, radio, peso, paleta, familia, conAlfa, MARGEN_PANTALLA, haptico } from '@/theme';
-import { Boton, Chip, Toque, Nota, Buscador, Vacio } from '@/components/ui';
-import { ICONOS_OBJETIVO } from '@/components/ui/iconosObjetivo';
-import { BotonPlaca } from '@/components/ui/BotonPlaca';
-import { GomaTexture } from '@/components/fx/GomaTexture';
-import { useMagnesia } from '@/components/fx/MagnesiaOverlay';
-import Foto from '@/components/Foto';
+import { color, tipo, esp, radio, peso, paleta, familia, conAlfa, MARGEN_PANTALLA, haptico } from '@/ui/theme';
+import { Boton, Chip, Toque, Nota, Buscador, Vacio } from '@/ui/components';
+import { ICONOS_OBJETIVO } from '@/ui/components/iconosObjetivo';
+import { BotonPlaca } from '@/ui/components/BotonPlaca';
+import { GomaTexture } from '@/ui/fx/GomaTexture';
+import { useMagnesia } from '@/ui/fx/MagnesiaOverlay';
+import Foto from '@/ui/components/Foto';
 import { useEstado, type RutinaPropia, type ItemPropio } from '@/store/store';
 import {
   itemPropioPorDefecto, minutosPropios, revisarPropia,
@@ -44,12 +44,12 @@ import {
   EJERCICIOS, porId, GOALS, CATEGORIAS, nombreEquipo, type Ejercicio,
 } from '@/data/catalog';
 import { plural } from '@/utils/plural';
-import { useReducedMotion } from '@/hooks/useReducedMotion';
-import { useTick } from '@/hooks/useTick';
-import { ChipFiltro } from '@/components/explore/ChipFiltro';
-import { FilaChips } from '@/components/explore/EncabezadoFiltrosColapsable';
-import { FilaCrear } from '@/components/explore/FilaCrear';
-import { BarraRutina, ALTO_BARRA_COMPACTA } from '@/components/routine-builder/BarraRutina';
+import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
+import { useTick } from '@/ui/hooks/useTick';
+import { ChipFiltro } from '@/ui/components/ChipFiltro';
+import { FilaChips } from '@/ui/components/EncabezadoFiltrosColapsable';
+import { FilaCrear } from '@/ui/components/FilaCrear';
+import { BarraRutina, ALTO_BARRA_COMPACTA } from '@/ui/components/BarraRutina';
 import { ResumenRutina, fraseResumen, ALTO_RESUMEN_COMPACTO } from '@/components/routine-builder/ResumenRutina';
 import { CampoTitulo, TextoError } from '@/components/routine-builder/CampoTitulo';
 import { TarjetaEjercicioRutina } from '@/components/routine-builder/TarjetaEjercicioRutina';

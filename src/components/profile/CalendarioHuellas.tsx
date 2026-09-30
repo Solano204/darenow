@@ -5,17 +5,17 @@ import Animated, {
   type EntryExitAnimationFunction, type SharedValue,
 } from 'react-native-reanimated';
 import { Ionicons } from '@expo/vector-icons';
-import { paleta, familia, resortePlaca, haptico, MARGEN_PANTALLA } from '@/theme';
+import { paleta, familia, resortePlaca, haptico, MARGEN_PANTALLA } from '@/ui/theme';
 import { hoy } from '@/store/store';
 import { MESES } from '@/utils/fechas';
 import { celdasDelMes, diaDelCalendario, diasDelMes, type DiaDelCalendario } from '@/utils/perfil';
 import { plural } from '@/utils/plural';
-import { useReducedMotion } from '@/hooks/useReducedMotion';
-import { useTick } from '@/hooks/useTick';
-import { Huella } from '@/components/fx/Huella';
-import { PlacaDato } from '@/components/ui/PlacaDato';
-import { MarcoHoy } from '@/components/hoy/FilaSemana';
-import { transicionesDeSegmento } from '@/components/explore/listaBase';
+import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
+import { useTick } from '@/ui/hooks/useTick';
+import { Huella } from '@/ui/fx/Huella';
+import { PlacaDato } from '@/ui/components/PlacaDato';
+import { MarcoHoy } from '@/ui/components/FilaSemana';
+import { transicionesDeSegmento } from '@/ui/components/listaBase';
 
 const ALTO_CELDA = 48;
 const ANCHO_CELDA = 44;

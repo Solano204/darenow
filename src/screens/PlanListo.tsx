@@ -14,16 +14,16 @@ import { View, Text, ScrollView, StyleSheet, useWindowDimensions } from 'react-n
 import Animated, { useAnimatedStyle, useSharedValue, withDelay, withTiming } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
-import { paleta, tipo, familia, esp, degradado, easing, MARGEN_PANTALLA } from '@/theme';
-import { Boton, Nota } from '@/components/ui';
-import { BotonPlaca } from '@/components/ui/BotonPlaca';
-import { PlacaDato } from '@/components/ui/PlacaDato';
-import { GomaTexture } from '@/components/fx/GomaTexture';
-import { FotoTratada, ANCLAS_VELO } from '@/components/fx/FotoTratada';
-import { TituloLetras } from '@/components/fx/TituloMascara';
-import { Entrada } from '@/components/fx/Entrada';
-import { useMagnesia } from '@/components/fx/MagnesiaOverlay';
-import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { paleta, tipo, familia, esp, degradado, easing, MARGEN_PANTALLA } from '@/ui/theme';
+import { Boton, Nota } from '@/ui/components';
+import { BotonPlaca } from '@/ui/components/BotonPlaca';
+import { PlacaDato } from '@/ui/components/PlacaDato';
+import { GomaTexture } from '@/ui/fx/GomaTexture';
+import { FotoTratada, ANCLAS_VELO } from '@/ui/fx/FotoTratada';
+import { TituloLetras } from '@/ui/fx/TituloMascara';
+import { Entrada } from '@/ui/fx/Entrada';
+import { useMagnesia } from '@/ui/fx/MagnesiaOverlay';
+import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
 import { fuente } from '@/media/registry';
 import type { PerfilUsuario } from '@/store/store';
 

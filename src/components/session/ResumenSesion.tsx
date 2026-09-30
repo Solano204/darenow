@@ -4,19 +4,19 @@ import Animated, { runOnJS, useAnimatedStyle, useSharedValue, withTiming } from 
 import { SafeAreaView } from 'react-native-safe-area-context';
 import {
   paleta, tipo, familia, esp, MARGEN_PANTALLA, COLOR_FASE, easing, haptico, type FaseVisual,
-} from '@/theme';
-import { useReducedMotion } from '@/hooks/useReducedMotion';
-import { useTick } from '@/hooks/useTick';
-import { BotonPlaca } from '@/components/ui/BotonPlaca';
-import { TarjetaGoma } from '@/components/ui/TarjetaGoma';
-import { NotaEntrenador } from '@/components/ui/NotaEntrenador';
-import { PlacaDato } from '@/components/ui/PlacaDato';
-import { GomaTexture } from '@/components/fx/GomaTexture';
-import { TituloMascara } from '@/components/fx/TituloMascara';
-import { Entrada } from '@/components/fx/Entrada';
-import { Odometro } from '@/components/fx/Odometro';
-import { useMagnesia } from '@/components/fx/MagnesiaOverlay';
-import { PlacaMedalla } from './PlacaMedalla';
+} from '@/ui/theme';
+import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
+import { useTick } from '@/ui/hooks/useTick';
+import { BotonPlaca } from '@/ui/components/BotonPlaca';
+import { TarjetaGoma } from '@/ui/components/TarjetaGoma';
+import { NotaEntrenador } from '@/ui/components/NotaEntrenador';
+import { PlacaDato } from '@/ui/components/PlacaDato';
+import { GomaTexture } from '@/ui/fx/GomaTexture';
+import { TituloMascara } from '@/ui/fx/TituloMascara';
+import { Entrada } from '@/ui/fx/Entrada';
+import { Odometro } from '@/ui/fx/Odometro';
+import { useMagnesia } from '@/ui/fx/MagnesiaOverlay';
+import { PlacaMedalla } from '@/ui/components/PlacaMedalla';
 import { EscalaEsfuerzo } from './EscalaEsfuerzo';
 
 const CONTRACCION_MS = 400;

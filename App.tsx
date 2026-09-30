@@ -11,14 +11,14 @@ import { useFonts } from 'expo-font';
 import { BigShouldersDisplay_700Bold, BigShouldersDisplay_800ExtraBold } from '@expo-google-fonts/big-shoulders-display';
 import { Figtree_400Regular, Figtree_500Medium, Figtree_600SemiBold, Figtree_700Bold } from '@expo-google-fonts/figtree';
 
-import { color, colorSesion, peso } from '@/theme';
+import { color, colorSesion, peso } from '@/ui/theme';
 import { ProveedorEstado, useEstado, hoy } from '@/store/store';
 import { ProveedorCuenta, useCuenta } from '@/store/cuenta';
-import { ProveedorAnuncios } from '@/components/RelojAnuncios';
-import { ProveedorMagnesia } from '@/components/fx/MagnesiaOverlay';
-import { Entrada } from '@/components/fx/Entrada';
-import { TabBarGoma } from '@/components/ui/TabBarGoma';
-import { resorteTap } from '@/theme';
+import { ProveedorAnuncios } from '@/ui/components/RelojAnuncios';
+import { ProveedorMagnesia } from '@/ui/fx/MagnesiaOverlay';
+import { Entrada } from '@/ui/fx/Entrada';
+import { TabBarGoma } from '@/ui/components/TabBarGoma';
+import { resorteTap } from '@/ui/theme';
 import { mark as perfMark } from '@/dev/perfMarks'; // perf:R1
 
 // Se queda visible hasta que las fuentes resuelvan (cargadas o no): nada

@@ -1,13 +1,13 @@
 import React, { useEffect, useRef } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Animated, { type SharedValue } from 'react-native-reanimated';
-import { paleta, familia } from '@/theme';
+import { paleta, familia } from '@/ui/theme';
 import { NUTRICION } from '@/data/catalog';
 import { textoDeLectura } from '@/utils/aprender';
-import { BloqueRevela } from '@/components/fx/BloqueRevela';
-import { Entrada } from '@/components/fx/Entrada';
+import { BloqueRevela } from '@/ui/fx/BloqueRevela';
+import { Entrada } from '@/ui/fx/Entrada';
 import { IconoProhibido } from '@/components/fx/IconoProhibido';
-import { PROPS_FIJAS, type PropsLista } from '@/components/explore/listaBase';
+import { PROPS_FIJAS, type PropsLista } from '@/ui/components/listaBase';
 import { TarjetaAlimentacion } from './TarjetaAlimentacion';
 import { TituloBloque } from './TituloBloque';
 

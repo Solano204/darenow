@@ -3,10 +3,10 @@ import { View, type StyleProp, type TextStyle } from 'react-native';
 import Animated, {
   cancelAnimation, interpolateColor, useAnimatedStyle, useSharedValue, withDelay, withTiming,
 } from 'react-native-reanimated';
-import { paleta } from '@/theme';
-import { useReducedMotion } from '@/hooks/useReducedMotion';
-import { TituloMascara } from '@/components/fx/TituloMascara';
-import { Tachon, type Linea } from '@/components/fx/TachadoMito';
+import { paleta } from '@/ui/theme';
+import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
+import { TituloMascara } from '@/ui/fx/TituloMascara';
+import { Tachon, type Linea } from '@/ui/fx/TachadoMito';
 
 /** Lo que tarda el tachon en recorrer cada linea de la afirmacion. */
 const TACHON_LINEA_MS = 220;

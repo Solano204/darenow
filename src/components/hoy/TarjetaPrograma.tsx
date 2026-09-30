@@ -1,11 +1,11 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { paleta, familia } from '@/theme';
+import { paleta, familia } from '@/ui/theme';
 import { nombreVisible } from '@/data/nombresVisibles';
-import { Presionable } from '@/components/ui/Presionable';
-import { FotoOscura } from '@/components/ui/FotoOscura';
-import { InsigniaFoto } from '@/components/ui/InsigniaFoto';
-import { EstrellaFavorito } from './EstrellaFavorito';
+import { Presionable } from '@/ui/components/Presionable';
+import { FotoOscura } from '@/ui/components/FotoOscura';
+import { InsigniaFoto } from '@/ui/components/InsigniaFoto';
+import { EstrellaFavorito } from '@/ui/components/EstrellaFavorito';
 
 export const ANCHO_TARJETA_PROGRAMA = 240;
 export const ALTO_FOTO_PROGRAMA = 150;

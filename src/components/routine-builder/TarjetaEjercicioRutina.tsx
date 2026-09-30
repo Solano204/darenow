@@ -4,17 +4,17 @@ import Animated, {
   LinearTransition, runOnJS, useAnimatedStyle, useSharedValue, withSequence, withSpring, withTiming,
   type EntryExitAnimationFunction,
 } from 'react-native-reanimated';
-import { paleta, conAlfa, familia, easing, resortePlaca } from '@/theme';
+import { paleta, conAlfa, familia, easing, resortePlaca } from '@/ui/theme';
 import type { ItemPropio } from '@/store/store';
 import type { Ejercicio } from '@/data/catalog';
 import { nombreVisible } from '@/data/nombresVisibles';
 import { textoDeEquipo } from '@/utils/presentacion';
-import { useReducedMotion } from '@/hooks/useReducedMotion';
-import { useTick } from '@/hooks/useTick';
-import { TarjetaGoma } from '@/components/ui/TarjetaGoma';
-import { FotoOscura } from '@/components/ui/FotoOscura';
-import { Stepper } from '@/components/session/Stepper';
-import { colorAnimadoDePlaca } from './BarraRutina';
+import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
+import { useTick } from '@/ui/hooks/useTick';
+import { TarjetaGoma } from '@/ui/components/TarjetaGoma';
+import { FotoOscura } from '@/ui/components/FotoOscura';
+import { Stepper } from '@/ui/components/Stepper';
+import { colorAnimadoDePlaca } from '@/ui/components/BarraRutina';
 import { BotonesOrden } from './BotonesOrden';
 import { InterruptorTiempo } from './InterruptorTiempo';
 

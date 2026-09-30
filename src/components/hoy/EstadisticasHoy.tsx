@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { PLACAS, MARGEN_PANTALLA } from '@/theme';
-import { PlacaDato } from '@/components/ui/PlacaDato';
+import { PLACAS, MARGEN_PANTALLA } from '@/ui/theme';
+import { PlacaDato } from '@/ui/components/PlacaDato';
 
 const TAMANO_NUMERO = 32;
 const ESCALONADO_MS = 80;

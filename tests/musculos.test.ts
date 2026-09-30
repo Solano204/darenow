@@ -10,7 +10,7 @@ import { textoDeEtiqueta, textoVisible } from '@/utils/presentacion';
 import { relacionados, ejerciciosDeMusculo } from '@/utils/musculos';
 import {
   COLUMNAS, ALTO_REGION, ladoFicha, lineasDeNombre, agruparPorGrupo, armarFilas, regionActiva,
-} from '@/components/muscles/disposicionCatalogo';
+} from '@/ui/components/disposicionCatalogo';
 
 let ok = 0, fallos = 0;
 const c = (n: string, cond: boolean, d = '') => {

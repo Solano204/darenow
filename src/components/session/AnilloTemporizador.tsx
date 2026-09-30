@@ -1,7 +1,7 @@
 import React from 'react';
 import { BlurMask, Circle, Group, Path, Skia } from '@shopify/react-native-skia';
 import { useDerivedValue, type DerivedValue, type SharedValue } from 'react-native-reanimated';
-import { paleta } from '@/theme';
+import { paleta } from '@/ui/theme';
 
 const GROSOR_ANILLO = 8;
 const RADIO_MARCA = 3;

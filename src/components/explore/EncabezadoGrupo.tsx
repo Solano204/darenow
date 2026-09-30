@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { paleta, familia } from '@/theme';
-import { Odometro } from '@/components/fx/Odometro';
+import { paleta, familia } from '@/ui/theme';
+import { Odometro } from '@/ui/fx/Odometro';
 
 /**
  * Titulo de un grupo de la lista de rutinas («Mis rutinas», «Del catalogo»): Big Shoulders

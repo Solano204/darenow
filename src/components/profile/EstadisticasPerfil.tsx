@@ -1,9 +1,9 @@
 import React, { useEffect, useRef } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { paleta, MARGEN_PANTALLA } from '@/theme';
+import { paleta, MARGEN_PANTALLA } from '@/ui/theme';
 import { etiquetasDeEstadisticas } from '@/utils/perfil';
-import { PlacaDato } from '@/components/ui/PlacaDato';
-import { Huella } from '@/components/fx/Huella';
+import { PlacaDato } from '@/ui/components/PlacaDato';
+import { Huella } from '@/ui/fx/Huella';
 
 const TAMANO_NUMERO = 32;
 const ESCALONADO_MS = 80;

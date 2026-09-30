@@ -1,8 +1,8 @@
 import React, { useEffect, useRef } from 'react';
 import { AccessibilityInfo, Platform, StyleSheet, Text, View } from 'react-native';
-import { paleta, familia } from '@/theme';
+import { paleta, familia } from '@/ui/theme';
 import { plural } from '@/utils/plural';
-import { Odometro } from '@/components/fx/Odometro';
+import { Odometro } from '@/ui/fx/Odometro';
 
 const ALTO_CONTADOR = 24;
 const ANUNCIO_RETRASO_MS = 700;

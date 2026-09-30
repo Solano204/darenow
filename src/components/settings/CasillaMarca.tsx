@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Animated, { interpolateColor, useAnimatedStyle, useSharedValue, withTiming, type SharedValue } from 'react-native-reanimated';
-import { paleta, easing } from '@/theme';
-import { useReducedMotion } from '@/hooks/useReducedMotion';
-import { useTick } from '@/hooks/useTick';
-import { PalomitaTrazo } from '@/components/fx/PalomitaTrazo';
+import { paleta, easing } from '@/ui/theme';
+import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
+import { useTick } from '@/ui/hooks/useTick';
+import { PalomitaTrazo } from '@/ui/fx/PalomitaTrazo';
 
 const LADO = 24;
 const RADIO = 6;

@@ -1,14 +1,14 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { StyleSheet, Text, View, useWindowDimensions, type LayoutChangeEvent } from 'react-native';
 import Animated, { type SharedValue } from 'react-native-reanimated';
-import { paleta, familia } from '@/theme';
+import { paleta, familia } from '@/ui/theme';
 import { textoVisible } from '@/utils/presentacion';
 import { agruparPorLetra, textoDeLectura, type Termino } from '@/utils/aprender';
-import { useReducedMotion } from '@/hooks/useReducedMotion';
-import { useHuecoAbajo } from '@/components/ui';
-import { TextoVacio } from '@/components/explore/TextoVacio';
-import { EncabezadoPegado } from '@/components/explore/EncabezadoPegado';
-import { PROPS_FIJAS, type PropsLista } from '@/components/explore/listaBase';
+import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
+import { useHuecoAbajo } from '@/ui/components';
+import { TextoVacio } from '@/ui/components/TextoVacio';
+import { EncabezadoPegado } from '@/ui/components/EncabezadoPegado';
+import { PROPS_FIJAS, type PropsLista } from '@/ui/components/listaBase';
 import { PreguntaAcordeon } from './PreguntaAcordeon';
 import { TituloBloque } from './TituloBloque';
 

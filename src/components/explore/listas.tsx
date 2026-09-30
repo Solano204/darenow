@@ -2,15 +2,15 @@ import React from 'react';
 import type { ListRenderItemInfo } from 'react-native';
 import Animated, { type SharedValue } from 'react-native-reanimated';
 import type { Ejercicio, Programa, Rutina } from '@/data/catalog';
-import { useReducedMotion } from '@/hooks/useReducedMotion';
-import { FilaEjercicio } from './FilaEjercicio';
+import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
+import { FilaEjercicio } from '@/ui/components/FilaEjercicio';
 import { TarjetaRutina } from './TarjetaRutina';
 import { TarjetaPrograma } from './TarjetaPrograma';
-import { TextoVacio } from './TextoVacio';
+import { TextoVacio } from '@/ui/components/TextoVacio';
 import {
   PROPS_FIJAS, FILAS_ANIMADAS, TARJETAS_ESCALONADAS, entradaFila, entradaTarjeta, entradaReducida, reacomodo, salida,
   salidaReducida, type PropsLista,
-} from './listaBase';
+} from '@/ui/components/listaBase';
 
 /**
  * Las tres listas con animacion de entrada y salida: solo las primeras posiciones

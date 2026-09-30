@@ -1,17 +1,17 @@
 import React, { useMemo } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { paleta, familia, MARGEN_PANTALLA } from '@/theme';
+import { paleta, familia, MARGEN_PANTALLA } from '@/ui/theme';
 import { porId, musculoPorId, rutinaPorId, programaPorId, TIPS } from '@/data/catalog';
 import { nombreVisible } from '@/data/nombresVisibles';
 import { imagenRutina, type Favoritos, type RutinaPropia } from '@/store/store';
 import type { TipoFoto } from '@/media/registry';
 import { textoVisible } from '@/utils/presentacion';
 import { mezclarFavoritos, totalFavoritos, type ItemFavorito, type TipoFavorito } from '@/utils/perfil';
-import { FotoOscura } from '@/components/ui/FotoOscura';
-import { Presionable } from '@/components/ui/Presionable';
-import { EstrellaFavorito } from '@/components/hoy/EstrellaFavorito';
-import { IconoTrazo } from '@/components/fx/IconoTrazo';
+import { FotoOscura } from '@/ui/components/FotoOscura';
+import { Presionable } from '@/ui/components/Presionable';
+import { EstrellaFavorito } from '@/ui/components/EstrellaFavorito';
+import { IconoTrazo } from '@/ui/fx/IconoTrazo';
 
 const ANCHO = 160;
 const ALTO_FOTO = 110;

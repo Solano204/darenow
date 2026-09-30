@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Animated, { cancelAnimation, useAnimatedStyle, useSharedValue, withDelay, withTiming } from 'react-native-reanimated';
-import { paleta, familia, easing } from '@/theme';
+import { paleta, familia, easing } from '@/ui/theme';
 import { textoVisible } from '@/utils/presentacion';
-import { useReducedMotion } from '@/hooks/useReducedMotion';
-import { useTick } from '@/hooks/useTick';
+import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
+import { useTick } from '@/ui/hooks/useTick';
 
 const LADO_ICONO = 18;
 const LARGO_TRAZO = 18;

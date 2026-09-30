@@ -3,16 +3,16 @@ import { StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 import Animated, {
   cancelAnimation, interpolateColor, useAnimatedStyle, useSharedValue, withDelay, withTiming, type SharedValue,
 } from 'react-native-reanimated';
-import { paleta, familia, easing, MARGEN_PANTALLA } from '@/theme';
+import { paleta, familia, easing, MARGEN_PANTALLA } from '@/ui/theme';
 import type { Reto } from '@/data/catalog';
 import { textoVisible } from '@/utils/presentacion';
 import { metaDeReto, progresoAcotado, type MetaReto } from '@/utils/perfil';
-import { useReducedMotion } from '@/hooks/useReducedMotion';
-import { useTick } from '@/hooks/useTick';
-import { Entrada } from '@/components/fx/Entrada';
-import { Huella } from '@/components/fx/Huella';
-import { Presionable } from '@/components/ui/Presionable';
-import { TarjetaGoma } from '@/components/ui/TarjetaGoma';
+import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
+import { useTick } from '@/ui/hooks/useTick';
+import { Entrada } from '@/ui/fx/Entrada';
+import { Huella } from '@/ui/fx/Huella';
+import { Presionable } from '@/ui/components/Presionable';
+import { TarjetaGoma } from '@/ui/components/TarjetaGoma';
 
 const ESCALONADO_MS = 60;
 const LLENADO_MS = 500;

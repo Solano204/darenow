@@ -1,11 +1,11 @@
 import React from 'react';
 import { StyleSheet, Text } from 'react-native';
-import { paleta, familia } from '@/theme';
+import { paleta, familia } from '@/ui/theme';
 import { rutinaPorId } from '@/data/catalog';
 import { nombreVisible } from '@/data/nombresVisibles';
 import { plural } from '@/utils/plural';
-import { Presionable } from '@/components/ui/Presionable';
-import { FotoOscura } from '@/components/ui/FotoOscura';
+import { Presionable } from '@/ui/components/Presionable';
+import { FotoOscura } from '@/ui/components/FotoOscura';
 
 const ANCHO_TARJETA_FASE = 150;
 const ALTO_FOTO = 100;

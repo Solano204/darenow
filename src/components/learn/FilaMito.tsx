@@ -1,16 +1,16 @@
 import React from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
-import { paleta, familia, insignia, resorteTap, haptico } from '@/theme';
+import { paleta, familia, insignia, resorteTap, haptico } from '@/ui/theme';
 import type { Mito } from '@/data/catalog';
 import { textoVisible } from '@/utils/presentacion';
 import { textoDeLectura } from '@/utils/aprender';
-import { useReducedMotion } from '@/hooks/useReducedMotion';
-import { useTick } from '@/hooks/useTick';
-import { FotoOscura } from '@/components/ui/FotoOscura';
-import { InsigniaEvidencia } from '@/components/ui/InsigniaEvidencia';
-import { TextoDesvanecido } from '@/components/ui/TextoDesvanecido';
-import { PalomitaTrazo } from '@/components/fx/PalomitaTrazo';
+import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
+import { useTick } from '@/ui/hooks/useTick';
+import { FotoOscura } from '@/ui/components/FotoOscura';
+import { InsigniaEvidencia } from '@/ui/components/InsigniaEvidencia';
+import { TextoDesvanecido } from '@/ui/components/TextoDesvanecido';
+import { PalomitaTrazo } from '@/ui/fx/PalomitaTrazo';
 import { AfirmacionTachada } from './AfirmacionTachada';
 
 const LADO_MINIATURA = 72;

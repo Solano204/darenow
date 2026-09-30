@@ -9,8 +9,8 @@
 import React, { useMemo } from 'react';
 import { View, Text, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { color, tipo, esp } from '@/theme';
-import { Seccion, Boton, useHuecoAbajo } from '@/components/ui';
+import { color, tipo, esp } from '@/ui/theme';
+import { Seccion, Boton, useHuecoAbajo } from '@/ui/components';
 import Carrusel from '@/components/Carrusel';
 import { useEstado, imagenRutina } from '@/store/store';
 import {

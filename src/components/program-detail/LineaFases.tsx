@@ -1,14 +1,14 @@
 import React, { useMemo } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import type { SharedValue } from 'react-native-reanimated';
-import { paleta, familia, resorteMagnesia, MARGEN_PANTALLA } from '@/theme';
+import { paleta, familia, resorteMagnesia, MARGEN_PANTALLA } from '@/ui/theme';
 import { textoVisible } from '@/utils/presentacion';
 import type { FasePrograma } from '@/utils/minutosPorSemana';
-import { useReducedMotion } from '@/hooks/useReducedMotion';
-import { Entrada } from '@/components/fx/Entrada';
-import { NotaEntrenador } from '@/components/ui/NotaEntrenador';
-import { RielVertical, type SegmentoRiel } from '@/components/routine-detail/RielVertical';
-import { SANGRIA_RIEL } from '@/components/routine-detail/EncabezadoBloque';
+import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
+import { Entrada } from '@/ui/fx/Entrada';
+import { NotaEntrenador } from '@/ui/components/NotaEntrenador';
+import { RielVertical, type SegmentoRiel } from '@/ui/components/RielVertical';
+import { SANGRIA_RIEL } from '@/ui/components/EncabezadoBloque';
 import { EncabezadoFase } from './EncabezadoFase';
 import { TarjetaRutinaFase } from './TarjetaRutinaFase';
 

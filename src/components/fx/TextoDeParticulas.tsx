@@ -4,8 +4,8 @@ import { Canvas, Path, Points, Skia, useFont, type SkPoint } from '@shopify/reac
 import {
   Easing, cancelAnimation, useDerivedValue, useSharedValue, withDelay, withRepeat, withTiming,
 } from 'react-native-reanimated';
-import { easing } from '@/theme';
-import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { easing } from '@/ui/theme';
+import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
 
 const FUENTE = require('@expo-google-fonts/big-shoulders-display/BigShouldersDisplay_800ExtraBold.ttf');
 

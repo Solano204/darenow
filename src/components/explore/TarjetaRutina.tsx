@@ -4,17 +4,17 @@ import Animated, {
   Extrapolation, interpolate, measure, useAnimatedRef, useAnimatedStyle, useSharedValue, type SharedValue,
 } from 'react-native-reanimated';
 import { Ionicons } from '@expo/vector-icons';
-import { paleta, familia } from '@/theme';
+import { paleta, familia } from '@/ui/theme';
 import { nombreGoal, type Rutina } from '@/data/catalog';
 import { nombreVisible } from '@/data/nombresVisibles';
-import { useReducedMotion } from '@/hooks/useReducedMotion';
-import { useTick } from '@/hooks/useTick';
-import { Presionable } from '@/components/ui/Presionable';
-import { FotoOscura } from '@/components/ui/FotoOscura';
-import { NivelPlacas } from '@/components/ui/NivelPlacas';
-import { InsigniaFoto, EtiquetaFoto } from '@/components/ui/InsigniaFoto';
-import { ICONOS_OBJETIVO } from '@/components/ui/iconosObjetivo';
-import { EstrellaFavorito } from '@/components/hoy/EstrellaFavorito';
+import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
+import { useTick } from '@/ui/hooks/useTick';
+import { Presionable } from '@/ui/components/Presionable';
+import { FotoOscura } from '@/ui/components/FotoOscura';
+import { NivelPlacas } from '@/ui/components/NivelPlacas';
+import { InsigniaFoto, EtiquetaFoto } from '@/ui/components/InsigniaFoto';
+import { ICONOS_OBJETIVO } from '@/ui/components/iconosObjetivo';
+import { EstrellaFavorito } from '@/ui/components/EstrellaFavorito';
 
 const ALTO_FOTO_TARJETA = 180;
 const ZOOM_PRESIONADO = 0.04;

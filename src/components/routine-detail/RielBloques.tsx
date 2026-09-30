@@ -1,10 +1,10 @@
 import React, { useMemo } from 'react';
 import type { SharedValue } from 'react-native-reanimated';
-import { paleta } from '@/theme';
+import { paleta } from '@/ui/theme';
 import type { TipoTramo } from '@/utils/estimarTramos';
-import { EncabezadoBloque } from './EncabezadoBloque';
+import { EncabezadoBloque } from '@/ui/components/EncabezadoBloque';
 import { FilaEjercicioRutina, type ItemVista } from './FilaEjercicioRutina';
-import { RielVertical, type SegmentoRiel } from './RielVertical';
+import { RielVertical, type SegmentoRiel } from '@/ui/components/RielVertical';
 
 /** Un bloque de la lista: su nombre en la vista, sus vueltas si las tiene y sus ejercicios en orden. */
 export interface BloqueVista {

@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { paleta, familia, haptico, MARGEN_PANTALLA } from '@/theme';
+import { paleta, familia, haptico, MARGEN_PANTALLA } from '@/ui/theme';
 import type { Reto } from '@/data/catalog';
 import { textoVisible } from '@/utils/presentacion';
 import { vistaPreviaDeReto, progresoAcotado } from '@/utils/perfil';
-import { Entrada } from '@/components/fx/Entrada';
-import { useMiniMagnesia } from '@/components/fx/MiniMagnesia';
-import { BotonCompacto } from '@/components/ui/BotonCompacto';
-import { NivelPlacas } from '@/components/ui/NivelPlacas';
-import { TarjetaGoma } from '@/components/ui/TarjetaGoma';
-import { TarjetaConFilo } from '@/components/ui/TarjetaConFilo';
-import { Pulso } from '@/components/ui/movimiento';
-import { PlacaMedalla } from '@/components/session/PlacaMedalla';
-import { LineaDeEtiquetas } from '@/components/muscles/EtiquetasMusculo';
+import { Entrada } from '@/ui/fx/Entrada';
+import { useMiniMagnesia } from '@/ui/fx/MiniMagnesia';
+import { BotonCompacto } from '@/ui/components/BotonCompacto';
+import { NivelPlacas } from '@/ui/components/NivelPlacas';
+import { TarjetaGoma } from '@/ui/components/TarjetaGoma';
+import { TarjetaConFilo } from '@/ui/components/TarjetaConFilo';
+import { Pulso } from '@/ui/components/movimiento';
+import { PlacaMedalla } from '@/ui/components/PlacaMedalla';
+import { LineaDeEtiquetas } from '@/ui/components/EtiquetasMusculo';
 import { VistaPreviaMeta } from './VistaPreviaMeta';
 
 const ESCALONADO_MS = 60;

@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Animated, { cancelAnimation, useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
-import { paleta, familia, resortePlaca } from '@/theme';
-import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { paleta, familia, resortePlaca } from '@/ui/theme';
+import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
 
 const ESCALA_INICIAL = 0.8;
 

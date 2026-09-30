@@ -1,9 +1,9 @@
 import React from 'react';
 import type { ParamListBase } from '@react-navigation/native';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { faseVisual } from '@/theme';
+import { faseVisual } from '@/ui/theme';
 import { useEstado } from '@/store/store';
-import { useSinAnuncios } from '@/components/RelojAnuncios';
+import { useSinAnuncios } from '@/ui/components/RelojAnuncios';
 import { logroPorId } from '@/data/catalog';
 import { nombreVisible } from '@/data/nombresVisibles';
 import type { EstadoPlayer, SerieHecha } from '@/session/playerMachine';

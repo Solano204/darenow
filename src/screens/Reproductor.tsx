@@ -6,7 +6,7 @@ import * as Speech from 'expo-speech';
 import { createAudioPlayer, type AudioPlayer } from 'expo-audio';
 import type { ParamListBase } from '@react-navigation/native';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { paleta, haptico, PALABRA_FASE } from '@/theme';
+import { paleta, haptico, PALABRA_FASE } from '@/ui/theme';
 import {
   useSessionPlayer, leerSesionGuardada, borrarSesionGuardada, type SesionEnCurso,
 } from '@/session/useSessionPlayer';
@@ -17,8 +17,8 @@ import { useVozActiva } from '@/store/voz';
 import type { Sesion, ItemSesion } from '@/engine/session';
 import { prepararSonido, soltarSonido, reproducir } from '@/media/sonido';
 import { fuenteVoz, type TipoVoz } from '@/media/voz';
-import { useSinAnuncios } from '@/components/RelojAnuncios';
-import { useMagnesia } from '@/components/fx/MagnesiaOverlay';
+import { useSinAnuncios } from '@/ui/components/RelojAnuncios';
+import { useMagnesia } from '@/ui/fx/MagnesiaOverlay';
 import { PantallaListo } from '@/components/session/PantallaListo';
 import { EditorAntesDeEmpezar } from '@/components/session/EditorAntesDeEmpezar';
 import { ReproductorLayout } from '@/components/session/ReproductorLayout';

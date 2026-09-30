@@ -1,10 +1,10 @@
 import React, { useEffect, useRef } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withSequence, withSpring, withTiming } from 'react-native-reanimated';
-import { paleta, tipo, conAlfa, MARGEN_PANTALLA, resorteTap } from '@/theme';
-import { useReducedMotion } from '@/hooks/useReducedMotion';
-import { useTick } from '@/hooks/useTick';
-import { Odometro } from '@/components/fx/Odometro';
+import { paleta, tipo, conAlfa, MARGEN_PANTALLA, resorteTap } from '@/ui/theme';
+import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
+import { useTick } from '@/ui/hooks/useTick';
+import { Odometro } from '@/ui/fx/Odometro';
 
 const ESCALA_PULSO = 1.06;
 const ESTILO_TOTAL = { ...tipo.numero, fontSize: 44, lineHeight: 46, color: paleta.magnesia };

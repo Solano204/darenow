@@ -2,15 +2,15 @@ import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 import { Ionicons } from '@expo/vector-icons';
-import { paleta, familia, resorteTap, resorteMagnesia, haptico } from '@/theme';
+import { paleta, familia, resorteTap, resorteMagnesia, haptico } from '@/ui/theme';
 import { porId } from '@/data/catalog';
 import { textoVisible } from '@/utils/presentacion';
 import { plural } from '@/utils/plural';
-import { useReducedMotion } from '@/hooks/useReducedMotion';
-import { useTick } from '@/hooks/useTick';
-import { FotoOscura } from '@/components/ui/FotoOscura';
-import { Entrada } from '@/components/fx/Entrada';
-import { SANGRIA_RIEL } from './EncabezadoBloque';
+import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
+import { useTick } from '@/ui/hooks/useTick';
+import { FotoOscura } from '@/ui/components/FotoOscura';
+import { Entrada } from '@/ui/fx/Entrada';
+import { SANGRIA_RIEL } from '@/ui/components/EncabezadoBloque';
 
 /** Un ejercicio de una rutina con su prescripcion: series y repeticiones o segundos. */
 export interface ItemVista {

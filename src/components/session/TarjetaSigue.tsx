@@ -1,10 +1,10 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { paleta, familia, resorteMagnesia } from '@/theme';
+import { paleta, familia, resorteMagnesia } from '@/ui/theme';
 import type { ItemSesion } from '@/engine/session';
 import { nombreVisible } from '@/data/nombresVisibles';
-import { FotoOscura } from '@/components/ui/FotoOscura';
-import { Entrada } from '@/components/fx/Entrada';
+import { FotoOscura } from '@/ui/components/FotoOscura';
+import { Entrada } from '@/ui/fx/Entrada';
 
 const ALTO = 64;
 const LADO_MINIATURA = 48;

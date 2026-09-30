@@ -1,8 +1,8 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import Animated, { LinearTransition } from 'react-native-reanimated';
-import { paleta, MARGEN_PANTALLA } from '@/theme';
-import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { paleta, MARGEN_PANTALLA } from '@/ui/theme';
+import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
 
 const RADIO_GRUPO = 20;
 const CAMBIO_ALTURA_MS = 240;

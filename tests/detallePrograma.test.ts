@@ -9,7 +9,7 @@ import {
 } from '@/utils/minutosPorSemana';
 import { PROGRAMAS, rutinaPorId } from '@/data/catalog';
 import { nombreVisible } from '@/data/nombresVisibles';
-import { geometriaMapa, disponerEtiquetas, MAX_PLACAS } from '@/components/program-detail/disposicionMapa';
+import { geometriaMapa, disponerEtiquetas, MAX_PLACAS } from '@/ui/components/disposicionMapa';
 
 let ok = 0, fallos = 0;
 const c = (n: string, cond: boolean, d = '') => {

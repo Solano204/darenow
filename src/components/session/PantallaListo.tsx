@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
-import { paleta, tipo } from '@/theme';
-import { useReducedMotion } from '@/hooks/useReducedMotion';
-import { useTick } from '@/hooks/useTick';
-import { GomaTexture } from '@/components/fx/GomaTexture';
-import { Entrada } from '@/components/fx/Entrada';
+import { paleta, tipo } from '@/ui/theme';
+import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
+import { useTick } from '@/ui/hooks/useTick';
+import { GomaTexture } from '@/ui/fx/GomaTexture';
+import { Entrada } from '@/ui/fx/Entrada';
 import { TextoDeParticulas } from '@/components/fx/TextoDeParticulas';
 
 const TAMANO_TITULO = 72;

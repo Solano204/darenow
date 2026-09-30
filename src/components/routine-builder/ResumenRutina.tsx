@@ -1,8 +1,8 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { paleta, tipo, familia } from '@/theme';
+import { paleta, tipo, familia } from '@/ui/theme';
 import { plural } from '@/utils/plural';
-import { Odometro } from '@/components/fx/Odometro';
+import { Odometro } from '@/ui/fx/Odometro';
 
 const CIFRA = { ...tipo.numero, fontSize: 28, lineHeight: 32, color: paleta.magnesia };
 const CIFRA_COMPACTA = { ...tipo.numero, fontSize: 20, lineHeight: 24, color: paleta.magnesia };

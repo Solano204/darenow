@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { paleta, familia } from '@/theme';
+import { paleta, familia } from '@/ui/theme';
 
 const ALTO_ENCABEZADO_MES = 48;
 

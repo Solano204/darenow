@@ -1,19 +1,19 @@
 import React, { useMemo } from 'react';
 import { StyleSheet, View, useWindowDimensions, type ListRenderItemInfo } from 'react-native';
 import Animated, { type SharedValue } from 'react-native-reanimated';
-import { resorteMagnesia, MARGEN_PANTALLA } from '@/theme';
+import { resorteMagnesia, MARGEN_PANTALLA } from '@/ui/theme';
 import type { Musculo } from '@/data/catalog';
 import { textoVisible } from '@/utils/presentacion';
-import { useReducedMotion } from '@/hooks/useReducedMotion';
-import { Entrada } from '@/components/fx/Entrada';
-import { TextoVacio } from '@/components/explore/TextoVacio';
-import { EncabezadoPegado } from '@/components/explore/EncabezadoPegado';
-import { PROPS_FIJAS, reacomodo, type PropsLista } from '@/components/explore/listaBase';
+import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
+import { Entrada } from '@/ui/fx/Entrada';
+import { TextoVacio } from '@/ui/components/TextoVacio';
+import { EncabezadoPegado } from '@/ui/components/EncabezadoPegado';
+import { PROPS_FIJAS, reacomodo, type PropsLista } from '@/ui/components/listaBase';
 import { EncabezadoRegion } from './EncabezadoRegion';
-import { FichaMusculoNombre } from './FichaMusculoNombre';
+import { FichaMusculoNombre } from '@/ui/components/FichaMusculoNombre';
 import {
   SEPARACION_H, armarFilas, ladoFicha, type FilaCatalogo,
-} from './disposicionCatalogo';
+} from '@/ui/components/disposicionCatalogo';
 
 /** Solo las primeras filas (las que se ven al abrir) entran en ola; las que aparecen por scroll no se animan. */
 const FILAS_CON_OLA = 5;

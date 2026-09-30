@@ -3,11 +3,11 @@ import { StyleSheet, View } from 'react-native';
 import Animated, {
   Easing, cancelAnimation, useAnimatedStyle, useSharedValue, withSpring, withTiming, type SharedValue,
 } from 'react-native-reanimated';
-import { paleta, resortePlaca } from '@/theme';
+import { paleta, resortePlaca } from '@/ui/theme';
 import type { VistaPreviaReto } from '@/utils/perfil';
-import { useReducedMotion } from '@/hooks/useReducedMotion';
-import { useTick } from '@/hooks/useTick';
-import { Huella } from '@/components/fx/Huella';
+import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
+import { useTick } from '@/ui/hooks/useTick';
+import { Huella } from '@/ui/fx/Huella';
 
 const TRAMOS = 10;
 const ESCALONADO_MS = 20;

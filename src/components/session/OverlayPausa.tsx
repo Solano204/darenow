@@ -2,11 +2,11 @@ import React from 'react';
 import { Platform, StyleSheet, Text, View } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import { BlurView } from 'expo-blur';
-import { paleta, conAlfa, familia, MARGEN_PANTALLA } from '@/theme';
-import { useReducedMotion } from '@/hooks/useReducedMotion';
-import { useTick } from '@/hooks/useTick';
-import { BotonPlaca } from '@/components/ui/BotonPlaca';
-import { BotonSecundario } from '@/components/ui/BotonSecundario';
+import { paleta, conAlfa, familia, MARGEN_PANTALLA } from '@/ui/theme';
+import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
+import { useTick } from '@/ui/hooks/useTick';
+import { BotonPlaca } from '@/ui/components/BotonPlaca';
+import { BotonSecundario } from '@/ui/components/BotonSecundario';
 
 const ENTRADA_MS = 240;
 const REDUCIDO_MS = 150;

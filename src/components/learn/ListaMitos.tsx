@@ -1,12 +1,12 @@
 import React, { useCallback, useRef, useState } from 'react';
 import { StyleSheet, Text, View, type ListRenderItemInfo, type ViewToken } from 'react-native';
 import Animated from 'react-native-reanimated';
-import { paleta, familia, MARGEN_PANTALLA } from '@/theme';
+import { paleta, familia, MARGEN_PANTALLA } from '@/ui/theme';
 import type { Mito } from '@/data/catalog';
 import type { RelacionadoVista } from '@/utils/aprender';
-import { NotaEntrenador } from '@/components/ui/NotaEntrenador';
-import { TextoVacio } from '@/components/explore/TextoVacio';
-import { PROPS_FIJAS, type PropsLista } from '@/components/explore/listaBase';
+import { NotaEntrenador } from '@/ui/components/NotaEntrenador';
+import { TextoVacio } from '@/ui/components/TextoVacio';
+import { PROPS_FIJAS, type PropsLista } from '@/ui/components/listaBase';
 import { FilaMito, type Activacion } from './FilaMito';
 import { BloqueErrores } from './BloqueErrores';
 

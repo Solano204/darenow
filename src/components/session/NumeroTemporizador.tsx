@@ -1,9 +1,9 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Animated, { useAnimatedStyle, type SharedValue } from 'react-native-reanimated';
-import { paleta, tipo } from '@/theme';
-import { useTick } from '@/hooks/useTick';
-import { Odometro } from '@/components/fx/Odometro';
+import { paleta, tipo } from '@/ui/theme';
+import { useTick } from '@/ui/hooks/useTick';
+import { Odometro } from '@/ui/fx/Odometro';
 
 /** Con minutos («1:05») el numero baja al 87.5 % para que quepa dentro del anillo: sigue siendo de 140 px o mas en el tamano minimo. */
 const ESCALA_CON_MINUTOS = 0.875;

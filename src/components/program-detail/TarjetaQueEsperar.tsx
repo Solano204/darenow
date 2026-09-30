@@ -1,8 +1,8 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { paleta, familia } from '@/theme';
-import { TarjetaConFilo } from '@/components/ui/TarjetaConFilo';
-import { TituloSeccion } from '@/components/exercise/TituloSeccion';
+import { paleta, familia } from '@/ui/theme';
+import { TarjetaConFilo } from '@/ui/components/TarjetaConFilo';
+import { TituloSeccion } from '@/ui/components/TituloSeccion';
 
 /**
  * «Qué esperar»: la promesa honesta del programa (no promete una cifra y explica por que),

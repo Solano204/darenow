@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import { Pressable, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 import Animated, { interpolateColor, useAnimatedStyle, useSharedValue, type SharedValue } from 'react-native-reanimated';
-import { paleta, familia, MARGEN_PANTALLA } from '@/theme';
+import { paleta, familia, MARGEN_PANTALLA } from '@/ui/theme';
 import { porId } from '@/data/catalog';
 import type { SesionGuardada } from '@/store/store';
 import { textoVisible } from '@/utils/presentacion';
@@ -9,10 +9,10 @@ import { diaCorto } from '@/utils/fechas';
 import { filaDeHistorial, type MesDeHistorial } from '@/utils/perfil';
 import { plural } from '@/utils/plural';
 import { textoDeMotivo } from '@/utils/textosVisibles';
-import { useReducedMotion } from '@/hooks/useReducedMotion';
-import { useTick } from '@/hooks/useTick';
-import { Entrada } from '@/components/fx/Entrada';
-import { Huella } from '@/components/fx/Huella';
+import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
+import { useTick } from '@/ui/hooks/useTick';
+import { Entrada } from '@/ui/fx/Entrada';
+import { Huella } from '@/ui/fx/Huella';
 import { EncabezadoMes } from './EncabezadoMes';
 import { EtiquetaEstadoSesion } from './EtiquetaEstadoSesion';
 

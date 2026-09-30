@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { StyleSheet, Text, View, type StyleProp, type TextStyle } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { paleta, familia } from '@/theme';
+import { paleta, familia } from '@/ui/theme';
 import { fuente, type TipoFoto } from '@/media/registry';
 import {
   CATEGORIAS, evidenciaDe, type Ejercicio, type Musculo, type Tip,
@@ -9,12 +9,12 @@ import {
 import { nombreVisible } from '@/data/nombresVisibles';
 import { textoVisible } from '@/utils/presentacion';
 import { iconoDeSala, nombreDeSala } from '@/utils/aprender';
-import { Presionable } from '@/components/ui/Presionable';
-import { FotoOscura } from '@/components/ui/FotoOscura';
-import { NivelPlacas } from '@/components/ui/NivelPlacas';
-import { contarVeredictos, resumenDeConteos } from '@/components/exercise/MedidorEvidencia';
-import { MiniMedidorEvidencia } from '@/components/explore/MiniMedidorEvidencia';
-import { EstrellaFavorito } from './EstrellaFavorito';
+import { Presionable } from '@/ui/components/Presionable';
+import { FotoOscura } from '@/ui/components/FotoOscura';
+import { NivelPlacas } from '@/ui/components/NivelPlacas';
+import { contarVeredictos, resumenDeConteos } from '@/ui/components/MedidorEvidencia';
+import { MiniMedidorEvidencia } from '@/ui/components/MiniMedidorEvidencia';
+import { EstrellaFavorito } from '@/ui/components/EstrellaFavorito';
 
 export const ANCHO_EJERCICIO_MINI = 150;
 export const ALTO_EJERCICIO_MINI = 120;

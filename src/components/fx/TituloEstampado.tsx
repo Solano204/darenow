@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { View, Text, type StyleProp, type TextStyle } from 'react-native';
 import Animated, { cancelAnimation, useAnimatedStyle, useSharedValue, withDelay, withSpring } from 'react-native-reanimated';
-import { resortePlaca, haptico } from '@/theme';
-import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { resortePlaca, haptico } from '@/ui/theme';
+import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
 
 const INTERVALO_MS = 220;
 const IMPACTO_MS = 130;

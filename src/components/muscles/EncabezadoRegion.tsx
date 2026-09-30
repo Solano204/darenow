@@ -1,8 +1,8 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { paleta, familia } from '@/theme';
+import { paleta, familia } from '@/ui/theme';
 import { plural } from '@/utils/plural';
-import { ALTO_REGION } from './disposicionCatalogo';
+import { ALTO_REGION } from '@/ui/components/disposicionCatalogo';
 
 /**
  * El encabezado de una region del catalogo («Espalda 9»): el nombre en Big Shoulders 700 de 20 y,

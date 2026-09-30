@@ -2,7 +2,7 @@ import React from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 import { Ionicons } from '@expo/vector-icons';
-import { paleta, resorteTap } from '@/theme';
+import { paleta, resorteTap } from '@/ui/theme';
 
 const LADO = 36;
 const ICONO = 18;

@@ -1,8 +1,8 @@
 import React, { useEffect, useMemo } from 'react';
 import { Canvas, Group, Path, Skia } from '@shopify/react-native-skia';
 import { cancelAnimation, useDerivedValue, useSharedValue, withDelay, withTiming } from 'react-native-reanimated';
-import { paleta, easing } from '@/theme';
-import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { paleta, easing } from '@/ui/theme';
+import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
 
 const LADO_ORIGINAL = 24;
 const CIRCULO = 'M12 3a9 9 0 1 1 0 18a9 9 0 1 1 0-18';

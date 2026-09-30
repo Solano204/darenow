@@ -1,7 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
 import type { RutinaPropia } from '@/store/store';
-import { FilaCrear } from './FilaCrear';
+import { FilaCrear } from '@/ui/components/FilaCrear';
 import { EncabezadoGrupo } from './EncabezadoGrupo';
 import { FilaMiRutina } from './FilaMiRutina';
 

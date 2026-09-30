@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 import { runOnJS, useAnimatedReaction, type SharedValue } from 'react-native-reanimated';
-import { paleta, familia, tipo, MARGEN_PANTALLA } from '@/theme';
+import { paleta, familia, tipo, MARGEN_PANTALLA } from '@/ui/theme';
 import { ESTADISTICAS } from '@/data/catalog';
-import { Odometro } from '@/components/fx/Odometro';
+import { Odometro } from '@/ui/fx/Odometro';
 
 const DURACION_ODOMETRO_MS = 900;
 const ESCALONADO_MS = 60;

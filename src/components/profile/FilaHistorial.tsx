@@ -1,9 +1,9 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { paleta, familia, MARGEN_PANTALLA } from '@/theme';
+import { paleta, familia, MARGEN_PANTALLA } from '@/ui/theme';
 import { filaDeHistorial } from '@/utils/perfil';
 import { plural } from '@/utils/plural';
-import { Huella } from '@/components/fx/Huella';
+import { Huella } from '@/ui/fx/Huella';
 
 const ALTO = 64;
 const LADO_HUELLA = 14;

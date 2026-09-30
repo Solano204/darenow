@@ -13,7 +13,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import type { ParamListBase } from '@react-navigation/native';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { paleta, familia, MARGEN_PANTALLA } from '@/theme';
+import { paleta, familia, MARGEN_PANTALLA } from '@/ui/theme';
 import { fuente } from '@/media/registry';
 import { TIPS } from '@/data/catalog';
 import { useEstado } from '@/store/store';
@@ -21,12 +21,12 @@ import { textoVisible } from '@/utils/presentacion';
 import {
   RUTA_DE_RELACIONADO, iconoDeSala, nombreDeSala, relacionadosVista, textoDeLectura, tiempoDeLectura,
 } from '@/utils/aprender';
-import { GomaTexture } from '@/components/fx/GomaTexture';
-import { BloqueRevela } from '@/components/fx/BloqueRevela';
-import { TituloMascara } from '@/components/fx/TituloMascara';
-import { BarraSuperiorColapsable } from '@/components/exercise/BarraSuperiorColapsable';
-import { HeroRutina } from '@/components/routine-detail/HeroRutina';
-import { LineaDeEtiquetas } from '@/components/muscles/EtiquetasMusculo';
+import { GomaTexture } from '@/ui/fx/GomaTexture';
+import { BloqueRevela } from '@/ui/fx/BloqueRevela';
+import { TituloMascara } from '@/ui/fx/TituloMascara';
+import { BarraSuperiorColapsable } from '@/ui/components/BarraSuperiorColapsable';
+import { HeroRutina } from '@/ui/components/HeroRutina';
+import { LineaDeEtiquetas } from '@/ui/components/EtiquetasMusculo';
 import { CuerpoLectura } from '@/components/learn/CuerpoLectura';
 import { BarraProgresoLectura } from '@/components/learn/BarraProgresoLectura';
 import { MarcaFin } from '@/components/learn/MarcaFin';

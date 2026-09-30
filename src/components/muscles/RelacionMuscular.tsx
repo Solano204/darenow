@@ -4,17 +4,17 @@ import Animated, {
   useAnimatedStyle, useSharedValue, withDelay, withSequence, withSpring, withTiming,
 } from 'react-native-reanimated';
 import { Ionicons } from '@expo/vector-icons';
-import { paleta, familia, easing, resortePlaca, resorteTap, resorteMagnesia, MARGEN_PANTALLA } from '@/theme';
+import { paleta, familia, easing, resortePlaca, resorteTap, resorteMagnesia, MARGEN_PANTALLA } from '@/ui/theme';
 import type { Musculo } from '@/data/catalog';
 import type { Relacionado } from '@/utils/musculos';
-import { useReducedMotion } from '@/hooks/useReducedMotion';
-import { useTick } from '@/hooks/useTick';
-import { Entrada } from '@/components/fx/Entrada';
-import { AccionSeccion } from '@/components/ui/AccionSeccion';
-import { FichaRender } from './FichaRender';
-import { FichaMusculoNombre } from './FichaMusculoNombre';
+import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
+import { useTick } from '@/ui/hooks/useTick';
+import { Entrada } from '@/ui/fx/Entrada';
+import { AccionSeccion } from '@/ui/components/AccionSeccion';
+import { FichaRender } from '@/ui/components/FichaRender';
+import { FichaMusculoNombre } from '@/ui/components/FichaMusculoNombre';
 import { ConectorRelacion, ALTO_CONECTOR } from './ConectorRelacion';
-import { lineasDeNombre } from './disposicionCatalogo';
+import { lineasDeNombre } from '@/ui/components/disposicionCatalogo';
 
 export type TipoRelacion = 'sinergico' | 'antagonista';
 

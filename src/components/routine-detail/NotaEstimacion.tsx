@@ -1,8 +1,8 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { paleta, familia } from '@/theme';
-import { NotaEntrenador } from '@/components/ui/NotaEntrenador';
+import { paleta, familia } from '@/ui/theme';
+import { NotaEntrenador } from '@/ui/components/NotaEntrenador';
 
 /**
  * La nota de gasto calorico como lo que es, una frase honesta de la marca: barra lateral

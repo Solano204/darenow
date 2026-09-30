@@ -10,10 +10,10 @@
 import React from 'react';
 import { View, Text, ScrollView, StyleSheet, type ViewStyle } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { color, tipo, esp, radio, sombra, degradado, MARGEN_PANTALLA } from '@/theme';
-import { Toque, Aparece, Favorito } from '@/components/ui';
-import Foto from './Foto';
-import { VidrioPastilla } from './Vidrio';
+import { color, tipo, esp, radio, sombra, degradado, MARGEN_PANTALLA } from '@/ui/theme';
+import { Toque, Aparece, Favorito } from '@/ui/components';
+import Foto from '@/ui/components/Foto';
+import { VidrioPastilla } from '@/ui/components/Vidrio';
 import type { TipoFoto } from '@/media/registry';
 
 interface ItemCarrusel {

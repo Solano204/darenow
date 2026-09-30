@@ -6,9 +6,9 @@ import Animated, {
   cancelAnimation, useAnimatedStyle, useSharedValue, withRepeat, withSequence, withTiming,
 } from 'react-native-reanimated';
 import { Ionicons } from '@expo/vector-icons';
-import { paleta, familia, haptico } from '../../theme';
-import { useReducedMotion } from '../../hooks/useReducedMotion';
-import { useTick } from '../../hooks/useTick';
+import { paleta, familia, haptico } from '@/theme';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { useTick } from '@/hooks/useTick';
 import { PistaSwitch } from './SwitchDarenow';
 
 export type IconoAjuste = React.ComponentProps<typeof Ionicons>['name'];

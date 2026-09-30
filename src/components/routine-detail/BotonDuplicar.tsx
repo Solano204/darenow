@@ -2,9 +2,9 @@ import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring, withTiming } from 'react-native-reanimated';
 import { Ionicons } from '@expo/vector-icons';
-import { paleta, radio, familia, resorteTap, easing, haptico } from '../../theme';
-import { useReducedMotion } from '../../hooks/useReducedMotion';
-import { useTick } from '../../hooks/useTick';
+import { paleta, radio, familia, resorteTap, easing, haptico } from '@/theme';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { useTick } from '@/hooks/useTick';
 
 const ALTO = 56;
 const ESCALA_PRESIONADO = 0.03;

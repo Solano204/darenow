@@ -6,10 +6,10 @@ import Animated, {
 import { BlurView } from 'expo-blur';
 import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { paleta, conAlfa, familia, haptico } from '../../theme';
-import { useReducedMotion } from '../../hooks/useReducedMotion';
-import { useTick } from '../../hooks/useTick';
-import { EstrellaFavorito } from '../hoy/EstrellaFavorito';
+import { paleta, conAlfa, familia, haptico } from '@/theme';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { useTick } from '@/hooks/useTick';
+import { EstrellaFavorito } from '@/components/hoy/EstrellaFavorito';
 
 const LADO_BOTON = 44;
 const ALTO_BARRA = 52;

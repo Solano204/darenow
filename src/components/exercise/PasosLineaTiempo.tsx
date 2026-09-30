@@ -4,9 +4,9 @@ import Animated, {
   interpolateColor, useAnimatedReaction, useAnimatedStyle, useDerivedValue, useSharedValue, withSpring,
   type SharedValue,
 } from 'react-native-reanimated';
-import { paleta, familia, resortePlaca } from '../../theme';
-import { useReducedMotion } from '../../hooks/useReducedMotion';
-import { useTick } from '../../hooks/useTick';
+import { paleta, familia, resortePlaca } from '@/theme';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { useTick } from '@/hooks/useTick';
 
 const LADO_CIRCULO = 28;
 /** Los pasos de un protocolo de medicion, dentro de una tarjeta: circulos de 24. */

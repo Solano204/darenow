@@ -3,9 +3,9 @@ import { StyleSheet, Text } from 'react-native';
 import Animated, {
   Extrapolation, interpolate, useAnimatedScrollHandler, useAnimatedStyle, useSharedValue, withTiming, type SharedValue,
 } from 'react-native-reanimated';
-import { paleta, tipo, MARGEN_PANTALLA } from '../../theme';
-import { useReducedMotion } from '../../hooks/useReducedMotion';
-import { barraBajada } from '../../hooks/useBarraFlotante';
+import { paleta, tipo, MARGEN_PANTALLA } from '@/theme';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { barraBajada } from '@/hooks/useBarraFlotante';
 
 const UMBRAL_DIRECCION = 6;
 const MIN_BAJADA = 40;

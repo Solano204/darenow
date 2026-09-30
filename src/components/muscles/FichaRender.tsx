@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withDelay, withSequence, withTiming } from 'react-native-reanimated';
-import { paleta, easing } from '../../theme';
-import { fuente } from '../../media/registry';
-import { useReducedMotion } from '../../hooks/useReducedMotion';
-import { useTick } from '../../hooks/useTick';
-import { FotoOscura } from '../ui/FotoOscura';
+import { paleta, easing } from '@/theme';
+import { fuente } from '@/media/registry';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { useTick } from '@/hooks/useTick';
+import { FotoOscura } from '@/components/ui/FotoOscura';
 import { RADIO_FICHA } from './disposicionCatalogo';
 
 const CRUCE_MS = 400;

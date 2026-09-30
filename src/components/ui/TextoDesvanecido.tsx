@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, type NativeSyntheticEvent, type StyleProp, type TextLayoutEventData, type TextStyle } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { paleta, conAlfa } from '../../theme';
+import { paleta, conAlfa } from '@/theme';
 
 const FUNDIDO_LINEAS = 0.9;
 /** Cuanto se desvanece el final de la ultima linea visible en la version horizontal. */

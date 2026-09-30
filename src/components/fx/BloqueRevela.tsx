@@ -3,9 +3,9 @@ import { useWindowDimensions, type StyleProp, type ViewStyle } from 'react-nativ
 import Animated, {
   runOnJS, useAnimatedReaction, useAnimatedStyle, useSharedValue, withSpring, type SharedValue,
 } from 'react-native-reanimated';
-import { resorteMagnesia } from '../../theme';
-import { useReducedMotion } from '../../hooks/useReducedMotion';
-import { useTick } from '../../hooks/useTick';
+import { resorteMagnesia } from '@/theme';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { useTick } from '@/hooks/useTick';
 
 const DESPLAZAMIENTO_PX = 12;
 const MARGEN_VISIBLE_PX = 80;

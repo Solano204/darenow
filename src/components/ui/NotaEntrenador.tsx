@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, type StyleProp, type ViewStyle } from 'react-native';
-import { paleta, tinte, tipo, radio } from '../../theme';
+import { paleta, tinte, tipo, radio } from '@/theme';
 
 const ANCHO_BARRA = 3;
 

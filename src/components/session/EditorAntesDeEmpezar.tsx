@@ -1,14 +1,14 @@
 import React, { useMemo, useState } from 'react';
 import { Alert, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { paleta, tipo, MARGEN_PANTALLA, esp } from '../../theme';
-import { sustituir, aItem, duracion, type ItemSesion } from '../../engine/session';
-import { useEstado } from '../../store/store';
-import { useAjustesMaquina } from '../../store/maquina';
-import { BotonPlaca } from '../ui/BotonPlaca';
-import { GomaTexture } from '../fx/GomaTexture';
-import { TituloMascara } from '../fx/TituloMascara';
-import { Entrada } from '../fx/Entrada';
+import { paleta, tipo, MARGEN_PANTALLA, esp } from '@/theme';
+import { sustituir, aItem, duracion, type ItemSesion } from '@/engine/session';
+import { useEstado } from '@/store/store';
+import { useAjustesMaquina } from '@/store/maquina';
+import { BotonPlaca } from '@/components/ui/BotonPlaca';
+import { GomaTexture } from '@/components/fx/GomaTexture';
+import { TituloMascara } from '@/components/fx/TituloMascara';
+import { Entrada } from '@/components/fx/Entrada';
 import { TarjetaAjusteEjercicio } from './TarjetaAjusteEjercicio';
 import { TotalPegajoso } from './TotalPegajoso';
 

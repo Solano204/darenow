@@ -4,9 +4,9 @@ import { Canvas, Circle, Group, LinearGradient, Path, Skia, vec } from '@shopify
 import {
   cancelAnimation, useDerivedValue, useSharedValue, withDelay, withTiming, type SharedValue,
 } from 'react-native-reanimated';
-import { paleta, conAlfa, familia, easing, MARGEN_PANTALLA } from '../../theme';
-import { useReducedMotion } from '../../hooks/useReducedMotion';
-import type { Tramo } from '../../utils/estimarTramos';
+import { paleta, conAlfa, familia, easing, MARGEN_PANTALLA } from '@/theme';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
+import type { Tramo } from '@/utils/estimarTramos';
 import { muestrasPerfil } from './curvaPerfil';
 
 const ALTO_PERFIL = 96;

@@ -7,7 +7,7 @@
 
 import { useState } from 'react';
 import { View, Text, TextInput, StyleSheet } from 'react-native';
-import { color, tipo, esp, radio } from '../../theme';
+import { color, tipo, esp, radio } from '@/theme';
 
 /* ═════════════════════════════════════════ insignias */
 

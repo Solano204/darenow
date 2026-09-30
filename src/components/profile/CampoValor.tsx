@@ -3,10 +3,10 @@ import { StyleSheet, Text, TextInput, View } from 'react-native';
 import Animated, {
   cancelAnimation, useAnimatedStyle, useSharedValue, withSequence, withTiming,
 } from 'react-native-reanimated';
-import { paleta, familia, easing, haptico } from '../../theme';
-import { useReducedMotion } from '../../hooks/useReducedMotion';
-import { useTick } from '../../hooks/useTick';
-import { PalomitaTrazo } from '../fx/PalomitaTrazo';
+import { paleta, familia, easing, haptico } from '@/theme';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { useTick } from '@/hooks/useTick';
+import { PalomitaTrazo } from '@/components/fx/PalomitaTrazo';
 
 const ALTO = 56;
 const SACUDIDA_PX = 6;

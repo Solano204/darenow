@@ -4,10 +4,10 @@ import Animated, {
   useAnimatedStyle, useSharedValue, withSequence, withSpring, withTiming,
 } from 'react-native-reanimated';
 import { Ionicons } from '@expo/vector-icons';
-import { paleta, tipo, familia, esp, resorteTap, resortePlaca, haptico } from '../../theme';
-import { useReducedMotion } from '../../hooks/useReducedMotion';
-import { useTick } from '../../hooks/useTick';
-import { Odometro } from '../fx/Odometro';
+import { paleta, tipo, familia, esp, resorteTap, resortePlaca, haptico } from '@/theme';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { useTick } from '@/hooks/useTick';
+import { Odometro } from '@/components/fx/Odometro';
 
 const INICIALES = ['L', 'M', 'M', 'J', 'V', 'S', 'D'];
 const LADO_BOTON = 64;

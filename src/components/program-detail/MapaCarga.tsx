@@ -4,10 +4,10 @@ import { Canvas, Group, Path, Skia } from '@shopify/react-native-skia';
 import {
   Easing, runOnJS, useDerivedValue, useSharedValue, withTiming, type SharedValue,
 } from 'react-native-reanimated';
-import { paleta, familia, haptico, MARGEN_PANTALLA } from '../../theme';
-import { nombreVisible } from '../../data/nombresVisibles';
-import type { FasePrograma } from '../../utils/minutosPorSemana';
-import { useReducedMotion } from '../../hooks/useReducedMotion';
+import { paleta, familia, haptico, MARGEN_PANTALLA } from '@/theme';
+import { nombreVisible } from '@/data/nombresVisibles';
+import type { FasePrograma } from '@/utils/minutosPorSemana';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
 import {
   ALTO_MAPA, ALTO_PLACA, PASO_PLACA, geometriaMapa, disponerEtiquetas, type GeoMapa,
 } from './disposicionMapa';

@@ -4,8 +4,8 @@ import { Canvas, Group, Path, Skia } from '@shopify/react-native-skia';
 import Animated, {
   cancelAnimation, useAnimatedStyle, useSharedValue, withDelay, withRepeat, withSequence, withSpring, withTiming,
 } from 'react-native-reanimated';
-import { google, paleta, tipo, radio, esp, ALTO_BOTON, resorteTap, haptico } from '../../theme';
-import { useReducedMotion } from '../../hooks/useReducedMotion';
+import { google, paleta, tipo, radio, esp, ALTO_BOTON, resorteTap, haptico } from '@/theme';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
 
 const LADO_LOGO = 20;
 const LADO_ORIGINAL = 48;

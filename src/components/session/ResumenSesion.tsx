@@ -4,18 +4,18 @@ import Animated, { runOnJS, useAnimatedStyle, useSharedValue, withTiming } from 
 import { SafeAreaView } from 'react-native-safe-area-context';
 import {
   paleta, tipo, familia, esp, MARGEN_PANTALLA, COLOR_FASE, easing, haptico, type FaseVisual,
-} from '../../theme';
-import { useReducedMotion } from '../../hooks/useReducedMotion';
-import { useTick } from '../../hooks/useTick';
-import { BotonPlaca } from '../ui/BotonPlaca';
-import { TarjetaGoma } from '../ui/TarjetaGoma';
-import { NotaEntrenador } from '../ui/NotaEntrenador';
-import { PlacaDato } from '../ui/PlacaDato';
-import { GomaTexture } from '../fx/GomaTexture';
-import { TituloMascara } from '../fx/TituloMascara';
-import { Entrada } from '../fx/Entrada';
-import { Odometro } from '../fx/Odometro';
-import { useMagnesia } from '../fx/MagnesiaOverlay';
+} from '@/theme';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { useTick } from '@/hooks/useTick';
+import { BotonPlaca } from '@/components/ui/BotonPlaca';
+import { TarjetaGoma } from '@/components/ui/TarjetaGoma';
+import { NotaEntrenador } from '@/components/ui/NotaEntrenador';
+import { PlacaDato } from '@/components/ui/PlacaDato';
+import { GomaTexture } from '@/components/fx/GomaTexture';
+import { TituloMascara } from '@/components/fx/TituloMascara';
+import { Entrada } from '@/components/fx/Entrada';
+import { Odometro } from '@/components/fx/Odometro';
+import { useMagnesia } from '@/components/fx/MagnesiaOverlay';
 import { PlacaMedalla } from './PlacaMedalla';
 import { EscalaEsfuerzo } from './EscalaEsfuerzo';
 

@@ -5,9 +5,9 @@ import Animated, {
 } from 'react-native-reanimated';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
-import { paleta, conAlfa, resortePlaca, easing } from '../../theme';
-import { useReducedMotion } from '../../hooks/useReducedMotion';
-import { useTick } from '../../hooks/useTick';
+import { paleta, conAlfa, resortePlaca, easing } from '@/theme';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { useTick } from '@/hooks/useTick';
 
 type Glifo = keyof typeof Ionicons.glyphMap;
 

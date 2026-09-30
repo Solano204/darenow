@@ -11,44 +11,44 @@ import { useFonts } from 'expo-font';
 import { BigShouldersDisplay_700Bold, BigShouldersDisplay_800ExtraBold } from '@expo-google-fonts/big-shoulders-display';
 import { Figtree_400Regular, Figtree_500Medium, Figtree_600SemiBold, Figtree_700Bold } from '@expo-google-fonts/figtree';
 
-import { color, colorSesion, peso } from './src/theme';
-import { ProveedorEstado, useEstado, hoy } from './src/store/store';
-import { ProveedorCuenta, useCuenta } from './src/store/cuenta';
-import { ProveedorAnuncios } from './src/components/RelojAnuncios';
-import { ProveedorMagnesia } from './src/components/fx/MagnesiaOverlay';
-import { Entrada } from './src/components/fx/Entrada';
-import { TabBarGoma } from './src/components/ui/TabBarGoma';
-import { resorteTap } from './src/theme';
-import { mark as perfMark } from './src/dev/perfMarks'; // perf:R1
+import { color, colorSesion, peso } from '@/theme';
+import { ProveedorEstado, useEstado, hoy } from '@/store/store';
+import { ProveedorCuenta, useCuenta } from '@/store/cuenta';
+import { ProveedorAnuncios } from '@/components/RelojAnuncios';
+import { ProveedorMagnesia } from '@/components/fx/MagnesiaOverlay';
+import { Entrada } from '@/components/fx/Entrada';
+import { TabBarGoma } from '@/components/ui/TabBarGoma';
+import { resorteTap } from '@/theme';
+import { mark as perfMark } from '@/dev/perfMarks'; // perf:R1
 
 // Se queda visible hasta que las fuentes resuelvan (cargadas o no): nada
 // de texto invisible esperando fuente, ni un flash de la fuente del
 // sistema antes de que llegue la propia.
 SplashScreen.preventAutoHideAsync().catch(() => {});
 
-import Presentacion from './src/screens/Presentacion';
-import Acceso from './src/screens/Acceso';
-import Bienvenida from './src/screens/Bienvenida';
-import Onboarding from './src/screens/Onboarding';
-import Hoy from './src/screens/Hoy';
-import Explorar from './src/screens/Explorar';
-import Aprender from './src/screens/Aprender';
-import DetalleTip from './src/screens/DetalleTip';
-import DetalleMito from './src/screens/DetalleMito';
-import Yo, { Logros } from './src/screens/Yo';
-import Ajustes from './src/screens/Ajustes';
-import Retos from './src/screens/Retos';
-import Mediciones from './src/screens/Mediciones';
-import Historial from './src/screens/Historial';
-import Favoritos from './src/screens/Favoritos';
-import EditorRutina from './src/screens/EditorRutina';
-import RutinaPropia from './src/screens/RutinaPropia';
-import Reproductor from './src/screens/Reproductor';
-import Resumen from './src/screens/Resumen';
-import DetalleEjercicio from './src/screens/DetalleEjercicio';
-import DetalleRutina from './src/screens/DetalleRutina';
-import DetallePrograma from './src/screens/DetallePrograma';
-import DetalleMusculo from './src/screens/DetalleMusculo';
+import Presentacion from '@/screens/Presentacion';
+import Acceso from '@/screens/Acceso';
+import Bienvenida from '@/screens/Bienvenida';
+import Onboarding from '@/screens/Onboarding';
+import Hoy from '@/screens/Hoy';
+import Explorar from '@/screens/Explorar';
+import Aprender from '@/screens/Aprender';
+import DetalleTip from '@/screens/DetalleTip';
+import DetalleMito from '@/screens/DetalleMito';
+import Yo, { Logros } from '@/screens/Yo';
+import Ajustes from '@/screens/Ajustes';
+import Retos from '@/screens/Retos';
+import Mediciones from '@/screens/Mediciones';
+import Historial from '@/screens/Historial';
+import Favoritos from '@/screens/Favoritos';
+import EditorRutina from '@/screens/EditorRutina';
+import RutinaPropia from '@/screens/RutinaPropia';
+import Reproductor from '@/screens/Reproductor';
+import Resumen from '@/screens/Resumen';
+import DetalleEjercicio from '@/screens/DetalleEjercicio';
+import DetalleRutina from '@/screens/DetalleRutina';
+import DetallePrograma from '@/screens/DetallePrograma';
+import DetalleMusculo from '@/screens/DetalleMusculo';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();

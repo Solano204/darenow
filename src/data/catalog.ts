@@ -32,7 +32,7 @@ import nutrition from '../../assets/data/32_nutrition.json';
 import glossary from '../../assets/data/33_glossary_faq.json';
 import challenges from '../../assets/data/40_challenges_achievements.json';
 import measurements from '../../assets/data/41_measurements.json';
-import { mark as perfMark } from '../dev/perfMarks'; // perf:R1
+import { mark as perfMark } from '@/dev/perfMarks'; // perf:R1
 
 /* ------------------------------------------------------------------ */
 /* Tipos                                                               */

@@ -2,9 +2,9 @@ import React, { useRef } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Animated, { useAnimatedScrollHandler, useSharedValue, type SharedValue } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { paleta } from '../../theme';
-import { GomaTexture } from '../fx/GomaTexture';
-import { HeaderColapsable, ALTO_HEADER, RECORRIDO_PX } from '../fx/HeaderColapsable';
+import { paleta } from '@/theme';
+import { GomaTexture } from '@/components/fx/GomaTexture';
+import { HeaderColapsable, ALTO_HEADER, RECORRIDO_PX } from '@/components/fx/HeaderColapsable';
 
 const AIRE_BAJO_TITULO = 16;
 

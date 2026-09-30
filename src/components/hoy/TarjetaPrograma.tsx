@@ -1,10 +1,10 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { paleta, familia } from '../../theme';
-import { nombreVisible } from '../../data/nombresVisibles';
-import { Presionable } from '../ui/Presionable';
-import { FotoOscura } from '../ui/FotoOscura';
-import { InsigniaFoto } from '../ui/InsigniaFoto';
+import { paleta, familia } from '@/theme';
+import { nombreVisible } from '@/data/nombresVisibles';
+import { Presionable } from '@/components/ui/Presionable';
+import { FotoOscura } from '@/components/ui/FotoOscura';
+import { InsigniaFoto } from '@/components/ui/InsigniaFoto';
 import { EstrellaFavorito } from './EstrellaFavorito';
 
 export const ANCHO_TARJETA_PROGRAMA = 240;

@@ -2,13 +2,13 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import type { SharedValue } from 'react-native-reanimated';
-import { paleta, familia } from '../../theme';
-import type { Protocolo } from '../../data/catalog';
-import { textoVisible } from '../../utils/presentacion';
-import { NotaEntrenador } from '../ui/NotaEntrenador';
-import { ListaClaves } from '../exercise/ListaClaves';
-import { PasosLineaTiempo } from '../exercise/PasosLineaTiempo';
-import { TarjetaLoQueSuelePasar } from '../muscles/TarjetaLoQueSuelePasar';
+import { paleta, familia } from '@/theme';
+import type { Protocolo } from '@/data/catalog';
+import { textoVisible } from '@/utils/presentacion';
+import { NotaEntrenador } from '@/components/ui/NotaEntrenador';
+import { ListaClaves } from '@/components/exercise/ListaClaves';
+import { PasosLineaTiempo } from '@/components/exercise/PasosLineaTiempo';
+import { TarjetaLoQueSuelePasar } from '@/components/muscles/TarjetaLoQueSuelePasar';
 
 /**
  * Lo que trae un protocolo de medicion cuando se abre, en el orden de siempre: las condiciones fijas como una

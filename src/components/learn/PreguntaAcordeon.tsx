@@ -4,12 +4,12 @@ import Animated, {
   LinearTransition, useAnimatedStyle, useSharedValue, withSpring, withTiming, type EntryExitAnimationFunction,
 } from 'react-native-reanimated';
 import { Ionicons } from '@expo/vector-icons';
-import { paleta, familia, resortePlaca, haptico } from '../../theme';
-import { textoDePregunta } from '../../utils/presentacion';
-import { partirInsignias, textoDeLectura } from '../../utils/aprender';
-import { useReducedMotion } from '../../hooks/useReducedMotion';
-import { useTick } from '../../hooks/useTick';
-import { InsigniaEvidencia } from '../ui/InsigniaEvidencia';
+import { paleta, familia, resortePlaca, haptico } from '@/theme';
+import { textoDePregunta } from '@/utils/presentacion';
+import { partirInsignias, textoDeLectura } from '@/utils/aprender';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { useTick } from '@/hooks/useTick';
+import { InsigniaEvidencia } from '@/components/ui/InsigniaEvidencia';
 
 const ABRIR_MS = 260;
 const CERRAR_MS = 200;

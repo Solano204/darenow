@@ -9,14 +9,14 @@
 
 import React, { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { paleta, familia, MARGEN_PANTALLA } from '../theme';
-import { MEDICIONES, type Protocolo } from '../data/catalog';
-import { useEstado, hoy } from '../store/store';
-import { useConsentimientoMedidas, pedirConsentimientoMedidas } from '../store/consentimientoMedidas';
-import { unidadDeMedicion } from '../utils/textosVisibles';
-import { PantallaColapsable } from '../components/ui/PantallaColapsable';
-import { NotaEntrenador } from '../components/ui/NotaEntrenador';
-import { FilaMedicion } from '../components/profile/FilaMedicion';
+import { paleta, familia, MARGEN_PANTALLA } from '@/theme';
+import { MEDICIONES, type Protocolo } from '@/data/catalog';
+import { useEstado, hoy } from '@/store/store';
+import { useConsentimientoMedidas, pedirConsentimientoMedidas } from '@/store/consentimientoMedidas';
+import { unidadDeMedicion } from '@/utils/textosVisibles';
+import { PantallaColapsable } from '@/components/ui/PantallaColapsable';
+import { NotaEntrenador } from '@/components/ui/NotaEntrenador';
+import { FilaMedicion } from '@/components/profile/FilaMedicion';
 
 export default function Mediciones({ navigation }: any) {
   const { estado, guardarMedicion } = useEstado();

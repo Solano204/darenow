@@ -5,8 +5,8 @@ import {
   cancelAnimation, interpolateColor, useDerivedValue, useSharedValue,
   withDelay, withSequence, withSpring, withTiming,
 } from 'react-native-reanimated';
-import { paleta, tipo, easing, resortePlaca } from '../../theme';
-import { useReducedMotion } from '../../hooks/useReducedMotion';
+import { paleta, tipo, easing, resortePlaca } from '@/theme';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { Odometro } from './Odometro';
 
 const MIN_INICIO = 45;

@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { paleta, familia } from '../../theme';
-import { textoDeEtiqueta } from '../../utils/presentacion';
+import { paleta, familia } from '@/theme';
+import { textoDeEtiqueta } from '@/utils/presentacion';
 
 /**
  * Las etiquetas del musculo en una linea («Pecho · Tren superior»): Figtree 500 de 14 `magnesia2`,

@@ -3,9 +3,9 @@ import { StyleSheet, Text, View } from 'react-native';
 import Animated, {
   interpolate, interpolateColor, useAnimatedStyle, useSharedValue, withSpring, withTiming,
 } from 'react-native-reanimated';
-import { paleta, tipo, familia, resortePlaca, haptico } from '../../theme';
-import { useReducedMotion } from '../../hooks/useReducedMotion';
-import { useTick } from '../../hooks/useTick';
+import { paleta, tipo, familia, resortePlaca, haptico } from '@/theme';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { useTick } from '@/hooks/useTick';
 import { Odometro } from './Odometro';
 
 const ANCHO_PLACA = 6;

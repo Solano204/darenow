@@ -2,12 +2,12 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 import { Canvas, Path, Skia } from '@shopify/react-native-skia';
 import { Easing, runOnJS, useDerivedValue, useSharedValue, withTiming } from 'react-native-reanimated';
-import { paleta, familia, haptico, MARGEN_PANTALLA } from '../../theme';
-import { hoy } from '../../store/store';
-import { useReducedMotion } from '../../hooks/useReducedMotion';
-import { fechaLocal } from '../../utils/fechas';
-import { placasPorDia, resumenDeSemana, semanaEnCero, MAX_PLACAS_DIA } from '../../utils/perfil';
-import { ALTO_MAPA, ALTO_PLACA, SEPARACION_PLACA, PASO_PLACA, geometriaMapa } from '../program-detail/disposicionMapa';
+import { paleta, familia, haptico, MARGEN_PANTALLA } from '@/theme';
+import { hoy } from '@/store/store';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { fechaLocal } from '@/utils/fechas';
+import { placasPorDia, resumenDeSemana, semanaEnCero, MAX_PLACAS_DIA } from '@/utils/perfil';
+import { ALTO_MAPA, ALTO_PLACA, SEPARACION_PLACA, PASO_PLACA, geometriaMapa } from '@/components/program-detail/disposicionMapa';
 
 const ALTO_COMPACTO = 64;
 /** Las placas que caben en 64 px: la version compacta lleva esas como maximo, en lugar de las 12 del alto completo. */

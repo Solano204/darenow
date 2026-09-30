@@ -1,7 +1,7 @@
 import React from 'react';
 import { Pressable, StyleSheet, Text, type StyleProp, type ViewStyle } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
-import { paleta, tipo, radio, esp, ALTO_BOTON, resorteTap, haptico } from '../../theme';
+import { paleta, tipo, radio, esp, ALTO_BOTON, resorteTap, haptico } from '@/theme';
 
 const ESCALA_PRESIONADO = 0.03;
 

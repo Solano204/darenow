@@ -9,8 +9,8 @@
 import React from 'react';
 import { View, type ViewStyle } from 'react-native';
 import { Image } from 'expo-image';
-import { color, radio } from '../theme';
-import { fuente, type TipoFoto } from '../media/registry';
+import { color, radio } from '@/theme';
+import { fuente, type TipoFoto } from '@/media/registry';
 
 export interface FotoProps {
   tipo: TipoFoto;

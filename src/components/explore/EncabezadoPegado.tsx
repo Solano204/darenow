@@ -1,10 +1,10 @@
 import React, { useMemo, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import Animated, { runOnJS, useAnimatedReaction, useAnimatedStyle, type SharedValue } from 'react-native-reanimated';
-import { paleta, conAlfa, MARGEN_PANTALLA } from '../../theme';
-import { useReducedMotion } from '../../hooks/useReducedMotion';
-import { useTick } from '../../hooks/useTick';
-import { indiceRegionActiva } from '../muscles/disposicionCatalogo';
+import { paleta, conAlfa, MARGEN_PANTALLA } from '@/theme';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { useTick } from '@/hooks/useTick';
+import { indiceRegionActiva } from '@/components/muscles/disposicionCatalogo';
 import { RANGO_SCROLL, RECORRIDO_PX } from './EncabezadoExplorar';
 
 /** El aire que la lista deja entre la cabecera fija y su primera fila (el relleno de la pantalla menos el alto de la cabecera). */

@@ -22,7 +22,7 @@ import { useEstado, CLAVE as CLAVE_ESTADO } from './store';
 import { CLAVE as CLAVE_VOZ } from './voz';
 import { CLAVE as CLAVE_HAPTICS } from './haptics';
 import { CLAVE as CLAVE_MAQUINA } from './maquina';
-import { CLAVE_GUARDADO as CLAVE_SESION } from '../session/useSessionPlayer';
+import { CLAVE_GUARDADO as CLAVE_SESION } from '@/session/useSessionPlayer';
 import { CLAVE as CLAVE_CONSENTIMIENTO_MEDIDAS } from './consentimientoMedidas';
 import { borrarRespaldosCache } from './respaldo';
 import { seleccionarClavesForja } from './clavesForja';

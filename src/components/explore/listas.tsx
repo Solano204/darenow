@@ -1,8 +1,8 @@
 import React from 'react';
 import type { ListRenderItemInfo } from 'react-native';
 import Animated, { type SharedValue } from 'react-native-reanimated';
-import type { Ejercicio, Programa, Rutina } from '../../data/catalog';
-import { useReducedMotion } from '../../hooks/useReducedMotion';
+import type { Ejercicio, Programa, Rutina } from '@/data/catalog';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { FilaEjercicio } from './FilaEjercicio';
 import { TarjetaRutina } from './TarjetaRutina';
 import { TarjetaPrograma } from './TarjetaPrograma';

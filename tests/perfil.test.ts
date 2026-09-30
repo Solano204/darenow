@@ -4,19 +4,19 @@
  * esbuild --bundle --platform=node --format=cjs tests/perfil.test.ts | node
  */
 
-import { LOGROS, RETOS, GOALS, PROGRAMAS, MEDICIONES, nombreGoal } from '../src/data/catalog';
+import { LOGROS, RETOS, GOALS, PROGRAMAS, MEDICIONES, nombreGoal } from '@/data/catalog';
 import {
   textoDeMotivo, textoDeEstadoSesion, textoDeFrecuencia, unidadDeMedicion, PROTOCOLOS_SIN_VALOR, MOTIVOS_DE_SALIDA,
-} from '../src/utils/textosVisibles';
-import { nombreVisible } from '../src/data/nombresVisibles';
-import { textoVisible } from '../src/utils/presentacion';
-import { plural } from '../src/utils/plural';
-import { fechaLarga, diaCorto, esSesionLarga, fechaLocal } from '../src/utils/fechas';
+} from '@/utils/textosVisibles';
+import { nombreVisible } from '@/data/nombresVisibles';
+import { textoVisible } from '@/utils/presentacion';
+import { plural } from '@/utils/plural';
+import { fechaLarga, diaCorto, esSesionLarga, fechaLocal } from '@/utils/fechas';
 import {
   placasPorDia, semanaEnCero, resumenDeSemana, celdasDelMes, fechaDeDia, diaDelCalendario, diasDelMes,
   etiquetasDeEstadisticas, mezclarFavoritos, totalFavoritos, metaDeReto, progresoAcotado, filaDeHistorial,
   MAX_PLACAS_DIA, vistaPreviaDeReto, agruparPorMes,
-} from '../src/utils/perfil';
+} from '@/utils/perfil';
 
 let ok = 0, fallos = 0;
 const c = (n: string, cond: boolean, d = '') => {

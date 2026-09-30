@@ -4,9 +4,9 @@ import Animated from 'react-native-reanimated';
 import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
-import { paleta, radio, degradado, conAlfa } from '../../theme';
-import { fuente, type TipoFoto } from '../../media/registry';
-import { Esqueleto } from '../fx/Esqueleto';
+import { paleta, radio, degradado, conAlfa } from '@/theme';
+import { fuente, type TipoFoto } from '@/media/registry';
+import { Esqueleto } from '@/components/fx/Esqueleto';
 
 /** Exposicion de las fotos claras del catalogo sobre la goma: el equivalente barato al tratamiento de Skia. */
 const EXPOSICION = 0.8;

@@ -11,8 +11,8 @@
  *
  * esbuild --bundle --platform=node --format=cjs tests/borrarTodo.test.ts | node
  */
-import { seleccionarClavesForja, PREFIJO_FORJA } from '../src/store/clavesForja';
-import { ESTADO_INICIAL, PERFIL_INICIAL, FAVORITOS_VACIOS } from '../src/store/estadoInicial';
+import { seleccionarClavesForja, PREFIJO_FORJA } from '@/store/clavesForja';
+import { ESTADO_INICIAL, PERFIL_INICIAL, FAVORITOS_VACIOS } from '@/store/estadoInicial';
 
 let ok = 0, fallos = 0;
 const c = (n: string, cond: boolean, d = '') => {

@@ -3,8 +3,8 @@ import { StyleSheet, Text, View } from 'react-native';
 import Animated, {
   cancelAnimation, useAnimatedStyle, useSharedValue, withDelay, withSpring, withTiming,
 } from 'react-native-reanimated';
-import { paleta, radio, tipo, familia, easing, resortePlaca, haptico } from '../../theme';
-import { useReducedMotion } from '../../hooks/useReducedMotion';
+import { paleta, radio, tipo, familia, easing, resortePlaca, haptico } from '@/theme';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
 
 const TACHADO_MS = 300;
 const PAUSA_SELLO_MS = 80;

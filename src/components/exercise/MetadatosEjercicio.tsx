@@ -1,9 +1,9 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { paleta, familia } from '../../theme';
-import { CATEGORIAS, type Ejercicio } from '../../data/catalog';
-import { capitalizar } from '../../utils/presentacion';
-import { NivelPlacas } from '../ui/NivelPlacas';
+import { paleta, familia } from '@/theme';
+import { CATEGORIAS, type Ejercicio } from '@/data/catalog';
+import { capitalizar } from '@/utils/presentacion';
+import { NivelPlacas } from '@/components/ui/NivelPlacas';
 
 /**
  * Los metadatos en una linea: nivel en placas, categoria, «Por lado» y, si

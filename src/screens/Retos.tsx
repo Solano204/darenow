@@ -8,13 +8,13 @@
 
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { paleta, familia, MARGEN_PANTALLA } from '../theme';
-import { RETOS } from '../data/catalog';
-import { useEstado } from '../store/store';
-import { PantallaColapsable } from '../components/ui/PantallaColapsable';
-import { NotaEntrenador } from '../components/ui/NotaEntrenador';
-import { BloqueRevela } from '../components/fx/BloqueRevela';
-import { TarjetaRetoCompleta } from '../components/profile/TarjetaRetoCompleta';
+import { paleta, familia, MARGEN_PANTALLA } from '@/theme';
+import { RETOS } from '@/data/catalog';
+import { useEstado } from '@/store/store';
+import { PantallaColapsable } from '@/components/ui/PantallaColapsable';
+import { NotaEntrenador } from '@/components/ui/NotaEntrenador';
+import { BloqueRevela } from '@/components/fx/BloqueRevela';
+import { TarjetaRetoCompleta } from '@/components/profile/TarjetaRetoCompleta';
 
 /** Las primeras tarjetas entran escalonadas; una que llega por scroll no espera a las de arriba. */
 const TARJETAS_ESCALONADAS = 4;

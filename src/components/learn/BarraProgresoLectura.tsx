@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, useWindowDimensions } from 'react-native';
 import Animated, { useAnimatedStyle, type SharedValue } from 'react-native-reanimated';
-import { paleta } from '../../theme';
+import { paleta } from '@/theme';
 
 const GROSOR = 2;
 

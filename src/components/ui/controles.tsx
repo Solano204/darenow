@@ -10,7 +10,7 @@ import {
   View, Text, Pressable, StyleSheet, Animated, Easing,
   type ViewStyle, type AccessibilityRole, type AccessibilityState,
 } from 'react-native';
-import { color, colorSesion, tipo, esp, radio, ALTO_BOTON, anim, peso } from '../../theme';
+import { color, colorSesion, tipo, esp, radio, ALTO_BOTON, anim, peso } from '@/theme';
 import { useMovimientoReducido } from './movimiento';
 import { BotonPlaca } from './BotonPlaca';
 

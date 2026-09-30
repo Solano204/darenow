@@ -2,8 +2,8 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { AppState } from 'react-native';
 import { Canvas, Points } from '@shopify/react-native-skia';
 import { useDerivedValue, useFrameCallback, useSharedValue, type SharedValue } from 'react-native-reanimated';
-import { paleta } from '../../theme';
-import { useReducedMotion } from '../../hooks/useReducedMotion';
+import { paleta } from '@/theme';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
 
 const CLASES = [
   { cantidad: 9, ancho: 2, opacidad: 0.4 },

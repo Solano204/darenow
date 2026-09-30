@@ -10,17 +10,17 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import {
   paleta, familia, esp, ALTO_BOTON, MARGEN_PANTALLA, radio, easing, resortePlaca, resorteTap, haptico,
   COLOR_FASE, ORDEN_FASE, PALABRA_FASE, faseVisual, type FaseId,
-} from '../../theme';
-import type { ItemSesion } from '../../engine/session';
-import { PREPARACION_S, esUnilateral, type EstadoPlayer } from '../../session/playerMachine';
-import { nombreVisible } from '../../data/nombresVisibles';
-import { useReducedMotion } from '../../hooks/useReducedMotion';
-import { useTick } from '../../hooks/useTick';
-import Clip from '../Clip';
-import Foto from '../Foto';
-import { GomaTexture } from '../fx/GomaTexture';
-import { BotonPlaca } from '../ui/BotonPlaca';
-import { BotonSecundario } from '../ui/BotonSecundario';
+} from '@/theme';
+import type { ItemSesion } from '@/engine/session';
+import { PREPARACION_S, esUnilateral, type EstadoPlayer } from '@/session/playerMachine';
+import { nombreVisible } from '@/data/nombresVisibles';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { useTick } from '@/hooks/useTick';
+import Clip from '@/components/Clip';
+import Foto from '@/components/Foto';
+import { GomaTexture } from '@/components/fx/GomaTexture';
+import { BotonPlaca } from '@/components/ui/BotonPlaca';
+import { BotonSecundario } from '@/components/ui/BotonSecundario';
 import { AnilloTemporizador } from './AnilloTemporizador';
 import { NumeroTemporizador } from './NumeroTemporizador';
 import { PalabraFase } from './PalabraFase';

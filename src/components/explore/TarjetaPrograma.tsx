@@ -1,17 +1,17 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Animated, { useAnimatedStyle, useDerivedValue, useSharedValue, withSpring } from 'react-native-reanimated';
-import { paleta, familia, resortePlaca } from '../../theme';
-import type { Programa } from '../../data/catalog';
-import { nombreVisible } from '../../data/nombresVisibles';
-import { textoVisible } from '../../utils/presentacion';
-import { plural } from '../../utils/plural';
-import { useReducedMotion } from '../../hooks/useReducedMotion';
-import { useTick } from '../../hooks/useTick';
-import { Presionable } from '../ui/Presionable';
-import { FotoOscura } from '../ui/FotoOscura';
-import { DatoNumerico } from '../ui/DatoNumerico';
-import { EstrellaFavorito } from '../hoy/EstrellaFavorito';
+import { paleta, familia, resortePlaca } from '@/theme';
+import type { Programa } from '@/data/catalog';
+import { nombreVisible } from '@/data/nombresVisibles';
+import { textoVisible } from '@/utils/presentacion';
+import { plural } from '@/utils/plural';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { useTick } from '@/hooks/useTick';
+import { Presionable } from '@/components/ui/Presionable';
+import { FotoOscura } from '@/components/ui/FotoOscura';
+import { DatoNumerico } from '@/components/ui/DatoNumerico';
+import { EstrellaFavorito } from '@/components/hoy/EstrellaFavorito';
 
 const ALTO_FOTO = 180;
 const ESCALA_PRESIONADA = 0.02;

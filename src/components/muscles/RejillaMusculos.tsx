@@ -1,14 +1,14 @@
 import React, { useMemo } from 'react';
 import { StyleSheet, View, useWindowDimensions, type ListRenderItemInfo } from 'react-native';
 import Animated, { type SharedValue } from 'react-native-reanimated';
-import { resorteMagnesia, MARGEN_PANTALLA } from '../../theme';
-import type { Musculo } from '../../data/catalog';
-import { textoVisible } from '../../utils/presentacion';
-import { useReducedMotion } from '../../hooks/useReducedMotion';
-import { Entrada } from '../fx/Entrada';
-import { TextoVacio } from '../explore/TextoVacio';
-import { EncabezadoPegado } from '../explore/EncabezadoPegado';
-import { PROPS_FIJAS, reacomodo, type PropsLista } from '../explore/listaBase';
+import { resorteMagnesia, MARGEN_PANTALLA } from '@/theme';
+import type { Musculo } from '@/data/catalog';
+import { textoVisible } from '@/utils/presentacion';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { Entrada } from '@/components/fx/Entrada';
+import { TextoVacio } from '@/components/explore/TextoVacio';
+import { EncabezadoPegado } from '@/components/explore/EncabezadoPegado';
+import { PROPS_FIJAS, reacomodo, type PropsLista } from '@/components/explore/listaBase';
 import { EncabezadoRegion } from './EncabezadoRegion';
 import { FichaMusculoNombre } from './FichaMusculoNombre';
 import {

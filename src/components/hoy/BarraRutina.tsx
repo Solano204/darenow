@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Animated, { cancelAnimation, useAnimatedStyle, useSharedValue, withDelay, withSpring } from 'react-native-reanimated';
-import { paleta, resortePlaca, haptico } from '../../theme';
-import { useReducedMotion } from '../../hooks/useReducedMotion';
-import { useTick } from '../../hooks/useTick';
-import { colorDePlaca } from '../routine-builder/BarraRutina';
+import { paleta, resortePlaca, haptico } from '@/theme';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { useTick } from '@/hooks/useTick';
+import { colorDePlaca } from '@/components/routine-builder/BarraRutina';
 
 const MAX_SEGMENTOS = 10;
 

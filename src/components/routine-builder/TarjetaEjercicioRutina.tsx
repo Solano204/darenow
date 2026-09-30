@@ -4,16 +4,16 @@ import Animated, {
   LinearTransition, runOnJS, useAnimatedStyle, useSharedValue, withSequence, withSpring, withTiming,
   type EntryExitAnimationFunction,
 } from 'react-native-reanimated';
-import { paleta, conAlfa, familia, easing, resortePlaca } from '../../theme';
-import type { ItemPropio } from '../../store/store';
-import type { Ejercicio } from '../../data/catalog';
-import { nombreVisible } from '../../data/nombresVisibles';
-import { textoDeEquipo } from '../../utils/presentacion';
-import { useReducedMotion } from '../../hooks/useReducedMotion';
-import { useTick } from '../../hooks/useTick';
-import { TarjetaGoma } from '../ui/TarjetaGoma';
-import { FotoOscura } from '../ui/FotoOscura';
-import { Stepper } from '../session/Stepper';
+import { paleta, conAlfa, familia, easing, resortePlaca } from '@/theme';
+import type { ItemPropio } from '@/store/store';
+import type { Ejercicio } from '@/data/catalog';
+import { nombreVisible } from '@/data/nombresVisibles';
+import { textoDeEquipo } from '@/utils/presentacion';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { useTick } from '@/hooks/useTick';
+import { TarjetaGoma } from '@/components/ui/TarjetaGoma';
+import { FotoOscura } from '@/components/ui/FotoOscura';
+import { Stepper } from '@/components/session/Stepper';
 import { colorAnimadoDePlaca } from './BarraRutina';
 import { BotonesOrden } from './BotonesOrden';
 import { InterruptorTiempo } from './InterruptorTiempo';

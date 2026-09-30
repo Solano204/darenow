@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
-import { useEstado, estadisticas, hoy } from '../store/store';
-import { saludo, mensajeDelDia, type Mensaje } from '../data/mensajes';
+import { useEstado, estadisticas, hoy } from '@/store/store';
+import { saludo, mensajeDelDia, type Mensaje } from '@/data/mensajes';
 
 const MS_POR_DIA = 86400000;
 

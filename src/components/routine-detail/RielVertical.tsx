@@ -5,9 +5,9 @@ import Animated, {
   withSequence, withSpring, withTiming, type SharedValue,
 } from 'react-native-reanimated';
 import { Canvas, Group, Path, Skia, vec } from '@shopify/react-native-skia';
-import { paleta, conAlfa, easing, resortePlaca } from '../../theme';
-import { useReducedMotion } from '../../hooks/useReducedMotion';
-import { useTick } from '../../hooks/useTick';
+import { paleta, conAlfa, easing, resortePlaca } from '@/theme';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { useTick } from '@/hooks/useTick';
 import { ALTO_ENCABEZADO, CENTRO_NODO, LADO_NODO, SANGRIA_RIEL } from './EncabezadoBloque';
 
 /** Un tramo del riel: un nodo, su encabezado y su contenido (los ejercicios de un bloque, las rutinas de una fase). */

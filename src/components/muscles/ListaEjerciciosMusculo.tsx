@@ -1,10 +1,10 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { paleta, familia, resorteMagnesia } from '../../theme';
-import type { Ejercicio } from '../../data/catalog';
-import { useReducedMotion } from '../../hooks/useReducedMotion';
-import { Entrada } from '../fx/Entrada';
-import { FilaEjercicio } from '../explore/FilaEjercicio';
+import { paleta, familia, resorteMagnesia } from '@/theme';
+import type { Ejercicio } from '@/data/catalog';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { Entrada } from '@/components/fx/Entrada';
+import { FilaEjercicio } from '@/components/explore/FilaEjercicio';
 
 /** Las primeras filas de un subgrupo entran escalonadas cuando el subgrupo llega a la pantalla; las de mas abajo no. */
 const FILAS_CON_ENTRADA = 8;

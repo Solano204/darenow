@@ -1,4 +1,4 @@
-import type { Tramo } from '../../utils/estimarTramos';
+import type { Tramo } from '@/utils/estimarTramos';
 
 /**
  * La forma del perfil de una rutina. Es decorativa: la intensidad es fija por tipo de

@@ -6,23 +6,23 @@ import * as Speech from 'expo-speech';
 import { createAudioPlayer, type AudioPlayer } from 'expo-audio';
 import type { ParamListBase } from '@react-navigation/native';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { paleta, haptico, PALABRA_FASE } from '../theme';
+import { paleta, haptico, PALABRA_FASE } from '@/theme';
 import {
   useSessionPlayer, leerSesionGuardada, borrarSesionGuardada, type SesionEnCurso,
-} from '../session/useSessionPlayer';
-import { esUnilateral } from '../session/playerMachine';
-import { useEstado, hoy } from '../store/store';
-import { useHapticosActivos } from '../store/haptics';
-import { useVozActiva } from '../store/voz';
-import type { Sesion, ItemSesion } from '../engine/session';
-import { prepararSonido, soltarSonido, reproducir } from '../media/sonido';
-import { fuenteVoz, type TipoVoz } from '../media/voz';
-import { useSinAnuncios } from '../components/RelojAnuncios';
-import { useMagnesia } from '../components/fx/MagnesiaOverlay';
-import { PantallaListo } from '../components/session/PantallaListo';
-import { EditorAntesDeEmpezar } from '../components/session/EditorAntesDeEmpezar';
-import { ReproductorLayout } from '../components/session/ReproductorLayout';
-import { HojaSalida } from '../components/session/HojaSalida';
+} from '@/session/useSessionPlayer';
+import { esUnilateral } from '@/session/playerMachine';
+import { useEstado, hoy } from '@/store/store';
+import { useHapticosActivos } from '@/store/haptics';
+import { useVozActiva } from '@/store/voz';
+import type { Sesion, ItemSesion } from '@/engine/session';
+import { prepararSonido, soltarSonido, reproducir } from '@/media/sonido';
+import { fuenteVoz, type TipoVoz } from '@/media/voz';
+import { useSinAnuncios } from '@/components/RelojAnuncios';
+import { useMagnesia } from '@/components/fx/MagnesiaOverlay';
+import { PantallaListo } from '@/components/session/PantallaListo';
+import { EditorAntesDeEmpezar } from '@/components/session/EditorAntesDeEmpezar';
+import { ReproductorLayout } from '@/components/session/ReproductorLayout';
+import { HojaSalida } from '@/components/session/HojaSalida';
 
 /**
  * Reproductor.

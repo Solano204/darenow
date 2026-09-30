@@ -1,5 +1,5 @@
-import { nombreVisible } from '../data/nombresVisibles';
-import { equipoPorId } from '../data/catalog';
+import { nombreVisible } from '@/data/nombresVisibles';
+import { equipoPorId } from '@/data/catalog';
 
 /**
  * Ayudas de presentacion. Solo se usan para mostrar: nunca modifican los datos

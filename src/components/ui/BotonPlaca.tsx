@@ -5,10 +5,10 @@ import Animated, {
   withDelay, withRepeat, withSequence, withSpring, withTiming, type SharedValue,
 } from 'react-native-reanimated';
 import { LinearGradient } from 'expo-linear-gradient';
-import { paleta, tipo, radio, sombra, esp, degradado, ALTO_BOTON, resorteTap, dur, easing, haptico } from '../../theme';
-import { useReducedMotion } from '../../hooks/useReducedMotion';
-import { useTick } from '../../hooks/useTick';
-import { useMagnesia } from '../fx/MagnesiaOverlay';
+import { paleta, tipo, radio, sombra, esp, degradado, ALTO_BOTON, resorteTap, dur, easing, haptico } from '@/theme';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { useTick } from '@/hooks/useTick';
+import { useMagnesia } from '@/components/fx/MagnesiaOverlay';
 
 const ALTO_TEXTO = 22;
 const ESCALA_MAX = 1.15;

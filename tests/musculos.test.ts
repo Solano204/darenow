@@ -4,13 +4,13 @@
  * esbuild --bundle --platform=node --format=cjs tests/musculos.test.ts | node
  */
 
-import { MUSCULOS, EJERCICIOS, musculoPorId } from '../src/data/catalog';
-import { nombreVisible } from '../src/data/nombresVisibles';
-import { textoDeEtiqueta, textoVisible } from '../src/utils/presentacion';
-import { relacionados, ejerciciosDeMusculo } from '../src/utils/musculos';
+import { MUSCULOS, EJERCICIOS, musculoPorId } from '@/data/catalog';
+import { nombreVisible } from '@/data/nombresVisibles';
+import { textoDeEtiqueta, textoVisible } from '@/utils/presentacion';
+import { relacionados, ejerciciosDeMusculo } from '@/utils/musculos';
 import {
   COLUMNAS, ALTO_REGION, ladoFicha, lineasDeNombre, agruparPorGrupo, armarFilas, regionActiva,
-} from '../src/components/muscles/disposicionCatalogo';
+} from '@/components/muscles/disposicionCatalogo';
 
 let ok = 0, fallos = 0;
 const c = (n: string, cond: boolean, d = '') => {

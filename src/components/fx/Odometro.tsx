@@ -3,8 +3,8 @@ import { PixelRatio, StyleSheet, Text, View, type StyleProp, type TextStyle } fr
 import Animated, {
   cancelAnimation, useAnimatedStyle, useSharedValue, withDelay, withSequence, withSpring, withTiming,
 } from 'react-native-reanimated';
-import { easing, resortePlaca } from '../../theme';
-import { useReducedMotion } from '../../hooks/useReducedMotion';
+import { easing, resortePlaca } from '@/theme';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
 
 const CELDAS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
 const DURACION_COLUMNA = 700;

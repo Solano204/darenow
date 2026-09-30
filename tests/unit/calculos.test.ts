@@ -1,14 +1,14 @@
 import { describe, expect, it } from '@jest/globals';
-import { fechaLocal, fechaLarga, diaCorto, esSesionLarga } from '../../src/utils/fechas';
-import { etiquetaDeTramo, estimarTramos, resumenDeTramos, PISO_TRAMO } from '../../src/utils/estimarTramos';
+import { fechaLocal, fechaLarga, diaCorto, esSesionLarga } from '@/utils/fechas';
+import { etiquetaDeTramo, estimarTramos, resumenDeTramos, PISO_TRAMO } from '@/utils/estimarTramos';
 import {
   parsearRango, fasesDePrograma, faseDeSemana, minutosPorSemana, placasPorSemana, textoDeRango, palabrasDeRango, resumenDePlan,
-} from '../../src/utils/minutosPorSemana';
+} from '@/utils/minutosPorSemana';
 import {
   placasPorDia, semanaEnCero, fechaDeDia, celdasDelMes, diaDelCalendario, diasDelMes, etiquetasDeEstadisticas,
   totalFavoritos, mezclarFavoritos, progresoAcotado, vistaPreviaDeReto, agruparPorMes, filaDeHistorial,
-} from '../../src/utils/perfil';
-import { indiceDeEspacio, equipoElegible, contarMarcados } from '../../src/utils/ajustes';
+} from '@/utils/perfil';
+import { indiceDeEspacio, equipoElegible, contarMarcados } from '@/utils/ajustes';
 
 describe('fechas', () => {
   it('fechaLocal crea medianoche local', () => {

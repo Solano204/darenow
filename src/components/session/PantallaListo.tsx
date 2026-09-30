@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
-import { paleta, tipo } from '../../theme';
-import { useReducedMotion } from '../../hooks/useReducedMotion';
-import { useTick } from '../../hooks/useTick';
-import { GomaTexture } from '../fx/GomaTexture';
-import { Entrada } from '../fx/Entrada';
-import { TextoDeParticulas } from '../fx/TextoDeParticulas';
+import { paleta, tipo } from '@/theme';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { useTick } from '@/hooks/useTick';
+import { GomaTexture } from '@/components/fx/GomaTexture';
+import { Entrada } from '@/components/fx/Entrada';
+import { TextoDeParticulas } from '@/components/fx/TextoDeParticulas';
 
 const TAMANO_TITULO = 72;
 const CENTRO_Y = 0.46;

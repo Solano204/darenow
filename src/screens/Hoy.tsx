@@ -16,36 +16,36 @@ import { RefreshControl, StyleSheet, View, useWindowDimensions } from 'react-nat
 import Animated from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useFocusEffect, type NavigationProp, type ParamListBase } from '@react-navigation/native';
-import { paleta, esp, haptico } from '../theme';
-import { useHuecoAbajo, useScrollCabecera } from '../components/ui';
-import { HeaderColapsable, ALTO_HEADER } from '../components/fx/HeaderColapsable';
-import { CabeceraSeccion } from '../components/ui/AccionSeccion';
-import { BannerAnuncio, ANUNCIOS_ACTIVOS } from '../components/Anuncio';
-import { useMagnesia } from '../components/fx/MagnesiaOverlay';
-import { TarjetaSesionHoy, TarjetaSesionVacia } from '../components/ui/TarjetaSesionHoy';
-import { TarjetaEnfoque, ANCHO_ENFOQUE, ALTO_ENFOQUE, CABEZA_ENFOQUE } from '../components/ui/TarjetaEnfoque';
-import { CarruselProfundidad } from '../components/fx/CarruselProfundidad';
-import { CarruselHoy, TarjetaVerMas } from '../components/hoy/CarruselHoy';
-import { TarjetaRutina, ANCHO_TARJETA_RUTINA, ALTO_FOTO_RUTINA, type RutinaHoy } from '../components/hoy/TarjetaRutina';
-import { NubeRefresco } from '../components/hoy/NubeRefresco';
-import { FilaSemana } from '../components/hoy/FilaSemana';
-import { BloqueRevela } from '../components/fx/BloqueRevela';
-import { TuSemana } from '../components/hoy/TuSemana';
-import { FilaExplorar } from '../components/hoy/FilaExplorar';
-import { TuPrograma } from '../components/hoy/TuPrograma';
-import { TarjetaPrograma, ANCHO_TARJETA_PROGRAMA, ALTO_FOTO_PROGRAMA } from '../components/hoy/TarjetaPrograma';
+import { paleta, esp, haptico } from '@/theme';
+import { useHuecoAbajo, useScrollCabecera } from '@/components/ui';
+import { HeaderColapsable, ALTO_HEADER } from '@/components/fx/HeaderColapsable';
+import { CabeceraSeccion } from '@/components/ui/AccionSeccion';
+import { BannerAnuncio, ANUNCIOS_ACTIVOS } from '@/components/Anuncio';
+import { useMagnesia } from '@/components/fx/MagnesiaOverlay';
+import { TarjetaSesionHoy, TarjetaSesionVacia } from '@/components/ui/TarjetaSesionHoy';
+import { TarjetaEnfoque, ANCHO_ENFOQUE, ALTO_ENFOQUE, CABEZA_ENFOQUE } from '@/components/ui/TarjetaEnfoque';
+import { CarruselProfundidad } from '@/components/fx/CarruselProfundidad';
+import { CarruselHoy, TarjetaVerMas } from '@/components/hoy/CarruselHoy';
+import { TarjetaRutina, ANCHO_TARJETA_RUTINA, ALTO_FOTO_RUTINA, type RutinaHoy } from '@/components/hoy/TarjetaRutina';
+import { NubeRefresco } from '@/components/hoy/NubeRefresco';
+import { FilaSemana } from '@/components/hoy/FilaSemana';
+import { BloqueRevela } from '@/components/fx/BloqueRevela';
+import { TuSemana } from '@/components/hoy/TuSemana';
+import { FilaExplorar } from '@/components/hoy/FilaExplorar';
+import { TuPrograma } from '@/components/hoy/TuPrograma';
+import { TarjetaPrograma, ANCHO_TARJETA_PROGRAMA, ALTO_FOTO_PROGRAMA } from '@/components/hoy/TarjetaPrograma';
 import {
   TarjetaEjercicioMini, FichaMusculo, TarjetaArticulo,
   ANCHO_EJERCICIO_MINI, ALTO_EJERCICIO_MINI, LADO_MUSCULO, ANCHO_ARTICULO, ALTO_ARTICULO,
-} from '../components/hoy/TarjetasHoy';
-import { EstadisticasHoy } from '../components/hoy/EstadisticasHoy';
-import { useEstado, estadisticas, ultimos7, hoy, imagenRutina } from '../store/store';
-import { armarSesion, sesionDeRutina, minutosPropios, type Perfil } from '../engine/session';
+} from '@/components/hoy/TarjetasHoy';
+import { EstadisticasHoy } from '@/components/hoy/EstadisticasHoy';
+import { useEstado, estadisticas, ultimos7, hoy, imagenRutina } from '@/store/store';
+import { armarSesion, sesionDeRutina, minutosPropios, type Perfil } from '@/engine/session';
 import {
   RUTINAS, PROGRAMAS, EJERCICIOS, MUSCULOS, TIPS, programaPorId, nombreGoal,
-} from '../data/catalog';
-import { saludo } from '../data/mensajes';
-import { mark as perfMark } from '../dev/perfMarks'; // perf:R1
+} from '@/data/catalog';
+import { saludo } from '@/data/mensajes';
+import { mark as perfMark } from '@/dev/perfMarks'; // perf:R1
 
 const SEPARACION_MODULOS = 48;
 const SEPARACION_BLOQUES = 32;

@@ -1,12 +1,12 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { paleta, familia, MARGEN_PANTALLA } from '../../theme';
-import type { Programa } from '../../data/catalog';
-import { nombreVisible } from '../../data/nombresVisibles';
-import { Presionable } from '../ui/Presionable';
-import { FotoOscura } from '../ui/FotoOscura';
-import { TextoDesvanecido } from '../ui/TextoDesvanecido';
-import { BarraCarga13 } from '../fx/BarraCarga13';
+import { paleta, familia, MARGEN_PANTALLA } from '@/theme';
+import type { Programa } from '@/data/catalog';
+import { nombreVisible } from '@/data/nombresVisibles';
+import { Presionable } from '@/components/ui/Presionable';
+import { FotoOscura } from '@/components/ui/FotoOscura';
+import { TextoDesvanecido } from '@/components/ui/TextoDesvanecido';
+import { BarraCarga13 } from '@/components/fx/BarraCarga13';
 
 const LADO_FOTO = 72;
 

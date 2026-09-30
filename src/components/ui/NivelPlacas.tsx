@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { paleta } from '../../theme';
+import { paleta } from '@/theme';
 
 const ANCHO = 6;
 const ALTO = 16;

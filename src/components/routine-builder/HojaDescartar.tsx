@@ -1,7 +1,7 @@
 import React from 'react';
 import { Modal, Pressable, StyleSheet, Text, View } from 'react-native';
-import { paleta, conAlfa, tipo, familia, MARGEN_PANTALLA, haptico } from '../../theme';
-import { BotonSecundario } from '../ui/BotonSecundario';
+import { paleta, conAlfa, tipo, familia, MARGEN_PANTALLA, haptico } from '@/theme';
+import { BotonSecundario } from '@/components/ui/BotonSecundario';
 
 /**
  * «Descartar cambios» como hoja inferior (la misma de salir de la sesion: `gomaAlta`, esquinas

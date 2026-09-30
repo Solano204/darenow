@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
-import { paleta, radio } from '../../theme';
-import { GomaTexture } from '../fx/GomaTexture';
+import { paleta, radio } from '@/theme';
+import { GomaTexture } from '@/components/fx/GomaTexture';
 
 /** Superficie `gomaAlta` con textura y borde de 1 px. Sin sombra: la profundidad es la superficie. */
 export function TarjetaGoma({ children, estilo, relleno = 20 }: {

@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { AccessibilityInfo, Modal, Pressable, StyleSheet, Text, View, findNodeHandle } from 'react-native';
-import { paleta, conAlfa, familia, tipo, MARGEN_PANTALLA, haptico } from '../../theme';
+import { paleta, conAlfa, familia, tipo, MARGEN_PANTALLA, haptico } from '@/theme';
 
 /** Tiempo que la hoja tarda en irse antes de ejecutar una accion que abre otra cosa (compartir, un selector). */
 const ESPERA_CIERRE_MS = 280;

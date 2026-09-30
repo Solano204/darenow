@@ -1,10 +1,10 @@
 import React from 'react';
 import type { ListRenderItemInfo } from 'react-native';
 import Animated from 'react-native-reanimated';
-import type { Tip } from '../../data/catalog';
-import { useReducedMotion } from '../../hooks/useReducedMotion';
-import { TextoVacio } from '../explore/TextoVacio';
-import { PROPS_FIJAS, entradaReducida, entradaTarjeta, type PropsLista } from '../explore/listaBase';
+import type { Tip } from '@/data/catalog';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { TextoVacio } from '@/components/explore/TextoVacio';
+import { PROPS_FIJAS, entradaReducida, entradaTarjeta, type PropsLista } from '@/components/explore/listaBase';
 import { TarjetaArticulo } from './TarjetaArticulo';
 
 /** Solo las primeras tarjetas de la lista llevan entrada (escalonada 60 ms); las demas aparecen sin animacion. */

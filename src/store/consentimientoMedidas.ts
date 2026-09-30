@@ -13,7 +13,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Alert, Linking } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { URL_PRIVACIDAD } from '../legal';
+import { URL_PRIVACIDAD } from '@/legal';
 
 export const CLAVE = 'forja:consentimiento_medidas';
 

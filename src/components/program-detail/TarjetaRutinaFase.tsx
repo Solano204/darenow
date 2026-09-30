@@ -1,11 +1,11 @@
 import React from 'react';
 import { StyleSheet, Text } from 'react-native';
-import { paleta, familia } from '../../theme';
-import { rutinaPorId } from '../../data/catalog';
-import { nombreVisible } from '../../data/nombresVisibles';
-import { plural } from '../../utils/plural';
-import { Presionable } from '../ui/Presionable';
-import { FotoOscura } from '../ui/FotoOscura';
+import { paleta, familia } from '@/theme';
+import { rutinaPorId } from '@/data/catalog';
+import { nombreVisible } from '@/data/nombresVisibles';
+import { plural } from '@/utils/plural';
+import { Presionable } from '@/components/ui/Presionable';
+import { FotoOscura } from '@/components/ui/FotoOscura';
 
 const ANCHO_TARJETA_FASE = 150;
 const ALTO_FOTO = 100;

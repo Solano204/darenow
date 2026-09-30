@@ -1,8 +1,8 @@
 import React from 'react';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { paleta, tipo, MARGEN_PANTALLA } from '../../theme';
-import { Presionable } from '../ui/Presionable';
+import { paleta, tipo, MARGEN_PANTALLA } from '@/theme';
+import { Presionable } from '@/components/ui/Presionable';
 
 export interface VerMas {
   texto: string;

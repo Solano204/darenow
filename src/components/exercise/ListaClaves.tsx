@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { paleta, familia } from '../../theme';
-import { textoVisible } from '../../utils/presentacion';
-import { useReducedMotion } from '../../hooks/useReducedMotion';
-import { PalomitaTrazo } from '../fx/PalomitaTrazo';
+import { paleta, familia } from '@/theme';
+import { textoVisible } from '@/utils/presentacion';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { PalomitaTrazo } from '@/components/fx/PalomitaTrazo';
 
 const LADO_ICONO = 18;
 const ESCALONADO_MS = 80;

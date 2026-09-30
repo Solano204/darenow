@@ -4,13 +4,13 @@ import Animated, {
   useAnimatedStyle, useSharedValue, withDelay, withSequence, withSpring, withTiming,
 } from 'react-native-reanimated';
 import { Ionicons } from '@expo/vector-icons';
-import { paleta, familia, easing, resortePlaca, resorteTap, resorteMagnesia, MARGEN_PANTALLA } from '../../theme';
-import type { Musculo } from '../../data/catalog';
-import type { Relacionado } from '../../utils/musculos';
-import { useReducedMotion } from '../../hooks/useReducedMotion';
-import { useTick } from '../../hooks/useTick';
-import { Entrada } from '../fx/Entrada';
-import { AccionSeccion } from '../ui/AccionSeccion';
+import { paleta, familia, easing, resortePlaca, resorteTap, resorteMagnesia, MARGEN_PANTALLA } from '@/theme';
+import type { Musculo } from '@/data/catalog';
+import type { Relacionado } from '@/utils/musculos';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { useTick } from '@/hooks/useTick';
+import { Entrada } from '@/components/fx/Entrada';
+import { AccionSeccion } from '@/components/ui/AccionSeccion';
 import { FichaRender } from './FichaRender';
 import { FichaMusculoNombre } from './FichaMusculoNombre';
 import { ConectorRelacion, ALTO_CONECTOR } from './ConectorRelacion';

@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, useWindowDimensions } from 'react-native';
-import { paleta, familia, haptico, MARGEN_PANTALLA } from '../../theme';
-import type { Logro } from '../../data/catalog';
-import { textoVisible } from '../../utils/presentacion';
-import { useReducedMotion } from '../../hooks/useReducedMotion';
-import { NotaEntrenador } from '../ui/NotaEntrenador';
-import { PlacaMedalla } from '../session/PlacaMedalla';
-import { BarraCarga13 } from '../fx/BarraCarga13';
-import { Odometro } from '../fx/Odometro';
+import { paleta, familia, haptico, MARGEN_PANTALLA } from '@/theme';
+import type { Logro } from '@/data/catalog';
+import { textoVisible } from '@/utils/presentacion';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { NotaEntrenador } from '@/components/ui/NotaEntrenador';
+import { PlacaMedalla } from '@/components/session/PlacaMedalla';
+import { BarraCarga13 } from '@/components/fx/BarraCarga13';
+import { Odometro } from '@/components/fx/Odometro';
 
 const COLUMNAS = 5;
 const SEPARACION = 8;

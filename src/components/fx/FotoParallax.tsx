@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { Canvas, Group, LinearGradient, Rect, useImage, vec } from '@shopify/react-native-skia';
 import { useDerivedValue, useSharedValue, withSequence, withTiming, type SharedValue } from 'react-native-reanimated';
-import { degradado, paleta } from '../../theme';
+import { degradado, paleta } from '@/theme';
 import { ImagenTratada, FOCO_ARRIBA, ANCLAS_VELO, ALTO_VELO_ARRIBA, TRATAR_FOTOS, type Foco } from './FotoTratada';
 
 const FACTOR_FONDO = 0.3;

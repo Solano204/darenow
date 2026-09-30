@@ -14,7 +14,7 @@ import {
 import Animated from 'react-native-reanimated';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { color, tipo, esp, radio, degradado, sombra, sol, ALTO_BARRA, separacionBarra, MARGEN_PANTALLA } from '../../theme';
+import { color, tipo, esp, radio, degradado, sombra, sol, ALTO_BARRA, separacionBarra, MARGEN_PANTALLA } from '@/theme';
 import { Toque } from './controles';
 import { ContextoScroll, BarraCompacta, useScrollCabecera } from './cabecera';
 

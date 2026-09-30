@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { paleta, familia } from '../../theme';
+import { paleta, familia } from '@/theme';
 
 /** Titulo de seccion de la ficha: Big Shoulders 700 de 26 y, si se pide, una linea de ayuda en Figtree 14. */
 export function TituloSeccion({ titulo, ayuda }: { titulo: string; ayuda?: string }) {

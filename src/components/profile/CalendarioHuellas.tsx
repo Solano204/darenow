@@ -5,17 +5,17 @@ import Animated, {
   type EntryExitAnimationFunction, type SharedValue,
 } from 'react-native-reanimated';
 import { Ionicons } from '@expo/vector-icons';
-import { paleta, familia, resortePlaca, haptico, MARGEN_PANTALLA } from '../../theme';
-import { hoy } from '../../store/store';
-import { MESES } from '../../utils/fechas';
-import { celdasDelMes, diaDelCalendario, diasDelMes, type DiaDelCalendario } from '../../utils/perfil';
-import { plural } from '../../utils/plural';
-import { useReducedMotion } from '../../hooks/useReducedMotion';
-import { useTick } from '../../hooks/useTick';
-import { Huella } from '../fx/Huella';
-import { PlacaDato } from '../ui/PlacaDato';
-import { MarcoHoy } from '../hoy/FilaSemana';
-import { transicionesDeSegmento } from '../explore/listaBase';
+import { paleta, familia, resortePlaca, haptico, MARGEN_PANTALLA } from '@/theme';
+import { hoy } from '@/store/store';
+import { MESES } from '@/utils/fechas';
+import { celdasDelMes, diaDelCalendario, diasDelMes, type DiaDelCalendario } from '@/utils/perfil';
+import { plural } from '@/utils/plural';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { useTick } from '@/hooks/useTick';
+import { Huella } from '@/components/fx/Huella';
+import { PlacaDato } from '@/components/ui/PlacaDato';
+import { MarcoHoy } from '@/components/hoy/FilaSemana';
+import { transicionesDeSegmento } from '@/components/explore/listaBase';
 
 const ALTO_CELDA = 48;
 const ANCHO_CELDA = 44;

@@ -1,17 +1,17 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Extrapolation, interpolate, useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
-import { paleta, familia } from '../../theme';
-import { nombreVisible } from '../../data/nombresVisibles';
-import { useReducedMotion } from '../../hooks/useReducedMotion';
-import { useTick } from '../../hooks/useTick';
-import { Presionable } from '../ui/Presionable';
-import { FotoOscura } from '../ui/FotoOscura';
-import { InsigniaFoto } from '../ui/InsigniaFoto';
-import { Huella } from '../fx/Huella';
+import { paleta, familia } from '@/theme';
+import { nombreVisible } from '@/data/nombresVisibles';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { useTick } from '@/hooks/useTick';
+import { Presionable } from '@/components/ui/Presionable';
+import { FotoOscura } from '@/components/ui/FotoOscura';
+import { InsigniaFoto } from '@/components/ui/InsigniaFoto';
+import { Huella } from '@/components/fx/Huella';
 import { EstrellaFavorito } from './EstrellaFavorito';
 import { BarraRutina } from './BarraRutina';
-import type { Progreso } from '../fx/CarruselProfundidad';
+import type { Progreso } from '@/components/fx/CarruselProfundidad';
 
 export const ANCHO_TARJETA_RUTINA = 240;
 export const ALTO_FOTO_RUTINA = 150;

@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Animated, { cancelAnimation, useAnimatedStyle, useSharedValue, withDelay, withTiming } from 'react-native-reanimated';
-import { paleta, familia, easing } from '../../theme';
-import type { Evidencia } from '../../data/catalog';
-import { useReducedMotion } from '../../hooks/useReducedMotion';
-import { useTick } from '../../hooks/useTick';
+import { paleta, familia, easing } from '@/theme';
+import type { Evidencia } from '@/data/catalog';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { useTick } from '@/hooks/useTick';
 
 export const COLOR_VEREDICTO: Record<Evidencia, string> = {
   ok: paleta.placaVerde,

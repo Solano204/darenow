@@ -1,10 +1,10 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
-import { paleta, familia, resortePlaca } from '../../theme';
-import { useReducedMotion } from '../../hooks/useReducedMotion';
-import { useTick } from '../../hooks/useTick';
-import { ContadorPlacas } from '../ui/ContadorPlacas';
+import { paleta, familia, resortePlaca } from '@/theme';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { useTick } from '@/hooks/useTick';
+import { ContadorPlacas } from '@/components/ui/ContadorPlacas';
 
 const MIN_CM = 120;
 const MAX_CM = 220;

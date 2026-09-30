@@ -1,11 +1,11 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { paleta, tipo, familia } from '../../theme';
-import { nombreEquipo, type Ejercicio, type Familia } from '../../data/catalog';
-import { capitalizar, textoDeZonas, textoVisible } from '../../utils/presentacion';
-import { Entrada } from '../fx/Entrada';
-import { Odometro } from '../fx/Odometro';
+import { paleta, tipo, familia } from '@/theme';
+import { nombreEquipo, type Ejercicio, type Familia } from '@/data/catalog';
+import { capitalizar, textoDeZonas, textoVisible } from '@/utils/presentacion';
+import { Entrada } from '@/components/fx/Entrada';
+import { Odometro } from '@/components/fx/Odometro';
 
 const ESCALONADO_MS = 40;
 const ESTILO_NUMERO = { ...tipo.numero, fontSize: 28, lineHeight: 30, color: paleta.magnesia };

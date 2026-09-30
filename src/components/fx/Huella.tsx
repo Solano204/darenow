@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
-import { paleta } from '../../theme';
+import { paleta } from '@/theme';
 
 /** [izquierda, alto, ancho] de cada dedo, en fracciones del lado. El menique y el indice son los mas cortos. */
 const DEDOS: [number, number, number][] = [

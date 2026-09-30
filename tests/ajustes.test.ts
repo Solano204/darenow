@@ -4,12 +4,12 @@
  * esbuild --bundle --platform=node --format=cjs tests/ajustes.test.ts | node
  */
 
-import { EJERCICIOS, EQUIPO, GOALS, ESTADISTICAS, nombreGoal } from '../src/data/catalog';
-import { textoVisible } from '../src/utils/presentacion';
-import { plural } from '../src/utils/plural';
+import { EJERCICIOS, EQUIPO, GOALS, ESTADISTICAS, nombreGoal } from '@/data/catalog';
+import { textoVisible } from '@/utils/presentacion';
+import { plural } from '@/utils/plural';
 import {
   ESPACIOS, ETIQUETAS_ESPACIO, indiceDeEspacio, LESIONES, equipoElegible, contarMarcados,
-} from '../src/utils/ajustes';
+} from '@/utils/ajustes';
 
 let ok = 0, fallos = 0;
 const c = (n: string, cond: boolean, d = '') => {

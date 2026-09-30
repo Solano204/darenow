@@ -4,9 +4,9 @@ import Animated, {
   interpolateColor, LinearTransition, useAnimatedStyle, useSharedValue, withDelay, withSequence, withSpring,
   withTiming, type EntryExitAnimationFunction,
 } from 'react-native-reanimated';
-import { paleta, familia, easing, resortePlaca, haptico } from '../../theme';
-import { useReducedMotion } from '../../hooks/useReducedMotion';
-import { useTick } from '../../hooks/useTick';
+import { paleta, familia, easing, resortePlaca, haptico } from '@/theme';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { useTick } from '@/hooks/useTick';
 
 const MAX_PLACAS_POR_MANGA = 6;
 export const ALTO_BARRA = 72;

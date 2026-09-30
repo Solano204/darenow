@@ -3,11 +3,11 @@ import { ScrollView, StyleSheet, View } from 'react-native';
 import Animated, {
   Extrapolation, interpolate, runOnJS, useAnimatedReaction, useAnimatedStyle, type SharedValue,
 } from 'react-native-reanimated';
-import { paleta, conAlfa, MARGEN_PANTALLA } from '../../theme';
-import { useReducedMotion } from '../../hooks/useReducedMotion';
-import { useTick } from '../../hooks/useTick';
-import { indiceRegionActiva } from '../muscles/disposicionCatalogo';
-import { ChipCategoria } from '../explore/ChipCategoria';
+import { paleta, conAlfa, MARGEN_PANTALLA } from '@/theme';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { useTick } from '@/hooks/useTick';
+import { indiceRegionActiva } from '@/components/muscles/disposicionCatalogo';
+import { ChipCategoria } from '@/components/explore/ChipCategoria';
 
 /** Alto de la fila de chips: el contenido de la pantalla deja este hueco bajo el titulo. */
 export const ALTO_INDICE = 48;

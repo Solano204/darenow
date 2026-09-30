@@ -1,9 +1,9 @@
 import React, { useMemo } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { paleta, familia, MARGEN_PANTALLA } from '../../theme';
-import { ERRORES } from '../../data/catalog';
-import { textoVisible } from '../../utils/presentacion';
-import { relacionadosVista, textoDeLectura, type RelacionadoVista } from '../../utils/aprender';
+import { paleta, familia, MARGEN_PANTALLA } from '@/theme';
+import { ERRORES } from '@/data/catalog';
+import { textoVisible } from '@/utils/presentacion';
+import { relacionadosVista, textoDeLectura, type RelacionadoVista } from '@/utils/aprender';
 import { FilaRelacionados } from './TarjetaRelacionada';
 import { TarjetaEnSuLugar } from './TarjetaEnSuLugar';
 import { TituloBloque } from './TituloBloque';

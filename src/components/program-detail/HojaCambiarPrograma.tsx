@@ -1,8 +1,8 @@
 import React from 'react';
 import { Modal, StyleSheet, Text, View } from 'react-native';
-import { paleta, conAlfa, tipo, familia, MARGEN_PANTALLA } from '../../theme';
-import { BotonPlaca } from '../ui/BotonPlaca';
-import { BotonSecundario } from '../ui/BotonSecundario';
+import { paleta, conAlfa, tipo, familia, MARGEN_PANTALLA } from '@/theme';
+import { BotonPlaca } from '@/components/ui/BotonPlaca';
+import { BotonSecundario } from '@/components/ui/BotonSecundario';
 
 /**
  * «Cambiar de programa» como hoja inferior (la misma de salir de la sesion y de descartar

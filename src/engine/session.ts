@@ -10,7 +10,7 @@
  * amplia el espacio y despues el nivel, y el usuario se entera.
  */
 
-import { EJERCICIOS, porId, type Ejercicio } from '../data/catalog';
+import { EJERCICIOS, porId, type Ejercicio } from '@/data/catalog';
 
 export interface Perfil {
   objetivo: string;

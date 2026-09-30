@@ -4,9 +4,9 @@ import Animated, { Extrapolation, interpolate, useAnimatedStyle, type SharedValu
 import { BlurView } from 'expo-blur';
 import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { paleta, conAlfa, familia, MARGEN_PANTALLA, AREA_TACTIL_MIN, haptico } from '../../theme';
-import { useReducedMotion } from '../../hooks/useReducedMotion';
-import { useTick } from '../../hooks/useTick';
+import { paleta, conAlfa, familia, MARGEN_PANTALLA, AREA_TACTIL_MIN, haptico } from '@/theme';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { useTick } from '@/hooks/useTick';
 
 /** Alto del encabezado expandido, sin contar el inset superior. */
 export const ALTO_HEADER = 96;

@@ -1,14 +1,14 @@
 import React, { useMemo } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import type { SharedValue } from 'react-native-reanimated';
-import { paleta, familia, resorteMagnesia, MARGEN_PANTALLA } from '../../theme';
-import { textoVisible } from '../../utils/presentacion';
-import type { FasePrograma } from '../../utils/minutosPorSemana';
-import { useReducedMotion } from '../../hooks/useReducedMotion';
-import { Entrada } from '../fx/Entrada';
-import { NotaEntrenador } from '../ui/NotaEntrenador';
-import { RielVertical, type SegmentoRiel } from '../routine-detail/RielVertical';
-import { SANGRIA_RIEL } from '../routine-detail/EncabezadoBloque';
+import { paleta, familia, resorteMagnesia, MARGEN_PANTALLA } from '@/theme';
+import { textoVisible } from '@/utils/presentacion';
+import type { FasePrograma } from '@/utils/minutosPorSemana';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { Entrada } from '@/components/fx/Entrada';
+import { NotaEntrenador } from '@/components/ui/NotaEntrenador';
+import { RielVertical, type SegmentoRiel } from '@/components/routine-detail/RielVertical';
+import { SANGRIA_RIEL } from '@/components/routine-detail/EncabezadoBloque';
 import { EncabezadoFase } from './EncabezadoFase';
 import { TarjetaRutinaFase } from './TarjetaRutinaFase';
 

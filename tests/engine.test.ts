@@ -2,9 +2,9 @@
  * Prueba de integracion: el motor de sesion contra el catalogo real.
  * esbuild --bundle --platform=node --format=cjs tests/engine.test.ts | node
  */
-import { armarSesion, ejerciciosValidos, sustituir, sesionDeRutina, type Perfil } from '../src/engine/session';
-import { EJERCICIOS, RUTINAS, PROGRAMAS, rutinaPorId, porId, GOALS, ESTADISTICAS } from '../src/data/catalog';
-import { derivarNivel, elegirPrograma, avisosDe, derivar } from '../src/data/perfil';
+import { armarSesion, ejerciciosValidos, sustituir, sesionDeRutina, type Perfil } from '@/engine/session';
+import { EJERCICIOS, RUTINAS, PROGRAMAS, rutinaPorId, porId, GOALS, ESTADISTICAS } from '@/data/catalog';
+import { derivarNivel, elegirPrograma, avisosDe, derivar } from '@/data/perfil';
 
 let ok = 0, fallos = 0;
 const c = (n: string, cond: boolean, d = '') => {

@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import { ESTADISTICAS } from '../data/catalog';
+import { ESTADISTICAS } from '@/data/catalog';
 
 export interface Lamina {
   id: string;

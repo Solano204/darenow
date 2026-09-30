@@ -7,10 +7,10 @@
 
 import React, { useEffect, useRef } from 'react';
 import { View, Animated, Easing, type ViewStyle } from 'react-native';
-import { color, anim } from '../../theme';
+import { color, anim } from '@/theme';
 
-export { useReducedMotion as useMovimientoReducido } from '../../hooks/useReducedMotion';
-import { useReducedMotion as useMovimientoReducido } from '../../hooks/useReducedMotion';
+export { useReducedMotion as useMovimientoReducido } from '@/hooks/useReducedMotion';
+import { useReducedMotion as useMovimientoReducido } from '@/hooks/useReducedMotion';
 
 /** Entrada suave: aparece y sube unos pixeles. */
 export function Aparece({ children, retraso = 0, estilo }: {

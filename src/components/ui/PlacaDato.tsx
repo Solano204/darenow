@@ -3,10 +3,10 @@ import { StyleSheet, Text, View } from 'react-native';
 import Animated, {
   cancelAnimation, useAnimatedStyle, useSharedValue, withDelay, withSequence, withSpring, withTiming,
 } from 'react-native-reanimated';
-import { paleta, tipo, familia, resortePlaca, resorteTap, haptico } from '../../theme';
-import { useReducedMotion } from '../../hooks/useReducedMotion';
-import { useTick } from '../../hooks/useTick';
-import { Odometro } from '../fx/Odometro';
+import { paleta, tipo, familia, resortePlaca, resorteTap, haptico } from '@/theme';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { useTick } from '@/hooks/useTick';
+import { Odometro } from '@/components/fx/Odometro';
 
 const CAIDA_PX = 40;
 const ESCALA_INICIAL = 1.1;

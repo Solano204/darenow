@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { COLOR_VEREDICTO, ORDEN_VEREDICTOS, type Conteos } from '../exercise/MedidorEvidencia';
+import { COLOR_VEREDICTO, ORDEN_VEREDICTOS, type Conteos } from '@/components/exercise/MedidorEvidencia';
 
 /**
  * La barra del medidor de la ficha en 32x4: un segmento por veredicto, proporcional al

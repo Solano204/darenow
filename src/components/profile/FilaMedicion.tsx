@@ -4,15 +4,15 @@ import Animated, {
   FadeIn, FadeOut, LinearTransition, useAnimatedStyle, useDerivedValue, useSharedValue, withSpring, type SharedValue,
 } from 'react-native-reanimated';
 import { Ionicons } from '@expo/vector-icons';
-import { paleta, familia, resortePlaca, haptico, MARGEN_PANTALLA } from '../../theme';
-import type { Protocolo } from '../../data/catalog';
-import type { MedicionGuardada } from '../../store/store';
-import { textoVisible } from '../../utils/presentacion';
-import { plural } from '../../utils/plural';
-import { PROTOCOLOS_SIN_VALOR, textoDeFrecuencia } from '../../utils/textosVisibles';
-import { useReducedMotion } from '../../hooks/useReducedMotion';
-import { useTick } from '../../hooks/useTick';
-import { BotonCompacto } from '../ui/BotonCompacto';
+import { paleta, familia, resortePlaca, haptico, MARGEN_PANTALLA } from '@/theme';
+import type { Protocolo } from '@/data/catalog';
+import type { MedicionGuardada } from '@/store/store';
+import { textoVisible } from '@/utils/presentacion';
+import { plural } from '@/utils/plural';
+import { PROTOCOLOS_SIN_VALOR, textoDeFrecuencia } from '@/utils/textosVisibles';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { useTick } from '@/hooks/useTick';
+import { BotonCompacto } from '@/components/ui/BotonCompacto';
 import { CampoValor } from './CampoValor';
 import { ProtocoloMedicion } from './ProtocoloMedicion';
 

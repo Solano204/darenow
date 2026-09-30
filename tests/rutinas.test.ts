@@ -5,8 +5,8 @@
 import {
   itemPropioPorDefecto, minutosPropios, revisarPropia, sesionDePropia,
   type RutinaPropia, type Perfil,
-} from '../src/engine/session';
-import { porId, EJERCICIOS } from '../src/data/catalog';
+} from '@/engine/session';
+import { porId, EJERCICIOS } from '@/data/catalog';
 
 let ok = 0, fallos = 0;
 const c = (n: string, cond: boolean, d = '') => {

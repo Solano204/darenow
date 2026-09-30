@@ -2,12 +2,12 @@ import React from 'react';
 import { StyleSheet, View, useWindowDimensions } from 'react-native';
 import Animated, { Extrapolation, interpolate, useAnimatedStyle, type SharedValue } from 'react-native-reanimated';
 import { LinearGradient } from 'expo-linear-gradient';
-import { degradado, resorteMagnesia } from '../../theme';
-import { fuente } from '../../media/registry';
-import { useReducedMotion } from '../../hooks/useReducedMotion';
-import { useTick } from '../../hooks/useTick';
-import { Entrada } from '../fx/Entrada';
-import { ALTO_VELO_ARRIBA } from '../fx/FotoTratada';
+import { degradado, resorteMagnesia } from '@/theme';
+import { fuente } from '@/media/registry';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { useTick } from '@/hooks/useTick';
+import { Entrada } from '@/components/fx/Entrada';
+import { ALTO_VELO_ARRIBA } from '@/components/fx/FotoTratada';
 import { FichaRender } from './FichaRender';
 
 const RADIO_INFERIOR = 28;

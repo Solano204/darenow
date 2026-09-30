@@ -4,14 +4,14 @@ import Animated, {
   Extrapolation, interpolate, useAnimatedScrollHandler, useAnimatedStyle, useSharedValue, type SharedValue,
 } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { paleta, conAlfa, familia, MARGEN_PANTALLA } from '../../theme';
-import { useReducedMotion } from '../../hooks/useReducedMotion';
-import { useTick } from '../../hooks/useTick';
-import { estimarTramos, resumenDeTramos } from '../../utils/estimarTramos';
-import { GomaTexture } from '../fx/GomaTexture';
-import { BarraInferiorFija, ALTO_BARRA_INFERIOR } from '../ui/BarraInferiorFija';
-import { BarraSuperiorColapsable } from '../exercise/BarraSuperiorColapsable';
-import { BarraRutina, ALTO_BARRA } from '../routine-builder/BarraRutina';
+import { paleta, conAlfa, familia, MARGEN_PANTALLA } from '@/theme';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { useTick } from '@/hooks/useTick';
+import { estimarTramos, resumenDeTramos } from '@/utils/estimarTramos';
+import { GomaTexture } from '@/components/fx/GomaTexture';
+import { BarraInferiorFija, ALTO_BARRA_INFERIOR } from '@/components/ui/BarraInferiorFija';
+import { BarraSuperiorColapsable } from '@/components/exercise/BarraSuperiorColapsable';
+import { BarraRutina, ALTO_BARRA } from '@/components/routine-builder/BarraRutina';
 import { HeroRutina } from './HeroRutina';
 import { PerfilRutina, ALTO_PERFIL_COMPACTO } from './PerfilRutina';
 import { RielBloques, type BloqueVista } from './RielBloques';

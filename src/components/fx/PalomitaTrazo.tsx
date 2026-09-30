@@ -1,8 +1,8 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Canvas, Group, Path, Skia } from '@shopify/react-native-skia';
 import { runOnJS, useSharedValue, withTiming } from 'react-native-reanimated';
-import { paleta, easing } from '../../theme';
-import { useReducedMotion } from '../../hooks/useReducedMotion';
+import { paleta, easing } from '@/theme';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
 
 const LADO_ORIGINAL = 24;
 const RUTA = 'M6 12.5l4 4 8-8.5';

@@ -1,9 +1,9 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { paleta, tipo, familia, MARGEN_PANTALLA } from '../../theme';
-import { NotaEntrenador } from '../ui/NotaEntrenador';
-import { Odometro } from '../fx/Odometro';
-import { SieteDias } from '../profile/SieteDias';
+import { paleta, tipo, familia, MARGEN_PANTALLA } from '@/theme';
+import { NotaEntrenador } from '@/components/ui/NotaEntrenador';
+import { Odometro } from '@/components/fx/Odometro';
+import { SieteDias } from '@/components/profile/SieteDias';
 
 const ESTILO_RACHA = { ...tipo.numero, fontSize: 48, lineHeight: 50, color: paleta.magnesia };
 

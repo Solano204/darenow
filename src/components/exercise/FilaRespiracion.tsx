@@ -3,10 +3,10 @@ import { StyleSheet, Text, View } from 'react-native';
 import Animated, {
   Easing, cancelAnimation, interpolateColor, useAnimatedStyle, useSharedValue, withRepeat, withTiming,
 } from 'react-native-reanimated';
-import { paleta, familia } from '../../theme';
-import { textoVisible } from '../../utils/presentacion';
-import { useReducedMotion } from '../../hooks/useReducedMotion';
-import { useTick } from '../../hooks/useTick';
+import { paleta, familia } from '@/theme';
+import { textoVisible } from '@/utils/presentacion';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { useTick } from '@/hooks/useTick';
 
 const LADO_ANILLO = 44;
 const CICLO_MS = 8000;

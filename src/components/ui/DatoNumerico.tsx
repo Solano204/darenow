@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text } from 'react-native';
-import { paleta, familia } from '../../theme';
+import { paleta, familia } from '@/theme';
 
 /** «12 semanas»: el numero en Big Shoulders 700 15 y la unidad en Figtree 13, en una sola linea de texto. */
 export function DatoNumerico({ numero, unidad }: { numero: number; unidad: string }) {

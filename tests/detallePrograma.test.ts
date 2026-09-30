@@ -6,10 +6,10 @@
 
 import {
   parsearRango, fasesDePrograma, faseDeSemana, minutosPorSemana, placasPorSemana, textoDeRango, resumenDePlan,
-} from '../src/utils/minutosPorSemana';
-import { PROGRAMAS, rutinaPorId } from '../src/data/catalog';
-import { nombreVisible } from '../src/data/nombresVisibles';
-import { geometriaMapa, disponerEtiquetas, MAX_PLACAS } from '../src/components/program-detail/disposicionMapa';
+} from '@/utils/minutosPorSemana';
+import { PROGRAMAS, rutinaPorId } from '@/data/catalog';
+import { nombreVisible } from '@/data/nombresVisibles';
+import { geometriaMapa, disponerEtiquetas, MAX_PLACAS } from '@/components/program-detail/disposicionMapa';
 
 let ok = 0, fallos = 0;
 const c = (n: string, cond: boolean, d = '') => {

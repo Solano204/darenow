@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { paleta, familia } from '../../theme';
-import { Presionable } from '../ui/Presionable';
+import { paleta, familia } from '@/theme';
+import { Presionable } from '@/components/ui/Presionable';
 import { FichaRender } from './FichaRender';
 
 const ESCALA_PRESIONADA = 0.06;

@@ -24,7 +24,7 @@ import * as Sharing from 'expo-sharing';
 import * as DocumentPicker from 'expo-document-picker';
 import { version as APP_VERSION } from '../../package.json';
 import { hoy, CLAVE as CLAVE_ESTADO } from './store';
-import { CLAVE_GUARDADO as CLAVE_SESION } from '../session/useSessionPlayer';
+import { CLAVE_GUARDADO as CLAVE_SESION } from '@/session/useSessionPlayer';
 import { CLAVE as CLAVE_VOZ } from './voz';
 import { CLAVE as CLAVE_HAPTICS } from './haptics';
 import { CLAVE as CLAVE_MAQUINA } from './maquina';

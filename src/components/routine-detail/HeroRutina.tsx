@@ -2,11 +2,11 @@ import React from 'react';
 import { StyleSheet, useWindowDimensions } from 'react-native';
 import Animated, { Extrapolation, interpolate, useAnimatedStyle, type SharedValue } from 'react-native-reanimated';
 import { LinearGradient } from 'expo-linear-gradient';
-import { paleta, conAlfa, degradado, resorteMagnesia } from '../../theme';
-import { useReducedMotion } from '../../hooks/useReducedMotion';
-import { useTick } from '../../hooks/useTick';
-import { Entrada } from '../fx/Entrada';
-import { FotoTratada, ALTO_VELO_ARRIBA } from '../fx/FotoTratada';
+import { paleta, conAlfa, degradado, resorteMagnesia } from '@/theme';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { useTick } from '@/hooks/useTick';
+import { Entrada } from '@/components/fx/Entrada';
+import { FotoTratada, ALTO_VELO_ARRIBA } from '@/components/fx/FotoTratada';
 
 const FRACCION_DEGRADADO = '35%';
 const JALON_PARA_ESTIRAR_PX = 160;

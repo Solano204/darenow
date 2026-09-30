@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { paleta, familia } from '../../theme';
-import { plural } from '../../utils/plural';
+import { paleta, familia } from '@/theme';
+import { plural } from '@/utils/plural';
 import { ALTO_REGION } from './disposicionCatalogo';
 
 /**

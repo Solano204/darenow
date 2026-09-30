@@ -1,8 +1,8 @@
 import React from 'react';
 import { Pressable, type StyleProp, type ViewStyle } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring, type SharedValue } from 'react-native-reanimated';
-import { resorteTap, haptico } from '../../theme';
-import { useReducedMotion } from '../../hooks/useReducedMotion';
+import { resorteTap, haptico } from '@/theme';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
 
 const ESCALA_PRESIONADO = 0.03;
 

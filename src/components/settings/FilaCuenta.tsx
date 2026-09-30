@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { LogoG } from '../ui/BotonGoogle';
+import { LogoG } from '@/components/ui/BotonGoogle';
 import { FilaAjuste } from './FilaAjuste';
 
 /**

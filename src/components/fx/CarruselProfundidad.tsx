@@ -4,9 +4,9 @@ import Animated, {
   Extrapolation, interpolate, useAnimatedScrollHandler, useAnimatedStyle, useDerivedValue, useSharedValue,
   type DerivedValue,
 } from 'react-native-reanimated';
-import { MARGEN_PANTALLA } from '../../theme';
-import { useReducedMotion } from '../../hooks/useReducedMotion';
-import { useTick } from '../../hooks/useTick';
+import { MARGEN_PANTALLA } from '@/theme';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { useTick } from '@/hooks/useTick';
 
 /** Posicion de un elemento respecto al enfocado: 0 = enfocado, 1 = ya paso por la izquierda, -1 = el siguiente. */
 export type Progreso = DerivedValue<number>;

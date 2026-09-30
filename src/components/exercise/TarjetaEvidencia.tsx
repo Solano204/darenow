@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { paleta, familia, resorteMagnesia } from '../../theme';
-import type { Evidencia } from '../../data/catalog';
-import { textoDeAfirmacion, textoVisible } from '../../utils/presentacion';
-import { useReducedMotion } from '../../hooks/useReducedMotion';
-import { TarjetaGoma } from '../ui/TarjetaGoma';
-import { InsigniaEvidencia } from '../ui/InsigniaEvidencia';
-import { NotaEntrenador } from '../ui/NotaEntrenador';
-import { Entrada } from '../fx/Entrada';
-import { Tachon, type Linea } from '../fx/TachadoMito';
+import { paleta, familia, resorteMagnesia } from '@/theme';
+import type { Evidencia } from '@/data/catalog';
+import { textoDeAfirmacion, textoVisible } from '@/utils/presentacion';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { TarjetaGoma } from '@/components/ui/TarjetaGoma';
+import { InsigniaEvidencia } from '@/components/ui/InsigniaEvidencia';
+import { NotaEntrenador } from '@/components/ui/NotaEntrenador';
+import { Entrada } from '@/components/fx/Entrada';
+import { Tachon, type Linea } from '@/components/fx/TachadoMito';
 import {
   MedidorEvidencia, COLOR_VEREDICTO, contarVeredictos, veredictoDominante,
 } from './MedidorEvidencia';

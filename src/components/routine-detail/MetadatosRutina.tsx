@@ -1,12 +1,12 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { paleta, familia } from '../../theme';
-import { nombreGoal } from '../../data/catalog';
-import { plural } from '../../utils/plural';
-import { NivelPlacas } from '../ui/NivelPlacas';
-import { DatoNumerico } from '../ui/DatoNumerico';
-import { ICONOS_OBJETIVO } from '../ui/iconosObjetivo';
+import { paleta, familia } from '@/theme';
+import { nombreGoal } from '@/data/catalog';
+import { plural } from '@/utils/plural';
+import { NivelPlacas } from '@/components/ui/NivelPlacas';
+import { DatoNumerico } from '@/components/ui/DatoNumerico';
+import { ICONOS_OBJETIVO } from '@/components/ui/iconosObjetivo';
 
 /**
  * Los metadatos de una rutina en una linea, sin repetir nada: la duracion (numero en Big

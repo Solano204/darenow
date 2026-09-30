@@ -1,13 +1,13 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Extrapolation, interpolate, useAnimatedStyle, type SharedValue } from 'react-native-reanimated';
-import { paleta, tinte, familia, resortePlaca } from '../../theme';
-import { useReducedMotion } from '../../hooks/useReducedMotion';
-import { useTick } from '../../hooks/useTick';
-import { nombreVisible } from '../../data/nombresVisibles';
+import { paleta, tinte, familia, resortePlaca } from '@/theme';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { useTick } from '@/hooks/useTick';
+import { nombreVisible } from '@/data/nombresVisibles';
 import { FotoOscura } from './FotoOscura';
-import { Entrada } from '../fx/Entrada';
-import type { ItemSesion } from '../../engine/session';
+import { Entrada } from '@/components/fx/Entrada';
+import type { ItemSesion } from '@/engine/session';
 
 const LADO_MINIATURA = 112;
 const LADO_MINIATURA_ANCHA = 128;

@@ -4,10 +4,10 @@ import Animated, {
   useAnimatedStyle, useSharedValue, withSequence, withSpring, withTiming, type SharedValue,
 } from 'react-native-reanimated';
 import { Ionicons } from '@expo/vector-icons';
-import { paleta, conAlfa, resortePlaca, haptico } from '../../theme';
-import { useReducedMotion } from '../../hooks/useReducedMotion';
-import { useTick } from '../../hooks/useTick';
-import { useMiniMagnesia } from '../fx/MiniMagnesia';
+import { paleta, conAlfa, resortePlaca, haptico } from '@/theme';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { useTick } from '@/hooks/useTick';
+import { useMiniMagnesia } from '@/components/fx/MiniMagnesia';
 
 const LADO = 40;
 const SOBREIMPULSO = 1.2;

@@ -2,26 +2,26 @@ import React, { useCallback, useMemo } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
-import { color, tipo, esp, paleta, familia, MARGEN_PANTALLA } from '../theme';
-import { Pantalla, Tarjeta, Chip, useHuecoAbajo, useScrollCabecera } from '../components/ui';
-import { CabeceraSeccion } from '../components/ui/AccionSeccion';
-import { GomaTexture } from '../components/fx/GomaTexture';
-import { BloqueRevela } from '../components/fx/BloqueRevela';
-import { EncabezadoPerfil } from '../components/profile/EncabezadoPerfil';
-import { EstadisticasPerfil } from '../components/profile/EstadisticasPerfil';
-import { SieteDias } from '../components/profile/SieteDias';
-import { CalendarioHuellas } from '../components/profile/CalendarioHuellas';
-import { FavoritosPerfil } from '../components/profile/FavoritosPerfil';
-import { VitrinaLogros } from '../components/profile/VitrinaLogros';
-import { TarjetaReto } from '../components/profile/TarjetaReto';
-import { FilaHistorial } from '../components/profile/FilaHistorial';
-import { FilaAjustes } from '../components/profile/FilaAjustes';
-import { textoVisible } from '../utils/presentacion';
-import type { TipoFavorito } from '../utils/perfil';
+import { color, tipo, esp, paleta, familia, MARGEN_PANTALLA } from '@/theme';
+import { Pantalla, Tarjeta, Chip, useHuecoAbajo, useScrollCabecera } from '@/components/ui';
+import { CabeceraSeccion } from '@/components/ui/AccionSeccion';
+import { GomaTexture } from '@/components/fx/GomaTexture';
+import { BloqueRevela } from '@/components/fx/BloqueRevela';
+import { EncabezadoPerfil } from '@/components/profile/EncabezadoPerfil';
+import { EstadisticasPerfil } from '@/components/profile/EstadisticasPerfil';
+import { SieteDias } from '@/components/profile/SieteDias';
+import { CalendarioHuellas } from '@/components/profile/CalendarioHuellas';
+import { FavoritosPerfil } from '@/components/profile/FavoritosPerfil';
+import { VitrinaLogros } from '@/components/profile/VitrinaLogros';
+import { TarjetaReto } from '@/components/profile/TarjetaReto';
+import { FilaHistorial } from '@/components/profile/FilaHistorial';
+import { FilaAjustes } from '@/components/profile/FilaAjustes';
+import { textoVisible } from '@/utils/presentacion';
+import type { TipoFavorito } from '@/utils/perfil';
 import {
   useEstado, estadisticas, ultimos7, minutosPorDia, diasEntrenados,
-} from '../store/store';
-import { LOGROS, RETOS, programaPorId, nombreGoal } from '../data/catalog';
+} from '@/store/store';
+import { LOGROS, RETOS, programaPorId, nombreGoal } from '@/data/catalog';
 
 /* ==================================================================== YO */
 

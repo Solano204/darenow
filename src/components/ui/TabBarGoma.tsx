@@ -7,10 +7,10 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import type { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import {
   color, paleta, familia, ALTO_BARRA, SEPARACION_BARRA, separacionBarra, resortePlaca, haptico,
-} from '../../theme';
-import { useReducedMotion } from '../../hooks/useReducedMotion';
-import { useTick } from '../../hooks/useTick';
-import { barraBajada } from '../../hooks/useBarraFlotante';
+} from '@/theme';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { useTick } from '@/hooks/useTick';
+import { barraBajada } from '@/hooks/useBarraFlotante';
 
 const ANCHO_INDICADOR = 16;
 const ALTO_INDICADOR = 3;

@@ -1,9 +1,9 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { paleta, familia, resorteMagnesia } from '../../theme';
-import { Entrada } from '../fx/Entrada';
-import { TarjetaConFilo } from '../ui/TarjetaConFilo';
+import { paleta, familia, resorteMagnesia } from '@/theme';
+import { Entrada } from '@/components/fx/Entrada';
+import { TarjetaConFilo } from '@/components/ui/TarjetaConFilo';
 
 const DESDE_LA_IZQUIERDA_PX = -8;
 

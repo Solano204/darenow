@@ -3,9 +3,9 @@ import { StyleSheet, View } from 'react-native';
 import Animated, {
   Easing, useAnimatedStyle, useSharedValue, withSequence, withSpring, withTiming, type DerivedValue,
 } from 'react-native-reanimated';
-import { paleta, resortePlaca, MARGEN_PANTALLA } from '../../theme';
-import { useReducedMotion } from '../../hooks/useReducedMotion';
-import { useTick } from '../../hooks/useTick';
+import { paleta, resortePlaca, MARGEN_PANTALLA } from '@/theme';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { useTick } from '@/hooks/useTick';
 
 export type EstadoPlaca = 'hecho' | 'omitido' | 'actual' | 'pendiente';
 

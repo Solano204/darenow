@@ -1,8 +1,8 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { paleta, familia } from '../../theme';
-import { plural } from '../../utils/plural';
+import { paleta, familia } from '@/theme';
+import { plural } from '@/utils/plural';
 
 export const ALTO_ENCABEZADO = 32;
 export const LADO_NODO = 12;

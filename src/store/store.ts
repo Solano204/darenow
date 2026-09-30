@@ -14,7 +14,7 @@ import React, { createContext, useContext, useEffect, useMemo, useState, useCall
 import { AppState } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { PERFIL_INICIAL, ESTADO_INICIAL } from './estadoInicial';
-import { mark as perfMark } from '../dev/perfMarks'; // perf:R1
+import { mark as perfMark } from '@/dev/perfMarks'; // perf:R1
 
 export const CLAVE = 'forja:v1';
 

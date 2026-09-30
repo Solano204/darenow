@@ -4,8 +4,8 @@ import { Canvas, Points, Rect } from '@shopify/react-native-skia';
 import {
   Easing, cancelAnimation, useDerivedValue, useSharedValue, withTiming, type SharedValue,
 } from 'react-native-reanimated';
-import { paleta, polvo } from '../../theme';
-import { useReducedMotion } from '../../hooks/useReducedMotion';
+import { paleta, polvo } from '@/theme';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
 
 const VELO_SUBE_MS = 60;
 const VELO_FIJO_MS = 180;

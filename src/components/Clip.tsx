@@ -26,10 +26,10 @@ import React, { useEffect, useRef, useState } from 'react';
 import { View, StyleSheet, type ViewStyle } from 'react-native';
 import { Image } from 'expo-image';
 import { useVideoPlayer, VideoView } from 'expo-video';
-import { color, radio } from '../theme';
+import { color, radio } from '@/theme';
 import Foto from './Foto';
-import { clipFuente } from '../media/videos';
-import { fuente } from '../media/registry';
+import { clipFuente } from '@/media/videos';
+import { fuente } from '@/media/registry';
 
 export interface ClipProps {
   id: string;

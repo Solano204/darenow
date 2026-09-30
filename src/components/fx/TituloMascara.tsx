@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { PixelRatio, StyleSheet, Text, View, type StyleProp, type TextStyle } from 'react-native';
 import Animated, { cancelAnimation, useAnimatedStyle, useSharedValue, withDelay, withSpring } from 'react-native-reanimated';
-import { resortePlaca } from '../../theme';
-import { useReducedMotion } from '../../hooks/useReducedMotion';
+import { resortePlaca } from '@/theme';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
 
 const ESCALONADO_LINEAS_MS = 90;
 const ESCALONADO_LETRAS_MS = 18;

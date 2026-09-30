@@ -1,10 +1,10 @@
 import React from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { paleta, familia, MARGEN_PANTALLA } from '../../theme';
-import type { RelacionadoVista, TipoRelacionado } from '../../utils/aprender';
-import { Presionable } from '../ui/Presionable';
-import { FotoOscura } from '../ui/FotoOscura';
+import { paleta, familia, MARGEN_PANTALLA } from '@/theme';
+import type { RelacionadoVista, TipoRelacionado } from '@/utils/aprender';
+import { Presionable } from '@/components/ui/Presionable';
+import { FotoOscura } from '@/components/ui/FotoOscura';
 import { TituloBloque } from './TituloBloque';
 
 const ANCHO = 200;

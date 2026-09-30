@@ -1,8 +1,8 @@
 import React, { useEffect, useMemo } from 'react';
 import { Canvas, Group, Path, Skia } from '@shopify/react-native-skia';
 import { cancelAnimation, useSharedValue, withDelay, withTiming } from 'react-native-reanimated';
-import { paleta, easing } from '../../theme';
-import { useReducedMotion } from '../../hooks/useReducedMotion';
+import { paleta, easing } from '@/theme';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
 
 const LADO_ORIGINAL = 24;
 const DURACION_MS = 300;

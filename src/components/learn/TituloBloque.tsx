@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text } from 'react-native';
-import { paleta, familia } from '../../theme';
+import { paleta, familia } from '@/theme';
 
 /** Titulo de un bloque de Aprender («Relacionado», «Por qué», «Lo que esta app no hace»): Big Shoulders 700 de 24. */
 export function TituloBloque({ children }: { children: string }) {

@@ -19,8 +19,8 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, Modal, StyleSheet, Pressable } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { color, tipo, esp, radio, degradado } from '../theme';
-import { Boton } from './ui';
+import { color, tipo, esp, radio, degradado } from '@/theme';
+import { Boton } from '@/components/ui';
 import Vidrio, { VidrioFondo } from './Vidrio';
 
 /**

@@ -3,9 +3,9 @@ import { StyleSheet, Text, View } from 'react-native';
 import Animated, {
   cancelAnimation, useAnimatedStyle, useSharedValue, withRepeat, withSequence, withTiming,
 } from 'react-native-reanimated';
-import { paleta, tipo, familia } from '../../theme';
-import { saludo } from '../../data/mensajes';
-import { useReducedMotion } from '../../hooks/useReducedMotion';
+import { paleta, tipo, familia } from '@/theme';
+import { saludo } from '@/data/mensajes';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
 
 const ENTRADA_LETRA_MS = 120;
 const PARPADEO_MS = 520;

@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { paleta, conAlfa, familia } from '../../theme';
+import { paleta, conAlfa, familia } from '@/theme';
 
 type Icono = keyof typeof Ionicons.glyphMap;
 

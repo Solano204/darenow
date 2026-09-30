@@ -17,19 +17,19 @@ import Animated, {
 } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { paleta, tipo, familia, esp, MARGEN_PANTALLA, AREA_TACTIL_MIN, resorteMagnesia, haptico } from '../theme';
-import { BotonPlaca } from '../components/ui/BotonPlaca';
-import { BotonGoogle } from '../components/ui/BotonGoogle';
-import { BotonSecundario } from '../components/ui/BotonSecundario';
-import { TarjetaGoma } from '../components/ui/TarjetaGoma';
-import { GomaTexture } from '../components/fx/GomaTexture';
-import { TituloMascara } from '../components/fx/TituloMascara';
-import { Entrada } from '../components/fx/Entrada';
-import { IconoTrazo, type NombreIcono } from '../components/fx/IconoTrazo';
-import { useReducedMotion } from '../hooks/useReducedMotion';
-import { useGoogleSignIn, mensajeError } from '../store/googleAuth';
-import { useCuenta } from '../store/cuenta';
-import { URL_PRIVACIDAD, URL_TERMINOS } from '../legal';
+import { paleta, tipo, familia, esp, MARGEN_PANTALLA, AREA_TACTIL_MIN, resorteMagnesia, haptico } from '@/theme';
+import { BotonPlaca } from '@/components/ui/BotonPlaca';
+import { BotonGoogle } from '@/components/ui/BotonGoogle';
+import { BotonSecundario } from '@/components/ui/BotonSecundario';
+import { TarjetaGoma } from '@/components/ui/TarjetaGoma';
+import { GomaTexture } from '@/components/fx/GomaTexture';
+import { TituloMascara } from '@/components/fx/TituloMascara';
+import { Entrada } from '@/components/fx/Entrada';
+import { IconoTrazo, type NombreIcono } from '@/components/fx/IconoTrazo';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { useGoogleSignIn, mensajeError } from '@/store/googleAuth';
+import { useCuenta } from '@/store/cuenta';
+import { URL_PRIVACIDAD, URL_TERMINOS } from '@/legal';
 
 const T_SUBTITULO = 200;
 const T_TARJETA = 350;

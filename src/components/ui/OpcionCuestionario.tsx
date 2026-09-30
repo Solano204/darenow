@@ -4,11 +4,11 @@ import Animated, {
   interpolateColor, useAnimatedStyle, useSharedValue, withSpring, withTiming,
 } from 'react-native-reanimated';
 import { Ionicons } from '@expo/vector-icons';
-import { paleta, tipo, radio, resorteTap, resortePlaca, haptico } from '../../theme';
-import { useReducedMotion } from '../../hooks/useReducedMotion';
-import { useTick } from '../../hooks/useTick';
-import { PalomitaTrazo } from '../fx/PalomitaTrazo';
-import { useMiniMagnesia } from '../fx/MiniMagnesia';
+import { paleta, tipo, radio, resorteTap, resortePlaca, haptico } from '@/theme';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { useTick } from '@/hooks/useTick';
+import { PalomitaTrazo } from '@/components/fx/PalomitaTrazo';
+import { useMiniMagnesia } from '@/components/fx/MiniMagnesia';
 
 const ESCALA_HUNDIDO = 0.02;
 const LADO_INDICADOR = 24;

@@ -5,10 +5,10 @@ import Animated, {
 } from 'react-native-reanimated';
 import { Canvas, DashPathEffect, RoundedRect } from '@shopify/react-native-skia';
 import { Ionicons } from '@expo/vector-icons';
-import { paleta, familia, resortePlaca } from '../../theme';
-import { useReducedMotion } from '../../hooks/useReducedMotion';
-import { useTick } from '../../hooks/useTick';
-import { Presionable } from '../ui/Presionable';
+import { paleta, familia, resortePlaca } from '@/theme';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { useTick } from '@/hooks/useTick';
+import { Presionable } from '@/components/ui/Presionable';
 
 const ALTO_FILA_CREAR = 64;
 const RADIO = 20;

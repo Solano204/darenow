@@ -1,13 +1,13 @@
 import { describe, expect, it } from '@jest/globals';
-import { plural } from '../../src/utils/plural';
+import { plural } from '@/utils/plural';
 import {
   capitalizar, textoVisible, textoDePregunta, comillasLatinas, textoDeEtiqueta, textoDeAfirmacion,
   textoDeZonas, textoDeEquipo,
-} from '../../src/utils/presentacion';
+} from '@/utils/presentacion';
 import {
   textoDeMotivo, textoDeEstadoSesion, textoDeFrecuencia, unidadDeMedicion, PROTOCOLOS_SIN_VALOR,
-} from '../../src/utils/textosVisibles';
-import { nombreVisible } from '../../src/data/nombresVisibles';
+} from '@/utils/textosVisibles';
+import { nombreVisible } from '@/data/nombresVisibles';
 
 describe('plural', () => {
   it('usa el singular solo con 1', () => {

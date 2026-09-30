@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { paleta, familia } from '../../theme';
+import { paleta, familia } from '@/theme';
 
 /** Sin resultados: una frase que dice que paso y que probar, sin ilustraciones. */
 export function TextoVacio({ texto }: { texto: string }) {

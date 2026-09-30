@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { paleta, conAlfa, ALTO_BOTON, MARGEN_PANTALLA } from '../../theme';
+import { paleta, conAlfa, ALTO_BOTON, MARGEN_PANTALLA } from '@/theme';
 
 const RELLENO_ARRIBA = 8;
 const SEPARACION_ABAJO = 16;

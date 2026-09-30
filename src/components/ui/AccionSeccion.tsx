@@ -2,8 +2,8 @@ import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 import { Ionicons } from '@expo/vector-icons';
-import { paleta, familia, AREA_TACTIL_MIN, MARGEN_PANTALLA, resorteTap, haptico } from '../../theme';
-import { useReducedMotion } from '../../hooks/useReducedMotion';
+import { paleta, familia, AREA_TACTIL_MIN, MARGEN_PANTALLA, resorteTap, haptico } from '@/theme';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
 
 const EMPUJE_FLECHA_PX = 4;
 

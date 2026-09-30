@@ -2,10 +2,10 @@ import React, { useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Animated, { cancelAnimation, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import { Ionicons } from '@expo/vector-icons';
-import { paleta, familia, radio, easing, haptico } from '../../theme';
-import { useReducedMotion } from '../../hooks/useReducedMotion';
-import { GomaTexture } from '../fx/GomaTexture';
-import { PalomitaTrazo } from '../fx/PalomitaTrazo';
+import { paleta, familia, radio, easing, haptico } from '@/theme';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { GomaTexture } from '@/components/fx/GomaTexture';
+import { PalomitaTrazo } from '@/components/fx/PalomitaTrazo';
 
 const ANCHO_FILO = 3;
 const FILO_MS = 300;

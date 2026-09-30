@@ -1,4 +1,4 @@
-import type { Ejercicio, Musculo } from '../data/catalog';
+import type { Ejercicio, Musculo } from '@/data/catalog';
 import { textoDeEtiqueta, textoVisible } from './presentacion';
 
 /**

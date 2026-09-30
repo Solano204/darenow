@@ -1,7 +1,7 @@
 import React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { paleta, conAlfa, MARGEN_PANTALLA } from '../../theme';
+import { paleta, conAlfa, MARGEN_PANTALLA } from '@/theme';
 
 export const SEPARACION_FILAS = 8;
 export const ALTO_FILA_CATEGORIA = 32;

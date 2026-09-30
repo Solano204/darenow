@@ -1,6 +1,6 @@
-import { porId, rutinaPorId, programaPorId, salaPorId } from '../data/catalog';
-import { nombreVisible } from '../data/nombresVisibles';
-import type { IconoOpcion } from '../components/ui/OpcionCuestionario';
+import { porId, rutinaPorId, programaPorId, salaPorId } from '@/data/catalog';
+import { nombreVisible } from '@/data/nombresVisibles';
+import type { IconoOpcion } from '@/components/ui/OpcionCuestionario';
 import { comillasLatinas, textoVisible } from './presentacion';
 
 /**

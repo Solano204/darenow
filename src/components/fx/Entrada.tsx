@@ -3,8 +3,8 @@ import type { StyleProp, ViewStyle } from 'react-native';
 import Animated, {
   cancelAnimation, useAnimatedStyle, useSharedValue, withDelay, withSpring, withTiming,
 } from 'react-native-reanimated';
-import { resorteMagnesia } from '../../theme';
-import { useReducedMotion } from '../../hooks/useReducedMotion';
+import { resorteMagnesia } from '@/theme';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
 
 const FUNDIDO_REDUCIDO_MS = 150;
 

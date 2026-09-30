@@ -19,7 +19,7 @@ import React from 'react';
 import { View, StyleSheet, type ViewStyle } from 'react-native';
 import { BlurView } from 'expo-blur';
 import { LinearGradient } from 'expo-linear-gradient';
-import { color, radio, filoLuz, sol, degradado, veloVidrio } from '../theme';
+import { color, radio, filoLuz, sol, degradado, veloVidrio } from '@/theme';
 
 export interface VidrioProps {
   children?: React.ReactNode;

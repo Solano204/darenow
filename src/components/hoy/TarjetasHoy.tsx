@@ -1,19 +1,19 @@
 import React, { useMemo } from 'react';
 import { StyleSheet, Text, View, type StyleProp, type TextStyle } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { paleta, familia } from '../../theme';
-import { fuente, type TipoFoto } from '../../media/registry';
+import { paleta, familia } from '@/theme';
+import { fuente, type TipoFoto } from '@/media/registry';
 import {
   CATEGORIAS, evidenciaDe, type Ejercicio, type Musculo, type Tip,
-} from '../../data/catalog';
-import { nombreVisible } from '../../data/nombresVisibles';
-import { textoVisible } from '../../utils/presentacion';
-import { iconoDeSala, nombreDeSala } from '../../utils/aprender';
-import { Presionable } from '../ui/Presionable';
-import { FotoOscura } from '../ui/FotoOscura';
-import { NivelPlacas } from '../ui/NivelPlacas';
-import { contarVeredictos, resumenDeConteos } from '../exercise/MedidorEvidencia';
-import { MiniMedidorEvidencia } from '../explore/MiniMedidorEvidencia';
+} from '@/data/catalog';
+import { nombreVisible } from '@/data/nombresVisibles';
+import { textoVisible } from '@/utils/presentacion';
+import { iconoDeSala, nombreDeSala } from '@/utils/aprender';
+import { Presionable } from '@/components/ui/Presionable';
+import { FotoOscura } from '@/components/ui/FotoOscura';
+import { NivelPlacas } from '@/components/ui/NivelPlacas';
+import { contarVeredictos, resumenDeConteos } from '@/components/exercise/MedidorEvidencia';
+import { MiniMedidorEvidencia } from '@/components/explore/MiniMedidorEvidencia';
 import { EstrellaFavorito } from './EstrellaFavorito';
 
 export const ANCHO_EJERCICIO_MINI = 150;

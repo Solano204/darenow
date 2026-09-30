@@ -4,10 +4,10 @@ import Animated, {
   useAnimatedStyle, useSharedValue, withSequence, withSpring, withTiming,
 } from 'react-native-reanimated';
 import { Ionicons } from '@expo/vector-icons';
-import { paleta, tipo, familia, AREA_TACTIL_MIN, resorteTap, haptico } from '../../theme';
-import { useReducedMotion } from '../../hooks/useReducedMotion';
-import { useTick } from '../../hooks/useTick';
-import { Odometro } from '../fx/Odometro';
+import { paleta, tipo, familia, AREA_TACTIL_MIN, resorteTap, haptico } from '@/theme';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { useTick } from '@/hooks/useTick';
+import { Odometro } from '@/components/fx/Odometro';
 
 const LADO_BOTON = AREA_TACTIL_MIN;
 const LADO_BOTON_COMPACTO = 36;

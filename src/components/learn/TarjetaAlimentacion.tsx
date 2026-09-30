@@ -1,12 +1,12 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { paleta, familia } from '../../theme';
-import { NUTRICION } from '../../data/catalog';
-import { textoVisible } from '../../utils/presentacion';
-import { textoDeLectura } from '../../utils/aprender';
-import { Entrada } from '../fx/Entrada';
-import { TarjetaGoma } from '../ui/TarjetaGoma';
-import { FotoOscura } from '../ui/FotoOscura';
+import { paleta, familia } from '@/theme';
+import { NUTRICION } from '@/data/catalog';
+import { textoVisible } from '@/utils/presentacion';
+import { textoDeLectura } from '@/utils/aprender';
+import { Entrada } from '@/components/fx/Entrada';
+import { TarjetaGoma } from '@/components/ui/TarjetaGoma';
+import { FotoOscura } from '@/components/ui/FotoOscura';
 import { TarjetaEnSuLugar } from './TarjetaEnSuLugar';
 
 type Concepto = (typeof NUTRICION)['conceptos'][number];

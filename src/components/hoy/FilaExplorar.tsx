@@ -2,11 +2,11 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
 import { Ionicons } from '@expo/vector-icons';
-import { paleta, tipo, familia, MARGEN_PANTALLA } from '../../theme';
-import { ESTADISTICAS } from '../../data/catalog';
-import { useReducedMotion } from '../../hooks/useReducedMotion';
-import { Presionable } from '../ui/Presionable';
-import { Odometro } from '../fx/Odometro';
+import { paleta, tipo, familia, MARGEN_PANTALLA } from '@/theme';
+import { ESTADISTICAS } from '@/data/catalog';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { Presionable } from '@/components/ui/Presionable';
+import { Odometro } from '@/components/fx/Odometro';
 
 const ESTILO_CIFRA = { ...tipo.numero, fontSize: 18, lineHeight: 22, color: paleta.magnesia };
 const ESCALONADO_MS = 120;

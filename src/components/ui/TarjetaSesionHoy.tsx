@@ -6,19 +6,19 @@ import Animated, {
 } from 'react-native-reanimated';
 import {
   paleta, tinte, tipo, familia, esp, MARGEN_PANTALLA, resortePlaca, resorteMagnesia, haptico,
-} from '../../theme';
-import { useReducedMotion } from '../../hooks/useReducedMotion';
-import { useTick } from '../../hooks/useTick';
-import { nombreVisible } from '../../data/nombresVisibles';
-import type { Sesion } from '../../engine/session';
+} from '@/theme';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { useTick } from '@/hooks/useTick';
+import { nombreVisible } from '@/data/nombresVisibles';
+import type { Sesion } from '@/engine/session';
 import { TarjetaGoma } from './TarjetaGoma';
 import { BotonPlaca } from './BotonPlaca';
 import { BotonSecundario } from './BotonSecundario';
 import { BotonFilaSecundario } from './BotonFilaSecundario';
 import { NotaEntrenador } from './NotaEntrenador';
-import { Entrada } from '../fx/Entrada';
-import { Odometro } from '../fx/Odometro';
-import { Huella } from '../fx/Huella';
+import { Entrada } from '@/components/fx/Entrada';
+import { Odometro } from '@/components/fx/Odometro';
+import { Huella } from '@/components/fx/Huella';
 import { MiniaturaEjercicio, medidasMiniatura, SEPARACION_MINIATURA } from './MiniaturaEjercicio';
 
 const RADIO_TARJETA = 28;

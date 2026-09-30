@@ -2,8 +2,8 @@
  * Pruebas de la maquina del reproductor.
  * Ejecutar: esbuild --bundle --platform=node --format=cjs tests/player.test.ts | node
  */
-import { crearReducer, estadoInicial } from '../src/session/playerMachine';
-import type { ItemSesion } from '../src/engine/session';
+import { crearReducer, estadoInicial } from '@/session/playerMachine';
+import type { ItemSesion } from '@/engine/session';
 
 let ok = 0, fallos = 0;
 function comprobar(nombre: string, cond: boolean, detalle = '') {

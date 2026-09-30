@@ -2,9 +2,9 @@ import { describe, expect, it } from '@jest/globals';
 import {
   calcularRacha, revisarPausa, estadisticas, ultimos7, minutosPorDia, diasEntrenados, imagenRutina, hoy,
   type Racha, type SesionGuardada,
-} from '../../src/store/store';
-import { duracion, minutosPropios, itemPropioPorDefecto, aItem } from '../../src/engine/session';
-import { EJERCICIOS, porId } from '../../src/data/catalog';
+} from '@/store/store';
+import { duracion, minutosPropios, itemPropioPorDefecto, aItem } from '@/engine/session';
+import { EJERCICIOS, porId } from '@/data/catalog';
 
 const RACHA_VACIA: Racha = { dias: 0, mejor: 0, ultimoDia: null, graciaUsada: 0, mesGracia: null, enPausa: false };
 

@@ -4,13 +4,13 @@ import { Canvas, Path, Skia } from '@shopify/react-native-skia';
 import Animated, {
   cancelAnimation, useAnimatedStyle, useSharedValue, withDelay, withSpring, withTiming,
 } from 'react-native-reanimated';
-import { paleta, familia, MARGEN_PANTALLA, easing, resortePlaca, haptico } from '../../theme';
-import { useReducedMotion } from '../../hooks/useReducedMotion';
-import { useTick } from '../../hooks/useTick';
-import { hoy } from '../../store/store';
-import { Huella } from '../fx/Huella';
-import { Entrada } from '../fx/Entrada';
-import { useMiniMagnesia } from '../fx/MiniMagnesia';
+import { paleta, familia, MARGEN_PANTALLA, easing, resortePlaca, haptico } from '@/theme';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { useTick } from '@/hooks/useTick';
+import { hoy } from '@/store/store';
+import { Huella } from '@/components/fx/Huella';
+import { Entrada } from '@/components/fx/Entrada';
+import { useMiniMagnesia } from '@/components/fx/MiniMagnesia';
 
 const ANCHO_CELDA = 44;
 const ALTO_CELDA = 56;

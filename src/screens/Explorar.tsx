@@ -18,29 +18,29 @@ import Animated, { useAnimatedScrollHandler, useSharedValue, withTiming } from '
 import { Ionicons } from '@expo/vector-icons';
 import { useFocusEffect, type ParamListBase } from '@react-navigation/native';
 import type { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
-import { paleta, familia, MARGEN_PANTALLA } from '../theme';
-import { useHuecoAbajo } from '../components/ui';
-import { seguirBarra } from '../components/ui/cabecera';
-import { ICONOS_OBJETIVO } from '../components/ui/iconosObjetivo';
-import { barraBajada } from '../hooks/useBarraFlotante';
-import { useReducedMotion } from '../hooks/useReducedMotion';
-import { MuroCategoria, Intersticial } from '../components/Anuncio';
+import { paleta, familia, MARGEN_PANTALLA } from '@/theme';
+import { useHuecoAbajo } from '@/components/ui';
+import { seguirBarra } from '@/components/ui/cabecera';
+import { ICONOS_OBJETIVO } from '@/components/ui/iconosObjetivo';
+import { barraBajada } from '@/hooks/useBarraFlotante';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { MuroCategoria, Intersticial } from '@/components/Anuncio';
 import {
   EJERCICIOS, RUTINAS, PROGRAMAS, MUSCULOS, CATEGORIAS, GOALS,
-} from '../data/catalog';
-import { useEstado } from '../store/store';
-import { BuscadorVivo } from '../components/explore/BuscadorVivo';
-import { SegmentosIndicador } from '../components/explore/SegmentosIndicador';
-import { ChipFiltro } from '../components/explore/ChipFiltro';
-import { ChipCategoria } from '../components/explore/ChipCategoria';
-import { InterruptorDos } from '../components/explore/InterruptorDos';
-import { ContadorResultados } from '../components/explore/ContadorResultados';
-import { FilaChips, ALTO_FILA_CATEGORIA, ALTO_FILA_OBJETIVO, SEPARACION_FILAS } from '../components/explore/EncabezadoFiltrosColapsable';
-import { EncabezadoExplorar, SEP_SEGMENTOS, SEP_CONTADOR, type SegmentoExplorar } from '../components/explore/EncabezadoExplorar';
-import { CabeceraRutinas } from '../components/explore/CabeceraRutinas';
-import { RejillaMusculos } from '../components/muscles/RejillaMusculos';
-import { ListaEjercicios, ListaRutinas, ListaProgramas } from '../components/explore/listas';
-import { transicionesDeSegmento, type PropsLista } from '../components/explore/listaBase';
+} from '@/data/catalog';
+import { useEstado } from '@/store/store';
+import { BuscadorVivo } from '@/components/explore/BuscadorVivo';
+import { SegmentosIndicador } from '@/components/explore/SegmentosIndicador';
+import { ChipFiltro } from '@/components/explore/ChipFiltro';
+import { ChipCategoria } from '@/components/explore/ChipCategoria';
+import { InterruptorDos } from '@/components/explore/InterruptorDos';
+import { ContadorResultados } from '@/components/explore/ContadorResultados';
+import { FilaChips, ALTO_FILA_CATEGORIA, ALTO_FILA_OBJETIVO, SEPARACION_FILAS } from '@/components/explore/EncabezadoFiltrosColapsable';
+import { EncabezadoExplorar, SEP_SEGMENTOS, SEP_CONTADOR, type SegmentoExplorar } from '@/components/explore/EncabezadoExplorar';
+import { CabeceraRutinas } from '@/components/explore/CabeceraRutinas';
+import { RejillaMusculos } from '@/components/muscles/RejillaMusculos';
+import { ListaEjercicios, ListaRutinas, ListaProgramas } from '@/components/explore/listas';
+import { transicionesDeSegmento, type PropsLista } from '@/components/explore/listaBase';
 
 const SEGMENTOS: readonly { id: SegmentoExplorar; texto: string }[] = [
   { id: 'ejercicios', texto: 'Ejercicios' }, { id: 'rutinas', texto: 'Rutinas' },

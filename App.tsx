@@ -45,7 +45,7 @@ import EditorRutina from '@/screens/EditorRutina';
 import RutinaPropia from '@/screens/RutinaPropia';
 import Reproductor from '@/screens/Reproductor';
 import Resumen from '@/screens/Resumen';
-import DetalleEjercicio from '@/screens/DetalleEjercicio';
+import DetalleEjercicio from '@/features/ejercicio/screens/DetalleEjercicio';
 import DetalleRutina from '@/screens/DetalleRutina';
 import DetallePrograma from '@/screens/DetallePrograma';
 import DetalleMusculo from '@/features/musculos/screens/DetalleMusculo';

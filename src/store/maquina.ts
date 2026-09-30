@@ -10,7 +10,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export const CLAVE = 'forja:ajustes_maquina';
+import { CLAVE_MAQUINA as CLAVE } from '@/storage/claves';
 
 export function useAjustesMaquina(): [Record<string, string>, (ejercicioId: string, valor: string) => void] {
   const [ajustes, setAjustes] = useState<Record<string, string>>({});

@@ -40,7 +40,7 @@ import { prepararSonido, soltarSonido, activarSonido, reproducir } from '@/media
 
 export type { Fase };
 
-export const CLAVE_GUARDADO = 'forja:sesion_en_curso';
+import { CLAVE_SESION_EN_CURSO as CLAVE_GUARDADO } from '@/storage/claves';
 
 export interface SesionEnCurso {
   items: ItemSesion[];

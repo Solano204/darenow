@@ -15,7 +15,7 @@ import { Alert, Linking } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { URL_PRIVACIDAD } from '@/legal';
 
-export const CLAVE = 'forja:consentimiento_medidas';
+import { CLAVE_CONSENTIMIENTO_MEDIDAS as CLAVE } from '@/storage/claves';
 
 export function useConsentimientoMedidas(): [boolean, (v: boolean) => void] {
   const [dado, setDado] = useState(false);

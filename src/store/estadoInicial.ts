@@ -6,12 +6,9 @@
  * "el store queda en estado inicial" con un script de node plano, igual que
  * el resto de tests/*.ts.
  *
- * `import type` no deja rastro en tiempo de ejecucion, asi que importar el
- * tipo `Estado` de vuelta desde store.ts no crea un ciclo real.
- *
  * Ubicacion: src/store/estadoInicial.ts
  */
-import type { Estado, PerfilUsuario, Favoritos } from './store';
+import type { Estado, PerfilUsuario, Favoritos } from './tipos';
 
 export const PERFIL_INICIAL: PerfilUsuario = {
   nombre: '', objetivo: 'bajar_peso', nivel: 1, diasPorSemana: 3, minPorSesion: 20,

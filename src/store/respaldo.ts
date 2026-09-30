@@ -23,23 +23,18 @@ import { File, Paths } from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
 import * as DocumentPicker from 'expo-document-picker';
 import { version as APP_VERSION } from '../../package.json';
-import { hoy, CLAVE as CLAVE_ESTADO } from './store';
-import { CLAVE_GUARDADO as CLAVE_SESION } from '@/session/useSessionPlayer';
-import { CLAVE as CLAVE_VOZ } from './voz';
-import { CLAVE as CLAVE_HAPTICS } from './haptics';
-import { CLAVE as CLAVE_MAQUINA } from './maquina';
-import { CLAVE as CLAVE_CUENTA } from './cuenta';
+import { hoy } from './store';
+import {
+  CLAVE_ESTADO, CLAVE_SESION_EN_CURSO as CLAVE_SESION, CLAVE_VOZ, CLAVE_HAPTICS, CLAVE_MAQUINA, CLAVE_CUENTA,
+} from '@/storage/claves';
 
 /** Version del formato del archivo de respaldo. Sube si cambia su forma. */
 const FORMATO_ACTUAL = 1;
 
 /**
- * Las 6 claves reales de AsyncStorage bajo forja:*, tal como las define cada
- * store. Es una funcion (no un const de modulo) a proposito: cuenta.ts
- * importa de aqui `borrarRespaldosCache`, y este archivo importa `CLAVE` de
- * cuenta.ts, asi que evaluar CLAVE_CUENTA al cargar el modulo (en vez de
- * cuando de verdad se necesita) corre el riesgo de leerlo antes de que
- * cuenta.ts haya terminado de inicializarlo, segun el orden de carga.
+ * Las 6 claves reales de AsyncStorage bajo forja:* que entran en el respaldo
+ * (ver `storage/claves.ts`). Antes era una funcion para esquivar el ciclo
+ * cuenta.ts <-> respaldo.ts; ya no hay ciclo, pero se deja igual.
  */
 function claves() {
   return [

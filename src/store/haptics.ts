@@ -10,7 +10,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export const CLAVE = 'forja:haptics';
+import { CLAVE_HAPTICS as CLAVE } from '@/storage/claves';
 
 // Lectura sincrona para los golpes que se disparan fuera de React (theme/haptics.ts).
 let activos = true;

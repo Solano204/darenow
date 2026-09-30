@@ -18,16 +18,14 @@
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { cerrarGoogle } from './googleAuth';
-import { useEstado, CLAVE as CLAVE_ESTADO } from './store';
-import { CLAVE as CLAVE_VOZ } from './voz';
-import { CLAVE as CLAVE_HAPTICS } from './haptics';
-import { CLAVE as CLAVE_MAQUINA } from './maquina';
-import { CLAVE_GUARDADO as CLAVE_SESION } from '@/session/useSessionPlayer';
-import { CLAVE as CLAVE_CONSENTIMIENTO_MEDIDAS } from './consentimientoMedidas';
+import { useEstado } from './store';
+import {
+  CLAVE_ESTADO, CLAVE_VOZ, CLAVE_HAPTICS, CLAVE_MAQUINA, CLAVE_SESION_EN_CURSO as CLAVE_SESION, CLAVE_CONSENTIMIENTO_MEDIDAS,
+} from '@/storage/claves';
 import { borrarRespaldosCache } from './respaldo';
 import { seleccionarClavesForja } from './clavesForja';
 
-export const CLAVE = 'forja:cuenta:v1';
+import { CLAVE_CUENTA as CLAVE } from '@/storage/claves';
 
 type Proveedor = 'google' | 'invitado';
 

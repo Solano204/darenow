@@ -25,8 +25,8 @@ export function FilaRespiracion({ texto }: { texto: string }) {
   const conFases = /inhal|exhal/i.test(texto);
 
   useEffect(() => {
-    if (reducido) { cancelAnimation(ciclo); ciclo.value = 0; return; }
-    ciclo.value = withRepeat(withTiming(1, { duration: CICLO_MS, easing: Easing.linear }), -1, false);
+    if (reducido) { cancelAnimation(ciclo); ciclo.set(0); return; }
+    ciclo.set(withRepeat(withTiming(1, { duration: CICLO_MS, easing: Easing.linear }), -1, false));
     return () => cancelAnimation(ciclo);
   }, [reducido]);
 

@@ -31,7 +31,7 @@ export function EncabezadoFase({ desde, hasta, foco, visto }: {
 
   useEffect(() => {
     if (reducido || !visto) return;
-    sello.value = withSpring(1, resortePlaca);
+    sello.set(withSpring(1, resortePlaca));
   }, [visto, reducido]);
 
   const etiqueta = useAnimatedStyle(() => ({

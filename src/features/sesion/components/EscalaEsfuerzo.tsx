@@ -57,13 +57,13 @@ function PlacaEsfuerzo({ opcion, elegida, retraso, animar, onPress }: {
   const llena = useSharedValue(elegida ? 1 : 0);
 
   useEffect(() => {
-    if (estatico) { crece.value = 1; return; }
-    crece.value = withDelay(retraso, withSpring(1, { ...resortePlaca, overshootClamping: true }));
+    if (estatico) { crece.set(1); return; }
+    crece.set(withDelay(retraso, withSpring(1, { ...resortePlaca, overshootClamping: true })));
     return () => cancelAnimation(crece);
   }, [estatico]);
 
   useEffect(() => {
-    llena.value = reducido ? (elegida ? 1 : 0) : withSpring(elegida ? 1 : 0, { ...resortePlaca, overshootClamping: true });
+    llena.set(reducido ? (elegida ? 1 : 0) : withSpring(elegida ? 1 : 0, { ...resortePlaca, overshootClamping: true }));
   }, [elegida, reducido]);
 
   const entrada = useAnimatedStyle(() => ({ transform: [{ scaleY: crece.value }] }), [tick]);

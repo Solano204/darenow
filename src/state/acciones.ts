@@ -17,8 +17,8 @@ export function useAcciones(
   estado: Estado,
   setEstado: Dispatch<SetStateAction<Estado>>,
   guardar: (e: Estado) => void,
-  pendiente: MutableRefObject<Estado | null>,
-  temporizador: MutableRefObject<ReturnType<typeof setTimeout> | null>,
+  pendienteRef: MutableRefObject<Estado | null>,
+  temporizadorRef: MutableRefObject<ReturnType<typeof setTimeout> | null>,
 ) {
   const guardarPerfil = useCallback((p: Partial<PerfilUsuario>) => {
     setEstado(prev => {
@@ -221,11 +221,11 @@ export function useAcciones(
   }, [guardar]);
 
   const reiniciar = useCallback(() => {
-    // Sin esto, una escritura diferida que ya estaba en el temporizador de
+    // Sin esto, una escritura diferida que ya estaba en el temporizadorRef de
     // 350ms (ver `guardar` arriba) se dispara DESPUES del borrado y
     // resucita el progreso viejo en AsyncStorage.
-    if (temporizador.current) { clearTimeout(temporizador.current); temporizador.current = null; }
-    pendiente.current = null;
+    if (temporizadorRef.current) { clearTimeout(temporizadorRef.current); temporizadorRef.current = null; }
+    pendienteRef.current = null;
     AsyncStorage.removeItem(CLAVE).catch(() => {});
     setEstado(ESTADO_INICIAL);
   }, []);

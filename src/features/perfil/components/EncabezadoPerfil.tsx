@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { paleta, familia, MARGEN_PANTALLA } from '@/ui/theme';
@@ -26,7 +26,7 @@ export function EncabezadoPerfil({ nombre, objetivoId, objetivo, programa, seman
   programa: Programa | undefined;
   semanaActual: number;
 }) {
-  const animar = useRef(!nombreAnimado).current;
+  const [animar] = useState(() => !nombreAnimado);
   useEffect(() => { nombreAnimado = true; }, []);
   const total = programa ? Math.max(1, programa.semanas) : 0;
   const actual = Math.min(Math.max(semanaActual, 1), Math.max(total, 1));

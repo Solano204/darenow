@@ -5,6 +5,7 @@ import { paleta, familia, easing } from '@/ui/theme';
 import type { Evidencia } from '@/data/catalog';
 import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
 import { useTick } from '@/ui/hooks/useTick';
+import { acumuladosPrevios } from '@/lib/acumulados';
 
 export const COLOR_VEREDICTO: Record<Evidencia, string> = {
   ok: paleta.placaVerde,
@@ -54,10 +55,10 @@ export function resumenDeConteos(c: Conteos): string {
  */
 export function MedidorEvidencia({ conteos, activo }: { conteos: Conteos; activo: boolean }) {
   const total = ORDEN_VEREDICTOS.reduce((n, v) => n + conteos[v], 0);
-  let acumulado = 0;
-  const segmentos = ORDEN_VEREDICTOS.filter(v => conteos[v] > 0).map(v => {
-    const inicio = (acumulado / total) * DURACION_TOTAL_MS;
-    acumulado += conteos[v];
+  const presentes = ORDEN_VEREDICTOS.filter(v => conteos[v] > 0);
+  const previos = acumuladosPrevios(presentes.map(v => conteos[v]));
+  const segmentos = presentes.map((v, i) => {
+    const inicio = (previos[i] / total) * DURACION_TOTAL_MS;
     return { v, n: conteos[v], inicio, duracion: (conteos[v] / total) * DURACION_TOTAL_MS };
   });
 
@@ -79,9 +80,9 @@ function Segmento({ g, activo }: { g: { v: Evidencia; n: number; inicio: number;
   const t = useSharedValue(reducido ? 1 : 0);
 
   useEffect(() => {
-    if (reducido) { t.value = 1; return; }
+    if (reducido) { t.set(1); return; }
     if (!activo) return;
-    t.value = withDelay(g.inicio, withTiming(1, { duration: g.duracion, easing: easing.salida }));
+    t.set(withDelay(g.inicio, withTiming(1, { duration: g.duracion, easing: easing.salida })));
     return () => cancelAnimation(t);
   }, [activo, reducido]);
 

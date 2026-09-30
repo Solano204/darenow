@@ -68,16 +68,16 @@ export function useAtmosferaFase({
   useEffect(() => {
     const cambio = visualPrevio.current !== visual;
     visualPrevio.current = visual;
-    idxFase.value = withTiming(ORDEN_FASE.indexOf(visual), { duration: reducido ? 150 : BARRIDO_SUBE_MS });
+    idxFase.set(withTiming(ORDEN_FASE.indexOf(visual), { duration: reducido ? 150 : BARRIDO_SUBE_MS }));
     if (!cambio) return;
     if (visual === 'trabajo') haptico.golpe();
     else if (visual === 'descanso') haptico.suave();
     else haptico.placa();
     if (reducido) return;
-    expande.value = 0;
-    desvanece.value = 0;
-    expande.value = withTiming(1, { duration: BARRIDO_SUBE_MS, easing: easing.salida });
-    desvanece.value = withDelay(BARRIDO_SUBE_MS, withTiming(1, { duration: BARRIDO_BAJA_MS }));
+    expande.set(0);
+    desvanece.set(0);
+    expande.set(withTiming(1, { duration: BARRIDO_SUBE_MS, easing: easing.salida }));
+    desvanece.set(withDelay(BARRIDO_SUBE_MS, withTiming(1, { duration: BARRIDO_BAJA_MS })));
   }, [visual, reducido]);
 
   /* --- Anillo: se vacia de forma continua a partir de `restanteS` --- */
@@ -86,19 +86,19 @@ export function useAtmosferaFase({
   useEffect(() => {
     const nueva = clavePrevia.current !== claveFase;
     clavePrevia.current = claveFase;
-    if (total == null || total <= 0 || !conTiempo) { progreso.value = 1; return; }
+    if (total == null || total <= 0 || !conTiempo) { progreso.set(1); return; }
     const ahora = Math.min(1, estado.restanteS / total);
     const siguiente = Math.max(0, (estado.restanteS - 1) / total);
     cancelAnimation(progreso);
-    if (!corriendo) { progreso.value = ahora; return; }
+    if (!corriendo) { progreso.set(ahora); return; }
     if (nueva && !reducido) {
-      progreso.value = withSequence(
+      progreso.set(withSequence(
         withTiming(ahora, { duration: 240 }),
         withTiming(siguiente, { duration: 760, easing: Easing.linear }),
-      );
+      ));
     } else {
-      progreso.value = ahora;
-      progreso.value = withTiming(siguiente, { duration: 1000, easing: Easing.linear });
+      progreso.set(ahora);
+      progreso.set(withTiming(siguiente, { duration: 1000, easing: Easing.linear }));
     }
   }, [estado.restanteS, total, corriendo, claveFase, conTiempo, reducido]);
 
@@ -107,18 +107,18 @@ export function useAtmosferaFase({
   useEffect(() => {
     if (reducido || !enDescanso) {
       cancelAnimation(respiro);
-      respiro.value = withTiming(0, { duration: 200 });
+      respiro.set(withTiming(0, { duration: 200 }));
       return;
     }
     if (!corriendo) { cancelAnimation(respiro); return; }
-    respiro.value = withRepeat(
+    respiro.set(withRepeat(
       withTiming(1, { duration: RESPIRO_MS, easing: Easing.linear }), -1, false,
-    );
+    ));
   }, [enDescanso, corriendo, reducido]);
 
   useEffect(() => {
     if (reducido || !enTrabajo || !corriendo) { cancelAnimation(latido); return; }
-    latido.value = withRepeat(withTiming(1, { duration: 1000, easing: Easing.inOut(Easing.sin) }), -1, true);
+    latido.set(withRepeat(withTiming(1, { duration: 1000, easing: Easing.inOut(Easing.sin) }), -1, true));
   }, [enTrabajo, corriendo, reducido]);
 
   /* --- Los ultimos 3 segundos: golpe y haptica Rigid --- */
@@ -133,7 +133,7 @@ export function useAtmosferaFase({
     ultimaCuenta.current = clave;
     haptico.sello();
     if (reducido) return;
-    golpe.value = withSequence(withTiming(GOLPE_ESCALA, { duration: 80 }), withSpring(1, resortePlaca));
+    golpe.set(withSequence(withTiming(GOLPE_ESCALA, { duration: 80 }), withSpring(1, resortePlaca)));
   }, [estado.restanteS, cuentaVisual, claveFase, reducido]);
 
   /* --- La mitad del trabajo: la marca del anillo destella, sin haptica --- */
@@ -144,7 +144,7 @@ export function useAtmosferaFase({
     if (!conMarca || reducido || total == null || estado.restanteS !== Math.floor(total / 2)) return;
     if (ultimaMitad.current === claveFase) return;
     ultimaMitad.current = claveFase;
-    destello.value = withSequence(withTiming(1, { duration: 100 }), withTiming(0, { duration: 300 }));
+    destello.set(withSequence(withTiming(1, { duration: 100 }), withTiming(0, { duration: 300 })));
   }, [estado.restanteS, conMarca, claveFase, reducido]);
 
   /* --- Un lector de pantalla oye la fase al cambiar y el tiempo cada 10 s, no cada segundo --- */

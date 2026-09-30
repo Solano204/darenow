@@ -5,6 +5,7 @@ import type { TipoTramo } from '@/features/rutinas/utils/estimarTramos';
 import { EncabezadoBloque } from '@/ui/components/EncabezadoBloque';
 import { FilaEjercicioRutina, type ItemVista } from './FilaEjercicioRutina';
 import { RielVertical, type SegmentoRiel } from '@/ui/components/RielVertical';
+import { acumuladosPrevios } from '@/lib/acumulados';
 
 /** Un bloque de la lista: su nombre en la vista, sus vueltas si las tiene y sus ejercicios en orden. */
 export interface BloqueVista {
@@ -29,10 +30,9 @@ export function RielBloques({ bloques, y, zonas, onAbrir }: {
   onAbrir: (id: string) => void;
 }) {
   const segmentos = useMemo<SegmentoRiel[]>(() => {
-    let acumulado = 0;
+    const primeras = acumuladosPrevios(bloques.map(b => b.items.length));
     return bloques.map((b, i) => {
-      const primera = acumulado;
-      acumulado += b.items.length;
+      const primera = primeras[i];
       return {
         clave: `${b.tipo}-${i}`,
         color: b.tipo === 'principal' || b.tipo === 'plano' ? paleta.placaAzul : paleta.magnesia3,

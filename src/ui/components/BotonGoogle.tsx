@@ -55,8 +55,8 @@ export function BotonGoogle({ texto, textoOcupado, ocupado, onPress, estilo }: {
 
   return (
     <Pressable
-      onPressIn={() => { if (ocupado) return; presion.value = withSpring(1, resorteTap); haptico.toque(); }}
-      onPressOut={() => { presion.value = withSpring(0, resorteTap); }}
+      onPressIn={() => { if (ocupado) return; presion.set(withSpring(1, resorteTap)); haptico.toque(); }}
+      onPressOut={() => { presion.set(withSpring(0, resorteTap)); }}
       onPress={ocupado ? undefined : onPress}
       accessibilityRole="button"
       accessibilityLabel={ocupado ? textoOcupado : texto}
@@ -86,10 +86,10 @@ function Puntos() {
 function Punto({ retraso }: { retraso: number }) {
   const t = useSharedValue(0);
   useEffect(() => {
-    t.value = withDelay(retraso, withRepeat(
+    t.set(withDelay(retraso, withRepeat(
       withSequence(withTiming(1, { duration: PULSO_MS }), withTiming(0, { duration: PULSO_MS })),
       -1,
-    ));
+    )));
     return () => cancelAnimation(t);
   }, []);
   const estilo = useAnimatedStyle(() => ({

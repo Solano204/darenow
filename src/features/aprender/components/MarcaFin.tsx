@@ -20,9 +20,9 @@ export function MarcaFin({ activo }: { activo: boolean }) {
   const t = useSharedValue(reducido ? 1 : 0);
 
   useEffect(() => {
-    if (reducido) { t.value = 1; return; }
-    if (!activo) { t.value = 0; return; }
-    t.value = withSpring(1, resortePlaca);
+    if (reducido) { t.set(1); return; }
+    if (!activo) { t.set(0); return; }
+    t.set(withSpring(1, resortePlaca));
     const golpe = setTimeout(haptico.toque, IMPACTO_MS);
     return () => { clearTimeout(golpe); cancelAnimation(t); };
   }, [reducido, activo]);

@@ -33,16 +33,16 @@ export function BotonDuplicar({ texto, onPress }: { texto: string; onPress: () =
 
   const alTocar = () => {
     if (!reducido) {
-      fantasma.value = 0;
-      fantasma.value = withTiming(1, { duration: FANTASMA_MS, easing: easing.salida });
+      fantasma.set(0);
+      fantasma.set(withTiming(1, { duration: FANTASMA_MS, easing: easing.salida }));
     }
     onPress();
   };
 
   return (
     <Pressable
-      onPressIn={() => { presion.value = withSpring(1, resorteTap); haptico.toque(); }}
-      onPressOut={() => { presion.value = withSpring(0, resorteTap); }}
+      onPressIn={() => { presion.set(withSpring(1, resorteTap)); haptico.toque(); }}
+      onPressOut={() => { presion.set(withSpring(0, resorteTap)); }}
       onPress={alTocar}
       accessibilityRole="button" accessibilityLabel={texto}
     >

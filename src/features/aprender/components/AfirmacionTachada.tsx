@@ -45,10 +45,10 @@ export function AfirmacionTachada({ texto, estilo, tachar, activo, animar = true
   const baja = useSharedValue(tachar && estatico ? 1 : 0);
 
   useEffect(() => {
-    if (!tachar) { baja.value = 0; return; }
-    if (estatico) { baja.value = 1; return; }
-    if (!activo || total === 0) { baja.value = 0; return; }
-    baja.value = withDelay(retraso + total * TACHON_LINEA_MS, withTiming(1, { duration: COLOR_MS }));
+    if (!tachar) { baja.set(0); return; }
+    if (estatico) { baja.set(1); return; }
+    if (!activo || total === 0) { baja.set(0); return; }
+    baja.set(withDelay(retraso + total * TACHON_LINEA_MS, withTiming(1, { duration: COLOR_MS })));
     return () => cancelAnimation(baja);
   }, [tachar, estatico, activo, total, retraso]);
 

@@ -82,14 +82,15 @@ function Cabeza({ item, indice, onCambiar }: { item: ItemSesion; indice: number;
   const entrar = (id: string, name: string) => {
     setVisto({ id, name });
     haptico.placa();
-    giro.value = -90;
-    giro.value = withTiming(0, { duration: MEDIO_GIRO_MS });
+    giro.set(-90);
+    giro.set(withTiming(0, { duration: MEDIO_GIRO_MS }));
   };
 
+  // Con movimiento reducido no hay giro: el ejercicio nuevo se muestra de una vez.
+  if (reducido && item.id !== visto.id) setVisto({ id: item.id, name: item.name });
   useEffect(() => {
-    if (item.id === visto.id) return;
-    if (reducido) { setVisto({ id: item.id, name: item.name }); return; }
-    giro.value = withTiming(90, { duration: MEDIO_GIRO_MS }, fin => { if (fin) runOnJS(entrar)(item.id, item.name); });
+    if (item.id === visto.id || reducido) return;
+    giro.set(withTiming(90, { duration: MEDIO_GIRO_MS }, fin => { if (fin) runOnJS(entrar)(item.id, item.name); }));
   }, [item.id]);
 
   const vuelta = useAnimatedStyle(() => ({

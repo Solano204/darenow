@@ -33,7 +33,7 @@ export function InterruptorDos({ opciones, etiquetas, indice, onCambio }: {
   const pos = useSharedValue<number>(indice);
 
   useEffect(() => {
-    pos.value = reducido ? indice : withSpring(indice, resortePlaca);
+    pos.set(reducido ? indice : withSpring(indice, resortePlaca));
   }, [indice, reducido]);
 
   const medir = (i: 0 | 1) => (e: LayoutChangeEvent) => {

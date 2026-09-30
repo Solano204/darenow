@@ -8,6 +8,7 @@ import { NotaEntrenador } from '@/ui/components/NotaEntrenador';
 import { PlacaMedalla } from '@/ui/components/PlacaMedalla';
 import { BarraCarga13 } from '@/ui/fx/BarraCarga13';
 import { Odometro } from '@/ui/fx/Odometro';
+import { acumuladosPrevios } from '@/lib/acumulados';
 
 const COLUMNAS = 5;
 const SEPARACION = 8;
@@ -40,7 +41,9 @@ export function VitrinaLogros({ logros, ganados, total, activo }: {
   const ancho = (width - 2 * MARGEN_PANTALLA - (COLUMNAS - 1) * SEPARACION) / COLUMNAS;
   const nGanados = ganados.size;
   const visiblesGanados = logros.filter(l => ganados.has(l.id)).length;
-  const [llena, setLlena] = useState(reducido ? nGanados : 0);
+  const [llenaAnimada, setLlena] = useState(0);
+  // Con movimiento reducido la barra ya esta llena; si no, se llena al terminar las medallas.
+  const llena = reducido ? nGanados : llenaAnimada;
 
   useEffect(() => {
     if (!activo || visiblesGanados === 0) return;
@@ -48,17 +51,17 @@ export function VitrinaLogros({ logros, ganados, total, activo }: {
   }, [activo]);
 
   useEffect(() => {
-    if (reducido) { setLlena(nGanados); return; }
-    if (!activo) return;
+    if (reducido || !activo) return;
     const id = setTimeout(() => setLlena(nGanados), visiblesGanados * ESCALONADO_MS + ESPERA_BARRA_MS);
     return () => clearTimeout(id);
   }, [activo, reducido, nGanados]);
 
-  let rango = 0;
+  // Orden de aparicion de cada ganada (las pendientes no esperan).
+  const rangoGanado = acumuladosPrevios(logros.map(l => (ganados.has(l.id) ? 1 : 0)));
   return (
     <View style={s.raiz}>
       <View style={s.rejilla}>
-        {logros.map(l => {
+        {logros.map((l, i) => {
           const ganado = ganados.has(l.id);
           const nombre = textoVisible(l.name);
           return (
@@ -67,7 +70,7 @@ export function VitrinaLogros({ logros, ganados, total, activo }: {
               accessibilityLabel={`${nombre}, ${ganado ? 'ganado' : 'pendiente'}`}
             >
               <View style={s.interior} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>
-                <PlacaMedalla icono={l.icono} activo={activo} retraso={ganado ? rango++ * ESCALONADO_MS : 0} pendiente={!ganado} />
+                <PlacaMedalla icono={l.icono} activo={activo} retraso={ganado ? rangoGanado[i] * ESCALONADO_MS : 0} pendiente={!ganado} />
                 <Text
                   style={[s.nombre, { color: ganado ? paleta.magnesia : paleta.magnesia3Texto }]}
                   numberOfLines={2} maxFontSizeMultiplier={1.3}

@@ -29,8 +29,8 @@ export function Esqueleto({ ancho, alto, radioEsquina = radio.foto, estilo }: {
 
   useEffect(() => {
     if (reducido || medida === 0) return;
-    t.value = 0;
-    t.value = withRepeat(withTiming(1, { duration: BARRIDO_MS, easing: easing.salida }), -1, false);
+    t.set(0);
+    t.set(withRepeat(withTiming(1, { duration: BARRIDO_MS, easing: easing.salida }), -1, false));
     return () => cancelAnimation(t);
   }, [reducido, medida]);
 

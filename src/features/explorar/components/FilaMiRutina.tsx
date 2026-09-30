@@ -53,12 +53,12 @@ export function FilaMiRutina({ r, destacar, onPress, onEditar }: {
 
   useEffect(() => {
     if (!destacar || reducido) return;
-    entrada.value = 0;
-    entrada.value = withDelay(ESPERA_ENTRADA_MS, withSpring(1, resortePlaca));
-    brillo.value = 0;
-    brillo.value = withDelay(ESPERA_ENTRADA_MS + 150, withSequence(
+    entrada.set(0);
+    entrada.set(withDelay(ESPERA_ENTRADA_MS, withSpring(1, resortePlaca)));
+    brillo.set(0);
+    brillo.set(withDelay(ESPERA_ENTRADA_MS + 150, withSequence(
       withTiming(1, { duration: BRILLO_SUBE_MS }), withTiming(0, { duration: BRILLO_BAJA_MS }),
-    ));
+    )));
     return () => { cancelAnimation(entrada); cancelAnimation(brillo); };
   }, [destacar, reducido]);
 
@@ -77,14 +77,14 @@ export function FilaMiRutina({ r, destacar, onPress, onEditar }: {
 
   const editar = () => {
     haptico.toque();
-    lapiz.value = withSequence(withSpring(GIRO_LAPIZ, resorteTap), withSpring(0, resorteTap));
+    lapiz.set(withSequence(withSpring(GIRO_LAPIZ, resorteTap), withSpring(0, resorteTap)));
     onEditar();
   };
 
   const etiqueta = `${r.nombre}, ${ejercicios} ${plural(ejercicios, 'ejercicio')}, ${minutos} minutos, rutina propia`;
 
-  const abrir = () => { presion.value = withSpring(1, resorteTap); haptico.toque(); };
-  const soltar = () => { presion.value = withSpring(0, resorteTap); };
+  const abrir = () => { presion.set(withSpring(1, resorteTap)); haptico.toque(); };
+  const soltar = () => { presion.set(withSpring(0, resorteTap)); };
 
   return (
     <Animated.View style={[s.caja, caja]}>

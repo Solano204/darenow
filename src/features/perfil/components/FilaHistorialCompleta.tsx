@@ -44,7 +44,7 @@ export function MesHistorial({ mes, y, indiceInicial, animar, onMedir, onEjercic
   const origen = useSharedValue(Number.POSITIVE_INFINITY);
   const mesArriba = useRef(0);
   const filasArriba = useRef(0);
-  const situar = () => { origen.value = mesArriba.current + filasArriba.current; };
+  const situar = () => { origen.set(mesArriba.current + filasArriba.current); };
 
   return (
     <View onLayout={e => { mesArriba.current = e.nativeEvent.layout.y; situar(); onMedir(e.nativeEvent.layout.y); }}>
@@ -90,7 +90,7 @@ function FilaSesion({ sesion, ultima, origen, y, indice, animar, onEjercicio }: 
   return (
     <View
       style={s.fila}
-      onLayout={e => { arriba.value = e.nativeEvent.layout.y; alto.value = e.nativeEvent.layout.height; }}
+      onLayout={e => { arriba.set(e.nativeEvent.layout.y); alto.set(e.nativeEvent.layout.height); }}
     >
       {!ultima && (
         <>

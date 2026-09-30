@@ -52,7 +52,7 @@ export default function DetalleMito({ route, navigation }: Props) {
   const reducido = useReducedMotion();
   const { height: ventana } = useWindowDimensions();
   const y = useSharedValue(0);
-  const onScroll = useAnimatedScrollHandler(e => { y.value = e.contentOffset.y; });
+  const onScroll = useAnimatedScrollHandler(e => { y.set(e.contentOffset.y); });
   const { alternarFavorito, esFavorito } = useEstado();
 
   const m = MITOS.find(x => x.id === (route.params as { id: string }).id);

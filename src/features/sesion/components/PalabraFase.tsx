@@ -18,8 +18,8 @@ export function PalabraFase({ texto, visual }: { texto: string; visual: FaseVisu
     if (previo.current === texto) return;
     previo.current = texto;
     if (reducido) return;
-    t.value = 0;
-    t.value = withSpring(1, resortePlaca);
+    t.set(0);
+    t.set(withSpring(1, resortePlaca));
   }, [texto, reducido]);
 
   const estilo = useAnimatedStyle(() => ({

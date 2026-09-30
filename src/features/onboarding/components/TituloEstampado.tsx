@@ -43,9 +43,9 @@ function Golpe({ texto, estilo, activo, estatico, espera }: {
   const t = useSharedValue(estatico ? 1 : 0);
 
   useEffect(() => {
-    if (estatico) { t.value = 1; return; }
-    if (!activo) { t.value = 0; return; }
-    t.value = withDelay(espera, withSpring(1, resortePlaca));
+    if (estatico) { t.set(1); return; }
+    if (!activo) { t.set(0); return; }
+    t.set(withDelay(espera, withSpring(1, resortePlaca)));
     const golpe = setTimeout(haptico.sello, espera + IMPACTO_MS);
     return () => { clearTimeout(golpe); cancelAnimation(t); };
   }, [estatico, activo]);

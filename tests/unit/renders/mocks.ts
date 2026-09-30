@@ -9,7 +9,12 @@ jest.mock('react-native-worklets', () => require('react-native-worklets/src/mock
 jest.mock('react-native-reanimated', () => {
   const m = require('react-native-reanimated/mock');
   // Lo que el mock de reanimated no trae y la app usa.
-  const extra = { useReducedMotion: () => false, ReduceMotion: { System: 'system', Always: 'always', Never: 'never' } };
+  const extra = {
+    useReducedMotion: () => false,
+    ReduceMotion: { System: 'system', Always: 'always', Never: 'never' },
+    // El makeMutable real trae get/set (compatibles con el React Compiler); el del mock no.
+    makeMutable: (v: unknown) => m.useSharedValue(v),
+  };
   return { ...m, ...extra, default: { ...m.default, ...extra }, __esModule: true };
 });
 

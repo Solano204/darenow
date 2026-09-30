@@ -37,9 +37,9 @@ export function BuscadorVivo({ valor, onCambio, foco, placeholder }: {
   const vacio = valor === '';
 
   const cambiarFoco = (v: boolean) => {
-    foco.value = reducido
+    foco.set(reducido
       ? withTiming(v ? 1 : 0, { duration: FUNDIDO_REDUCIDO_MS })
-      : withSpring(v ? 1 : 0, resorteMagnesia);
+      : withSpring(v ? 1 : 0, resorteMagnesia));
   };
 
   return (

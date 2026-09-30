@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Animated, {
   interpolateColor, LinearTransition, useAnimatedStyle, useSharedValue, withDelay, withSequence, withSpring,
@@ -104,16 +104,16 @@ export function BarraRutina({ ids, etiqueta, compacta, levantar = 0, silenciosa,
   const m = compacta ? COMPACTA : NORMAL;
   const reducido = useReducedMotion();
   const tick = useTick();
-  const montada = useRef(false);
+  // Las placas con las que se monta la barra no entran animadas; las que llegan despues si. Una
+  // placa nueva siempre llega con un `ids` nuevo, asi que basta comparar con el del montaje.
+  const [idsDelMontaje] = useState(ids);
   const previo = useRef(ids.length);
   const vibracion = useSharedValue(0);
   const alzada = useSharedValue(0);
   const visibles = ids.slice(0, MAX_PLACAS_POR_MANGA);
   const resto = ids.length - visibles.length;
-  const animar = montada.current;
+  const animar = ids !== idsDelMontaje;
   const carga = !!cargaInicial && !animar;
-
-  useEffect(() => { montada.current = true; }, []);
 
   useEffect(() => {
     if (!cargaInicial || silenciosa || ids.length === 0) return;
@@ -129,14 +129,14 @@ export function BarraRutina({ ids, etiqueta, compacta, levantar = 0, silenciosa,
     if (ids.length < antes) { haptico.toque(); return; }
     const id = setTimeout(haptico.placa, reducido ? 0 : ASENTAMIENTO_MS);
     if (!reducido) {
-      vibracion.value = withDelay(ASENTAMIENTO_MS, withSequence(withTiming(1, { duration: 50 }), withTiming(0, { duration: 110 })));
+      vibracion.set(withDelay(ASENTAMIENTO_MS, withSequence(withTiming(1, { duration: 50 }), withTiming(0, { duration: 110 }))));
     }
     return () => clearTimeout(id);
   }, [ids.length]);
 
   useEffect(() => {
     if (!levantar || reducido) return;
-    alzada.value = withSequence(withTiming(1, { duration: LEVANTE_SUBE_MS, easing: easing.salida }), withSpring(0, resortePlaca));
+    alzada.set(withSequence(withTiming(1, { duration: LEVANTE_SUBE_MS, easing: easing.salida }), withSpring(0, resortePlaca)));
   }, [levantar]);
 
   const cuerpo = useAnimatedStyle(() => ({
@@ -159,10 +159,11 @@ function Lado({ lado, ids, resto, m, animar, carga, reducido }: {
   lado: -1 | 1; ids: readonly string[]; resto: number; m: Medidas; animar: boolean; carga: boolean; reducido: boolean;
 }) {
   const ancho = MAX_PLACAS_POR_MANGA * (m.placa + m.sep) + m.collar + m.punta;
-  const entradas = useMemo(() => ids.map((_, i) => {
+  const n = ids.length;
+  const entradas = useMemo(() => Array.from({ length: n }, (_, i) => {
     if (carga) return entradaPlaca(lado, reducido, ESPERA_CARGA_MS + i * ESCALONADO_CARGA_MS);
     return animar ? entradaPlaca(lado, reducido) : undefined;
-  }), [animar, carga, lado, reducido, ids.length]);
+  }), [animar, carga, lado, reducido, n]);
   const salida = useMemo(() => salidaPlaca(lado, reducido), [lado, reducido]);
   const desplazar = reducido ? undefined : LinearTransition.duration(DESPLAZAMIENTO_MS);
   const radioExterno = m.manga / 2;
@@ -200,7 +201,7 @@ function Placa({ i, m, entrada, salida, desplazar }: {
   const { base, paso, min } = m;
 
   useEffect(() => {
-    t.value = reducido ? i : withTiming(i, { duration: DESPLAZAMIENTO_MS, easing: easing.salida });
+    t.set(reducido ? i : withTiming(i, { duration: DESPLAZAMIENTO_MS, easing: easing.salida }));
   }, [i, reducido]);
 
   const estilo = useAnimatedStyle(() => ({

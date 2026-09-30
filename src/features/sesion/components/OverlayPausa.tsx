@@ -29,7 +29,7 @@ export function OverlayPausa({ visible, hablando, onSeguir, onSalir }: {
   const t = useSharedValue(0);
 
   React.useEffect(() => {
-    t.value = withTiming(visible ? 1 : 0, { duration: reducido ? REDUCIDO_MS : ENTRADA_MS });
+    t.set(withTiming(visible ? 1 : 0, { duration: reducido ? REDUCIDO_MS : ENTRADA_MS }));
   }, [visible, reducido]);
 
   const estilo = useAnimatedStyle(() => ({ opacity: t.value }), [tick]);

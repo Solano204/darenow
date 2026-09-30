@@ -65,24 +65,24 @@ export default function Aprender({ navigation }: BottomTabScreenProps<ParamListB
 
   /** Una vista nueva empieza arriba: sin scroll y con la barra de pestanas en su sitio. */
   const reiniciarScroll = () => {
-    y.value = 0; previo.value = 0; bajando.value = 0;
-    barraBajada.value = withTiming(0, { duration: BAJADA_BARRA_MS });
+    y.set(0); previo.set(0); bajando.set(0);
+    barraBajada.set(withTiming(0, { duration: BAJADA_BARRA_MS }));
   };
 
   const irATab = (id: SegmentoAprender) => {
     if (id === tab) return;
     const indice = (s: SegmentoAprender) => SEGMENTOS.findIndex(x => x.id === s);
-    sentido.value = indice(id) > indice(tab) ? 1 : -1;
+    sentido.set(indice(id) > indice(tab) ? 1 : -1);
     reiniciarScroll();
     setTab(id);
   };
 
   const onScroll = useAnimatedScrollHandler(e => {
-    y.value = e.contentOffset.y;
+    y.set(e.contentOffset.y);
     seguirBarra(e.contentOffset.y, previo, bajando);
   });
 
-  const todos = useMemo(tipsCompletos, []);
+  const todos = useMemo(() => tipsCompletos(), []);
   const tips = useMemo(() => {
     const t = q.trim().toLowerCase();
     return todos.filter(x =>

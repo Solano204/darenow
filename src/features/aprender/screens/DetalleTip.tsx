@@ -46,7 +46,7 @@ export default function DetalleTip({ route, navigation }: Props) {
   const inicioCuerpo = useSharedValue(0);
   const altoCuerpo = useSharedValue(0);
   const contenido = useSharedValue(0);
-  const onScroll = useAnimatedScrollHandler(e => { y.value = e.contentOffset.y; });
+  const onScroll = useAnimatedScrollHandler(e => { y.set(e.contentOffset.y); });
   const { alternarFavorito, esFavorito, marcarTipLeido } = useEstado();
 
   const t = getTip((route.params as { id: string }).id);
@@ -64,7 +64,7 @@ export default function DetalleTip({ route, navigation }: Props) {
       <GomaTexture />
       <Animated.ScrollView
         onScroll={onScroll} scrollEventThrottle={16} showsVerticalScrollIndicator={false}
-        onContentSizeChange={(_, alto) => { contenido.value = alto; }}
+        onContentSizeChange={(_, alto) => { contenido.set(alto); }}
         contentContainerStyle={{ paddingBottom: inset.bottom + SEPARACION_SECCIONES }}
       >
         {foto !== null ? <HeroRutina fuente={foto} y={y} alto={alturaHero} /> : <View style={{ height: alturaHero }} />}
@@ -87,7 +87,7 @@ export default function DetalleTip({ route, navigation }: Props) {
 
         <View
           style={s.cuerpo}
-          onLayout={e => { inicioCuerpo.value = e.nativeEvent.layout.y; altoCuerpo.value = e.nativeEvent.layout.height; }}
+          onLayout={e => { inicioCuerpo.set(e.nativeEvent.layout.y); altoCuerpo.set(e.nativeEvent.layout.height); }}
         >
           <CuerpoLectura texto={textoDeLectura(t.cuerpo)} />
         </View>

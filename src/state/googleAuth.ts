@@ -53,6 +53,37 @@ export interface PerfilGoogle {
 
 export type ErrorGoogle = null | 'cancelado' | 'sin_token' | 'red' | 'perfil' | 'servicios';
 
+/**
+ * Un intento de inicio de sesion con Google. Fuera del hook: el React Compiler aun no admite
+ * condicionales dentro de un try/catch, y aqui atrapa todos sus errores y devuelve el resultado.
+ */
+async function intentarGoogle(g: GoogleModulo): Promise<{ perfil?: PerfilGoogle; error?: ErrorGoogle }> {
+  const { GoogleSignin, isErrorWithCode, isSuccessResponse, statusCodes } = g;
+  try {
+    await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
+    const response = await GoogleSignin.signIn();
+
+    if (!isSuccessResponse(response)) return { error: 'cancelado' };
+
+    const { user } = response.data;
+    const id = String(user.id || '').trim();
+    const nombre = String(user.givenName || user.name || '').trim();
+    // Sin id no hay cuenta: es el unico campo que Google garantiza
+    // estable. El nombre puede venir vacio y no pasa nada, se pide
+    // despues en el onboarding.
+    if (!id) return { error: 'perfil' };
+    // No se guarda la foto de Google: no se usa en ningun lado de la app.
+    return { perfil: { id, nombre, email: user.email } };
+  } catch (e) {
+    if (isErrorWithCode(e)) {
+      // ya hay un intento en curso: no es un error que haya que avisar
+      if (e.code === statusCodes.IN_PROGRESS) return {};
+      if (e.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) return { error: 'servicios' };
+    }
+    return { error: 'red' };
+  }
+}
+
 export function useGoogleSignIn() {
   const [cargando, setCargando] = useState(false);
   const [perfil, setPerfil] = useState<PerfilGoogle | null>(null);
@@ -60,42 +91,12 @@ export function useGoogleSignIn() {
 
   const iniciar = async () => {
     if (!google) { setError('servicios'); return; }
-    const { GoogleSignin, isErrorWithCode, isSuccessResponse, statusCodes } = google;
     setError(null);
     setCargando(true);
-    try {
-      await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
-      const response = await GoogleSignin.signIn();
-
-      if (!isSuccessResponse(response)) {
-        setError('cancelado');
-        return;
-      }
-
-      const { user } = response.data;
-      const id = String(user.id || '').trim();
-      const nombre = String(user.givenName || user.name || '').trim();
-      // Sin id no hay cuenta: es el unico campo que Google garantiza
-      // estable. El nombre puede venir vacio y no pasa nada, se pide
-      // despues en el onboarding.
-      if (!id) { setError('perfil'); return; }
-      // No se guarda la foto de Google: no se usa en ningun lado de la app.
-      setPerfil({ id, nombre, email: user.email });
-    } catch (e) {
-      if (isErrorWithCode(e)) {
-        if (e.code === statusCodes.IN_PROGRESS) {
-          // ya hay un intento en curso: no es un error que haya que avisar
-        } else if (e.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-          setError('servicios');
-        } else {
-          setError('red');
-        }
-      } else {
-        setError('red');
-      }
-    } finally {
-      setCargando(false);
-    }
+    const r = await intentarGoogle(google);
+    if (r.perfil) setPerfil(r.perfil);
+    if (r.error) setError(r.error);
+    setCargando(false);
   };
 
   const limpiar = () => { setPerfil(null); setError(null); };

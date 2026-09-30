@@ -5,7 +5,7 @@
  * label), y el resto lo envuelve.
  */
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View, Text, Pressable, StyleSheet, Animated, Easing,
   type ViewStyle, type AccessibilityRole, type AccessibilityState,
@@ -22,7 +22,7 @@ export function Toque({ children, onPress, estilo, escala = 0.97, etiqueta, rol 
   oscurecer?: number;
 }) {
   const reducido = useMovimientoReducido();
-  const v = useRef(new Animated.Value(1)).current;
+  const [v] = useState(() => new Animated.Value(1));
   const a = (to: number) => {
     if (reducido) { v.setValue(to); return; }
     Animated.spring(v, { toValue: to, useNativeDriver: true, speed: 40, bounciness: 4 }).start();
@@ -122,7 +122,7 @@ export function Boton({
  * contorno-ocupado real lo necesita mas elaborado.
  */
 function PuntoOcupado() {
-  const v = useRef(new Animated.Value(0)).current;
+  const [v] = useState(() => new Animated.Value(0));
   const [ancho, setAncho] = useState(0);
   useEffect(() => {
     if (ancho === 0) return;
@@ -152,7 +152,7 @@ export function Chip({ texto, activo, onPress, pequeno, oscuro }: {
   texto: string; activo?: boolean; onPress?: () => void; pequeno?: boolean; oscuro?: boolean;
 }) {
   const reducido = useMovimientoReducido();
-  const v = useRef(new Animated.Value(activo ? 1 : 0)).current;
+  const [v] = useState(() => new Animated.Value(activo ? 1 : 0));
   const fondoApagado = oscuro ? color.chipVidrioFondo : color.velo;
   const bordeApagado = oscuro ? color.chipVidrioBorde : color.borde;
   useEffect(() => {
@@ -198,7 +198,7 @@ export function Chip({ texto, activo, onPress, pequeno, oscuro }: {
 export function Favorito({ activo, onPress, tamano = 38, sobreFoto }: {
   activo: boolean; onPress: () => void; tamano?: number; sobreFoto?: boolean;
 }) {
-  const v = useRef(new Animated.Value(1)).current;
+  const [v] = useState(() => new Animated.Value(1));
   const pulsa = () => {
     Animated.sequence([
       Animated.timing(v, { toValue: 1.35, duration: 120, useNativeDriver: true }),

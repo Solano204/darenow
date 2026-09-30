@@ -145,10 +145,10 @@ function TextoError({ texto }: { texto: string }) {
   useEffect(() => {
     haptico.error();
     if (reducido) return;
-    x.value = withSequence(
+    x.set(withSequence(
       withTiming(AMPLITUD_SACUDIDA, { duration: 40 }), withTiming(-AMPLITUD_SACUDIDA, { duration: 80 }),
       withTiming(AMPLITUD_SACUDIDA, { duration: 80 }), withTiming(0, { duration: 40 }),
-    );
+    ));
   }, [texto]);
 
   const estilo = useAnimatedStyle(() => ({ transform: [{ translateX: x.value }] }));

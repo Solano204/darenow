@@ -22,10 +22,10 @@ export function ModeloEjercicio({ id, nombre, alto, activo }: { id: string; nomb
     previo.current = id;
     if (reducido) return;
     setSaliente(anterior);
-    entra.value = 0;
-    sale.value = 0;
-    entra.value = withTiming(1, { duration: 300, easing: easing.salida });
-    sale.value = withTiming(1, { duration: 300, easing: easing.salida }, fin => { if (fin) runOnJS(setSaliente)(null); });
+    entra.set(0);
+    sale.set(0);
+    entra.set(withTiming(1, { duration: 300, easing: easing.salida }));
+    sale.set(withTiming(1, { duration: 300, easing: easing.salida }, fin => { if (fin) runOnJS(setSaliente)(null); }));
   }, [id, reducido]);
 
   const entrante = useAnimatedStyle(() => ({

@@ -123,11 +123,11 @@ function IconoFila({ nombre, color, ocupado }: { nombre: IconoAjuste; color: str
   const opacidad = useSharedValue(1);
 
   useEffect(() => {
-    if (!ocupado) { cancelAnimation(opacidad); opacidad.value = 1; return; }
-    if (reducido) { opacidad.value = OPACIDAD_OCUPADA_REDUCIDO; return; }
-    opacidad.value = withRepeat(
+    if (!ocupado) { cancelAnimation(opacidad); opacidad.set(1); return; }
+    if (reducido) { opacidad.set(OPACIDAD_OCUPADA_REDUCIDO); return; }
+    opacidad.set(withRepeat(
       withSequence(withTiming(OPACIDAD_PULSO, { duration: PULSO_MS }), withTiming(1, { duration: PULSO_MS })), -1,
-    );
+    ));
     return () => cancelAnimation(opacidad);
   }, [ocupado, reducido]);
 
@@ -146,7 +146,7 @@ export function ChevronGiratorio({ abierto }: { abierto: boolean }) {
   const giro = useSharedValue(abierto ? 1 : 0);
 
   useEffect(() => {
-    giro.value = withTiming(abierto ? 1 : 0, { duration: reducido ? 0 : GIRO_CHEVRON_MS });
+    giro.set(withTiming(abierto ? 1 : 0, { duration: reducido ? 0 : GIRO_CHEVRON_MS }));
   }, [abierto, reducido]);
 
   const estilo = useAnimatedStyle(() => ({ transform: [{ rotate: `${90 * giro.value}deg` }] }), [tick]);

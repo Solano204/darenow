@@ -52,8 +52,8 @@ export default function Ajustes({ navigation }: NativeStackScreenProps<ParamList
     <>
       <PantallaColapsable
         titulo="Ajustes" onAtras={() => navigation.goBack()}
-        superposicion={({ y, scroll, altoBarra, relleno }) => (
-          <IndiceSecciones nombres={INDICE} arriba={arriba} y={y} scroll={scroll} altoBarra={altoBarra} relleno={relleno} />
+        superposicion={({ y, desplazarA, altoBarra, relleno }) => (
+          <IndiceSecciones nombres={INDICE} arriba={arriba} y={y} desplazarA={desplazarA} altoBarra={altoBarra} relleno={relleno} />
         )}
         contenido={({ y }) => (
           <>

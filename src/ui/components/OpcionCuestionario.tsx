@@ -31,16 +31,16 @@ export function OpcionCuestionario({ texto, detalle, icono, activa, multiple, on
 }) {
   const reducido = useReducedMotion();
   const tick = useTick();
-  const mini = useMiniMagnesia();
+  const { ref: miniRef, disparar: dispararMini } = useMiniMagnesia();
   const presion = useSharedValue(0);
   const seleccion = useSharedValue(activa ? 1 : 0);
   const relleno = useSharedValue(activa ? 1 : 0);
 
   useEffect(() => {
-    seleccion.value = withTiming(activa ? 1 : 0, { duration: reducido ? 150 : 200 });
-    relleno.value = reducido
+    seleccion.set(withTiming(activa ? 1 : 0, { duration: reducido ? 150 : 200 }));
+    relleno.set(reducido
       ? withTiming(activa ? 1 : 0, { duration: 150 })
-      : withSpring(activa ? 1 : 0, { ...resortePlaca, overshootClamping: true });
+      : withSpring(activa ? 1 : 0, { ...resortePlaca, overshootClamping: true }));
   }, [activa, reducido]);
 
   const fila = useAnimatedStyle(() => ({
@@ -58,10 +58,10 @@ export function OpcionCuestionario({ texto, detalle, icono, activa, multiple, on
 
   return (
     <Pressable
-      onPressIn={() => { presion.value = withSpring(1, resorteTap); }}
-      onPressOut={() => { presion.value = withSpring(0, resorteTap); }}
+      onPressIn={() => { presion.set(withSpring(1, resorteTap)); }}
+      onPressOut={() => { presion.set(withSpring(0, resorteTap)); }}
       onPress={() => {
-        if (!activa) { haptico.seleccion(); mini.disparar(); }
+        if (!activa) { haptico.seleccion(); dispararMini(); }
         onPress();
       }}
       accessibilityRole={multiple ? 'checkbox' : 'radio'}
@@ -76,7 +76,7 @@ export function OpcionCuestionario({ texto, detalle, icono, activa, multiple, on
           <Text style={s.titulo} maxFontSizeMultiplier={1.3}>{texto}</Text>
           {detalle && <Text style={s.detalle} maxFontSizeMultiplier={1.3}>{detalle}</Text>}
         </View>
-        <View ref={mini.ref} style={[s.indicador, forma]} collapsable={false}>
+        <View ref={miniRef} style={[s.indicador, forma]} collapsable={false}>
           <Animated.View style={[StyleSheet.absoluteFill, forma, s.relleno, lleno]} />
           <View style={s.palomita}><PalomitaTrazo visible={activa} tamano={LADO_INDICADOR} /></View>
         </View>

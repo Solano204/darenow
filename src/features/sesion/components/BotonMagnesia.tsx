@@ -9,8 +9,8 @@ export function BotonMagnesia({ texto, onPress, deshabilitado }: { texto: string
   const cuerpo = useAnimatedStyle(() => ({ transform: [{ scale: 1 - 0.03 * presion.value }] }));
   return (
     <Pressable
-      onPressIn={() => { if (deshabilitado) return; presion.value = withSpring(1, resorteTap); haptico.toque(); }}
-      onPressOut={() => { presion.value = withSpring(0, resorteTap); }}
+      onPressIn={() => { if (deshabilitado) return; presion.set(withSpring(1, resorteTap)); haptico.toque(); }}
+      onPressOut={() => { presion.set(withSpring(0, resorteTap)); }}
       onPress={deshabilitado ? undefined : onPress}
       accessibilityRole="button" accessibilityLabel={texto} accessibilityState={{ disabled: deshabilitado }}
     >

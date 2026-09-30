@@ -103,8 +103,8 @@ function BotonPaso({ lado, icono, etiqueta, apagado, onPress }: {
   const estilo = useAnimatedStyle(() => ({ transform: [{ scale: 1 - ESCALA_PRESIONADO * presion.value }] }));
   return (
     <Pressable
-      onPressIn={() => { presion.value = withSpring(1, resorteTap); }}
-      onPressOut={() => { presion.value = withSpring(0, resorteTap); }}
+      onPressIn={() => { presion.set(withSpring(1, resorteTap)); }}
+      onPressOut={() => { presion.set(withSpring(0, resorteTap)); }}
       onPress={onPress} hitSlop={lado < LADO_BOTON ? MARGEN_BOTON_COMPACTO : undefined}
       accessibilityRole="button" accessibilityLabel={etiqueta} accessibilityState={{ disabled: apagado }}
     >

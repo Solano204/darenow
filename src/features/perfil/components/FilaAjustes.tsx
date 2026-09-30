@@ -25,8 +25,8 @@ export function FilaAjustes({ onPress }: { onPress: () => void }) {
   return (
     <View>
       <Pressable
-        onPressIn={() => { if (!reducido) giro.value = withSpring(1, resortePlaca); }}
-        onPressOut={() => { giro.value = withSpring(0, resortePlaca); }}
+        onPressIn={() => { if (!reducido) giro.set(withSpring(1, resortePlaca)); }}
+        onPressOut={() => { giro.set(withSpring(0, resortePlaca)); }}
         onPress={() => { haptico.toque(); onPress(); }}
         accessibilityRole="button" accessibilityLabel="Ajustes" style={s.fila}
       >

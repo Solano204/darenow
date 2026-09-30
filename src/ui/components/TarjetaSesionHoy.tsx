@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Animated, {
   Extrapolation, interpolate, useAnimatedScrollHandler, useAnimatedStyle, useSharedValue, withSpring,
@@ -64,9 +64,9 @@ export interface TarjetaSesionHoyProps {
 export function TarjetaSesionHoy(p: TarjetaSesionHoyProps) {
   const reducido = useReducedMotion();
   const tick = useTick();
-  const animar = useRef(!barraCargadaEnEstaSesion).current;
+  const [animar] = useState(() => !barraCargadaEnEstaSesion);
   const scrollX = useSharedValue(0);
-  const onScroll = useAnimatedScrollHandler(e => { scrollX.value = e.contentOffset.x; });
+  const onScroll = useAnimatedScrollHandler(e => { scrollX.set(e.contentOffset.x); });
 
   const items = useMemo(() => p.sesion.items.slice(0, MAX_MINIATURAS), [p.sesion.items]);
   const { lado, letra } = useMemo(() => medidasMiniatura(items.map(i => nombreVisible(i.name))), [items]);
@@ -192,8 +192,8 @@ function SelloHuella({ clave }: { clave: number }) {
     previa.current = clave;
     haptico.placa();
     if (reducido) return;
-    t.value = 0;
-    t.value = withSpring(1, resortePlaca);
+    t.set(0);
+    t.set(withSpring(1, resortePlaca));
   }, [clave, reducido]);
 
   const estilo = useAnimatedStyle(() => ({

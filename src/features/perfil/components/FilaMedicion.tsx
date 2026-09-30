@@ -47,14 +47,14 @@ const TECLADO_SUPUESTO_PX = 300;
  * corre para mostrar el encabezado de la tarjeta. El campo de captura sale salvo en los protocolos que no piden un
  * valor. Con el teclado abierto, el campo se mantiene visible sobre el.
  */
-export function FilaMedicion({ p, abierta, onAlternar, y, altoBarra, scroll, valor, onValor, unidad, exito, error, onGuardar, previas }: {
+export function FilaMedicion({ p, abierta, onAlternar, y, altoBarra, desplazarA, valor, onValor, unidad, exito, error, onGuardar, previas }: {
   p: Protocolo;
   abierta: boolean;
   onAlternar: () => void;
   /** El scroll de la pantalla y su marco, para correr la lista al abrir y con el teclado. */
   y: SharedValue<number>;
   altoBarra: number;
-  scroll: React.RefObject<Animated.ScrollView | null>;
+  desplazarA: (y: number, animado: boolean) => void;
   valor: string;
   onValor: (texto: string) => void;
   unidad?: string;
@@ -79,7 +79,7 @@ export function FilaMedicion({ p, abierta, onAlternar, y, altoBarra, scroll, val
     : '';
 
   useEffect(() => {
-    giro.value = reducido ? (abierta ? 1 : 0) : withSpring(abierta ? 1 : 0, resortePlaca);
+    giro.set(reducido ? (abierta ? 1 : 0) : withSpring(abierta ? 1 : 0, resortePlaca));
   }, [abierta, reducido]);
 
   const chevron = useAnimatedStyle(() => ({ transform: [{ rotate: `${90 * giro.value}deg` }] }), [tick]);
@@ -91,7 +91,7 @@ export function FilaMedicion({ p, abierta, onAlternar, y, altoBarra, scroll, val
     if (!abre) return;
     setTimeout(() => {
       if (cardTop.value - y.value < ventana * FRACCION_PARA_CORRER) return;
-      scroll.current?.scrollTo({ y: Math.max(0, cardTop.value - altoBarra - AIRE_AL_MOSTRAR_PX), animated: !reducido });
+      desplazarA(Math.max(0, cardTop.value - altoBarra - AIRE_AL_MOSTRAR_PX), !reducido);
     }, reducido ? 0 : ESPERA_ASENTAR_MS);
   };
 
@@ -99,7 +99,7 @@ export function FilaMedicion({ p, abierta, onAlternar, y, altoBarra, scroll, val
   const mostrarCampo = () => {
     const medir = (teclado: number) => campoRef.current?.measureInWindow((_x, arriba, _ancho, alto) => {
       const exceso = arriba + alto - (ventana - teclado - AIRE_AL_MOSTRAR_PX);
-      if (exceso > 0) scroll.current?.scrollTo({ y: y.value + exceso, animated: !reducido });
+      if (exceso > 0) desplazarA(y.value + exceso, !reducido);
     });
     if (Keyboard.isVisible()) { medir(Keyboard.metrics()?.height ?? TECLADO_SUPUESTO_PX); return; }
     const suscripcion = Keyboard.addListener('keyboardDidShow', e => { suscripcion.remove(); medir(e.endCoordinates.height); });
@@ -115,7 +115,7 @@ export function FilaMedicion({ p, abierta, onAlternar, y, altoBarra, scroll, val
   return (
     <Animated.View
       layout={reducido ? undefined : LinearTransition.duration(EXPANDE_MS)} style={s.tarjeta}
-      onLayout={e => { cardTop.value = e.nativeEvent.layout.y; }}
+      onLayout={e => { cardTop.set(e.nativeEvent.layout.y); }}
     >
       <Pressable
         onPress={alternar} style={s.cabeza}
@@ -143,7 +143,7 @@ export function FilaMedicion({ p, abierta, onAlternar, y, altoBarra, scroll, val
       {abierta ? (
         <Animated.View
           entering={FadeIn.duration(reducido ? 150 : 220)} exiting={FadeOut.duration(120)} style={s.contenido}
-          onLayout={e => { contenidoTop.value = e.nativeEvent.layout.y; }}
+          onLayout={e => { contenidoTop.set(e.nativeEvent.layout.y); }}
         >
           <ProtocoloMedicion p={p} y={yFila} campo={campo} />
         </Animated.View>

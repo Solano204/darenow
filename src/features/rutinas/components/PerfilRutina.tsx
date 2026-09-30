@@ -116,17 +116,17 @@ export function PerfilRutina({ tramos, resumen, y, zonas, compacto, onTramo }: {
 
   useEffect(() => {
     if (estatico) {
-      fin.value = 1;
-      relleno.value = 1;
-      punto.value = compacto && conPunto ? 1 : 0;
+      fin.set(1);
+      relleno.set(1);
+      punto.set(compacto && conPunto ? 1 : 0);
       return;
     }
-    fin.value = 0;
-    relleno.value = 0;
-    punto.value = 0;
-    fin.value = withTiming(1, { duration: DIBUJA_MS, easing: easing.salida });
-    relleno.value = withDelay(RELLENO_RETRASO_MS, withTiming(1, { duration: DIBUJA_MS, easing: easing.salida }));
-    punto.value = withDelay(PUNTO_RETRASO_MS, withTiming(1, { duration: PUNTO_MS }));
+    fin.set(0);
+    relleno.set(0);
+    punto.set(0);
+    fin.set(withTiming(1, { duration: DIBUJA_MS, easing: easing.salida }));
+    relleno.set(withDelay(RELLENO_RETRASO_MS, withTiming(1, { duration: DIBUJA_MS, easing: easing.salida })));
+    punto.set(withDelay(PUNTO_RETRASO_MS, withTiming(1, { duration: PUNTO_MS })));
     return () => { cancelAnimation(fin); cancelAnimation(relleno); cancelAnimation(punto); };
   }, [estatico, compacto, conPunto]);
 

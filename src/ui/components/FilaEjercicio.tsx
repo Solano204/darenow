@@ -61,8 +61,8 @@ export const FilaEjercicio = React.memo(function FilaEjercicio({ e, favorito, on
     <View style={s.fila}>
       <Pressable
         style={s.cuerpo}
-        onPressIn={() => { presion.value = withSpring(1, resorteTap); }}
-        onPressOut={() => { presion.value = withSpring(0, resorteTap); }}
+        onPressIn={() => { presion.set(withSpring(1, resorteTap)); }}
+        onPressOut={() => { presion.set(withSpring(0, resorteTap)); }}
         onPress={() => onPress(e.id)}
         accessibilityRole="button" accessibilityLabel={etiqueta}
       >

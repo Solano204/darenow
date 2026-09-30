@@ -38,7 +38,7 @@ export function FotoParallax({ fotos, recortes, progreso, indice, ancho, alto, t
   useEffect(() => {
     if (!montado.current) { montado.current = true; return; }
     if (sinParallax) return;
-    flash.value = withSequence(withTiming(1, { duration: FLASH_SUBE_MS }), withTiming(0, { duration: FLASH_BAJA_MS }));
+    flash.set(withSequence(withTiming(1, { duration: FLASH_SUBE_MS }), withTiming(0, { duration: FLASH_BAJA_MS })));
   }, [indice]);
 
   const opacidadFlash = useDerivedValue(() => flash.value * OPACIDAD_FLASH);

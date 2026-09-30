@@ -40,9 +40,9 @@ export function VistaPreviaMeta({ vista, hechos, activo, sello }: {
   const previo = useRef(sello);
 
   useEffect(() => {
-    if (reducido) { tiempo.value = duracion; return; }
+    if (reducido) { tiempo.set(duracion); return; }
     if (!activo) return;
-    tiempo.value = withTiming(duracion, { duration: duracion, easing: Easing.linear });
+    tiempo.set(withTiming(duracion, { duration: duracion, easing: Easing.linear }));
     return () => cancelAnimation(tiempo);
   }, [activo, reducido, duracion]);
 
@@ -117,8 +117,8 @@ function HuellaPuesta({ estampar }: { estampar: boolean }) {
   const t = useSharedValue(estampar && !reducido ? 0 : 1);
   useEffect(() => {
     if (!estampar || reducido) return;
-    t.value = 0;
-    t.value = withSpring(1, resortePlaca);
+    t.set(0);
+    t.set(withSpring(1, resortePlaca));
   }, [estampar, reducido]);
   const estilo = useAnimatedStyle(() => ({ opacity: Math.min(1, t.value * 3), transform: [{ scale: ESCALA_SELLO - (ESCALA_SELLO - 1) * t.value }] }));
   return <Animated.View style={estilo}><Huella lado={12} opacidad={1} /></Animated.View>;

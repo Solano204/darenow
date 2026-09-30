@@ -55,9 +55,9 @@ export default function PlanListo({ perfil, avisos, onEmpezar, onCambiar }: Prop
 
   useEffect(() => {
     magnesia.destello();
-    if (reducido) { opacidad.value = withTiming(1, { duration: 150 }); return; }
-    escala.value = withDelay(T_FOTO, withTiming(1, { duration: 1000, easing: easing.salida }));
-    opacidad.value = withDelay(T_FOTO, withTiming(1, { duration: 400 }));
+    if (reducido) { opacidad.set(withTiming(1, { duration: 150 })); return; }
+    escala.set(withDelay(T_FOTO, withTiming(1, { duration: 1000, easing: easing.salida })));
+    opacidad.set(withDelay(T_FOTO, withTiming(1, { duration: 400 })));
   }, []);
 
   const estiloFoto = useAnimatedStyle(() => ({ opacity: opacidad.value }));

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import Animated, {
   cancelAnimation, useAnimatedStyle, useSharedValue, withDelay, withSpring, withTiming,
@@ -16,6 +16,7 @@ import { Huella } from '@/ui/fx/Huella';
 import { PlacaDato } from '@/ui/components/PlacaDato';
 import { MarcoHoy } from '@/ui/components/FilaSemana';
 import { transicionesDeSegmento } from '@/ui/components/listaBase';
+import { acumuladosPrevios } from '@/lib/acumulados';
 
 const ALTO_CELDA = 48;
 const ANCHO_CELDA = 44;
@@ -56,7 +57,7 @@ export function CalendarioHuellas({ entrenados, minutosPor, activo }: {
   const [ver, setVer] = useState({ a: ahora.getFullYear(), m: ahora.getMonth() });
   const [cambio, setCambio] = useState(false);
   const sentido = useSharedValue(1);
-  const primera = useRef(!huellasEstampadas).current;
+  const [primera] = useState(() => !huellasEstampadas);
   useEffect(() => { if (activo) huellasEstampadas = true; }, [activo]);
 
   const conjunto = useMemo(() => new Set(entrenados), [entrenados]);
@@ -75,13 +76,14 @@ export function CalendarioHuellas({ entrenados, minutosPor, activo }: {
   const mover = (n: number) => {
     if (n > 0 && enElMesDeHoy) return;
     haptico.seleccion();
-    sentido.value = n;
+    sentido.set(n);
     setCambio(true);
     const d = new Date(ver.a, ver.m + n, 1);
     setVer({ a: d.getFullYear(), m: d.getMonth() });
   };
 
-  let rango = 0;
+  // Orden de estampado de cada dia entrenado (los demas no esperan).
+  const rangos = acumuladosPrevios(dias.map(d => (d?.entreno ? 1 : 0)));
   return (
     <View style={s.raiz}>
       <View style={s.cabecera}>
@@ -106,7 +108,7 @@ export function CalendarioHuellas({ entrenados, minutosPor, activo }: {
             : (
               <DiaCelda
                 key={i} d={d} animar={animar} activo={activo}
-                retraso={d.entreno ? rango++ * ESCALONADO_HUELLA_MS : 0} retrasoAnillo={finHuellas + 100}
+                retraso={d.entreno ? rangos[i] * ESCALONADO_HUELLA_MS : 0} retrasoAnillo={finHuellas + 100}
               />
             )))}
         </Animated.View>
@@ -207,9 +209,9 @@ function HuellaDia({ largo, animar, activo, retraso }: { largo: boolean; animar:
   const t = useSharedValue(estatico ? 1 : 0);
 
   useEffect(() => {
-    if (estatico) { t.value = 1; return; }
+    if (estatico) { t.set(1); return; }
     if (!activo) return;
-    t.value = withDelay(retraso, withSpring(1, resortePlaca));
+    t.set(withDelay(retraso, withSpring(1, resortePlaca)));
     return () => cancelAnimation(t);
   }, [estatico, activo]);
 

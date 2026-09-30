@@ -65,7 +65,7 @@ export function PlantillaRutina({
   const y = useSharedValue(0);
   const zonas = useSharedValue<number[]>([]);
   const perfilFin = useSharedValue(1e6);
-  const onScroll = useAnimatedScrollHandler(e => { y.value = e.contentOffset.y; });
+  const onScroll = useAnimatedScrollHandler(e => { y.set(e.contentOffset.y); });
 
   const tramos = useMemo(() => estimarTramos(bloques.map(b => ({
     tipo: b.tipo, peso: b.min ?? 0, vueltas: b.vueltas, ejercicios: b.items.length,
@@ -125,7 +125,7 @@ export function PlantillaRutina({
 
         <View
           style={s.perfil}
-          onLayout={e => { perfilFin.value = e.nativeEvent.layout.y + e.nativeEvent.layout.height; }}
+          onLayout={e => { perfilFin.set(e.nativeEvent.layout.y + e.nativeEvent.layout.height); }}
         >
           <PerfilRutina tramos={tramos} resumen={resumen} y={y} zonas={zonas} onTramo={irABloque} />
         </View>

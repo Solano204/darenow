@@ -47,14 +47,14 @@ export function SegmentosIndicador<T extends string>({ segmentos, activo, onCamb
     const animar = colocado.current;
     colocado.current = true;
 
-    if (!animar) { ix.value = x; iw.value = ancho; }
+    if (!animar) { ix.set(x); iw.set(ancho); }
     else if (reducido) {
-      opacidad.value = 0;
-      ix.value = x; iw.value = ancho;
-      opacidad.value = withTiming(1, { duration: FUNDIDO_REDUCIDO_MS });
+      opacidad.set(0);
+      ix.set(x); iw.set(ancho);
+      opacidad.set(withTiming(1, { duration: FUNDIDO_REDUCIDO_MS }));
     } else {
-      ix.value = withSpring(x, resortePlaca);
-      iw.value = withSpring(ancho, resortePlaca);
+      ix.set(withSpring(x, resortePlaca));
+      iw.set(withSpring(ancho, resortePlaca));
     }
 
     const ultimo = segmentos[segmentos.length - 1].id;

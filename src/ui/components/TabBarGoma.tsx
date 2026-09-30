@@ -45,7 +45,7 @@ export function TabBarGoma({ state, descriptors, navigation }: BottomTabBarProps
 
   useEffect(() => {
     const destino = state.index * ancho;
-    x.value = reducido ? destino : withSpring(destino, { ...resortePlaca, overshootClamping: true });
+    x.set(reducido ? destino : withSpring(destino, { ...resortePlaca, overshootClamping: true }));
   }, [state.index, ancho, reducido]);
 
   const indicador = useAnimatedStyle(() => ({
@@ -107,9 +107,9 @@ function IconoPestana({ activa, lleno, contorno }: { activa: boolean; lleno: Ico
   const escala = useSharedValue(1);
 
   useEffect(() => {
-    if (!activa || reducido) { escala.value = 1; return; }
-    escala.value = ESCALA_ICONO_INICIAL;
-    escala.value = withSpring(1, resortePlaca);
+    if (!activa || reducido) { escala.set(1); return; }
+    escala.set(ESCALA_ICONO_INICIAL);
+    escala.set(withSpring(1, resortePlaca));
   }, [activa, reducido]);
 
   const estilo = useAnimatedStyle(() => ({ transform: [{ scale: escala.value }] }), [tick]);

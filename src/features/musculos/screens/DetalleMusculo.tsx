@@ -35,7 +35,7 @@ export default function DetalleMusculo({ route, navigation }: Props) {
   const inset = useSafeAreaInsets();
   const { height: ventana } = useWindowDimensions();
   const y = useSharedValue(0);
-  const onScroll = useAnimatedScrollHandler(e => { y.value = e.contentOffset.y; });
+  const onScroll = useAnimatedScrollHandler(e => { y.set(e.contentOffset.y); });
   const { alternarFavorito, esFavorito } = useEstado();
 
   const m = getMusculo((route.params as { id: string }).id);

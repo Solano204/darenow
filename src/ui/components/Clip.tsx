@@ -22,7 +22,7 @@
  * nada: si no hay clip, delega y ya.
  */
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, type ViewStyle } from 'react-native';
 import { Image } from 'expo-image';
 import { useVideoPlayer, VideoView } from 'expo-video';
@@ -62,9 +62,9 @@ export default function Clip({
   // antes): el video nuevo, sin fotograma decodificado, se ve encima del
   // poster durante ese instante y asoma el clip anterior. Resetear durante
   // el render mismo evita que ese frame llegue a pintarse.
-  const srcAnteriorRef = useRef(src);
-  if (srcAnteriorRef.current !== src) {
-    srcAnteriorRef.current = src;
+  const [srcAnterior, setSrcAnterior] = useState(src);
+  if (srcAnterior !== src) {
+    setSrcAnterior(src);
     if (listo) setListo(false);
   }
 

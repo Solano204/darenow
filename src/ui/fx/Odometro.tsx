@@ -69,17 +69,18 @@ export function Odometro({
   const ceros = ocultarCerosIzq ? fin.findIndex(d => d !== 0) : 0;
   const cerosIzq = ceros < 0 ? columnas - 1 : ceros;
   const estatico = reducido || !animar;
-  const previo = useRef(valor);
-  const sentido = valor >= previo.current ? 1 : -1;
-  useEffect(() => { previo.current = valor; });
+  // Hacia donde giran los digitos: el sentido del ultimo cambio de valor.
+  const [ultimo, setUltimo] = useState({ valor, sentido: 1 });
+  if (valor !== ultimo.valor) setUltimo({ valor, sentido: valor >= ultimo.valor ? 1 : -1 });
+  const sentido = valor !== ultimo.valor ? (valor >= ultimo.valor ? 1 : -1) : ultimo.sentido;
 
   const desplazamiento = useSharedValue(0);
   useEffect(() => {
     if (cerosIzq === 0) return;
     const meta = -(cerosIzq * celda) / 2;
-    if (estatico || !activo) { desplazamiento.value = estatico ? meta : 0; return; }
+    if (estatico || !activo) { desplazamiento.set(estatico ? meta : 0); return; }
     const total = retraso + (columnas - 1) * ESCALONADO + duracionColumna + ASENTAMIENTO_MS;
-    desplazamiento.value = withDelay(total, withTiming(meta, { duration: DESVANECER_MS, easing: easing.salida }));
+    desplazamiento.set(withDelay(total, withTiming(meta, { duration: DESVANECER_MS, easing: easing.salida })));
     return () => cancelAnimation(desplazamiento);
   }, [estatico, activo, celda, cerosIzq]);
 
@@ -144,16 +145,16 @@ function Columna({ inicio, fin, destino, oculta, activo, estatico, retraso, dura
 
   useEffect(() => {
     objetivo.current = estatico ? fin : destino;
-    if (estatico) { pos.value = fin; visible.value = oculta ? 0 : 1; return; }
-    pos.value = inicio;
-    visible.value = 1;
+    if (estatico) { pos.set(fin); visible.set(oculta ? 0 : 1); return; }
+    pos.set(inicio);
+    visible.set(1);
     if (!activo) return;
     const sentido = destino >= inicio ? 1 : -1;
-    pos.value = withDelay(retraso, withSequence(
+    pos.set(withDelay(retraso, withSequence(
       withTiming(destino + sentido * SOBREIMPULSO, { duration: duracion, easing: easing.salida }),
       withTiming(destino, { duration: ASENTAMIENTO_MS }),
-    ));
-    if (oculta) visible.value = withDelay(retraso + duracion + ASENTAMIENTO_MS, withTiming(0, { duration: DESVANECER_MS }));
+    )));
+    if (oculta) visible.set(withDelay(retraso + duracion + ASENTAMIENTO_MS, withTiming(0, { duration: DESVANECER_MS })));
     return () => { cancelAnimation(pos); cancelAnimation(visible); };
   }, continuo ? [estatico, activo] : [estatico, activo, destino, inicio, fin, oculta]);
 
@@ -164,7 +165,7 @@ function Columna({ inicio, fin, destino, oculta, activo, estatico, retraso, dura
     finPrevio.current = fin;
     if (delta === 0) return;
     objetivo.current += delta;
-    pos.value = animarCambios ? withSpring(objetivo.current, { ...resortePlaca, overshootClamping: true }) : objetivo.current;
+    pos.set(animarCambios ? withSpring(objetivo.current, { ...resortePlaca, overshootClamping: true }) : objetivo.current);
   }, [fin]);
 
   const columna = useAnimatedStyle(() => {

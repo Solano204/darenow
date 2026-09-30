@@ -6,6 +6,7 @@ import Animated, {
 import { paleta, tipo, familia } from '@/ui/theme';
 import { saludo } from '@/data/mensajes';
 import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
+import { acumuladosPrevios } from '@/lib/acumulados';
 
 const ENTRADA_LETRA_MS = 120;
 const PARPADEO_MS = 520;
@@ -20,7 +21,8 @@ const ESTILO_NOMBRE = { ...tipo.display, fontSize: 44, lineHeight: 46, color: pa
 export function SaludoPreview({ nombre }: { nombre: string }) {
   const base = useMemo(() => `${saludo()},`, []);
   const palabras = nombre.match(/\S+\s*/g) ?? [];
-  let indice = 0;
+  // Posicion de cada letra en todo el nombre (las palabras siguen contando).
+  const inicios = acumuladosPrevios(palabras.map(p => p.length));
 
   return (
     <View accessible accessibilityLabel={`Así te saludaremos: ${nombre.trim() === '' ? base : `${base} ${nombre.trim()}`}`}>
@@ -32,7 +34,7 @@ export function SaludoPreview({ nombre }: { nombre: string }) {
           <View style={s.nombre}>
             {palabras.map((palabra, w) => (
               <View key={w} style={s.palabra}>
-                {palabra.split('').map(c => <Letra key={indice} c={c} pos={indice++} />)}
+                {palabra.split('').map((c, k) => <Letra key={inicios[w] + k} c={c} pos={inicios[w] + k} />)}
               </View>
             ))}
           </View>
@@ -48,7 +50,7 @@ function Letra({ c }: { c: string; pos: number }) {
 
   useEffect(() => {
     if (reducido) return;
-    t.value = withTiming(1, { duration: ENTRADA_LETRA_MS });
+    t.set(withTiming(1, { duration: ENTRADA_LETRA_MS }));
   }, []);
 
   const estilo = useAnimatedStyle(() => ({
@@ -65,7 +67,7 @@ function Cursor() {
 
   useEffect(() => {
     if (reducido) return;
-    t.value = withRepeat(withSequence(withTiming(0, { duration: PARPADEO_MS }), withTiming(1, { duration: PARPADEO_MS })), -1);
+    t.set(withRepeat(withSequence(withTiming(0, { duration: PARPADEO_MS }), withTiming(1, { duration: PARPADEO_MS })), -1));
     return () => cancelAnimation(t);
   }, [reducido]);
 

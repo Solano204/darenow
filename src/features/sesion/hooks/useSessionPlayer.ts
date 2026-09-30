@@ -30,7 +30,7 @@
  * la sesion, no acciones del usuario.
  */
 
-import { useCallback, useEffect, useRef, useReducer } from 'react';
+import { useCallback, useEffect, useEffectEvent, useMemo, useRef, useReducer } from 'react';
 import { AppState } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import type { ItemSesion } from '@/lib/engine/session';
@@ -65,14 +65,10 @@ export async function borrarSesionGuardada(): Promise<void> {
 export function useSessionPlayer(
   items: ItemSesion[], sonido = true, restaurar?: SesionEnCurso | null,
 ) {
-  // `ctx` es el MISMO objeto durante toda la sesion (por eso el reducer,
-  // creado una vez, puede seguir usandolo), pero su campo `items` se
-  // actualiza en cada render: si la pantalla sustituye un ejercicio a
-  // mitad de sesion, el motor ve la lista nueva de inmediato en vez de
-  // quedarse con la que habia al montar.
-  const ctx = useRef({ items }).current;
-  ctx.items = items;
-  const reducer = useRef(crearReducer(ctx)).current;
+  // React aplica cada accion con el reducer del render que la procesa, asi que basta con
+  // rehacerlo cuando cambia `items`: si la pantalla sustituye un ejercicio a mitad de sesion,
+  // el motor ve la lista nueva de inmediato en vez de quedarse con la que habia al montar.
+  const reducer = useMemo(() => crearReducer({ items }), [items]);
   const [estado, enviar] = useReducer(reducer, items, its => {
     if (!restaurar) return estadoInicial(its);
     const segundos = Math.max(0, Math.round((Date.now() - restaurar.guardadoEn) / 1000));
@@ -90,35 +86,30 @@ export function useSessionPlayer(
   /* Sesion interrumpida: segundo plano o app cerrada                  */
   /* ---------------------------------------------------------------- */
 
-  // Refs, no estado: este efecto se registra una sola vez y siempre lee
-  // el valor mas fresco al disparar, sin tener que re-suscribirse cada
-  // segundo con cada tick.
-  const estadoRef = useRef(estado);
-  estadoRef.current = estado;
-  const itemsRef = useRef(items);
-  itemsRef.current = items;
+  // El listener se registra una sola vez y, con `useEffectEvent`, siempre lee el estado y los
+  // items mas frescos al disparar, sin re-suscribirse cada segundo con cada tick.
   const fondoDesde = useRef<number | null>(null);
-
+  const alCambiarApp = useEffectEvent((st: string) => {
+    if (st !== 'active') {
+      fondoDesde.current = Date.now();
+      if (estado.fase !== 'fin') {
+        AsyncStorage.setItem(CLAVE_GUARDADO, JSON.stringify({
+          items, estado, guardadoEn: Date.now(),
+        } as SesionEnCurso)).catch(() => {});
+      }
+      return;
+    }
+    // Vuelve al frente: el reloj no corrio solo, se ajusta de una vez
+    // con el tiempo real que paso en vez de dejar que la cuenta se
+    // quede atrasada.
+    if (fondoDesde.current != null) {
+      const segundos = Math.round((Date.now() - fondoDesde.current) / 1000);
+      fondoDesde.current = null;
+      if (segundos > 0) enviar({ t: 'avanzarReloj', segundos });
+    }
+  });
   useEffect(() => {
-    const sub = AppState.addEventListener('change', st => {
-      if (st !== 'active') {
-        fondoDesde.current = Date.now();
-        if (estadoRef.current.fase !== 'fin') {
-          AsyncStorage.setItem(CLAVE_GUARDADO, JSON.stringify({
-            items: itemsRef.current, estado: estadoRef.current, guardadoEn: Date.now(),
-          } as SesionEnCurso)).catch(() => {});
-        }
-        return;
-      }
-      // Vuelve al frente: el reloj no corrio solo, se ajusta de una vez
-      // con el tiempo real que paso en vez de dejar que la cuenta se
-      // quede atrasada.
-      if (fondoDesde.current != null) {
-        const segundos = Math.round((Date.now() - fondoDesde.current) / 1000);
-        fondoDesde.current = null;
-        if (segundos > 0) enviar({ t: 'avanzarReloj', segundos });
-      }
-    });
+    const sub = AppState.addEventListener('change', st => alCambiarApp(st));
     return () => sub.remove();
   }, []);
 

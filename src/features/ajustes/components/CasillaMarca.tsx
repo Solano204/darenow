@@ -18,9 +18,9 @@ export function useProgresoMarca(marcada: boolean): SharedValue<number> {
   const t = useSharedValue(marcada ? 1 : 0);
 
   useEffect(() => {
-    t.value = withTiming(marcada ? 1 : 0, {
+    t.set(withTiming(marcada ? 1 : 0, {
       duration: reducido ? CAMBIO_REDUCIDO_MS : marcada ? MARCAR_MS : DESMARCAR_MS, easing: easing.salida,
-    });
+    }));
   }, [marcada, reducido]);
 
   return t;

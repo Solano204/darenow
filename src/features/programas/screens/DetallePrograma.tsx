@@ -57,7 +57,7 @@ export default function DetallePrograma({ route, navigation }: Props) {
   const scroll = useRef<Animated.ScrollView>(null);
   const y = useSharedValue(0);
   const zonas = useSharedValue<number[]>([]);
-  const onScroll = useAnimatedScrollHandler(e => { y.value = e.contentOffset.y; });
+  const onScroll = useAnimatedScrollHandler(e => { y.set(e.contentOffset.y); });
   const { estado, guardarPerfil, alternarFavorito, esFavorito } = useEstado();
   const [hoja, setHoja] = useState(false);
   const [resaltar, setResaltar] = useState({ indice: -1, n: 0 });

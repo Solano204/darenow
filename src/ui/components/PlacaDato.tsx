@@ -48,10 +48,10 @@ export function PlacaDato({
   const golpe = useSharedValue(0);
 
   useEffect(() => {
-    if (estatico) { caida.value = 1; return; }
+    if (estatico) { caida.set(1); return; }
     if (!activo) return;
-    caida.value = withDelay(retraso, withSpring(1, resortePlaca));
-    golpe.value = withDelay(retraso + IMPACTO_MS, withSequence(withTiming(1, { duration: 40 }), withSpring(0, resorteTap)));
+    caida.set(withDelay(retraso, withSpring(1, resortePlaca)));
+    golpe.set(withDelay(retraso + IMPACTO_MS, withSequence(withTiming(1, { duration: 40 }), withSpring(0, resorteTap))));
     const impacto = haptica ? setTimeout(haptico.placa, retraso + IMPACTO_MS) : undefined;
     return () => { if (impacto) clearTimeout(impacto); cancelAnimation(caida); cancelAnimation(golpe); };
   }, [estatico, activo]);

@@ -34,7 +34,7 @@ export function CarruselProfundidad<T>({ data, keyExtractor, renderItem, ancho, 
   pie?: React.ReactElement | null;
 }) {
   const scrollX = useSharedValue(0);
-  const onScroll = useAnimatedScrollHandler(e => { scrollX.value = e.contentOffset.x; });
+  const onScroll = useAnimatedScrollHandler(e => { scrollX.set(e.contentOffset.x); });
   const paso = ancho + separacion;
 
   return (

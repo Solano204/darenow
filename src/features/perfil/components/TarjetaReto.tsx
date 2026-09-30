@@ -45,9 +45,9 @@ export function TarjetaReto({ reto, progreso, indice, activo, onPress }: {
   const objetivo = textoVisible(reto.objetivo);
 
   useEffect(() => {
-    if (reducido) { llenado.value = 1; return; }
+    if (reducido) { llenado.set(1); return; }
     if (!activo) return;
-    llenado.value = withDelay(indice * ESCALONADO_MS + ESPERA_LLENADO_MS, withTiming(1, { duration: LLENADO_MS, easing: easing.salida }));
+    llenado.set(withDelay(indice * ESCALONADO_MS + ESPERA_LLENADO_MS, withTiming(1, { duration: LLENADO_MS, easing: easing.salida })));
     return () => cancelAnimation(llenado);
   }, [activo, reducido]);
 

@@ -47,7 +47,7 @@ export default function DetalleEjercicio({ route, navigation }: Props) {
   const inset = useSafeAreaInsets();
   const { height: ventana } = useWindowDimensions();
   const y = useSharedValue(0);
-  const onScroll = useAnimatedScrollHandler(ev => { y.value = ev.contentOffset.y; });
+  const onScroll = useAnimatedScrollHandler(ev => { y.set(ev.contentOffset.y); });
   const { estado, alternarVeto, alternarFavorito, esFavorito } = useEstado();
 
   const e = getEjercicio((route.params as { id: string }).id);

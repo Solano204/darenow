@@ -33,9 +33,9 @@ export function IconoTrazo({ nombre, activo, animar = true, retraso = 0, tamano 
   const fin = useSharedValue(estatico ? 1 : 0);
 
   useEffect(() => {
-    if (estatico) { fin.value = 1; return; }
-    if (!activo) { fin.value = 0; return; }
-    fin.value = withDelay(retraso, withTiming(1, { duration: DURACION_MS, easing: easing.salida }));
+    if (estatico) { fin.set(1); return; }
+    if (!activo) { fin.set(0); return; }
+    fin.set(withDelay(retraso, withTiming(1, { duration: DURACION_MS, easing: easing.salida })));
     return () => cancelAnimation(fin);
   }, [estatico, activo]);
 

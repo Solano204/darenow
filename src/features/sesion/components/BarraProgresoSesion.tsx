@@ -46,10 +46,10 @@ function Placa({ estado, fraccion, color }: { estado: EstadoPlaca; fraccion: num
 
   useEffect(() => {
     const objetivo = estado === 'hecho' ? 1 : esActual ? fraccion : 0;
-    if (reducido) lleno.value = objetivo;
-    else lleno.value = esActual ? withTiming(objetivo, { duration: 1000, easing: Easing.linear }) : withTiming(objetivo, { duration: 220 });
+    if (reducido) lleno.set(objetivo);
+    else lleno.set(esActual ? withTiming(objetivo, { duration: 1000, easing: Easing.linear }) : withTiming(objetivo, { duration: 220 }));
     if (previo.current === 'actual' && estado === 'hecho' && !reducido) {
-      asiento.value = withSequence(withTiming(1, { duration: 60 }), withSpring(0, resortePlaca));
+      asiento.set(withSequence(withTiming(1, { duration: 60 }), withSpring(0, resortePlaca)));
     }
     previo.current = estado;
   }, [estado, fraccion, reducido]);

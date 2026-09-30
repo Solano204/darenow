@@ -30,10 +30,10 @@ export function IconoProhibido({ activo, retraso = 0, tamano = 18, color = palet
   const opacidadDiagonal = useDerivedValue(() => (diagonal.value > 0 ? 1 : 0));
 
   useEffect(() => {
-    if (reducido) { circulo.value = 1; diagonal.value = 1; return; }
-    if (!activo) { circulo.value = 0; diagonal.value = 0; return; }
-    circulo.value = withDelay(retraso, withTiming(1, { duration: TRAZO_MS, easing: easing.salida }));
-    diagonal.value = withDelay(retraso + TRAZO_MS, withTiming(1, { duration: TRAZO_MS, easing: easing.salida }));
+    if (reducido) { circulo.set(1); diagonal.set(1); return; }
+    if (!activo) { circulo.set(0); diagonal.set(0); return; }
+    circulo.set(withDelay(retraso, withTiming(1, { duration: TRAZO_MS, easing: easing.salida })));
+    diagonal.set(withDelay(retraso + TRAZO_MS, withTiming(1, { duration: TRAZO_MS, easing: easing.salida })));
     return () => { cancelAnimation(circulo); cancelAnimation(diagonal); };
   }, [activo, reducido, retraso]);
 

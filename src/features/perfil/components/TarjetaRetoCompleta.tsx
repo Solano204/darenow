@@ -41,7 +41,7 @@ export function TarjetaRetoCompleta({ reto, estadoReto, indice, activo, onEmpeza
   activo: boolean;
   onEmpezar: (id: string) => void;
 }) {
-  const magnesia = useMiniMagnesia();
+  const { ref: magnesiaRef, disparar: dispararMagnesia } = useMiniMagnesia();
   const [sello, setSello] = useState(0);
   const completado = !!estadoReto?.completado;
   const enCurso = estadoReto !== undefined && !completado;
@@ -51,7 +51,7 @@ export function TarjetaRetoCompleta({ reto, estadoReto, indice, activo, onEmpeza
   const etiquetas = [...(reto.duracion_dias ? [`${reto.duracion_dias} días`] : []), reto.tipo];
 
   const empezar = () => {
-    magnesia.disparar();
+    dispararMagnesia();
     onEmpezar(reto.id);
     setSello(n => n + 1);
     haptico.placa();
@@ -85,7 +85,7 @@ export function TarjetaRetoCompleta({ reto, estadoReto, indice, activo, onEmpeza
       <Text style={s.meta} maxFontSizeMultiplier={1.3}>{textoVisible(reto.objetivo)}</Text>
       <View style={s.etiquetas}><LineaDeEtiquetas etiquetas={etiquetas} /></View>
 
-      <View style={s.accion} ref={magnesia.ref} collapsable={false}>
+      <View style={s.accion} ref={magnesiaRef} collapsable={false}>
         {enCurso ? (
           <View style={s.enCurso} accessible accessibilityLabel="En curso">
             <Pulso tamano={7} tono={paleta.placaAzulTexto} />

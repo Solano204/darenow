@@ -16,7 +16,7 @@
  * de mostrar el intersticial cuando corresponde.
  */
 
-import React, { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react';
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { AppState } from 'react-native';
 import { Intersticial, ANUNCIOS_ACTIVOS } from './Anuncio';
 
@@ -34,7 +34,9 @@ export function ProveedorAnuncios({ children }: { children: React.ReactNode }) {
   const [visible, setVisible] = useState(false);
   const enRutina = useRef(false);
   const pendiente = useRef(false);
-  const proximo = useRef(Date.now() + GRACIA_INICIAL_MS);
+  const proximo = useRef(0);
+  // La gracia inicial cuenta desde que se monta la app (no se lee la hora durante el render).
+  useEffect(() => { proximo.current = Date.now() + GRACIA_INICIAL_MS; }, []);
 
   const entrenando = useCallback((activo: boolean) => {
     enRutina.current = activo;
@@ -66,13 +68,16 @@ export function ProveedorAnuncios({ children }: { children: React.ReactNode }) {
     return () => sub.remove();
   }, []);
 
+  // Valor estable: `entrenando` no cambia, asi que los consumidores no se re-renderizan con el proveedor.
+  const valor = useMemo(() => ({ entrenando }), [entrenando]);
+
   const cerrar = () => {
     setVisible(false);
     proximo.current = Date.now() + CADA_MS;
   };
 
   return (
-    <Contexto.Provider value={{ entrenando }}>
+    <Contexto.Provider value={valor}>
       {children}
       <Intersticial visible={visible} onCerrar={cerrar} />
     </Contexto.Provider>

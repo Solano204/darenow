@@ -35,10 +35,10 @@ export function BarraPlacas({ paso, total = PLACAS.length }: { paso: number; tot
     const avanzo = paso > previo.current;
     previo.current = paso;
     if (reducido || !avanzo) return;
-    temblor.value = withDelay(CLANK_MS, withSequence(
+    temblor.set(withDelay(CLANK_MS, withSequence(
       withTiming(1, { duration: 40 }, fin => { if (fin) runOnJS(clank)(); }),
       withSpring(0, resorteTap),
-    ));
+    )));
   }, [paso, reducido]);
 
   const temblorVarilla = useAnimatedStyle(() => ({ transform: [{ translateY: temblor.value * TEMBLOR_PX }] }));
@@ -75,9 +75,9 @@ function Placa({ lado, k, color, presente, reducido, temblor }: {
   const sentido = lado === 'izq' ? -1 : 1;
 
   useEffect(() => {
-    if (reducido) { t.value = presente ? 1 : 0; return; }
+    if (reducido) { t.set(presente ? 1 : 0); return; }
     const destino = presente ? 1 : 0;
-    t.value = withSpring(destino, { ...resortePlaca, overshootClamping: true });
+    t.set(withSpring(destino, { ...resortePlaca, overshootClamping: true }));
   }, [presente, reducido]);
 
   const estilo = useAnimatedStyle(() => ({

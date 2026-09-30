@@ -45,7 +45,7 @@ export default function Mediciones({ navigation }: NativeStackScreenProps<ParamL
   return (
     <PantallaColapsable
       titulo="Mediciones" onAtras={() => navigation.goBack()}
-      contenido={({ y, scroll, altoBarra }) => (
+      contenido={({ y, desplazarA, altoBarra }) => (
         <>
           <View style={s.nota}>
             <NotaEntrenador colorBarra={paleta.magnesia3} estilo={s.notaCaja}>
@@ -58,7 +58,7 @@ export default function Mediciones({ navigation }: NativeStackScreenProps<ParamL
             <FilaMedicion
               key={p.id} p={p} abierta={abierto === p.id}
               onAlternar={() => setAbierto(abierto === p.id ? null : p.id)}
-              y={y} altoBarra={altoBarra} scroll={scroll}
+              y={y} altoBarra={altoBarra} desplazarA={desplazarA}
               valor={valor} onValor={setValor} unidad={unidadDeMedicion(p.id)}
               exito={exitos[p.id] ?? 0} error={errores[p.id] ?? 0} onGuardar={guardar(p)}
               previas={estado.mediciones.filter(m => m.protocolo === p.id)}

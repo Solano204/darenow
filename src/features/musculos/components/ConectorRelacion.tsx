@@ -28,7 +28,7 @@ export function ConectorRelacion({ tipo, activo }: { tipo: 'sinergico' | 'antago
 
   useEffect(() => {
     if (reducido || !activo) return;
-    t.value = withDelay(tipo === 'antagonista' ? ESPERA_TOPE_MS : 0, withTiming(1, { duration: DIBUJA_MS, easing: easing.salida }));
+    t.set(withDelay(tipo === 'antagonista' ? ESPERA_TOPE_MS : 0, withTiming(1, { duration: DIBUJA_MS, easing: easing.salida })));
   }, [activo, reducido]);
 
   const dibuja = useAnimatedStyle(() => ({ transform: [{ scaleX: Math.max(0.001, t.value) }] }), [tick]);

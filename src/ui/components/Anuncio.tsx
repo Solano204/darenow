@@ -56,9 +56,11 @@ export function Intersticial({ visible, onCerrar, segundos = 5, motivo }: {
   visible: boolean; onCerrar: () => void; segundos?: number; motivo?: string;
 }) {
   const [quedan, setQuedan] = useState(segundos);
+  // Cerrado, la cuenta vuelve a empezar para la proxima vez.
+  if (!visible && quedan !== segundos) setQuedan(segundos);
 
   useEffect(() => {
-    if (!visible) { setQuedan(segundos); return; }
+    if (!visible) return;
     const id = setInterval(() => setQuedan(q => (q > 0 ? q - 1 : 0)), 1000);
     return () => clearInterval(id);
   }, [visible, segundos]);

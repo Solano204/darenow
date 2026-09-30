@@ -53,16 +53,16 @@ export function BotonPlaca({ texto, onPress, deshabilitado, ocupado, textoOcupad
     const habilitando = previoDeshabilitado.current && !deshabilitado;
     previoDeshabilitado.current = !!deshabilitado;
     if (habilitando) haptico.toque();
-    llenado.value = withTiming(deshabilitado ? 0 : 1, {
+    llenado.set(withTiming(deshabilitado ? 0 : 1, {
       duration: reducido ? 150 : LLENADO_MS,
       easing: deshabilitado ? easing.entrada : easing.salida,
-    });
+    }));
   }, [deshabilitado, reducido]);
 
   useEffect(() => {
     if (brillo === undefined || brilloHecho.current || ancho === 0 || reducido || deshabilitado) return;
     brilloHecho.current = true;
-    barrido.value = withDelay(brillo, withTiming(1, { duration: BRILLO_MS, easing: easing.salida }));
+    barrido.set(withDelay(brillo, withTiming(1, { duration: BRILLO_MS, easing: easing.salida })));
   }, [brillo, ancho, reducido, deshabilitado]);
 
   const cuerpo = useAnimatedStyle(() => ({
@@ -85,11 +85,11 @@ export function BotonPlaca({ texto, onPress, deshabilitado, ocupado, textoOcupad
       ref={ref}
       onPressIn={() => {
         if (inactivo) return;
-        presion.value = withSpring(1, resorteTap);
+        presion.set(withSpring(1, resorteTap));
         haptico.toque();
         if (aplauso) ref.current?.measureInWindow((x, y, w, h) => { centro.current = { x: x + w / 2, y: y + h / 2 }; });
       }}
-      onPressOut={() => { presion.value = withSpring(0, resorteTap); }}
+      onPressOut={() => { presion.set(withSpring(0, resorteTap)); }}
       onPress={inactivo ? undefined : e => {
         if (aplauso) {
           const c = centro.current ?? { x: e.nativeEvent.pageX, y: e.nativeEvent.pageY };
@@ -138,18 +138,18 @@ function TextoRueda({ texto, ocupado, reducido, llenado }: {
     setPrevio(anterior.current);
     setActual(texto);
     anterior.current = texto;
-    t.value = 0;
-    t.value = withTiming(1, { duration: reducido ? 150 : dur.medio, easing: easing.salida }, fin => {
+    t.set(0);
+    t.set(withTiming(1, { duration: reducido ? 150 : dur.medio, easing: easing.salida }, fin => {
       if (fin) runOnJS(setPrevio)(null);
-    });
+    }));
   }, [texto, reducido]);
 
   useEffect(() => {
-    if (!ocupado) { cancelAnimation(pulso); pulso.value = withTiming(1, { duration: dur.rapido }); return; }
-    pulso.value = withRepeat(
+    if (!ocupado) { cancelAnimation(pulso); pulso.set(withTiming(1, { duration: dur.rapido })); return; }
+    pulso.set(withRepeat(
       withSequence(withTiming(0.55, { duration: PULSO_OCUPADO_MS / 2 }), withTiming(1, { duration: PULSO_OCUPADO_MS / 2 })),
       -1,
-    );
+    ));
     return () => cancelAnimation(pulso);
   }, [ocupado]);
 

@@ -57,9 +57,9 @@ function MedallaPendiente({ icono, retraso, activo }: { icono: string; retraso: 
   const t = useSharedValue(reducido ? 1 : 0);
 
   useEffect(() => {
-    if (reducido) { t.value = 1; return; }
-    if (!activo) { t.value = 0; return; }
-    t.value = withDelay(retraso, withTiming(1, { duration: 300 }));
+    if (reducido) { t.set(1); return; }
+    if (!activo) { t.set(0); return; }
+    t.set(withDelay(retraso, withTiming(1, { duration: 300 })));
     return () => cancelAnimation(t);
   }, [reducido, activo, retraso]);
 
@@ -87,10 +87,10 @@ function MedallaGanada({ icono, retraso, alAsentar, activo }: {
   };
 
   useEffect(() => {
-    if (reducido) { t.value = 1; return; }
-    if (!activo) { t.value = 0; return; }
-    t.value = withDelay(retraso, withSpring(1, resortePlaca, fin => { if (fin) runOnJS(asentar)(); }));
-    brillo.value = withDelay(retraso + 350, withTiming(1, { duration: BRILLO_MS, easing: easing.salida }));
+    if (reducido) { t.set(1); return; }
+    if (!activo) { t.set(0); return; }
+    t.set(withDelay(retraso, withSpring(1, resortePlaca, fin => { if (fin) runOnJS(asentar)(); })));
+    brillo.set(withDelay(retraso + 350, withTiming(1, { duration: BRILLO_MS, easing: easing.salida })));
     return () => { cancelAnimation(t); cancelAnimation(brillo); };
   }, [reducido, retraso, activo]);
 

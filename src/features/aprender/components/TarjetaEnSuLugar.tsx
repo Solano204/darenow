@@ -34,9 +34,9 @@ export function TarjetaEnSuLugar({ texto, activo, animar = true, icono = 'palomi
   const crece = useSharedValue(estatico ? 1 : 0);
 
   useEffect(() => {
-    if (estatico) { crece.value = 1; return; }
-    if (!activo) { crece.value = 0; return; }
-    crece.value = withTiming(1, { duration: FILO_MS, easing: easing.salida });
+    if (estatico) { crece.set(1); return; }
+    if (!activo) { crece.set(0); return; }
+    crece.set(withTiming(1, { duration: FILO_MS, easing: easing.salida }));
     if (haptica) haptico.toque();
     return () => cancelAnimation(crece);
   }, [estatico, activo]);

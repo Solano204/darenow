@@ -27,15 +27,15 @@ export function useTransicionPaso() {
   const tick = useTick();
 
   const reponer = useCallback(() => {
-    t.value = 0;
+    t.set(0);
     ocupado.current = false;
-  }, []);
+  }, [t]);
 
   const ir = useCallback((dir: 1 | -1, despues: () => void) => {
     if (ocupado.current) return;
     ocupado.current = true;
     ultima.current = dir;
-    direccion.value = dir;
+    direccion.set(dir);
     epoca.current += 1;
     const miEpoca = epoca.current;
     const salir = () => {
@@ -43,10 +43,10 @@ export function useTransicionPaso() {
       // Respaldo por si el paso nuevo no llega a montarse; una transicion posterior lo anula.
       setTimeout(() => { if (epoca.current === miEpoca) reponer(); }, RESPALDO_MS);
     };
-    t.value = withTiming(1, { duration: reducido ? REDUCIDO_MS : SALIDA_MS, easing: easing.entrada }, terminado => {
+    t.set(withTiming(1, { duration: reducido ? REDUCIDO_MS : SALIDA_MS, easing: easing.entrada }, terminado => {
       if (terminado) runOnJS(salir)();
-    });
-  }, [reducido, reponer]);
+    }));
+  }, [reducido, reponer, t, direccion]);
 
   const estilo = useAnimatedStyle(() => ({
     opacity: 1 - t.value,

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Pressable, StyleSheet, Text, View, type LayoutChangeEvent } from 'react-native';
 import Animated, {
   LinearTransition, runOnJS, useAnimatedStyle, useSharedValue, withSequence, withSpring, withTiming,
@@ -93,17 +93,22 @@ export function TarjetaEjercicioRutina({
   const salida = useMemo(() => salidaTarjeta(reducido), [reducido]);
   const desplazar = reducido ? undefined : LinearTransition.duration(DESPLAZA_MS);
 
+  // Cada impulso nuevo eleva la tarjeta un momento (el efecto de abajo la baja).
+  const [impulsoVisto, setImpulsoVisto] = useState(0);
+  if (impulso !== impulsoVisto) {
+    setImpulsoVisto(impulso);
+    if (impulso && !reducido) setElevada(true);
+  }
   useEffect(() => {
     if (!impulso || reducido) return;
-    setElevada(true);
-    escala.value = withSequence(withTiming(ESCALA_MOVIDA, { duration: 120 }), withTiming(1, { duration: DESPLAZA_MS - 120 }));
+    escala.set(withSequence(withTiming(ESCALA_MOVIDA, { duration: 120 }), withTiming(1, { duration: DESPLAZA_MS - 120 })));
     const id = setTimeout(() => setElevada(false), ELEVADA_MS);
     return () => clearTimeout(id);
   }, [impulso]);
 
   useEffect(() => {
     if (!brillo) return;
-    resplandor.value = withSequence(withTiming(1, { duration: BRILLO_SUBE_MS }), withTiming(0, { duration: BRILLO_BAJA_MS }));
+    resplandor.set(withSequence(withTiming(1, { duration: BRILLO_SUBE_MS }), withTiming(0, { duration: BRILLO_BAJA_MS })));
   }, [brillo]);
 
   const cuerpo = useAnimatedStyle(() => ({ transform: [{ scale: escala.value }] }), [tick]);
@@ -169,7 +174,7 @@ function MarcaPlaca({ indice }: { indice: number }) {
   const t = useSharedValue(indice);
 
   useEffect(() => {
-    t.value = reducido ? indice : withTiming(indice, { duration: DESPLAZA_MS - 20, easing: easing.salida });
+    t.set(reducido ? indice : withTiming(indice, { duration: DESPLAZA_MS - 20, easing: easing.salida }));
   }, [indice, reducido]);
 
   const estilo = useAnimatedStyle(() => ({ backgroundColor: colorAnimadoDePlaca(t.value) }), [tick]);
@@ -198,15 +203,18 @@ function ColumnaMedida({ porTiempo, item, onCambio }: {
   const giro = useSharedValue(0);
   const [mostrada, setMostrada] = useState(porTiempo);
   const valorActual = porTiempo ? (item.seg ?? 30) : (item.reps ?? 10);
-  const congelado = useRef(valorActual);
+  // Con movimiento reducido no hay giro: se muestra de una vez lo que toca.
+  if (reducido && mostrada !== porTiempo) setMostrada(porTiempo);
   const cambiando = mostrada !== porTiempo;
-  if (!cambiando) congelado.current = valorActual;
+  // El valor que se ve mientras gira: el de antes del cambio.
+  const [congelado, setCongelado] = useState(valorActual);
+  if (!cambiando && congelado !== valorActual) setCongelado(valorActual);
 
   useEffect(() => {
     if (mostrada === porTiempo) return;
-    const entrar = () => { setMostrada(porTiempo); giro.value = -90; giro.value = withTiming(0, { duration: MEDIO_GIRO_MS }); };
-    if (reducido) { setMostrada(porTiempo); return; }
-    giro.value = withTiming(90, { duration: MEDIO_GIRO_MS }, fin => { if (fin) runOnJS(entrar)(); });
+    const entrar = () => { setMostrada(porTiempo); giro.set(-90); giro.set(withTiming(0, { duration: MEDIO_GIRO_MS })); };
+    if (reducido) return;
+    giro.set(withTiming(90, { duration: MEDIO_GIRO_MS }, fin => { if (fin) runOnJS(entrar)(); }));
   }, [porTiempo]);
 
   const vuelta = useAnimatedStyle(() => ({
@@ -214,7 +222,7 @@ function ColumnaMedida({ porTiempo, item, onCambio }: {
   }), [tick]);
 
   const tiempo = cambiando ? mostrada : porTiempo;
-  const valor = cambiando ? congelado.current : valorActual;
+  const valor = cambiando ? congelado : valorActual;
   return (
     <Animated.View style={[s.columna, vuelta]} pointerEvents={cambiando ? 'none' : 'auto'}>
       <Text style={s.etiqueta} numberOfLines={1} maxFontSizeMultiplier={1.2}>{tiempo ? 'Segundos' : 'Reps'}</Text>

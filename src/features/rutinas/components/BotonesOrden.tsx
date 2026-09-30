@@ -30,8 +30,8 @@ function Boton({ icono, etiqueta, onPress }: { icono: 'arrow-up' | 'arrow-down';
   const estilo = useAnimatedStyle(() => ({ transform: [{ scale: 1 - ESCALA_PRESIONADO * presion.value }] }));
   return (
     <Pressable
-      onPressIn={() => { presion.value = withSpring(1, resorteTap); }}
-      onPressOut={() => { presion.value = withSpring(0, resorteTap); }}
+      onPressIn={() => { presion.set(withSpring(1, resorteTap)); }}
+      onPressOut={() => { presion.set(withSpring(0, resorteTap)); }}
       onPress={onPress} hitSlop={MARGEN_TACTIL}
       accessibilityRole="button" accessibilityLabel={etiqueta}
     >

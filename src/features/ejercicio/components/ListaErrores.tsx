@@ -44,9 +44,9 @@ function Trazo({ grados, retraso, activo }: { grados: number; retraso: number; a
   const t = useSharedValue(reducido ? 1 : 0);
 
   useEffect(() => {
-    if (reducido) { t.value = 1; return; }
+    if (reducido) { t.set(1); return; }
     if (!activo) return;
-    t.value = withDelay(retraso, withTiming(1, { duration: TRAZO_MS, easing: easing.salida }));
+    t.set(withDelay(retraso, withTiming(1, { duration: TRAZO_MS, easing: easing.salida })));
     return () => cancelAnimation(t);
   }, [activo, reducido]);
 

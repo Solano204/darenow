@@ -20,8 +20,8 @@ export function AccionSeccion({ texto, onPress }: { texto: string; onPress: () =
 
   return (
     <Pressable
-      onPressIn={() => { presion.value = withSpring(1, resorteTap); }}
-      onPressOut={() => { presion.value = withSpring(0, resorteTap); }}
+      onPressIn={() => { presion.set(withSpring(1, resorteTap)); }}
+      onPressOut={() => { presion.set(withSpring(0, resorteTap)); }}
       onPress={() => { haptico.toque(); onPress(); }}
       accessibilityRole="button" accessibilityLabel={texto}
       style={s.boton}

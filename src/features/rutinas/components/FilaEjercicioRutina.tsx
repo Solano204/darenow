@@ -72,8 +72,8 @@ export const FilaEjercicioRutina = React.memo(function FilaEjercicioRutina({ ite
     >
       <Pressable
         style={s.cuerpo}
-        onPressIn={() => { presion.value = withSpring(1, resorteTap); haptico.toque(); }}
-        onPressOut={() => { presion.value = withSpring(0, resorteTap); }}
+        onPressIn={() => { presion.set(withSpring(1, resorteTap)); haptico.toque(); }}
+        onPressOut={() => { presion.set(withSpring(0, resorteTap)); }}
         onPress={() => onPress(item.id)}
         accessibilityRole="button" accessibilityLabel={`${nombre}, ${frasePrescripcion(item)}`}
       >

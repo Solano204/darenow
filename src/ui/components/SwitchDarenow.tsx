@@ -23,9 +23,9 @@ export function PistaSwitch({ activo }: { activo: boolean }) {
   const pos = useSharedValue(activo ? 1 : 0);
 
   useEffect(() => {
-    pos.value = reducido
+    pos.set(reducido
       ? withTiming(activo ? 1 : 0, { duration: CAMBIO_REDUCIDO_MS })
-      : withSpring(activo ? 1 : 0, resortePlaca);
+      : withSpring(activo ? 1 : 0, resortePlaca));
   }, [activo, reducido]);
 
   const pista = useAnimatedStyle(() => ({

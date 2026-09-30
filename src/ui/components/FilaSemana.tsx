@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Canvas, Path, Skia } from '@shopify/react-native-skia';
 import Animated, {
@@ -11,6 +11,7 @@ import { hoy } from '@/state/store';
 import { Huella } from '@/ui/fx/Huella';
 import { Entrada } from '@/ui/fx/Entrada';
 import { useMiniMagnesia } from '@/ui/fx/MiniMagnesia';
+import { acumuladosPrevios } from '@/lib/acumulados';
 
 const ANCHO_CELDA = 44;
 const ALTO_CELDA = 56;
@@ -37,15 +38,16 @@ let franjaAnimadaEnEstaSesion = false;
  */
 export function FilaSemana({ semana, sello }: { semana: { fecha: string; min: number }[]; sello: number }) {
   const hoyStr = hoy();
-  const animar = useRef(!franjaAnimadaEnEstaSesion).current;
+  const [animar] = useState(() => !franjaAnimadaEnEstaSesion);
   useEffect(() => { franjaAnimadaEnEstaSesion = true; }, []);
 
-  let rango = 0;
+  const rangos = acumuladosPrevios(semana.map(d => (d.min > 0 ? 1 : 0)));
   const dias = semana.map((d, i) => {
     const entreno = d.min > 0;
-    return { ...d, i, entreno, rango: entreno ? rango++ : -1, esHoy: d.fecha === hoyStr, futuro: d.fecha > hoyStr };
+    return { ...d, i, entreno, rango: entreno ? rangos[i] : -1, esHoy: d.fecha === hoyStr, futuro: d.fecha > hoyStr };
   });
-  const finHuellas = 7 * ESCALONADO_COLUMNA_MS + rango * ESCALONADO_HUELLA_MS;
+  const entrenados = dias.filter(d => d.entreno).length;
+  const finHuellas = 7 * ESCALONADO_COLUMNA_MS + entrenados * ESCALONADO_HUELLA_MS;
 
   return (
     <View style={s.fila}>
@@ -95,14 +97,14 @@ function Dia({ d, animar, sello, retrasoMarco }: { d: DatosDia; animar: boolean;
 function HuellaDia({ animar, retraso, sello }: { animar: boolean; retraso: number; sello: number }) {
   const reducido = useReducedMotion();
   const tick = useTick();
-  const magnesia = useMiniMagnesia();
+  const { ref: magnesiaRef, disparar: dispararMagnesia } = useMiniMagnesia();
   const estatico = reducido || !animar;
   const t = useSharedValue(estatico ? 1 : 0);
   const previo = useRef(sello);
 
   useEffect(() => {
-    if (estatico) { t.value = 1; return; }
-    t.value = withDelay(retraso, withSpring(1, resortePlaca));
+    if (estatico) { t.set(1); return; }
+    t.set(withDelay(retraso, withSpring(1, resortePlaca)));
     return () => cancelAnimation(t);
   }, [estatico]);
 
@@ -110,10 +112,10 @@ function HuellaDia({ animar, retraso, sello }: { animar: boolean; retraso: numbe
     if (sello === previo.current) return;
     previo.current = sello;
     haptico.placa();
-    magnesia.disparar();
+    dispararMagnesia();
     if (reducido) return;
-    t.value = 0;
-    t.value = withSpring(1, resortePlaca);
+    t.set(0);
+    t.set(withSpring(1, resortePlaca));
   }, [sello, reducido]);
 
   const estilo = useAnimatedStyle(() => ({
@@ -122,7 +124,7 @@ function HuellaDia({ animar, retraso, sello }: { animar: boolean; retraso: numbe
   }), [tick]);
 
   return (
-    <Animated.View ref={magnesia.ref as never} collapsable={false} style={estilo}>
+    <Animated.View ref={magnesiaRef as never} collapsable={false} style={estilo}>
       <Huella lado={14} opacidad={OPACIDAD_HUELLA} />
     </Animated.View>
   );
@@ -143,8 +145,8 @@ export function MarcoHoy({ animar, retraso, alto = ALTO_CELDA }: { animar: boole
   }, [alto]);
 
   useEffect(() => {
-    if (estatico) { fin.value = 1; return; }
-    fin.value = withDelay(retraso, withTiming(1, { duration: DIBUJO_MARCO_MS, easing: easing.salida }));
+    if (estatico) { fin.set(1); return; }
+    fin.set(withDelay(retraso, withTiming(1, { duration: DIBUJO_MARCO_MS, easing: easing.salida })));
     return () => cancelAnimation(fin);
   }, [estatico, retraso]);
 

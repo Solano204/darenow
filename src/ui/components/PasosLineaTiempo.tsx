@@ -51,16 +51,16 @@ export function PasosLineaTiempo({ titulo, pasos, y, pie, estilo, compacto }: {
   const columna = { top: centro, left: centro - GROSOR_LINEA / 2 };
 
   return (
-    <View style={estilo} onLayout={e => { raizY.value = e.nativeEvent.layout.y; }}>
+    <View style={estilo} onLayout={e => { raizY.set(e.nativeEvent.layout.y); }}>
       {titulo}
-      <View onLayout={e => { listaY.value = e.nativeEvent.layout.y; }} style={s.lista}>
+      <View onLayout={e => { listaY.set(e.nativeEvent.layout.y); }} style={s.lista}>
         <Animated.View style={[s.pista, columna, pista]} pointerEvents="none" />
         <Animated.View style={[s.relleno, columna, relleno]} pointerEvents="none" />
         {pasos.map((texto, i) => (
           <Paso
             key={i} n={i + 1} texto={texto} y={y} base={base} ventana={ventana} ultimo={i === pasos.length - 1} lado={lado}
             compacto={!!compacto}
-            alTop={top => { if (i === pasos.length - 1) ultimoTop.value = top; }}
+            alTop={top => { if (i === pasos.length - 1) ultimoTop.set(top); }}
           />
         ))}
       </View>
@@ -83,7 +83,7 @@ function Paso({ n, texto, y, base, ventana, ultimo, lado, compacto, alTop }: {
     () => y.value + ventana * LECTURA - base.value >= top.value + centro,
     (alcanzado, previo) => {
       if (reducido || alcanzado === previo) return;
-      lleno.value = withSpring(alcanzado ? 1 : 0, resortePlaca);
+      lleno.set(withSpring(alcanzado ? 1 : 0, resortePlaca));
     },
     [reducido, ventana, centro],
   );
@@ -96,7 +96,7 @@ function Paso({ n, texto, y, base, ventana, ultimo, lado, compacto, alTop }: {
   return (
     <View
       style={[s.paso, !ultimo && s.pasoConSeparacion, compacto && s.pasoCompacto]} accessible accessibilityLabel={`Paso ${n}. ${texto}`}
-      onLayout={e => { top.value = e.nativeEvent.layout.y; alTop(e.nativeEvent.layout.y); }}
+      onLayout={e => { top.set(e.nativeEvent.layout.y); alTop(e.nativeEvent.layout.y); }}
     >
       <View style={[s.circulo, { width: lado, height: lado, borderRadius: centro }]} importantForAccessibility="no-hide-descendants" accessibilityElementsHidden>
         <Animated.View style={[s.disco, { borderRadius: centro }, disco]} />

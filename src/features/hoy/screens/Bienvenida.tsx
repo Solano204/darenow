@@ -66,12 +66,12 @@ export default function Bienvenida({ navigation }: { navigation: { replace: (rut
 
   useEffect(() => {
     if (reducido) {
-      escala.value = 1;
-      opacidad.value = withTiming(1, { duration: FUNDIDO_REDUCIDO_MS });
+      escala.set(1);
+      opacidad.set(withTiming(1, { duration: FUNDIDO_REDUCIDO_MS }));
       return;
     }
-    escala.value = withTiming(1, { duration: FOTO_ESCALA_MS, easing: easing.salida });
-    opacidad.value = withTiming(1, { duration: FOTO_FUNDIDO_MS });
+    escala.set(withTiming(1, { duration: FOTO_ESCALA_MS, easing: easing.salida }));
+    opacidad.set(withTiming(1, { duration: FOTO_FUNDIDO_MS }));
   }, [reducido]);
 
   const estiloFoto = useAnimatedStyle(() => ({ opacity: opacidad.value }));

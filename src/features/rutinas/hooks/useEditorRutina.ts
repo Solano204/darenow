@@ -53,7 +53,7 @@ export function useEditorRutina(
   );
   // Foto fija del arranque (crear en blanco o editar lo cargado), para
   // saber si hubo cambios reales antes de dejar salir sin avisar.
-  const inicial = useRef(r).current;
+  const [inicial] = useState(() => r);
   const salidaLibre = useRef(false);
   const [selector, setSelector] = useState(false);
   const [accionPendiente, setAccionPendiente] = useState<NavigationAction | null>(null);
@@ -68,7 +68,7 @@ export function useEditorRutina(
   const espera = useRef<ReturnType<typeof setTimeout> | null>(null);
   const pendiente = useRef<string | null>(null);
   const medidas = useRef(new Map<string, { y: number; alto: number }>());
-  const posiciones = useRef({ lista: 0, ejercicios: 0, vista: 0 });
+  const posicionesRef = useRef({ lista: 0, ejercicios: 0, vista: 0 });
   const y = useSharedValue(0);
   const umbral = useSharedValue(1e6);
 
@@ -102,7 +102,7 @@ export function useEditorRutina(
     return unsubscribe;
   }, [navigation, hayCambios]);
 
-  const alDesplazar = useAnimatedScrollHandler(e => { y.value = e.contentOffset.y; });
+  const alDesplazar = useAnimatedScrollHandler(e => { y.set(e.contentOffset.y); });
 
   const pegajoso = useAnimatedStyle(() => {
     const p = interpolate(y.value, [umbral.value - APARICION_PEGAJOSO_PX, umbral.value], [0, 1], Extrapolation.CLAMP);
@@ -120,7 +120,7 @@ export function useEditorRutina(
   /** Si la tarjeta queda tapada por la cabecera pegajosa o por el borde de abajo, la lista se corre hasta ella. */
   const mostrar = (clave: string) => {
     const m = medidas.current.get(clave);
-    const p = posiciones.current;
+    const p = posicionesRef.current;
     if (!m || p.vista === 0) return;
     const arriba = m.y + p.lista;
     const abajo = arriba + m.alto;
@@ -185,7 +185,7 @@ export function useEditorRutina(
     }
     if (r.items.length === 0) {
       setErrores(x => ({ items: 'Falta contenido. Agrega al menos un ejercicio.', intento: x.intento + 1 }));
-      scroll.current?.scrollTo({ y: Math.max(0, posiciones.current.ejercicios - ALTO_PEGAJOSO), animated: !reducido });
+      scroll.current?.scrollTo({ y: Math.max(0, posicionesRef.current.ejercicios - ALTO_PEGAJOSO), animated: !reducido });
       return;
     }
     salidaLibre.current = true;
@@ -205,7 +205,7 @@ export function useEditorRutina(
 
   return {
     original, r, set, errores, setErrores, claves, frase, levantar, series, minutos, avisos, vacia,
-    posiciones, umbral, scroll, alDesplazar, pegajoso, montada, movida, recien, cambiarItem, mover, quitar, alMedir,
+    posicionesRef, umbral, scroll, alDesplazar, pegajoso, montada, movida, recien, cambiarItem, mover, quitar, alMedir,
     selector, setSelector, anadir, botonCrear, guardar, accionPendiente, setAccionPendiente, descartar,
   };
 }

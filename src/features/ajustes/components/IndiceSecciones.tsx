@@ -23,11 +23,11 @@ const ESPACIO_ENTRE_CHIPS = 8;
  * superior, se queda pegada bajo ella con su fondo y su borde. `arriba` es donde empieza cada seccion dentro del
  * scroll (infinito si aun no se mide).
  */
-export function IndiceSecciones({ nombres, arriba, y, scroll, altoBarra, relleno }: {
+export function IndiceSecciones({ nombres, arriba, y, desplazarA, altoBarra, relleno }: {
   nombres: readonly string[];
   arriba: readonly number[];
   y: SharedValue<number>;
-  scroll: React.RefObject<Animated.ScrollView | null>;
+  desplazarA: (y: number, animado: boolean) => void;
   /** Donde termina la barra superior ya colapsada: ahi se pega. */
   altoBarra: number;
   /** Donde empieza el contenido (bajo el titulo grande): de ahi parte y sube con el scroll. */
@@ -57,7 +57,7 @@ export function IndiceSecciones({ nombres, arriba, y, scroll, altoBarra, relleno
     tocado.current = true;
     setActivo(indice);
     const destino = arriba[indice];
-    if (Number.isFinite(destino)) scroll.current?.scrollTo({ y: Math.max(0, destino - linea), animated: !reducido });
+    if (Number.isFinite(destino)) desplazarA(Math.max(0, destino - linea), !reducido);
     setTimeout(() => { tocado.current = false; }, BLOQUEO_TRAS_TOQUE_MS);
   };
 

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useEffectEvent, useMemo, useRef, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { useAnimatedScrollHandler, useSharedValue, withTiming } from 'react-native-reanimated';
 import Ionicons from '@expo/vector-icons/Ionicons';
@@ -50,29 +50,33 @@ export function useExplorar({ navigation, route }: BottomTabScreenProps<ParamLis
 
   const esEjercicios = tab === 'ejercicios';
 
-  // La pestana ya montada ignoraba el parametro nuevo, asi que "Ver todas"
-  // desde programas siempre acababa en ejercicios. Ahora se escucha el
-  // cambio de parametros.
-  useEffect(() => {
-    if (parametro && parametro !== tab) irATab(parametro);
-  }, [parametro]);
-
   /** Una lista nueva empieza arriba: sin scroll y con la barra de pestanas en su sitio. */
   const reiniciarScroll = () => {
-    y.value = 0; previo.value = 0; bajando.value = 0;
-    barraBajada.value = withTiming(0, { duration: BAJADA_BARRA_MS });
+    y.set(0); previo.set(0); bajando.set(0);
+    barraBajada.set(withTiming(0, { duration: BAJADA_BARRA_MS }));
   };
 
   const irATab = (id: SegmentoExplorar) => {
     if (id === tab) return;
     const indice = (s: SegmentoExplorar) => SEGMENTOS.findIndex(x => x.id === s);
-    sentido.value = indice(id) > indice(tab) ? 1 : -1;
+    sentido.set(indice(id) > indice(tab) ? 1 : -1);
     reiniciarScroll();
     setTab(id);
   };
 
+  // La pestana ya montada ignoraba el parametro nuevo, asi que "Ver todas"
+  // desde programas siempre acababa en ejercicios. Ahora se escucha el
+  // cambio de parametros (solo el parametro: `irATab` lee la pestaña actual al correr).
+  const irAParametro = useEffectEvent((p: SegmentoExplorar) => { if (p !== tab) irATab(p); });
+  useEffect(() => {
+    // Excepcion documentada (R4): el cambio de pestaña llega de fuera (la navegacion) y mueve
+    // valores compartidos del scroll, que no se pueden tocar durante el render.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    if (parametro) irAParametro(parametro);
+  }, [parametro]);
+
   const onScroll = useAnimatedScrollHandler(e => {
-    y.value = e.contentOffset.y;
+    y.set(e.contentOffset.y);
     seguirBarra(e.contentOffset.y, previo, bajando);
   });
 

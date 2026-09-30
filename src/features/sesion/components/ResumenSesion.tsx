@@ -65,9 +65,9 @@ export function ResumenSesion(p: {
 
   useEffect(() => {
     if (reducido) return;
-    contraccion.value = withTiming(0, { duration: CONTRACCION_MS, easing: easing.salida }, fin => {
+    contraccion.set(withTiming(0, { duration: CONTRACCION_MS, easing: easing.salida }, fin => {
       if (fin) runOnJS(polvo)();
-    });
+    }));
   }, [reducido]);
 
   const circulo = useAnimatedStyle(() => ({

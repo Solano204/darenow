@@ -107,25 +107,25 @@ export function ProveedorMagnesia({ children }: { children: React.ReactNode }) {
   const paramsMini = useSharedValue<number[]>([]);
 
   const lanzar = useCallback((x: number, y: number, velo: boolean) => {
-    params.value = sortear(NUBE);
-    origen.value = { x, y };
-    soloVelo.value = velo || reducido ? 1 : 0;
+    params.set(sortear(NUBE));
+    origen.set({ x, y });
+    soloVelo.set(velo || reducido ? 1 : 0);
     cancelAnimation(t);
-    t.value = 0;
-    t.value = withTiming(1, { duration: velo || reducido ? REDUCIDO_MS : NUBE.duracionMs, easing: Easing.linear });
-  }, [reducido]);
+    t.set(0);
+    t.set(withTiming(1, { duration: velo || reducido ? REDUCIDO_MS : NUBE.duracionMs, easing: Easing.linear }));
+  }, [reducido, params, origen, soloVelo, t]);
 
   const aplaudir = useCallback((x: number, y: number) => lanzar(x, y, false), [lanzar]);
   const destello = useCallback(() => lanzar(0, 0, true), [lanzar]);
 
   const mini = useCallback((x: number, y: number, particulas?: number) => {
     if (reducido) return;
-    paramsMini.value = sortear(particulas === undefined ? MINI : { ...MINI, particulas });
-    origenMini.value = { x, y };
+    paramsMini.set(sortear(particulas === undefined ? MINI : { ...MINI, particulas }));
+    origenMini.set({ x, y });
     cancelAnimation(tMini);
-    tMini.value = 0;
-    tMini.value = withTiming(1, { duration: MINI.duracionMs, easing: Easing.linear });
-  }, [reducido]);
+    tMini.set(0);
+    tMini.set(withTiming(1, { duration: MINI.duracionMs, easing: Easing.linear }));
+  }, [reducido, paramsMini, origenMini, tMini]);
 
   const opacidadVelo = useDerivedValue(() => {
     if (soloVelo.value === 1) {

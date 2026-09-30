@@ -11,7 +11,8 @@ const AIRE_BAJO_TITULO = 16;
 /** Lo que la pantalla necesita saber de su marco para poner su contenido y lo que se pega a la cabecera. */
 export interface ContextoPantalla {
   y: SharedValue<number>;
-  scroll: React.RefObject<Animated.ScrollView | null>;
+  /** Lleva el scroll a `y` (para un indice de secciones). */
+  desplazarA: (y: number, animado: boolean) => void;
   /** Donde termina la cabecera desplegada (con el inset): ahi se pega un encabezado de grupo. */
   altoCabecera: number;
   /** El relleno con el que el contenido deja pasar la cabecera y un poco de aire. */
@@ -33,13 +34,19 @@ export function PantallaColapsable({ titulo, onAtras, contenido, superposicion }
   contenido: (c: ContextoPantalla) => React.ReactNode;
   superposicion?: (c: ContextoPantalla) => React.ReactNode;
 }) {
+  // Excluida del React Compiler (R4): `contenido` y `superposicion` son funciones que se llaman al
+  // dibujar y reciben `desplazarA`, que usa la ref del scroll. Solo la llaman manejadores (tocar un
+  // indice, abrir una fila), nunca el render, pero el compilador no puede saberlo. Es un marco sin
+  // estado propio: no memorizarlo no cuesta renders.
+  'use no memo';
   const inset = useSafeAreaInsets();
   const y = useSharedValue(0);
   const scroll = useRef<Animated.ScrollView>(null);
-  const onScroll = useAnimatedScrollHandler(e => { y.value = e.contentOffset.y; });
+  const onScroll = useAnimatedScrollHandler(e => { y.set(e.contentOffset.y); });
   const altoCabecera = inset.top + ALTO_HEADER;
+  const desplazarA = (destino: number, animado: boolean) => { scroll.current?.scrollTo({ y: destino, animated: animado }); };
   const contexto: ContextoPantalla = {
-    y, scroll, altoCabecera, relleno: altoCabecera + AIRE_BAJO_TITULO, altoBarra: altoCabecera - RECORRIDO_PX,
+    y, desplazarA, altoCabecera, relleno: altoCabecera + AIRE_BAJO_TITULO, altoBarra: altoCabecera - RECORRIDO_PX,
   };
 
   return (
@@ -50,8 +57,10 @@ export function PantallaColapsable({ titulo, onAtras, contenido, superposicion }
         keyboardShouldPersistTaps="handled"
         contentContainerStyle={{ paddingTop: contexto.relleno, paddingBottom: inset.bottom + 40 }}
       >
+        {/* eslint-disable-next-line react-hooks/refs -- ver 'use no memo' arriba */}
         {contenido(contexto)}
       </Animated.ScrollView>
+      {/* eslint-disable-next-line react-hooks/refs -- ver 'use no memo' arriba */}
       {superposicion?.(contexto)}
       <HeaderColapsable y={y} titulo={titulo} onAtras={onAtras} />
     </View>

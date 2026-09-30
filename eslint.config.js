@@ -10,13 +10,16 @@ const FEATURES = [
 ];
 
 /**
- * Reglas de hooks del React Compiler que trae eslint-plugin-react-hooks 7. Marcan patrones
- * que se revisan en R4 (renders y estado), asi que aqui solo avisan.
+ * Reglas del React Compiler que trae eslint-plugin-react-hooks 7 (el sucesor de
+ * eslint-plugin-react-compiler): mutar props o estado, leer refs en el render, efectos que solo
+ * copian estado, impurezas... Desde R4 son error: el compilador esta activo (app.json) y un
+ * componente que las rompe se queda sin compilar. Las excepciones van con `'use no memo'` o un
+ * eslint-disable de una linea con su motivo (docs/perf/R4_REPORTE.md).
  */
 const reglasCompilador = Object.fromEntries(
   Object.keys(pluginReactHooks.configs.recommended.rules)
     .filter(r => r !== 'react-hooks/rules-of-hooks' && r !== 'react-hooks/exhaustive-deps')
-    .map(r => [r, 'warn']),
+    .map(r => [r, 'error']),
 );
 
 module.exports = defineConfig([

@@ -47,8 +47,8 @@ export function Tocable({
 
   return (
     <Pressable
-      onPressIn={() => { presion.value = withSpring(1, resorteTap); if (haptica) haptico.toque(); }}
-      onPressOut={() => { presion.value = withSpring(0, resorteTap); }}
+      onPressIn={() => { presion.set(withSpring(1, resorteTap)); if (haptica) haptico.toque(); }}
+      onPressOut={() => { presion.set(withSpring(0, resorteTap)); }}
       onPress={onPress}
       onLongPress={onLongPress}
       disabled={deshabilitado}

@@ -82,12 +82,12 @@ export function MapaCarga({ fases, placas, faseActual, resumen, y, zonas, activo
   );
 
   useEffect(() => {
-    if (reducido) { tiempo.value = total; return; }
+    if (reducido) { tiempo.set(total); return; }
     if (!activo || empezado.current) return;
     empezado.current = true;
-    tiempo.value = withTiming(total, { duration: total, easing: Easing.linear }, terminado => {
+    tiempo.set(withTiming(total, { duration: total, easing: Easing.linear }, terminado => {
       if (terminado) runOnJS(haptico.placa)();
-    });
+    }));
   }, [activo, reducido, total]);
 
   const inicioDe = (i: number) => (fases[i].desde - 1) * geo.paso;

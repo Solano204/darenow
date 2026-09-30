@@ -70,9 +70,9 @@ export function RelacionMuscular({ tipo, titulo, actual, items, activo, onTodos,
 
   useEffect(() => {
     if (tipo !== 'antagonista' || reducido || !activo || items.length === 0) return;
-    inclinacion.value = withDelay(LLEGADA_MS, withSequence(
+    inclinacion.set(withDelay(LLEGADA_MS, withSequence(
       withTiming(INCLINACION_GRADOS, { duration: 80 }), withSpring(0, resorteTap),
-    ));
+    )));
   }, [activo, reducido]);
 
   const mini = useAnimatedStyle(() => ({ transform: [{ rotate: `${inclinacion.value}deg` }] }), [tick]);
@@ -122,12 +122,12 @@ function LlegaHaciaLaMini({ tipo, indice, activo, reducido, children }: {
   useEffect(() => {
     if (reducido || !activo) return;
     const espera = indice * ESCALONADO_MS;
-    p.value = tipo === 'sinergico'
+    p.set(tipo === 'sinergico'
       ? withDelay(espera, withSpring(1, resortePlaca))
       : withDelay(espera, withSequence(
         withTiming(1 + REBOTE_PX / DESDE_PX, { duration: LLEGADA_MS, easing: easing.salida }),
         withSpring(1, resortePlaca),
-      ));
+      )));
   }, [activo, reducido]);
 
   const estilo = useAnimatedStyle(() => ({

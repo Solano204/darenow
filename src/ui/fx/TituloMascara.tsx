@@ -3,6 +3,7 @@ import { PixelRatio, StyleSheet, Text, View, type StyleProp, type TextStyle } fr
 import Animated, { cancelAnimation, useAnimatedStyle, useSharedValue, withDelay, withSpring } from 'react-native-reanimated';
 import { resortePlaca } from '@/ui/theme';
 import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
+import { acumuladosPrevios } from '@/lib/acumulados';
 
 const ESCALONADO_LINEAS_MS = 90;
 const ESCALONADO_LETRAS_MS = 18;
@@ -56,16 +57,19 @@ export function TituloMascara({ texto, estilo, activo, animar = true, retraso = 
 /** Igual, pero letra por letra: cada caracter sube 100 % de su alto, escalonado 18 ms. */
 export function TituloLetras({ lineas, estilo, activo, animar = true, retraso = 0 }: Comun & { lineas: string[] }) {
   const alto = (StyleSheet.flatten(estilo)?.lineHeight ?? 0) * PixelRatio.getFontScale();
-  let indice = 0;
+  // Cada letra espera a las anteriores de todo el titulo (todas las lineas y palabras).
+  const palabrasPorLinea = lineas.map(linea => linea.match(/\S+\s*/g) ?? [linea]);
+  const inicios = acumuladosPrevios(palabrasPorLinea.flat().map(p => p.length));
+  const primeraPalabra = acumuladosPrevios(palabrasPorLinea.map(ps => ps.length));
 
   return (
     <View accessible accessibilityRole="header" accessibilityLabel={lineas.join(' ')}>
-      {lineas.map(linea => (
+      {lineas.map((linea, l) => (
         <View key={linea} style={s.fila}>
-          {(linea.match(/\S+\s*/g) ?? [linea]).map((palabra, w) => (
+          {palabrasPorLinea[l].map((palabra, w) => (
             <View key={w} style={s.palabra}>
               {palabra.split('').map((c, k) => (
-                <Mascara key={k} alto={alto} activo={activo} animar={animar} espera={retraso + indice++ * ESCALONADO_LETRAS_MS}>
+                <Mascara key={k} alto={alto} activo={activo} animar={animar} espera={retraso + (inicios[primeraPalabra[l] + w] + k) * ESCALONADO_LETRAS_MS}>
                   <Text style={estilo}>{c}</Text>
                 </Mascara>
               ))}
@@ -85,9 +89,9 @@ function Mascara({ alto, activo, animar, espera, children }: {
   const t = useSharedValue(estatico ? 1 : 0);
 
   useEffect(() => {
-    if (estatico) { t.value = 1; return; }
-    if (!activo) { t.value = 0; return; }
-    t.value = withDelay(espera, withSpring(1, RESORTE_MASCARA));
+    if (estatico) { t.set(1); return; }
+    if (!activo) { t.set(0); return; }
+    t.set(withDelay(espera, withSpring(1, RESORTE_MASCARA)));
     return () => cancelAnimation(t);
   }, [estatico, activo]);
 

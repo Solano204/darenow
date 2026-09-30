@@ -25,11 +25,11 @@ export function seguirBarra(actual: number, previo: SharedValue<number>, bajando
   'worklet';
   const delta = actual - previo.value;
   if (Math.abs(delta) < UMBRAL_DIRECCION) return;
-  previo.value = actual;
+  previo.set(actual);
   const objetivo = delta > 0 && actual > MIN_BAJADA ? 1 : 0;
   if (objetivo === bajando.value) return;
-  bajando.value = objetivo;
-  barraBajada.value = withTiming(objetivo, { duration: DUR_BARRA_MS });
+  bajando.set(objetivo);
+  barraBajada.set(withTiming(objetivo, { duration: DUR_BARRA_MS }));
 }
 
 export function useScrollCabecera() {
@@ -37,7 +37,7 @@ export function useScrollCabecera() {
   const previo = useSharedValue(0);
   const bajando = useSharedValue(0);
   const onScroll = useAnimatedScrollHandler(e => {
-    y.value = e.contentOffset.y;
+    y.set(e.contentOffset.y);
     seguirBarra(e.contentOffset.y, previo, bajando);
   });
   return { y, onScroll };

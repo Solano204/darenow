@@ -74,13 +74,13 @@ export function RielVertical({ segmentos, y, zonas, respiro = 20 }: {
       if (!m) return;
       limites.push(raiz.current + m.top, raiz.current + m.top + m.alto);
     }
-    zonas.value = limites;
+    zonas.set(limites);
   };
 
   return (
     <View
       style={s.raiz}
-      onLayout={e => { raiz.current = e.nativeEvent.layout.y; origen.value = e.nativeEvent.layout.y; publicar(); }}
+      onLayout={e => { raiz.current = e.nativeEvent.layout.y; origen.set(e.nativeEvent.layout.y); publicar(); }}
     >
       {segmentos.map((seg, i) => (
         <TramoConNodo
@@ -116,7 +116,7 @@ function TramoConNodo({ seg, esUltimo, respiro, y, origen, alMedir }: {
     () => y.value + ventana * LECTURA >= origen.value + top.value + CENTRO_NODO,
     (alcanzado, previo) => {
       if (reducido || seg.pasado || alcanzado === previo) return;
-      lleno.value = withSpring(alcanzado ? 1 : 0, resortePlaca);
+      lleno.set(withSpring(alcanzado ? 1 : 0, resortePlaca));
     },
     [reducido, ventana, seg.pasado],
   );
@@ -131,10 +131,10 @@ function TramoConNodo({ seg, esUltimo, respiro, y, origen, alMedir }: {
     () => repite && y.value + ventana * LECTURA >= origen.value + top.value + filasFin.value + ALTO_FLECHA / 2,
     (alcanzado, previo) => {
       if (reducido || alcanzado === previo) return;
-      llenoFlecha.value = withSpring(alcanzado ? 1 : 0, resortePlaca);
+      llenoFlecha.set(withSpring(alcanzado ? 1 : 0, resortePlaca));
       if (alcanzado) {
-        giro.value = 0;
-        giro.value = withTiming(1, { duration: GIRO_MS, easing: easing.salida });
+        giro.set(0);
+        giro.set(withTiming(1, { duration: GIRO_MS, easing: easing.salida }));
       }
     },
     [reducido, ventana, repite],
@@ -142,8 +142,8 @@ function TramoConNodo({ seg, esUltimo, respiro, y, origen, alMedir }: {
 
   useEffect(() => {
     if (!seg.resalta) return;
-    halo.value = 0;
-    halo.value = withSequence(withTiming(1, { duration: BRILLO_SUBE_MS }), withTiming(0, { duration: BRILLO_BAJA_MS }));
+    halo.set(0);
+    halo.set(withSequence(withTiming(1, { duration: BRILLO_SUBE_MS }), withTiming(0, { duration: BRILLO_BAJA_MS })));
   }, [seg.resalta]);
 
   const tick = useTick();
@@ -160,8 +160,8 @@ function TramoConNodo({ seg, esUltimo, respiro, y, origen, alMedir }: {
     <View
       style={{ paddingBottom: pie }}
       onLayout={e => {
-        top.value = e.nativeEvent.layout.y;
-        alto.value = e.nativeEvent.layout.height;
+        top.set(e.nativeEvent.layout.y);
+        alto.set(e.nativeEvent.layout.height);
         alMedir(e.nativeEvent.layout.y, e.nativeEvent.layout.height);
       }}
     >
@@ -177,7 +177,7 @@ function TramoConNodo({ seg, esUltimo, respiro, y, origen, alMedir }: {
       <View style={s.encabezado}>{seg.encabezado({ visto })}</View>
       <View
         style={seg.alBorde ? undefined : s.contenido}
-        onLayout={e => { filasFin.value = e.nativeEvent.layout.y + e.nativeEvent.layout.height; }}
+        onLayout={e => { filasFin.set(e.nativeEvent.layout.y + e.nativeEvent.layout.height); }}
       >
         {seg.contenido({ visto })}
       </View>
@@ -193,8 +193,8 @@ function Nodo({ color, lleno, pulsa }: { color: string; lleno: SharedValue<numbe
   const pulso = useSharedValue(0);
 
   useEffect(() => {
-    if (!pulsa) { cancelAnimation(pulso); pulso.value = 0; return; }
-    pulso.value = withRepeat(withTiming(1, { duration: PULSO_MS, easing: easing.salida }), -1, false);
+    if (!pulsa) { cancelAnimation(pulso); pulso.set(0); return; }
+    pulso.set(withRepeat(withTiming(1, { duration: PULSO_MS, easing: easing.salida }), -1, false));
     return () => cancelAnimation(pulso);
   }, [pulsa]);
 

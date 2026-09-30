@@ -42,11 +42,11 @@ export function FichaRender({ id, ancho, alto, radio = RADIO_FICHA, activo = tru
 
   useEffect(() => {
     if (!neutra || reducido || !activo) return;
-    t.value = withDelay(retraso, withTiming(1, { duration: CRUCE_MS, easing: easing.salida }));
+    t.set(withDelay(retraso, withTiming(1, { duration: CRUCE_MS, easing: easing.salida })));
     if (pulso) {
-      brillo.value = withDelay(retraso + CRUCE_MS, withSequence(
+      brillo.set(withDelay(retraso + CRUCE_MS, withSequence(
         withTiming(1, { duration: PULSO_SUBE_MS }), withTiming(0, { duration: PULSO_BAJA_MS }),
-      ));
+      )));
     }
   }, [activo, reducido, neutra]);
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Animated, { type SharedValue } from 'react-native-reanimated';
 import { paleta, familia } from '@/ui/theme';
@@ -53,7 +53,7 @@ export function VistaAlimentacion({ propsLista, scrollY }: { propsLista: PropsLi
 
 /** «Cómo funciona aquí»: etiqueta en tipo oracion y el texto principal (18/28) con un filo de 3 px a todo su alto. */
 function BloquePostura({ texto }: { texto: string }) {
-  const animar = useRef(!posturaVista).current;
+  const [animar] = useState(() => !posturaVista);
   useEffect(() => { posturaVista = true; }, []);
   return (
     <Entrada activo animar={animar} y={DESPLAZAMIENTO_POSTURA_PX} escala={1}>

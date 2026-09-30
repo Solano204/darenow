@@ -48,7 +48,7 @@ const ALTO_FILA_OBJETIVO = 36;
 export default function EditorRutina({ route, navigation }: PropsEditorRutina) {
   const {
     original, r, set, errores, setErrores, claves, frase, levantar, series, minutos, avisos, vacia,
-    posiciones, umbral, scroll, alDesplazar, pegajoso, montada, movida, recien, cambiarItem, mover, quitar, alMedir,
+    posicionesRef, umbral, scroll, alDesplazar, pegajoso, montada, movida, recien, cambiarItem, mover, quitar, alMedir,
     selector, setSelector, anadir, botonCrear, guardar, accionPendiente, setAccionPendiente, descartar,
   } = useEditorRutina(route, navigation);
   return (
@@ -58,7 +58,7 @@ export default function EditorRutina({ route, navigation }: PropsEditorRutina) {
         <KeyboardAvoidingView style={s.llena} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
           <Animated.ScrollView
             ref={scroll} onScroll={alDesplazar} scrollEventThrottle={16}
-            onLayout={(e: LayoutChangeEvent) => { posiciones.current.vista = e.nativeEvent.layout.height; }}
+            onLayout={(e: LayoutChangeEvent) => { posicionesRef.current.vista = e.nativeEvent.layout.height; }}
             contentContainerStyle={s.contenido} keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false}
           >
             <View style={s.margen}>
@@ -89,7 +89,7 @@ export default function EditorRutina({ route, navigation }: PropsEditorRutina) {
             <View
               style={[s.margen, s.bloqueBarra]}
               onLayout={(e: LayoutChangeEvent) => {
-                umbral.value = e.nativeEvent.layout.y + e.nativeEvent.layout.height - ALTO_PEGAJOSO;
+                umbral.set(e.nativeEvent.layout.y + e.nativeEvent.layout.height - ALTO_PEGAJOSO);
               }}
             >
               <BarraRutina ids={claves} etiqueta={`Rutina: ${frase}`} levantar={levantar} cargaInicial={!!route.params?.desdeCopia} />
@@ -108,7 +108,7 @@ export default function EditorRutina({ route, navigation }: PropsEditorRutina) {
 
             <View
               style={[s.margen, s.tituloEjercicios]}
-              onLayout={(e: LayoutChangeEvent) => { posiciones.current.ejercicios = e.nativeEvent.layout.y; }}
+              onLayout={(e: LayoutChangeEvent) => { posicionesRef.current.ejercicios = e.nativeEvent.layout.y; }}
             >
               <Text style={s.titulo} accessibilityRole="header">Ejercicios</Text>
               {vacia && (
@@ -119,7 +119,7 @@ export default function EditorRutina({ route, navigation }: PropsEditorRutina) {
 
             <View
               style={[s.margen, s.lista]}
-              onLayout={(e: LayoutChangeEvent) => { posiciones.current.lista = e.nativeEvent.layout.y; }}
+              onLayout={(e: LayoutChangeEvent) => { posicionesRef.current.lista = e.nativeEvent.layout.y; }}
             >
               {r.items.map((it, i) => {
                 const e = porId.get(it.ejercicioId);

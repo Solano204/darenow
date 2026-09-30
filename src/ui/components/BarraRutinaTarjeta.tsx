@@ -72,8 +72,8 @@ function Placa({ i, lado, animar, retraso }: { i: number; lado: -1 | 1; animar: 
 
   useEffect(() => {
     if (!animar || reducido) return;
-    t.value = 0;
-    t.value = withDelay(retraso + i * ESCALONADO_PLACA_MS, withSpring(1, resortePlaca));
+    t.set(0);
+    t.set(withDelay(retraso + i * ESCALONADO_PLACA_MS, withSpring(1, resortePlaca)));
     return () => cancelAnimation(t);
   }, [animar, reducido]);
 

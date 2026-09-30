@@ -125,9 +125,9 @@ export function ReproductorLayout(p: ReproductorLayoutProps) {
 
   const omitir = () => {
     if (!reducido) {
-      salidaOmitir.value = withSequence(
+      salidaOmitir.set(withSequence(
         withTiming(1, { duration: OMITIR_MS, easing: easing.salida }), withTiming(0, { duration: 1 }),
-      );
+      ));
     }
     p.onOmitir();
   };

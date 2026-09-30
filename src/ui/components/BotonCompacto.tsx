@@ -28,8 +28,8 @@ export function BotonCompacto({ texto, onPress, etiqueta, estilo, alto = ALTO }:
 
   return (
     <Pressable
-      onPressIn={() => { presion.value = withSpring(1, resorteTap); haptico.toque(); }}
-      onPressOut={() => { presion.value = withSpring(0, resorteTap); }}
+      onPressIn={() => { presion.set(withSpring(1, resorteTap)); haptico.toque(); }}
+      onPressOut={() => { presion.set(withSpring(0, resorteTap)); }}
       onPress={onPress}
       hitSlop={{ top: 4, bottom: 4, left: 4, right: 4 }}
       accessibilityRole="button"

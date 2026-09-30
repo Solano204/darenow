@@ -17,9 +17,9 @@ export function CitaLoQueSeDice({ texto, activo }: { texto: string; activo: bool
   const t = useSharedValue(reducido ? 1 : 0);
 
   useEffect(() => {
-    if (reducido) { t.value = 1; return; }
-    if (!activo) { t.value = 0; return; }
-    t.value = withSpring(1, resortePlaca);
+    if (reducido) { t.set(1); return; }
+    if (!activo) { t.set(0); return; }
+    t.set(withSpring(1, resortePlaca));
     return () => cancelAnimation(t);
   }, [reducido, activo]);
 

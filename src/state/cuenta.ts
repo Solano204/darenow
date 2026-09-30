@@ -97,9 +97,9 @@ export function ProveedorCuenta({ children }: { children: React.ReactNode }) {
         }
       } catch {
         // Storage corrupto: se arranca sin cuenta en vez de tronar.
-      } finally {
-        setCargando(false);
       }
+      // Sin `finally`: el React Compiler aun no lo admite y el catch de arriba ya atrapa todo.
+      setCargando(false);
     })();
   }, []);
 

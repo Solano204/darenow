@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { StyleSheet, Text, View, type ListRenderItemInfo, type ViewToken } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { paleta, familia, MARGEN_PANTALLA } from '@/ui/theme';
@@ -32,8 +32,8 @@ export function ListaMitos({ mitos, propsLista, onPress, onAbrirRelacionado }: {
 }) {
   const [activas, setActivas] = useState<Record<string, Activacion>>({});
   // Las que ya se animaron antes de montar esta lista; el resto se anima al entrar en pantalla.
-  const previas = useRef(new Set(ANIMADOS)).current;
-  const configuracion = useRef({ itemVisiblePercentThreshold: FRACCION_VISIBLE }).current;
+  const [previas] = useState(() => new Set(ANIMADOS));
+  const [configuracion] = useState(() => ({ itemVisiblePercentThreshold: FRACCION_VISIBLE }));
 
   // Estable a proposito: FlatList no admite cambiar `onViewableItemsChanged` en caliente.
   const alVer = useCallback(({ viewableItems }: { viewableItems: ViewToken<Mito>[] }) => {

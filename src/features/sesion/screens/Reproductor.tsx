@@ -78,8 +78,7 @@ export default function Reproductor({ route, navigation }: Props) {
   // entrenando, no hace falta el aviso. Al vencer, el aplauso de magnesia
   // cubre el paso a lo siguiente.
   useEffect(() => {
-    if (!listo) return;
-    if (restaurar) { setMostrarListo(false); return; }
+    if (!listo || restaurar) return;
     const id = setTimeout(() => {
       haptico.aplauso();
       magnesia.aplaudir(anchoVentana / 2, altoVentana * CENTRO_LISTO);
@@ -90,7 +89,8 @@ export default function Reproductor({ route, navigation }: Props) {
 
   if (!listo) return <View style={{ flex: 1, backgroundColor: paleta.goma }} />;
 
-  if (mostrarListo) return <PantallaListo duracionMs={DURACION_LISTO_MS} />;
+  // Al continuar una sesion interrumpida no hay pantalla «Listo»: ya se estaba entrenando.
+  if (mostrarListo && !restaurar) return <PantallaListo duracionMs={DURACION_LISTO_MS} />;
 
   // Revisar y ajustar series, repeticiones/tiempo y descanso de cada
   // ejercicio antes de arrancar. Solo en un arranque de verdad: al

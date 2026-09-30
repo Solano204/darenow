@@ -32,12 +32,12 @@ export function Entrada({ children, activo, animar = true, retraso = 0, x = 0, y
   const t = useSharedValue(estatico ? 1 : 0);
 
   useEffect(() => {
-    if (estatico) { t.value = 1; return; }
-    if (!activo) { t.value = 0; return; }
-    t.value = withDelay(
+    if (estatico) { t.set(1); return; }
+    if (!activo) { t.set(0); return; }
+    t.set(withDelay(
       reducido ? 0 : retraso,
       reducido ? withTiming(1, { duration: FUNDIDO_REDUCIDO_MS }) : withSpring(1, resorte),
-    );
+    ));
     return () => cancelAnimation(t);
   }, [estatico, activo, reducido]);
 

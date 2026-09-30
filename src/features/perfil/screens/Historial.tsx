@@ -19,6 +19,7 @@ import { EncabezadoMes } from '@/features/perfil/components/EncabezadoMes';
 import { MesHistorial } from '@/features/perfil/components/FilaHistorialCompleta';
 import type { ParamListBase } from '@react-navigation/native';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { acumuladosPrevios } from '@/lib/acumulados';
 
 /** Las primeras filas ya entraron escalonadas en esta sesion de la app: las siguientes veces aparecen puestas. */
 let historialAnimado = false;
@@ -27,7 +28,7 @@ export default function Historial({ navigation }: NativeStackScreenProps<ParamLi
   const { estado } = useEstado();
   const sesiones = useMemo(() => [...estado.sesiones].reverse(), [estado.sesiones]);
   const meses = useMemo(() => agruparPorMes(sesiones), [sesiones]);
-  const animar = useRef(!historialAnimado).current;
+  const [animar] = useState(() => !historialAnimado);
   useEffect(() => { historialAnimado = true; }, []);
 
   // Donde empieza cada mes en el contenido: se mide una vez pintado y se junta en una sola pasada.
@@ -44,16 +45,15 @@ export default function Historial({ navigation }: NativeStackScreenProps<ParamLi
     () => meses.map(m => posiciones[m.clave] ?? Number.POSITIVE_INFINITY), [meses, posiciones],
   );
 
-  let previas = 0;
+  const inicios = acumuladosPrevios(meses.map(mes => mes.items.length));
   return (
     <PantallaColapsable
       titulo="Historial" onAtras={() => navigation.goBack()}
       contenido={({ y, relleno }) => (
         <>
           {sesiones.length === 0 && <Text style={s.vacio}>Aún no hay sesiones registradas.</Text>}
-          {meses.map(mes => {
-            const indiceInicial = previas;
-            previas += mes.items.length;
+          {meses.map((mes, m) => {
+            const indiceInicial = inicios[m];
             return (
               <MesHistorial
                 key={mes.clave} mes={mes} y={y} indiceInicial={indiceInicial} animar={animar}

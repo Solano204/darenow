@@ -39,7 +39,7 @@ export function BloqueRevela({ y, estilo, sinMovimiento, fraccion, children }: {
     () => y.value + alturaVentana - (fraccion === undefined ? MARGEN_VISIBLE_PX : fraccion * altoBloque.value) > arriba.value,
     (dentro, previo) => {
       if (!dentro || previo) return;
-      if (!sinMovimiento) visto.value = withSpring(1, resorteMagnesia);
+      if (!sinMovimiento) visto.set(withSpring(1, resorteMagnesia));
       runOnJS(setActivo)(true);
     },
     [alturaVentana, fraccion],
@@ -51,7 +51,7 @@ export function BloqueRevela({ y, estilo, sinMovimiento, fraccion, children }: {
   }), [reducido, tick]);
 
   return (
-    <Animated.View style={[estilo, animado]} onLayout={e => { arriba.value = e.nativeEvent.layout.y; altoBloque.value = e.nativeEvent.layout.height; }}>
+    <Animated.View style={[estilo, animado]} onLayout={e => { arriba.set(e.nativeEvent.layout.y); altoBloque.set(e.nativeEvent.layout.height); }}>
       {children(activo)}
     </Animated.View>
   );

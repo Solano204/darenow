@@ -34,7 +34,7 @@ export function SegmentadoTres({ opciones, etiquetas, indice, onCambio }: {
   const pos = useSharedValue<number>(indice);
 
   useEffect(() => {
-    pos.value = reducido ? withTiming(indice, { duration: CAMBIO_REDUCIDO_MS }) : withSpring(indice, resortePlaca);
+    pos.set(reducido ? withTiming(indice, { duration: CAMBIO_REDUCIDO_MS }) : withSpring(indice, resortePlaca));
   }, [indice, reducido]);
 
   const celda = ancho > 0 ? (ancho - 2 * (INSET + BORDE)) / 3 : 0;

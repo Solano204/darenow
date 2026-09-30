@@ -80,7 +80,7 @@ function Placa({ estado, colorHecha }: { estado: Estado; colorHecha: string }) {
   const t = useSharedValue<number>(estado);
 
   useEffect(() => {
-    t.value = reducido ? withTiming(estado, { duration: 150 }) : withSpring(estado, { ...resortePlaca, overshootClamping: true });
+    t.set(reducido ? withTiming(estado, { duration: 150 }) : withSpring(estado, { ...resortePlaca, overshootClamping: true }));
   }, [estado, reducido]);
 
   const estilo = useAnimatedStyle(() => ({

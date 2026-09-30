@@ -17,8 +17,8 @@ export function BotonSecundario({ texto, onPress, deshabilitado, estilo }: {
 
   return (
     <Pressable
-      onPressIn={() => { if (deshabilitado) return; presion.value = withSpring(1, resorteTap); haptico.toque(); }}
-      onPressOut={() => { presion.value = withSpring(0, resorteTap); }}
+      onPressIn={() => { if (deshabilitado) return; presion.set(withSpring(1, resorteTap)); haptico.toque(); }}
+      onPressOut={() => { presion.set(withSpring(0, resorteTap)); }}
       onPress={deshabilitado ? undefined : onPress}
       accessibilityRole="button"
       accessibilityLabel={texto}

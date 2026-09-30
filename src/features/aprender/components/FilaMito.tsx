@@ -57,8 +57,8 @@ export const FilaMito = React.memo(function FilaMito({ mito, activacion, animar,
     <View style={s.fila}>
       <Pressable
         style={s.cuerpo}
-        onPressIn={() => { presion.value = withSpring(1, resorteTap); haptico.toque(); }}
-        onPressOut={() => { presion.value = withSpring(0, resorteTap); }}
+        onPressIn={() => { presion.set(withSpring(1, resorteTap)); haptico.toque(); }}
+        onPressOut={() => { presion.set(withSpring(0, resorteTap)); }}
         onPress={() => onPress(mito.id)}
         accessibilityRole="button" accessibilityLabel={`${afirmacion}. ${insignia[mito.veredicto].texto}.`}
       >

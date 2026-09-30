@@ -48,7 +48,8 @@ export function CampoValor({ valor, onCambio, unidad, exito, error, onEnfocar }:
   const exitoPrevio = useRef(exito);
   const errorPrevio = useRef(error);
 
-  if (valor !== '') ultimo.current = valor;
+  // El ultimo valor no vacio (el que «sube» al guardar). Antes del efecto de `exito`, que lo lee.
+  useEffect(() => { if (valor !== '') ultimo.current = valor; }, [valor]);
 
   useEffect(() => {
     if (error === errorPrevio.current) return;
@@ -56,10 +57,10 @@ export function CampoValor({ valor, onCambio, unidad, exito, error, onEnfocar }:
     setConError(true);
     haptico.aviso();
     if (reducido) return;
-    sacudida.value = withSequence(
+    sacudida.set(withSequence(
       withTiming(-SACUDIDA_PX, { duration: SACUDIDA_MS }), withTiming(SACUDIDA_PX, { duration: SACUDIDA_MS }),
       withTiming(-SACUDIDA_PX / 2, { duration: SACUDIDA_MS }), withTiming(0, { duration: SACUDIDA_MS }),
-    );
+    ));
   }, [error]);
 
   useEffect(() => {
@@ -69,8 +70,8 @@ export function CampoValor({ valor, onCambio, unidad, exito, error, onEnfocar }:
     setFantasma(ultimo.current);
     setConMarca(true);
     haptico.exito();
-    estampa.value = 0;
-    estampa.value = withTiming(1, { duration: reducido ? 150 : ESTAMPA_MS, easing: easing.salida });
+    estampa.set(0);
+    estampa.set(withTiming(1, { duration: reducido ? 150 : ESTAMPA_MS, easing: easing.salida }));
     const id = setTimeout(() => setConMarca(false), PALOMITA_MS);
     return () => { clearTimeout(id); cancelAnimation(estampa); };
   }, [exito]);

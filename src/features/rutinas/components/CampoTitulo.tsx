@@ -37,16 +37,16 @@ export function CampoTitulo({ valor, onCambio }: { valor: string; onCambio: (tex
   const invitando = vacio && !enfocado;
 
   useEffect(() => {
-    linea.value = withTiming(enfocado ? 1 : 0, { duration: reducido ? FUNDIDO_REDUCIDO_MS : LINEA_MS, easing: easing.salida });
+    linea.set(withTiming(enfocado ? 1 : 0, { duration: reducido ? FUNDIDO_REDUCIDO_MS : LINEA_MS, easing: easing.salida }));
   }, [enfocado, reducido]);
 
   useEffect(() => {
     cancelAnimation(guion);
-    if (!invitando || reducido) { guion.value = 0; return; }
-    guion.value = 1;
-    guion.value = withRepeat(
+    if (!invitando || reducido) { guion.set(0); return; }
+    guion.set(1);
+    guion.set(withRepeat(
       withSequence(withTiming(0.15, { duration: PARPADEO_MS }), withTiming(1, { duration: PARPADEO_MS })), -1,
-    );
+    ));
     return () => cancelAnimation(guion);
   }, [invitando, reducido]);
 
@@ -93,10 +93,10 @@ export function TextoError({ texto }: { texto: string }) {
   useEffect(() => {
     haptico.error();
     if (reducido) return;
-    x.value = withSequence(
+    x.set(withSequence(
       withTiming(AMPLITUD_SACUDIDA, { duration: 40 }), withTiming(-AMPLITUD_SACUDIDA, { duration: 80 }),
       withTiming(AMPLITUD_SACUDIDA, { duration: 80 }), withTiming(0, { duration: 40 }),
-    );
+    ));
   }, [texto]);
 
   const estilo = useAnimatedStyle(() => ({ transform: [{ translateX: x.value }] }));

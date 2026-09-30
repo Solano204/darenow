@@ -117,8 +117,8 @@ function BotonCirculo({ icono, lado, etiqueta, apagado, onPress }: {
   const estilo = useAnimatedStyle(() => ({ transform: [{ scale: 1 - ESCALA_BOTON * presion.value }] }));
   return (
     <Pressable
-      onPressIn={() => { presion.value = withSpring(1, resorteTap); }}
-      onPressOut={() => { presion.value = withSpring(0, resorteTap); }}
+      onPressIn={() => { presion.set(withSpring(1, resorteTap)); }}
+      onPressOut={() => { presion.set(withSpring(0, resorteTap)); }}
       onPress={onPress}
       accessibilityRole="button" accessibilityLabel={etiqueta} accessibilityState={{ disabled: apagado }}
     >
@@ -135,7 +135,7 @@ function PlacaSemana({ activa }: { activa: boolean }) {
   const t = useSharedValue(activa ? 1 : 0);
 
   useEffect(() => {
-    t.value = reducido ? (activa ? 1 : 0) : withSpring(activa ? 1 : 0, { ...resortePlaca, overshootClamping: true });
+    t.set(reducido ? (activa ? 1 : 0) : withSpring(activa ? 1 : 0, { ...resortePlaca, overshootClamping: true }));
   }, [activa, reducido]);
 
   const relleno = useAnimatedStyle(() => ({ transform: [{ scaleY: t.value }] }), [tick]);

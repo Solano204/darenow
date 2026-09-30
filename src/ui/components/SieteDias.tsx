@@ -8,6 +8,7 @@ import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
 import { fechaLocal } from '@/lib/fechas';
 import { placasPorDia, resumenDeSemana, semanaEnCero, MAX_PLACAS_DIA } from '@/lib/perfil';
 import { ALTO_MAPA, ALTO_PLACA, SEPARACION_PLACA, PASO_PLACA, geometriaMapa } from './disposicionMapa';
+import { acumuladosPrevios } from '@/lib/acumulados';
 
 const ALTO_COMPACTO = 64;
 /** Las placas que caben en 64 px: la version compacta lleva esas como maximo, en lugar de las 12 del alto completo. */
@@ -46,13 +47,18 @@ export function SieteDias({ semana, activo, compacto }: {
   const minutos = semana.map(d => d.min);
   const alto = compacto || semanaEnCero(minutos) ? ALTO_COMPACTO : ALTO_MAPA;
   const maxPlacas = compacto ? PLACAS_COMPACTO : MAX_PLACAS_DIA;
-  const placas = useMemo(() => placasPorDia(minutos, maxPlacas), [minutos.join(), maxPlacas]);
+  // Por valor, no por identidad: `semana` llega como arreglo nuevo en cada render de Hoy/Yo.
+  const claveMinutos = minutos.join(',');
+  const placas = useMemo(
+    () => placasPorDia(claveMinutos === '' ? [] : claveMinutos.split(',').map(Number), maxPlacas),
+    [claveMinutos, maxPlacas],
+  );
   const geo = useMemo(() => geometriaMapa(semana.length, Math.max(ancho, 1)), [semana.length, ancho]);
   // Cada dia empieza cuando el anterior termino de soltar sus placas.
-  const salidas = useMemo(() => {
-    let previas = 0;
-    return placas.map((n, d) => { const salida = previas * ENTRE_PLACAS_MS + d * ENTRE_DIAS_MS; previas += n; return salida; });
-  }, [placas]);
+  const salidas = useMemo(
+    () => acumuladosPrevios(placas).map((previas, d) => previas * ENTRE_PLACAS_MS + d * ENTRE_DIAS_MS),
+    [placas],
+  );
   const total = useMemo(
     () => Math.max(0, ...placas.map((n, d) => (n > 0 ? salidas[d] + (n - 1) * ENTRE_PLACAS_MS + CAIDA_MS : 0))),
     [placas, salidas],
@@ -63,14 +69,14 @@ export function SieteDias({ semana, activo, compacto }: {
   const empezado = useRef(false);
 
   useEffect(() => {
-    if (reducido || empezado.current) { tiempo.value = total; return; }
+    if (reducido || empezado.current) { tiempo.set(total); return; }
     if (!activo) return;
     empezado.current = true;
     if (total === 0) return;
     const golpe = indiceHoy >= 0 && placas[indiceHoy] > 0;
-    tiempo.value = withTiming(total, { duration: total, easing: Easing.linear }, terminado => {
+    tiempo.set(withTiming(total, { duration: total, easing: Easing.linear }, terminado => {
       if (terminado && golpe) runOnJS(haptico.placa)();
-    });
+    }));
   }, [activo, reducido, total]);
 
   const pisos = useMemo(() => {

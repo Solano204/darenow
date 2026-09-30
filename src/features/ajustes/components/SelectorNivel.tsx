@@ -37,7 +37,7 @@ function Placa({ nivel, activa, onPress }: { nivel: Nivel; activa: boolean; onPr
   const t = useSharedValue(activa ? 1 : 0);
 
   useEffect(() => {
-    t.value = withTiming(activa ? 1 : 0, { duration: reducido ? CAMBIO_REDUCIDO_MS : RELLENO_MS, easing: easing.salida });
+    t.set(withTiming(activa ? 1 : 0, { duration: reducido ? CAMBIO_REDUCIDO_MS : RELLENO_MS, easing: easing.salida }));
   }, [activa, reducido]);
 
   const relleno = useAnimatedStyle(() => ({

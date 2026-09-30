@@ -5,7 +5,8 @@
  * solo hay presentacion. Cada lamina anima su entrada una sola vez.
  */
 
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
+import { useTick } from '@/ui/hooks/useTick';
 import { View, Text, ScrollView, StyleSheet, Pressable, AccessibilityInfo, useWindowDimensions } from 'react-native';
 import Animated, {
   LinearTransition, useAnimatedStyle, useSharedValue, withTiming, type SharedValue,
@@ -73,7 +74,7 @@ export default function Presentacion({ onTerminar }: { onTerminar: () => void })
   }, [i]);
 
   useEffect(() => {
-    progreso.value = withTiming(i, { duration: reducido ? FUNDIDO_REDUCIDO_MS : dur.lento, easing: easing.salida });
+    progreso.set(withTiming(i, { duration: reducido ? FUNDIDO_REDUCIDO_MS : dur.lento, easing: easing.salida }));
     marcarVisto(i);
     return () => soltar(i);
   }, [i, reducido]);
@@ -231,15 +232,14 @@ function LaminaTexto({ lamina: l, k, activo, progreso, ancho, animar, reducido }
 function useCapa(k: number, progreso: SharedValue<number>, ancho: number, factor: number, movimiento: number) {
   // Reanimated congela el estilo inicial al montar y un commit de React puede reaplicarlo. Contar
   // los renders fuerza a reevaluar el mapper despues de cada commit y devuelve la capa a su sitio.
-  const renders = useRef(0);
-  renders.current += 1;
+  const tick = useTick();
   return useAnimatedStyle(() => {
     const d = k - progreso.value;
     return {
       opacity: Math.max(0, Math.min(1, 1 - Math.abs(d) * 1.3)),
       transform: [{ translateX: d * ancho * factor * movimiento }],
     };
-  }, [k, ancho, factor, movimiento, renders.current]);
+  }, [k, ancho, factor, movimiento, tick]);
 }
 
 const s = StyleSheet.create({

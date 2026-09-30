@@ -44,18 +44,18 @@ export function BotonFilaSecundario({ texto, onPress, estilo }: {
 
   const alTocar = () => {
     if (!reducido) {
-      giro.value = withSequence(
+      giro.set(withSequence(
         withTiming(1, { duration: GIRO_MS, easing: easing.salida }),
         withDelay(REPOSO_MS, withTiming(0, { duration: 1 })),
-      );
+      ));
     }
     onPress();
   };
 
   return (
     <Pressable
-      onPressIn={() => { presion.value = withSpring(1, resorteTap); haptico.toque(); }}
-      onPressOut={() => { presion.value = withSpring(0, resorteTap); }}
+      onPressIn={() => { presion.set(withSpring(1, resorteTap)); haptico.toque(); }}
+      onPressOut={() => { presion.set(withSpring(0, resorteTap)); }}
       onPress={alTocar}
       accessibilityRole="button"
       accessibilityLabel={texto}

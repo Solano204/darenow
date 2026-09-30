@@ -158,9 +158,11 @@ export function useOnboarding(
   // Con esto, "Como te llamamos" se llena solo en vez de escribirlo a mano.
   // No crea cuenta ni sincroniza nada: solo lee el nombre de Google.
   const { cuenta } = useCuenta();
-  useEffect(() => {
-    if (cuenta?.nombre) setR(prev => ({ ...prev, nombre: cuenta.nombre }));
-  }, [cuenta?.nombre]);
+  const [nombreCuentaVisto, setNombreCuentaVisto] = useState<string | undefined>(undefined);
+  if (cuenta?.nombre && cuenta.nombre !== nombreCuentaVisto) {
+    setNombreCuentaVisto(cuenta.nombre);
+    setR(prev => ({ ...prev, nombre: cuenta.nombre }));
+  }
 
   useEffect(() => () => { if (temporizador.current) clearTimeout(temporizador.current); }, []);
 

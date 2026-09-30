@@ -48,9 +48,9 @@ export function DialTiempo({ tamano, activo, animar = true, retraso = 0, medida 
       p.lineTo(c + Math.sin(a) * radioMarcas, c - Math.cos(a) * radioMarcas);
     }
     return p.detach();
-  }, [tamano]);
+  }, [c, radioMarcas]);
 
-  const aro = useMemo(() => Skia.PathBuilder.Make().addCircle(c, c, radioMarcas - MARGEN_ARO).detach(), [tamano]);
+  const aro = useMemo(() => Skia.PathBuilder.Make().addCircle(c, c, radioMarcas - MARGEN_ARO).detach(), [c, radioMarcas]);
 
   const fraccion = medida === undefined ? 0 : Math.min(1, Math.max(0, medida.valor / medida.maximo));
   const fin = useSharedValue(medida !== undefined ? fraccion : estatico ? MIN_FIN / MIN_POR_VUELTA : MIN_INICIO / MIN_POR_VUELTA);
@@ -59,22 +59,22 @@ export function DialTiempo({ tamano, activo, animar = true, retraso = 0, medida 
 
   useEffect(() => {
     if (medida === undefined) return;
-    fin.value = estatico ? fraccion : withSpring(fraccion, { ...resortePlaca, overshootClamping: true });
+    fin.set(estatico ? fraccion : withSpring(fraccion, { ...resortePlaca, overshootClamping: true }));
   }, [fraccion, estatico]);
 
   useEffect(() => {
     if (medida !== undefined) return;
     const meta = MIN_FIN / MIN_POR_VUELTA;
-    if (estatico) { fin.value = meta; azul.value = 1; pulso.value = 1; return; }
-    fin.value = MIN_INICIO / MIN_POR_VUELTA;
-    azul.value = 0;
+    if (estatico) { fin.set(meta); azul.set(1); pulso.set(1); return; }
+    fin.set(MIN_INICIO / MIN_POR_VUELTA);
+    azul.set(0);
     if (!activo) return;
-    fin.value = withDelay(retraso, withTiming(meta, { duration: DURACION_ARCO, easing: easing.salida }));
-    azul.value = withDelay(retraso + DURACION_ARCO, withTiming(1, { duration: 200 }));
-    pulso.value = withDelay(retraso + DURACION_ARCO, withSequence(
+    fin.set(withDelay(retraso, withTiming(meta, { duration: DURACION_ARCO, easing: easing.salida })));
+    azul.set(withDelay(retraso + DURACION_ARCO, withTiming(1, { duration: 200 })));
+    pulso.set(withDelay(retraso + DURACION_ARCO, withSequence(
       withTiming(1.06, { duration: 120 }),
       withSpring(1, resortePlaca),
-    ));
+    )));
     return () => { cancelAnimation(fin); cancelAnimation(azul); cancelAnimation(pulso); };
   }, [estatico, activo]);
 

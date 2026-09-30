@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { paleta, MARGEN_PANTALLA } from '@/ui/theme';
 import { etiquetasDeEstadisticas } from '@/lib/perfil';
@@ -23,7 +23,7 @@ let numerosAnimados = false;
 export function EstadisticasPerfil({ racha, sesiones, minutos, series, activo }: {
   racha: number; sesiones: number; minutos: number; series: number; activo: boolean;
 }) {
-  const animar = useRef(!numerosAnimados).current;
+  const [animar] = useState(() => !numerosAnimados);
   useEffect(() => { numerosAnimados = true; }, []);
   const etiquetas = etiquetasDeEstadisticas(sesiones, minutos, series);
   const numeros = [racha, sesiones, minutos, series];

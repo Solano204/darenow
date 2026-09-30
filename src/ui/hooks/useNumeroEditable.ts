@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useAnimatedStyle, useSharedValue, withSequence, withTiming } from 'react-native-reanimated';
 import { haptico } from '@/ui/theme';
 import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
@@ -13,7 +13,8 @@ export function useNumeroEditable(valor: number, min: number, max: number, onCam
   const [editando, setEditando] = useState(false);
   const [texto, setTexto] = useState(String(valor));
 
-  useEffect(() => { if (!editando) setTexto(String(valor)); }, [valor, editando]);
+  // Mientras no se edita, el texto sigue al valor.
+  if (!editando && texto !== String(valor)) setTexto(String(valor));
 
   const confirmar = () => {
     const n = parseInt(texto, 10);
@@ -38,10 +39,10 @@ export function useSacudida(amplitud: number) {
   const sacudir = () => {
     haptico.aviso();
     if (reducido) return;
-    sacudida.value = withSequence(
+    sacudida.set(withSequence(
       withTiming(amplitud, { duration: 40 }), withTiming(-amplitud, { duration: 80 }),
       withTiming(amplitud, { duration: 80 }), withTiming(0, { duration: 40 }),
-    );
+    ));
   };
 
   const estilo = useAnimatedStyle(() => ({ transform: [{ translateX: sacudida.value }] }), [tick]);

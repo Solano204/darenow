@@ -44,9 +44,9 @@ export function InsigniaEvidencia({ tipo, pequena, grande, estampar, estilo }: {
   const t = useSharedValue(estatico ? 1 : 0);
 
   useEffect(() => {
-    if (estatico) { t.value = 1; return; }
-    if (!estampar?.activo) { t.value = 0; return; }
-    t.value = withDelay(estampar.retraso, withSpring(1, resortePlaca));
+    if (estatico) { t.set(1); return; }
+    if (!estampar?.activo) { t.set(0); return; }
+    t.set(withDelay(estampar.retraso, withSpring(1, resortePlaca)));
     const golpe = estampar.haptica === false ? undefined : setTimeout(haptico.sello, estampar.retraso + IMPACTO_MS);
     return () => { if (golpe) clearTimeout(golpe); cancelAnimation(t); };
   }, [estatico, estampar?.activo]);

@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { AccessibilityInfo, Pressable, StyleSheet, Text, View, findNodeHandle } from 'react-native';
 import { paleta, tipo, haptico } from '@/ui/theme';
 import { HojaInferior } from '@/ui/components/HojaInferior';
@@ -30,9 +30,13 @@ export function HojaConfirmacion({ visible, onCerrar, ...contenido }: Contenido 
   visible: boolean;
   onCerrar: () => void;
 }) {
-  const ultimo = useRef<Contenido>(contenido);
-  if (visible) ultimo.current = contenido;
-  const { titulo, texto, acciones, textoCancelar = 'Cancelar' } = ultimo.current;
+  // El ultimo contenido que se vio abierto: mientras la hoja sale se sigue mostrando ese.
+  const [ultimo, setUltimo] = useState<Contenido>(contenido);
+  if (visible && (ultimo.titulo !== contenido.titulo || ultimo.texto !== contenido.texto
+    || ultimo.acciones !== contenido.acciones || ultimo.textoCancelar !== contenido.textoCancelar)) {
+    setUltimo(contenido);
+  }
+  const { titulo, texto, acciones, textoCancelar = 'Cancelar' } = visible ? contenido : ultimo;
   const cancelar = useRef<View>(null);
 
   const enfocarCancelar = () => {

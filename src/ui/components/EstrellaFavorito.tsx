@@ -39,21 +39,21 @@ export function EstrellaFavorito({ activo, onPress, nombre, lado = LADO, fondo, 
 }) {
   const reducido = useReducedMotion();
   const tick = useTick();
-  const magnesia = useMiniMagnesia();
+  const { ref: magnesiaRef, disparar: dispararMagnesia } = useMiniMagnesia();
   const t = useSharedValue(activo ? 1 : 0);
   const icono = useSharedValue(1);
   const primera = useRef(true);
 
   useEffect(() => {
     if (primera.current) { primera.current = false; return; }
-    if (reducido) { t.value = activo ? 1 : 0; return; }
+    if (reducido) { t.set(activo ? 1 : 0); return; }
     if (activo) {
-      t.value = 0;
-      t.value = withSequence(withTiming(SOBREIMPULSO, { duration: 120 }), withSpring(1, resortePlaca));
-      magnesia.disparar();
+      t.set(0);
+      t.set(withSequence(withTiming(SOBREIMPULSO, { duration: 120 }), withSpring(1, resortePlaca)));
+      dispararMagnesia();
     } else {
-      t.value = withTiming(0, { duration: SALIDA_MS });
-      icono.value = withSequence(withTiming(ENCOGE_AL_QUITAR, { duration: SALIDA_MS / 2 }), withTiming(1, { duration: SALIDA_MS / 2 }));
+      t.set(withTiming(0, { duration: SALIDA_MS }));
+      icono.set(withSequence(withTiming(ENCOGE_AL_QUITAR, { duration: SALIDA_MS / 2 }), withTiming(1, { duration: SALIDA_MS / 2 })));
     }
   }, [activo, reducido]);
 
@@ -72,7 +72,7 @@ export function EstrellaFavorito({ activo, onPress, nombre, lado = LADO, fondo, 
       accessibilityLabel={activo ? `Quitar ${nombre} de favoritos` : `Guardar ${nombre} en favoritos`}
       accessibilityState={{ selected: activo }}
     >
-      <View ref={magnesia.ref} collapsable={false}>
+      <View ref={magnesiaRef} collapsable={false}>
         <Animated.View style={[s.disco, { width: lado, height: lado, borderRadius: lado / 2 }, disco]}>
           {!sinFondo && <Animated.View style={[s.fondo, { borderRadius: lado / 2 }, capaFondo]} />}
           <Ionicons name="star-outline" size={tamanoIcono} color={contorno} />

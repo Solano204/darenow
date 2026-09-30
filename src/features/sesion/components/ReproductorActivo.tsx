@@ -1,8 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import { useKeepAwake } from 'expo-keep-awake';
 import * as Haptics from 'expo-haptics';
-import * as Speech from 'expo-speech';
-import { createAudioPlayer, type AudioPlayer } from 'expo-audio';
 import type { ParamListBase } from '@react-navigation/native';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { haptico, PALABRA_FASE } from '@/ui/theme';
@@ -13,10 +11,10 @@ import { useHapticosActivos } from '@/state/haptics';
 import { useVozActiva } from '@/state/voz';
 import type { Sesion, ItemSesion } from '@/lib/engine/session';
 import { reproducir } from '@/media/sonido';
-import { fuenteVoz, type TipoVoz } from '@/media/voz';
 import { useSinAnuncios } from '@/ui/components/RelojAnuncios';
 import { ReproductorLayout } from '@/features/sesion/components/ReproductorLayout';
 import { HojaSalida } from '@/features/sesion/components/HojaSalida';
+import { crearControladorVoz, type FuenteVoz } from '@/features/sesion/utils/controladorVoz';
 
 type Props = NativeStackScreenProps<ParamListBase, 'Reproductor'>;
 
@@ -60,71 +58,11 @@ export function ReproductorActivo({ sesionInicial, restaurar, navigation }: {
   /* ---------------------------------------------------------------- */
 
   const [vozOn] = useVozActiva();
-  const [hablando, setHablando] = useState(false);
-
-  // Un solo player reutilizable para los 198 audios de voz: crearlo al
-  // momento de hablar (no 198 de golpe al montar) cuesta 50-200ms una vez,
-  // y de ahi en adelante cada frase solo hace replace()+play() sobre el
-  // mismo player. Perezoso: si la voz esta apagada nunca se crea.
-  const reproductorVozRef = useRef<AudioPlayer | null>(null);
-  const suscripcionVozRef = useRef<ReturnType<AudioPlayer['addListener']> | null>(null);
-
-  function obtenerReproductorVoz(): AudioPlayer {
-    if (!reproductorVozRef.current) reproductorVozRef.current = createAudioPlayer(null);
-    return reproductorVozRef.current;
-  }
-
-  // Cada llamada corta la anterior y arranca una nueva. Con expo-speech el
-  // aviso tardio de la que se corta ("onStopped") podia llegar DESPUES de
-  // que la nueva ya arranco; con el player de archivos el equivalente es
-  // un "playbackStatusUpdate" viejo llegando tarde. Por eso cada llamada
-  // vuelve a registrar su propio listener (quitando el anterior) con su
-  // propio id: solo el aviso de la llamada mas reciente apaga `hablando`.
-  const hablaIdRef = useRef(0);
-  function hablar(fuente: { tipo: TipoVoz; id: string; texto: string }, alTerminar?: () => void) {
+  const [voz] = useState(crearControladorVoz);
+  const hablando = useSyncExternalStore(voz.suscribir, voz.estaHablando);
+  function hablar(fuente: FuenteVoz, alTerminar?: () => void) {
     if (!vozOn) { alTerminar?.(); return; }
-    const id = ++hablaIdRef.current;
-    // Idempotente: ademas del guard de id, protege contra un doble disparo
-    // (el listener y el catch de mas abajo podrian, en teoria, llamarlo los dos).
-    let terminado = false;
-    const terminar = () => {
-      if (terminado || hablaIdRef.current !== id) return;
-      terminado = true;
-      setHablando(false);
-      alTerminar?.();
-    };
-
-    const audio = fuenteVoz(fuente.tipo, fuente.id);
-    if (audio != null) {
-      try {
-        setHablando(true);
-        const player = obtenerReproductorVoz();
-        suscripcionVozRef.current?.remove();
-        suscripcionVozRef.current = player.addListener('playbackStatusUpdate', status => {
-          if (status.didJustFinish) { suscripcionVozRef.current?.remove(); terminar(); }
-        });
-        player.replace(audio);
-        player.play();
-        return;
-      } catch {
-        // el archivo fallo al cargar o reproducir: no dejar la sesion
-        // colgada esperando un "termino" que ya nunca va a llegar.
-        terminar();
-        return;
-      }
-    }
-
-    // Respaldo: el mp3 todavia no existe en el registro (ver src/media/voz.ts).
-    if (!fuente.texto) { alTerminar?.(); return; }
-    Speech.stop();
-    setHablando(true);
-    Speech.speak(fuente.texto, {
-      language: 'es-MX',
-      pitch: 0.85,
-      onDone: terminar,
-      onStopped: terminar,
-      onError: terminar,
-    });
+    voz.hablar(fuente, alTerminar);
   }
 
   // Nombre del ejercicio y sus claves cada vez que se entra a "preparate"
@@ -176,11 +114,7 @@ export function ReproductorActivo({ sesionInicial, restaurar, navigation }: {
   // Si se sale de la pantalla con la voz a mitad de frase, se corta:
   // nadie quiere seguir oyendo instrucciones de un ejercicio que ya dejo.
   // Libera tambien el player de voz (si llego a crearse) y su listener.
-  useEffect(() => () => {
-    Speech.stop();
-    suscripcionVozRef.current?.remove();
-    try { reproductorVozRef.current?.remove(); } catch { /* ya liberado */ }
-  }, []);
+  useEffect(() => voz.soltar, [voz]);
 
   // El clip se ve mientras hay un ejercicio delante del usuario, y sigue
   // visible congelado si pausa desde ahi. En descanso no: ahi la pantalla
@@ -190,13 +124,6 @@ export function ReproductorActivo({ sesionInicial, restaurar, navigation }: {
   const verClip = enEjercicio ||
     (estado.fase === 'pausa' && estado.faseAnterior !== 'descanso' && estado.faseAnterior !== null);
   const clipActivo = enEjercicio;
-
-  // Al terminar, guarda y pasa al resumen.
-  useEffect(() => {
-    if (estado.fase !== 'fin') return;
-    if (hapticosOn) Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-    finalizar(true, null);
-  }, [estado.fase]);
 
   function finalizar(completada: boolean, motivo: string | null) {
     p.limpiarGuardado();   // completa o abandonada, ya no hay nada que continuar
@@ -220,6 +147,13 @@ export function ReproductorActivo({ sesionInicial, restaurar, navigation }: {
       estado, items, resultado: res, completada, kcal,
     });
   }
+
+  // Al terminar, guarda y pasa al resumen.
+  useEffect(() => {
+    if (estado.fase !== 'fin') return;
+    if (hapticosOn) Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+    finalizar(true, null);
+  }, [estado.fase]);
 
   const salir = () => { p.pausar(); setSalida(true); };
 

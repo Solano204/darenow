@@ -51,13 +51,13 @@ export function ChipFiltro({ texto, activo, onPress, icono, variante = 'objetivo
   const [diametro, setDiametro] = useState(DIAMETRO_INICIAL);
 
   useEffect(() => {
-    t.value = withTiming(activo ? 1 : 0, { duration: reducido ? FUNDIDO_REDUCIDO_MS : RELLENO_MS, easing: easing.salida });
+    t.set(withTiming(activo ? 1 : 0, { duration: reducido ? FUNDIDO_REDUCIDO_MS : RELLENO_MS, easing: easing.salida }));
   }, [activo, reducido]);
 
   const alMedir = (e: LayoutChangeEvent) => {
     const { width, height } = e.nativeEvent.layout;
     setDiametro(2 * Math.hypot(width, height));
-    if (!tocado.current) { ox.value = width / 2; oy.value = height / 2; }
+    if (!tocado.current) { ox.set(width / 2); oy.set(height / 2); }
   };
 
   const cuerpo = useAnimatedStyle(() => ({
@@ -78,10 +78,10 @@ export function ChipFiltro({ texto, activo, onPress, icono, variante = 'objetivo
   return (
     <Pressable
       onPressIn={e => {
-        if (!reducido) { tocado.current = true; ox.value = e.nativeEvent.locationX; oy.value = e.nativeEvent.locationY; }
-        escala.value = withSpring(HUNDIMIENTO, resorteTap);
+        if (!reducido) { tocado.current = true; ox.set(e.nativeEvent.locationX); oy.set(e.nativeEvent.locationY); }
+        escala.set(withSpring(HUNDIMIENTO, resorteTap));
       }}
-      onPressOut={() => { escala.value = withSpring(1, resorteTap); }}
+      onPressOut={() => { escala.set(withSpring(1, resorteTap)); }}
       onPress={() => { haptico.seleccion(); onPress(); }}
       accessibilityRole="button" accessibilityLabel={texto} accessibilityState={{ selected: activo }}
     >

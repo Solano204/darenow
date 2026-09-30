@@ -45,10 +45,10 @@ export function FilaCrear({ onPress, texto = 'Crear mi rutina', pulsar }: {
   const [ancho, setAncho] = useState(0);
 
   useEffect(() => {
-    if (!pulsar || reducido) { cancelAnimation(pulso); pulso.value = 0; return; }
-    pulso.value = withRepeat(withSequence(
+    if (!pulsar || reducido) { cancelAnimation(pulso); pulso.set(0); return; }
+    pulso.set(withRepeat(withSequence(
       withTiming(1, { duration: PULSO_SUBE_MS }), withTiming(0, { duration: PULSO_SUBE_MS }), withTiming(0, { duration: PULSO_PAUSA_MS }),
-    ), -1);
+    ), -1));
     return () => cancelAnimation(pulso);
   }, [pulsar, reducido]);
 

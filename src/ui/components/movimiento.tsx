@@ -5,7 +5,7 @@
  * entrada escalonada, pulso de estado y numeros que cuentan.
  */
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Animated, Easing, type ViewStyle } from 'react-native';
 import { color, anim } from '@/ui/theme';
 
@@ -18,7 +18,7 @@ export function Aparece({ children, retraso = 0, estilo }: {
   children: React.ReactNode; retraso?: number; estilo?: ViewStyle;
 }) {
   const reducido = useMovimientoReducido();
-  const v = useRef(new Animated.Value(0)).current;
+  const [v] = useState(() => new Animated.Value(0));
   useEffect(() => {
     if (reducido) { v.setValue(1); return; }
     Animated.timing(v, {
@@ -42,7 +42,7 @@ export function Aparece({ children, retraso = 0, estilo }: {
 /** Pulso lento. Para lo que esta vivo ahora mismo: un punto de "en curso". */
 export function Pulso({ tamano = 8, tono = color.carbon }: { tamano?: number; tono?: string }) {
   const reducido = useMovimientoReducido();
-  const v = useRef(new Animated.Value(0)).current;
+  const [v] = useState(() => new Animated.Value(0));
   useEffect(() => {
     if (reducido) return;
     Animated.loop(Animated.sequence([

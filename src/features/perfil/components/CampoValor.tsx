@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useEffectEvent, useRef, useState } from 'react';
 import { StyleSheet, Text, TextInput, View } from 'react-native';
 import Animated, {
   cancelAnimation, useAnimatedStyle, useSharedValue, withSequence, withTiming,
@@ -51,7 +51,7 @@ export function CampoValor({ valor, onCambio, unidad, exito, error, onEnfocar }:
   // El ultimo valor no vacio (el que «sube» al guardar). Antes del efecto de `exito`, que lo lee.
   useEffect(() => { if (valor !== '') ultimo.current = valor; }, [valor]);
 
-  useEffect(() => {
+  const alCambiarError = useEffectEvent(() => {
     if (error === errorPrevio.current) return;
     errorPrevio.current = error;
     setConError(true);
@@ -61,9 +61,10 @@ export function CampoValor({ valor, onCambio, unidad, exito, error, onEnfocar }:
       withTiming(-SACUDIDA_PX, { duration: SACUDIDA_MS }), withTiming(SACUDIDA_PX, { duration: SACUDIDA_MS }),
       withTiming(-SACUDIDA_PX / 2, { duration: SACUDIDA_MS }), withTiming(0, { duration: SACUDIDA_MS }),
     ));
-  }, [error]);
+  });
+  useEffect(() => alCambiarError(), [error]);
 
-  useEffect(() => {
+  const alCambiarExito = useEffectEvent(() => {
     if (exito === exitoPrevio.current) return;
     exitoPrevio.current = exito;
     setConError(false);
@@ -74,7 +75,8 @@ export function CampoValor({ valor, onCambio, unidad, exito, error, onEnfocar }:
     estampa.set(withTiming(1, { duration: reducido ? 150 : ESTAMPA_MS, easing: easing.salida }));
     const id = setTimeout(() => setConMarca(false), PALOMITA_MS);
     return () => { clearTimeout(id); cancelAnimation(estampa); };
-  }, [exito]);
+  });
+  useEffect(() => alCambiarExito(), [exito]);
 
   const campo = useAnimatedStyle(() => ({ transform: [{ translateX: sacudida.value }] }), [tick]);
   const valorSube = useAnimatedStyle(() => ({

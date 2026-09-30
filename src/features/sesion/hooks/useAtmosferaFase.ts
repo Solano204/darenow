@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useEffectEvent, useRef, useState } from 'react';
 import { AccessibilityInfo } from 'react-native';
 import {
   Easing, cancelAnimation, interpolateColor, runOnJS, useAnimatedReaction, useDerivedValue,
@@ -78,7 +78,7 @@ export function useAtmosferaFase({
     desvanece.set(0);
     expande.set(withTiming(1, { duration: BARRIDO_SUBE_MS, easing: easing.salida }));
     desvanece.set(withDelay(BARRIDO_SUBE_MS, withTiming(1, { duration: BARRIDO_BAJA_MS })));
-  }, [visual, reducido]);
+  }, [visual, reducido, idxFase, expande, desvanece]);
 
   /* --- Anillo: se vacia de forma continua a partir de `restanteS` --- */
 
@@ -100,7 +100,7 @@ export function useAtmosferaFase({
       progreso.set(ahora);
       progreso.set(withTiming(siguiente, { duration: 1000, easing: Easing.linear }));
     }
-  }, [estado.restanteS, total, corriendo, claveFase, conTiempo, reducido]);
+  }, [estado.restanteS, total, corriendo, claveFase, conTiempo, reducido, progreso]);
 
   /* --- Respiracion del descanso y pulso del resplandor de trabajo --- */
 
@@ -114,12 +114,12 @@ export function useAtmosferaFase({
     respiro.set(withRepeat(
       withTiming(1, { duration: RESPIRO_MS, easing: Easing.linear }), -1, false,
     ));
-  }, [enDescanso, corriendo, reducido]);
+  }, [enDescanso, corriendo, reducido, respiro]);
 
   useEffect(() => {
     if (reducido || !enTrabajo || !corriendo) { cancelAnimation(latido); return; }
     latido.set(withRepeat(withTiming(1, { duration: 1000, easing: Easing.inOut(Easing.sin) }), -1, true));
-  }, [enTrabajo, corriendo, reducido]);
+  }, [enTrabajo, corriendo, reducido, latido]);
 
   /* --- Los ultimos 3 segundos: golpe y haptica Rigid --- */
 
@@ -134,23 +134,24 @@ export function useAtmosferaFase({
     haptico.sello();
     if (reducido) return;
     golpe.set(withSequence(withTiming(GOLPE_ESCALA, { duration: 80 }), withSpring(1, resortePlaca)));
-  }, [estado.restanteS, cuentaVisual, claveFase, reducido]);
+  }, [estado.restanteS, cuentaVisual, claveFase, reducido, golpe]);
 
   /* --- La mitad del trabajo: la marca del anillo destella, sin haptica --- */
 
   const conMarca = faseEf === 'trabajo' && esPorTiempo && (total ?? 0) >= 6;
   const ultimaMitad = useRef('');
-  useEffect(() => {
+  const alCambiarEstadoRestanteS = useEffectEvent(() => {
     if (!conMarca || reducido || total == null || estado.restanteS !== Math.floor(total / 2)) return;
     if (ultimaMitad.current === claveFase) return;
     ultimaMitad.current = claveFase;
     destello.set(withSequence(withTiming(1, { duration: 100 }), withTiming(0, { duration: 300 })));
-  }, [estado.restanteS, conMarca, claveFase, reducido]);
+  });
+  useEffect(() => alCambiarEstadoRestanteS(), [estado.restanteS, conMarca, claveFase, reducido]);
 
   /* --- Un lector de pantalla oye la fase al cambiar y el tiempo cada 10 s, no cada segundo --- */
 
   const faseAnunciada = useRef<string | null>(null);
-  useEffect(() => {
+  const alCambiarEstadoRestanteS2 = useEffectEvent(() => {
     if (estado.fase === 'pausa' || estado.fase === 'fin') return;
     const fraseTiempo = conTiempo ? `, ${segundosHablados(estado.restanteS)}` : '';
     if (faseAnunciada.current !== claveFase) {
@@ -159,7 +160,8 @@ export function useAtmosferaFase({
     } else if (conTiempo && estado.restanteS > 0 && estado.restanteS % ANUNCIO_CADA_S === 0) {
       AccessibilityInfo.announceForAccessibility(segundosHablados(estado.restanteS));
     }
-  }, [estado.restanteS, claveFase]);
+  });
+  useEffect(() => alCambiarEstadoRestanteS2(), [estado.restanteS, claveFase]);
 
 
   return { colorFase, progreso, escalaAnillo, brillo, destello, golpe, expande, desvanece, inhala, conMarca };

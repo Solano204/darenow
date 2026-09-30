@@ -88,7 +88,7 @@ export function MapaCarga({ fases, placas, faseActual, resumen, y, zonas, activo
     tiempo.set(withTiming(total, { duration: total, easing: Easing.linear }, terminado => {
       if (terminado) runOnJS(haptico.placa)();
     }));
-  }, [activo, reducido, total]);
+  }, [activo, reducido, tiempo, total]);
 
   const inicioDe = (i: number) => (fases[i].desde - 1) * geo.paso;
   const finDe = (i: number) => (fases[i].hasta - 1) * geo.paso + geo.colW;

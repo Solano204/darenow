@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useEffectEvent, useState } from 'react';
 import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import Animated, { runOnJS, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import Ionicons from '@expo/vector-icons/Ionicons';
@@ -88,10 +88,11 @@ function Cabeza({ item, indice, onCambiar }: { item: ItemSesion; indice: number;
 
   // Con movimiento reducido no hay giro: el ejercicio nuevo se muestra de una vez.
   if (reducido && item.id !== visto.id) setVisto({ id: item.id, name: item.name });
-  useEffect(() => {
+  const alCambiarItemId = useEffectEvent(() => {
     if (item.id === visto.id || reducido) return;
     giro.set(withTiming(90, { duration: MEDIO_GIRO_MS }, fin => { if (fin) runOnJS(entrar)(item.id, item.name); }));
-  }, [item.id]);
+  });
+  useEffect(() => alCambiarItemId(), [item.id]);
 
   const vuelta = useAnimatedStyle(() => ({
     transform: [{ perspective: PERSPECTIVA }, { rotateX: `${giro.value}deg` }],

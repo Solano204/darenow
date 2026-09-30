@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useEffectEvent } from 'react';
 import type { StyleProp, ViewStyle } from 'react-native';
 import Animated, {
   cancelAnimation, useAnimatedStyle, useSharedValue, withDelay, withSpring, withTiming,
@@ -31,7 +31,7 @@ export function Entrada({ children, activo, animar = true, retraso = 0, x = 0, y
   const estatico = !animar;
   const t = useSharedValue(estatico ? 1 : 0);
 
-  useEffect(() => {
+  const alCambiarEstatico = useEffectEvent(() => {
     if (estatico) { t.set(1); return; }
     if (!activo) { t.set(0); return; }
     t.set(withDelay(
@@ -39,7 +39,8 @@ export function Entrada({ children, activo, animar = true, retraso = 0, x = 0, y
       reducido ? withTiming(1, { duration: FUNDIDO_REDUCIDO_MS }) : withSpring(1, resorte),
     ));
     return () => cancelAnimation(t);
-  }, [estatico, activo, reducido]);
+  });
+  useEffect(() => alCambiarEstatico(), [estatico, activo, reducido]);
 
   const animado = useAnimatedStyle(() => ({
     opacity: Math.min(1, t.value * 2),

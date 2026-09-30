@@ -26,7 +26,7 @@ export function ModeloEjercicio({ id, nombre, alto, activo }: { id: string; nomb
     sale.set(0);
     entra.set(withTiming(1, { duration: 300, easing: easing.salida }));
     sale.set(withTiming(1, { duration: 300, easing: easing.salida }, fin => { if (fin) runOnJS(setSaliente)(null); }));
-  }, [id, reducido]);
+  }, [entra, id, reducido, sale]);
 
   const entrante = useAnimatedStyle(() => ({
     opacity: entra.value, transform: [{ translateX: (1 - entra.value) * 60 }],

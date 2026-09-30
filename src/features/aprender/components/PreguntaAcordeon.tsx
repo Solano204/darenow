@@ -67,7 +67,7 @@ export function PreguntaAcordeon({ pregunta, respuesta, onAbierta }: {
   useEffect(() => {
     if (reducido) return;
     giro.set(withSpring(abierta ? 1 : 0, resortePlaca));
-  }, [abierta, reducido]);
+  }, [abierta, giro, reducido]);
 
   const icono = useAnimatedStyle(() => ({ transform: [{ rotate: `${45 * giro.value}deg` }] }), [tick]);
 

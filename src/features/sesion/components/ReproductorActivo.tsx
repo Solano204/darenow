@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useSyncExternalStore } from 'react';
+import React, { useEffect, useEffectEvent, useRef, useState, useSyncExternalStore } from 'react';
 import { useKeepAwake } from 'expo-keep-awake';
 import * as Haptics from 'expo-haptics';
 import type { ParamListBase } from '@react-navigation/native';
@@ -39,14 +39,15 @@ export function ReproductorActivo({ sesionInicial, restaurar, navigation }: {
 
   // Un toque corto cuando se registra una serie de verdad (no una omitida); si
   // esa serie cierra el ejercicio, un golpe medio: el «clank» de la placa.
-  useEffect(() => {
+  const alCambiarEstadoHechasLength = useEffectEvent(() => {
     const ultima = estado.hechas[estado.hechas.length - 1];
     if (!ultima || ultima.omitida) return;
     const it = items[ultima.orden];
     const huecos = it ? it.seriesPlan * (esUnilateral(it) ? 2 : 1) : Infinity;
     const hechas = estado.hechas.filter(h => h.orden === ultima.orden).length;
     if (hechas >= huecos) haptico.placa(); else haptico.toque();
-  }, [estado.hechas.length]);
+  });
+  useEffect(() => alCambiarEstadoHechasLength(), [estado.hechas.length]);
 
   // Cuenta final 3-2-1: mismas condiciones que disparan cuenta_3/2/1 en
   // useSessionPlayer. Aqui solo deshabilita los botones mientras dura.
@@ -76,7 +77,7 @@ export function ReproductorActivo({ sesionInicial, restaurar, navigation }: {
   // esta fase: el avance a "trabajo" siempre llega solo, cuando termina
   // la cuenta.
   const faseVozRef = useRef<typeof estado.fase | null>(null);
-  useEffect(() => {
+  const alCambiarEstadoFase = useEffectEvent(() => {
     const antFase = faseVozRef.current;
     faseVozRef.current = estado.fase;
     if (!vozOn || antFase === null || antFase === estado.fase) return;
@@ -89,17 +90,19 @@ export function ReproductorActivo({ sesionInicial, restaurar, navigation }: {
       return;
     }
     hablar({ tipo: 'fase', id: estado.fase, texto: PALABRA_FASE[estado.fase] });
-  }, [estado.fase, vozOn]);
+  });
+  useEffect(() => alCambiarEstadoFase(), [estado.fase, vozOn]);
 
   // Cuenta final hablada: la de siempre (preparate/cambio de lado/trabajo por
   // tiempo) mas el descanso, que se anuncia igual.
   const cuentaHablada = cuentaFinal ||
     (estado.fase === 'descanso' && estado.restanteS >= 1 && estado.restanteS <= 3);
-  useEffect(() => {
+  const alCambiarEstadoRestanteS = useEffectEvent(() => {
     if (!cuentaHablada) return;
     const n = String(estado.restanteS);
     hablar({ tipo: 'numero', id: n, texto: n });
-  }, [estado.restanteS, estado.fase, vozOn]);
+  });
+  useEffect(() => alCambiarEstadoRestanteS(), [estado.restanteS, estado.fase, vozOn]);
 
   // Tic por segundo durante la espera: preparate, cambio de lado,
   // descanso y trabajo por tiempo (plancha, cardio...). Trabajo por
@@ -150,11 +153,12 @@ export function ReproductorActivo({ sesionInicial, restaurar, navigation }: {
   }
 
   // Al terminar, guarda y pasa al resumen.
-  useEffect(() => {
+  const alCambiarEstadoFase2 = useEffectEvent(() => {
     if (estado.fase !== 'fin') return;
     if (hapticosOn) Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
     finalizar(true, null);
-  }, [estado.fase]);
+  });
+  useEffect(() => alCambiarEstadoFase2(), [estado.fase]);
 
   const salir = () => { p.pausar(); setSalida(true); };
 

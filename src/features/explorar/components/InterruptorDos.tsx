@@ -34,7 +34,7 @@ export function InterruptorDos({ opciones, etiquetas, indice, onCambio }: {
 
   useEffect(() => {
     pos.set(reducido ? indice : withSpring(indice, resortePlaca));
-  }, [indice, reducido]);
+  }, [indice, pos, reducido]);
 
   const medir = (i: 0 | 1) => (e: LayoutChangeEvent) => {
     const { x, width } = e.nativeEvent.layout;

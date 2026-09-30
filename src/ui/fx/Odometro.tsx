@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useEffectEvent, useRef, useState } from 'react';
 import { PixelRatio, StyleSheet, Text, View, type StyleProp, type TextStyle } from 'react-native';
 import Animated, {
   cancelAnimation, useAnimatedStyle, useSharedValue, withDelay, withSequence, withSpring, withTiming,
@@ -75,14 +75,15 @@ export function Odometro({
   const sentido = valor !== ultimo.valor ? (valor >= ultimo.valor ? 1 : -1) : ultimo.sentido;
 
   const desplazamiento = useSharedValue(0);
-  useEffect(() => {
+  const alCambiarEstatico = useEffectEvent(() => {
     if (cerosIzq === 0) return;
     const meta = -(cerosIzq * celda) / 2;
     if (estatico || !activo) { desplazamiento.set(estatico ? meta : 0); return; }
     const total = retraso + (columnas - 1) * ESCALONADO + duracionColumna + ASENTAMIENTO_MS;
     desplazamiento.set(withDelay(total, withTiming(meta, { duration: DESVANECER_MS, easing: easing.salida })));
     return () => cancelAnimation(desplazamiento);
-  }, [estatico, activo, celda, cerosIzq]);
+  });
+  useEffect(() => alCambiarEstatico(), [estatico, activo, celda, cerosIzq]);
 
   const estiloFila = useAnimatedStyle(() => ({ transform: [{ translateX: desplazamiento.value }] }));
 
@@ -143,7 +144,10 @@ function Columna({ inicio, fin, destino, oculta, activo, estatico, retraso, dura
   const finPrevio = useRef(fin);
   const primera = useRef(true);
 
-  useEffect(() => {
+  // En modo continuo solo reinician `estatico` y `activo` (los cambios de valor los anima el efecto
+  // de abajo); si no, tambien un destino, inicio, fin u ocultar nuevos.
+  const claveRecorrido = continuo ? null : `${destino}|${inicio}|${fin}|${oculta}`;
+  const alCambiarRecorrido = useEffectEvent(() => {
     objetivo.current = estatico ? fin : destino;
     if (estatico) { pos.set(fin); visible.set(oculta ? 0 : 1); return; }
     pos.set(inicio);
@@ -156,9 +160,10 @@ function Columna({ inicio, fin, destino, oculta, activo, estatico, retraso, dura
     )));
     if (oculta) visible.set(withDelay(retraso + duracion + ASENTAMIENTO_MS, withTiming(0, { duration: DESVANECER_MS })));
     return () => { cancelAnimation(pos); cancelAnimation(visible); };
-  }, continuo ? [estatico, activo] : [estatico, activo, destino, inicio, fin, oculta]);
+  });
+  useEffect(() => alCambiarRecorrido(), [estatico, activo, claveRecorrido]);
 
-  useEffect(() => {
+  const alCambiarFin = useEffectEvent(() => {
     if (!continuo) return;
     if (primera.current) { primera.current = false; finPrevio.current = fin; return; }
     const delta = sentido >= 0 ? (fin - finPrevio.current + 10) % 10 : -((finPrevio.current - fin + 10) % 10);
@@ -166,7 +171,8 @@ function Columna({ inicio, fin, destino, oculta, activo, estatico, retraso, dura
     if (delta === 0) return;
     objetivo.current += delta;
     pos.set(animarCambios ? withSpring(objetivo.current, { ...resortePlaca, overshootClamping: true }) : objetivo.current);
-  }, [fin]);
+  });
+  useEffect(() => alCambiarFin(), [fin]);
 
   const columna = useAnimatedStyle(() => {
     const p = ((pos.value % 10) + 10) % 10;

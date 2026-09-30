@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useEffectEvent } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Animated, { cancelAnimation, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import Ionicons from '@expo/vector-icons/Ionicons';
@@ -33,13 +33,14 @@ export function TarjetaEnSuLugar({ texto, activo, animar = true, icono = 'palomi
   const estatico = reducido || !animar;
   const crece = useSharedValue(estatico ? 1 : 0);
 
-  useEffect(() => {
+  const alCambiarEstatico = useEffectEvent(() => {
     if (estatico) { crece.set(1); return; }
     if (!activo) { crece.set(0); return; }
     crece.set(withTiming(1, { duration: FILO_MS, easing: easing.salida }));
     if (haptica) haptico.toque();
     return () => cancelAnimation(crece);
-  }, [estatico, activo]);
+  });
+  useEffect(() => alCambiarEstatico(), [estatico, activo]);
 
   const filo = useAnimatedStyle(() => ({ transform: [{ scaleY: crece.value }] }));
 

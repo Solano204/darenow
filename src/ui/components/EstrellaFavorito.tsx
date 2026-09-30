@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useEffectEvent, useRef } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 import Animated, {
   useAnimatedStyle, useSharedValue, withSequence, withSpring, withTiming, type SharedValue,
@@ -44,7 +44,7 @@ export function EstrellaFavorito({ activo, onPress, nombre, lado = LADO, fondo, 
   const icono = useSharedValue(1);
   const primera = useRef(true);
 
-  useEffect(() => {
+  const alCambiarActivo = useEffectEvent(() => {
     if (primera.current) { primera.current = false; return; }
     if (reducido) { t.set(activo ? 1 : 0); return; }
     if (activo) {
@@ -55,7 +55,8 @@ export function EstrellaFavorito({ activo, onPress, nombre, lado = LADO, fondo, 
       t.set(withTiming(0, { duration: SALIDA_MS }));
       icono.set(withSequence(withTiming(ENCOGE_AL_QUITAR, { duration: SALIDA_MS / 2 }), withTiming(1, { duration: SALIDA_MS / 2 })));
     }
-  }, [activo, reducido]);
+  });
+  useEffect(() => alCambiarActivo(), [activo, reducido]);
 
   const relleno = useAnimatedStyle(() => ({
     opacity: Math.min(1, t.value * 3),

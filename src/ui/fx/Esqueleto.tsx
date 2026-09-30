@@ -32,7 +32,7 @@ export function Esqueleto({ ancho, alto, radioEsquina = radio.foto, estilo }: {
     t.set(0);
     t.set(withRepeat(withTiming(1, { duration: BARRIDO_MS, easing: easing.salida }), -1, false));
     return () => cancelAnimation(t);
-  }, [reducido, medida]);
+  }, [reducido, medida, t]);
 
   const banda = useAnimatedStyle(() => ({
     transform: [{ translateX: -medida * ANCHO_BANDA + t.value * medida * (1 + ANCHO_BANDA) }],

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useEffectEvent } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import Animated, {
   cancelAnimation, useAnimatedStyle, useSharedValue, withDelay, withSpring,
@@ -56,15 +56,16 @@ function PlacaEsfuerzo({ opcion, elegida, retraso, animar, onPress }: {
   const crece = useSharedValue(estatico ? 1 : 0);
   const llena = useSharedValue(elegida ? 1 : 0);
 
-  useEffect(() => {
+  const alCambiarEstatico = useEffectEvent(() => {
     if (estatico) { crece.set(1); return; }
     crece.set(withDelay(retraso, withSpring(1, { ...resortePlaca, overshootClamping: true })));
     return () => cancelAnimation(crece);
-  }, [estatico]);
+  });
+  useEffect(() => alCambiarEstatico(), [estatico]);
 
   useEffect(() => {
     llena.set(reducido ? (elegida ? 1 : 0) : withSpring(elegida ? 1 : 0, { ...resortePlaca, overshootClamping: true }));
-  }, [elegida, reducido]);
+  }, [elegida, llena, reducido]);
 
   const entrada = useAnimatedStyle(() => ({ transform: [{ scaleY: crece.value }] }), [tick]);
   const relleno = useAnimatedStyle(() => ({ transform: [{ scaleY: llena.value }] }), [tick]);

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useEffectEvent, useMemo, useState } from 'react';
 import { Pressable, StyleSheet, Text, View, type LayoutChangeEvent } from 'react-native';
 import Animated, {
   LinearTransition, runOnJS, useAnimatedStyle, useSharedValue, withSequence, withSpring, withTiming,
@@ -99,17 +99,18 @@ export function TarjetaEjercicioRutina({
     setImpulsoVisto(impulso);
     if (impulso && !reducido) setElevada(true);
   }
-  useEffect(() => {
+  const alCambiarImpulso = useEffectEvent(() => {
     if (!impulso || reducido) return;
     escala.set(withSequence(withTiming(ESCALA_MOVIDA, { duration: 120 }), withTiming(1, { duration: DESPLAZA_MS - 120 })));
     const id = setTimeout(() => setElevada(false), ELEVADA_MS);
     return () => clearTimeout(id);
-  }, [impulso]);
+  });
+  useEffect(() => alCambiarImpulso(), [impulso]);
 
   useEffect(() => {
     if (!brillo) return;
     resplandor.set(withSequence(withTiming(1, { duration: BRILLO_SUBE_MS }), withTiming(0, { duration: BRILLO_BAJA_MS })));
-  }, [brillo]);
+  }, [brillo, resplandor]);
 
   const cuerpo = useAnimatedStyle(() => ({ transform: [{ scale: escala.value }] }), [tick]);
   const borde = useAnimatedStyle(() => ({ opacity: resplandor.value }), [tick]);
@@ -175,7 +176,7 @@ function MarcaPlaca({ indice }: { indice: number }) {
 
   useEffect(() => {
     t.set(reducido ? indice : withTiming(indice, { duration: DESPLAZA_MS - 20, easing: easing.salida }));
-  }, [indice, reducido]);
+  }, [indice, reducido, t]);
 
   const estilo = useAnimatedStyle(() => ({ backgroundColor: colorAnimadoDePlaca(t.value) }), [tick]);
   return <Animated.View style={[s.marca, estilo]} />;
@@ -210,12 +211,13 @@ function ColumnaMedida({ porTiempo, item, onCambio }: {
   const [congelado, setCongelado] = useState(valorActual);
   if (!cambiando && congelado !== valorActual) setCongelado(valorActual);
 
-  useEffect(() => {
+  const alCambiarPorTiempo = useEffectEvent(() => {
     if (mostrada === porTiempo) return;
     const entrar = () => { setMostrada(porTiempo); giro.set(-90); giro.set(withTiming(0, { duration: MEDIO_GIRO_MS })); };
     if (reducido) return;
     giro.set(withTiming(90, { duration: MEDIO_GIRO_MS }, fin => { if (fin) runOnJS(entrar)(); }));
-  }, [porTiempo]);
+  });
+  useEffect(() => alCambiarPorTiempo(), [porTiempo]);
 
   const vuelta = useAnimatedStyle(() => ({
     transform: [{ perspective: PERSPECTIVA }, { rotateX: `${giro.value}deg` }],

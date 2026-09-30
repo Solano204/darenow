@@ -112,13 +112,13 @@ export function TextoDeParticulas({
       withTiming(1, { duration: POLVO_CICLO_MS, easing: Easing.linear }), -1, false,
     )));
     return () => { cancelAnimation(ensamble); cancelAnimation(solido); cancelAnimation(caida); };
-  }, [geo, reducido, ensambleMs]);
+  }, [geo, reducido, ensambleMs, ensamble, solido, caida]);
 
   useEffect(() => {
     if (!disolver) return;
     if (reducido) { solido.set(withTiming(0, { duration: REDUCIDO_MS })); return; }
     disuelve.set(withTiming(1, { duration: disolverMs, easing: easing.salida }));
-  }, [disolver, reducido, disolverMs]);
+  }, [disolver, reducido, disolverMs, disuelve, solido]);
 
   const sx = geo?.sx ?? []; const sy = geo?.sy ?? []; const tx = geo?.tx ?? []; const ty = geo?.ty ?? [];
   const dx = geo?.dx ?? []; const vel = geo?.vel ?? [];

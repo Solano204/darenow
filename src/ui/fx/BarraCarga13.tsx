@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useEffectEvent, useRef } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Animated, {
   interpolate, interpolateColor, useAnimatedStyle, useSharedValue, withSpring, withTiming,
@@ -41,10 +41,11 @@ export function BarraCarga13({ total, actual, compacta, ganadas, colorHecha = pa
   const previo = useRef(actual);
   const comoCuenta = ganadas !== undefined;
 
-  useEffect(() => {
+  const alCambiarActual = useEffectEvent(() => {
     if (!comoCuenta && actual > previo.current && (HITOS.includes(actual) || actual === total)) haptico.placa();
     previo.current = actual;
-  }, [actual]);
+  });
+  useEffect(() => alCambiarActual(), [actual]);
 
   return (
     <View
@@ -81,7 +82,7 @@ function Placa({ estado, colorHecha }: { estado: Estado; colorHecha: string }) {
 
   useEffect(() => {
     t.set(reducido ? withTiming(estado, { duration: 150 }) : withSpring(estado, { ...resortePlaca, overshootClamping: true }));
-  }, [estado, reducido]);
+  }, [estado, reducido, t]);
 
   const estilo = useAnimatedStyle(() => ({
     backgroundColor: interpolateColor(t.value, [0, 1, 2], [paleta.gomaBorde, paleta.placaAzul, colorHecha]),

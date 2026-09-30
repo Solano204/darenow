@@ -50,7 +50,7 @@ export function FilaCrear({ onPress, texto = 'Crear mi rutina', pulsar }: {
       withTiming(1, { duration: PULSO_SUBE_MS }), withTiming(0, { duration: PULSO_SUBE_MS }), withTiming(0, { duration: PULSO_PAUSA_MS }),
     ), -1));
     return () => cancelAnimation(pulso);
-  }, [pulsar, reducido]);
+  }, [pulsar, pulso, reducido]);
 
   const placa = useAnimatedStyle(() => ({
     transform: [{ rotate: `${reducido ? 0 : giro.value}deg` }, { scale: 1 + ESCALA_PULSO * pulso.value }],

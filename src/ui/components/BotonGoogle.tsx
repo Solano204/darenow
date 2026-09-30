@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useEffectEvent, useMemo } from 'react';
 import { Pressable, StyleSheet, Text, View, type StyleProp, type ViewStyle } from 'react-native';
 import { Canvas, Group, Path, Skia } from '@shopify/react-native-skia';
 import Animated, {
@@ -85,13 +85,14 @@ function Puntos() {
 
 function Punto({ retraso }: { retraso: number }) {
   const t = useSharedValue(0);
-  useEffect(() => {
+  const alCambiarMontar = useEffectEvent(() => {
     t.set(withDelay(retraso, withRepeat(
       withSequence(withTiming(1, { duration: PULSO_MS }), withTiming(0, { duration: PULSO_MS })),
       -1,
     )));
     return () => cancelAnimation(t);
-  }, []);
+  });
+  useEffect(() => alCambiarMontar(), []);
   const estilo = useAnimatedStyle(() => ({
     opacity: 0.35 + 0.65 * t.value,
     transform: [{ translateY: -3 * t.value }],

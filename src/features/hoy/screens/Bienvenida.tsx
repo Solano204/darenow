@@ -72,7 +72,7 @@ export default function Bienvenida({ navigation }: { navigation: { replace: (rut
     }
     escala.set(withTiming(1, { duration: FOTO_ESCALA_MS, easing: easing.salida }));
     opacidad.set(withTiming(1, { duration: FOTO_FUNDIDO_MS }));
-  }, [reducido]);
+  }, [escala, opacidad, reducido]);
 
   const estiloFoto = useAnimatedStyle(() => ({ opacity: opacidad.value }));
 

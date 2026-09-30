@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useEffectEvent, useMemo, useRef, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Canvas, Path, Skia } from '@shopify/react-native-skia';
 import Animated, {
@@ -102,13 +102,14 @@ function HuellaDia({ animar, retraso, sello }: { animar: boolean; retraso: numbe
   const t = useSharedValue(estatico ? 1 : 0);
   const previo = useRef(sello);
 
-  useEffect(() => {
+  const alCambiarEstatico = useEffectEvent(() => {
     if (estatico) { t.set(1); return; }
     t.set(withDelay(retraso, withSpring(1, resortePlaca)));
     return () => cancelAnimation(t);
-  }, [estatico]);
+  });
+  useEffect(() => alCambiarEstatico(), [estatico]);
 
-  useEffect(() => {
+  const alCambiarSello = useEffectEvent(() => {
     if (sello === previo.current) return;
     previo.current = sello;
     haptico.placa();
@@ -116,7 +117,8 @@ function HuellaDia({ animar, retraso, sello }: { animar: boolean; retraso: numbe
     if (reducido) return;
     t.set(0);
     t.set(withSpring(1, resortePlaca));
-  }, [sello, reducido]);
+  });
+  useEffect(() => alCambiarSello(), [sello, reducido]);
 
   const estilo = useAnimatedStyle(() => ({
     opacity: Math.min(1, t.value * 3),
@@ -148,7 +150,7 @@ export function MarcoHoy({ animar, retraso, alto = ALTO_CELDA }: { animar: boole
     if (estatico) { fin.set(1); return; }
     fin.set(withDelay(retraso, withTiming(1, { duration: DIBUJO_MARCO_MS, easing: easing.salida })));
     return () => cancelAnimation(fin);
-  }, [estatico, retraso]);
+  }, [estatico, fin, retraso]);
 
   return (
     <View style={[s.marco, { height: alto }]} pointerEvents="none">

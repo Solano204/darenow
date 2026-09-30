@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useEffectEvent, useRef } from 'react';
 import { Canvas, Group, LinearGradient, Rect, useImage, vec } from '@shopify/react-native-skia';
 import { useDerivedValue, useSharedValue, withSequence, withTiming, type SharedValue } from 'react-native-reanimated';
 import { degradado, paleta } from '@/ui/theme';
@@ -35,11 +35,12 @@ export function FotoParallax({ fotos, recortes, progreso, indice, ancho, alto, t
   const flash = useSharedValue(0);
   const montado = useRef(false);
 
-  useEffect(() => {
+  const alCambiarIndice = useEffectEvent(() => {
     if (!montado.current) { montado.current = true; return; }
     if (sinParallax) return;
     flash.set(withSequence(withTiming(1, { duration: FLASH_SUBE_MS }), withTiming(0, { duration: FLASH_BAJA_MS })));
-  }, [indice]);
+  });
+  useEffect(() => alCambiarIndice(), [indice]);
 
   const opacidadFlash = useDerivedValue(() => flash.value * OPACIDAD_FLASH);
   const medidas = { ancho, alto };

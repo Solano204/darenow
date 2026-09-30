@@ -50,7 +50,7 @@ export function AfirmacionTachada({ texto, estilo, tachar, activo, animar = true
     if (!activo || total === 0) { baja.set(0); return; }
     baja.set(withDelay(retraso + total * TACHON_LINEA_MS, withTiming(1, { duration: COLOR_MS })));
     return () => cancelAnimation(baja);
-  }, [tachar, estatico, activo, total, retraso]);
+  }, [tachar, estatico, activo, total, retraso, baja]);
 
   const color = useAnimatedStyle(() => ({ color: interpolateColor(baja.value, [0, 1], [paleta.magnesia, paleta.magnesia2]) }));
 

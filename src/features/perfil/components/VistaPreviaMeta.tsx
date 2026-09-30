@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Animated, {
   Easing, cancelAnimation, useAnimatedStyle, useSharedValue, withSpring, withTiming, type SharedValue,
@@ -37,20 +37,19 @@ export function VistaPreviaMeta({ vista, hechos, activo, sello }: {
   const duracion = cuantos * ESCALONADO_MS + APARECE_MS;
   const tiempo = useSharedValue(reducido ? duracion : 0);
   const [sellado, setSellado] = useState(false);
-  const previo = useRef(sello);
+  // Cada sello nuevo marca la meta como sellada (se ajusta al dibujar, sin efecto).
+  const [selloVisto, setSelloVisto] = useState(sello);
+  if (sello !== selloVisto) {
+    setSelloVisto(sello);
+    setSellado(true);
+  }
 
   useEffect(() => {
     if (reducido) { tiempo.set(duracion); return; }
     if (!activo) return;
     tiempo.set(withTiming(duracion, { duration: duracion, easing: Easing.linear }));
     return () => cancelAnimation(tiempo);
-  }, [activo, reducido, duracion]);
-
-  useEffect(() => {
-    if (sello === previo.current) return;
-    previo.current = sello;
-    setSellado(true);
-  }, [sello]);
+  }, [activo, reducido, duracion, tiempo]);
 
   if (vista.tipo === 'circulos') {
     return (
@@ -119,7 +118,7 @@ function HuellaPuesta({ estampar }: { estampar: boolean }) {
     if (!estampar || reducido) return;
     t.set(0);
     t.set(withSpring(1, resortePlaca));
-  }, [estampar, reducido]);
+  }, [estampar, reducido, t]);
   const estilo = useAnimatedStyle(() => ({ opacity: Math.min(1, t.value * 3), transform: [{ scale: ESCALA_SELLO - (ESCALA_SELLO - 1) * t.value }] }));
   return <Animated.View style={estilo}><Huella lado={12} opacidad={1} /></Animated.View>;
 }

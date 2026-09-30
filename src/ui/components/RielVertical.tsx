@@ -144,7 +144,7 @@ function TramoConNodo({ seg, esUltimo, respiro, y, origen, alMedir }: {
     if (!seg.resalta) return;
     halo.set(0);
     halo.set(withSequence(withTiming(1, { duration: BRILLO_SUBE_MS }), withTiming(0, { duration: BRILLO_BAJA_MS })));
-  }, [seg.resalta]);
+  }, [halo, seg.resalta]);
 
   const tick = useTick();
   const resplandor = useAnimatedStyle(() => ({ opacity: halo.value }), [tick]);
@@ -196,7 +196,7 @@ function Nodo({ color, lleno, pulsa }: { color: string; lleno: SharedValue<numbe
     if (!pulsa) { cancelAnimation(pulso); pulso.set(0); return; }
     pulso.set(withRepeat(withTiming(1, { duration: PULSO_MS, easing: easing.salida }), -1, false));
     return () => cancelAnimation(pulso);
-  }, [pulsa]);
+  }, [pulsa, pulso]);
 
   const relleno = useAnimatedStyle(() => ({
     opacity: lleno.value, transform: [{ scale: 0.5 + 0.5 * lleno.value }],

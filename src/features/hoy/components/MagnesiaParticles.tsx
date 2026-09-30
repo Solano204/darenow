@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useEffectEvent, useMemo, useState } from 'react';
 import { AppState } from 'react-native';
 import { Canvas, Points } from '@shopify/react-native-skia';
 import { useDerivedValue, useFrameCallback, useSharedValue, type SharedValue } from 'react-native-reanimated';
@@ -59,10 +59,11 @@ export function MagnesiaParticles({ ancho, alto, pausado = false }: { ancho: num
   }, false);
 
   const activo = !pausado && !reducido && enPrimerPlano;
-  useEffect(() => {
+  const alCambiarActivo = useEffectEvent(() => {
     frame.setActive(activo);
     return () => frame.setActive(false);
-  }, [activo]);
+  });
+  useEffect(() => alCambiarActivo(), [activo]);
 
   const grupos = useMemo(
     () => CLASES.map((c, k) => generar(c.cantidad, ancho, alto, SEMILLA + k)),

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useEffectEvent, useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Canvas, Group, Path, Skia } from '@shopify/react-native-skia';
 import {
@@ -57,12 +57,13 @@ export function DialTiempo({ tamano, activo, animar = true, retraso = 0, medida 
   const azul = useSharedValue(medida === undefined && estatico ? 1 : 0);
   const pulso = useSharedValue(1);
 
-  useEffect(() => {
+  const alCambiarFraccion = useEffectEvent(() => {
     if (medida === undefined) return;
     fin.set(estatico ? fraccion : withSpring(fraccion, { ...resortePlaca, overshootClamping: true }));
-  }, [fraccion, estatico]);
+  });
+  useEffect(() => alCambiarFraccion(), [fraccion, estatico]);
 
-  useEffect(() => {
+  const alCambiarEstatico = useEffectEvent(() => {
     if (medida !== undefined) return;
     const meta = MIN_FIN / MIN_POR_VUELTA;
     if (estatico) { fin.set(meta); azul.set(1); pulso.set(1); return; }
@@ -76,7 +77,8 @@ export function DialTiempo({ tamano, activo, animar = true, retraso = 0, medida 
       withSpring(1, resortePlaca),
     )));
     return () => { cancelAnimation(fin); cancelAnimation(azul); cancelAnimation(pulso); };
-  }, [estatico, activo]);
+  });
+  useEffect(() => alCambiarEstatico(), [estatico, activo]);
 
   const colorArco = useDerivedValue(() => interpolateColor(azul.value, [0, 1], [paleta.magnesia, paleta.placaAzul]));
   const escala = useDerivedValue(() => [{ scale: pulso.value }]);

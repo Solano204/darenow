@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useEffectEvent, useState } from 'react';
 import { StyleSheet, Text, TextInput, View } from 'react-native';
 import Animated, {
   cancelAnimation, useAnimatedStyle, useSharedValue, withRepeat, withSequence, withTiming,
@@ -38,7 +38,7 @@ export function CampoTitulo({ valor, onCambio }: { valor: string; onCambio: (tex
 
   useEffect(() => {
     linea.set(withTiming(enfocado ? 1 : 0, { duration: reducido ? FUNDIDO_REDUCIDO_MS : LINEA_MS, easing: easing.salida }));
-  }, [enfocado, reducido]);
+  }, [enfocado, linea, reducido]);
 
   useEffect(() => {
     cancelAnimation(guion);
@@ -48,7 +48,7 @@ export function CampoTitulo({ valor, onCambio }: { valor: string; onCambio: (tex
       withSequence(withTiming(0.15, { duration: PARPADEO_MS }), withTiming(1, { duration: PARPADEO_MS })), -1,
     ));
     return () => cancelAnimation(guion);
-  }, [invitando, reducido]);
+  }, [guion, invitando, reducido]);
 
   const estiloLinea = useAnimatedStyle(() => (
     reducido ? { opacity: linea.value } : { transform: [{ scaleX: Math.max(linea.value, MIN_ESCALA) }] }
@@ -90,14 +90,15 @@ export function TextoError({ texto }: { texto: string }) {
   const reducido = useReducedMotion();
   const x = useSharedValue(0);
 
-  useEffect(() => {
+  const alCambiarTexto = useEffectEvent(() => {
     haptico.error();
     if (reducido) return;
     x.set(withSequence(
       withTiming(AMPLITUD_SACUDIDA, { duration: 40 }), withTiming(-AMPLITUD_SACUDIDA, { duration: 80 }),
       withTiming(AMPLITUD_SACUDIDA, { duration: 80 }), withTiming(0, { duration: 40 }),
     ));
-  }, [texto]);
+  });
+  useEffect(() => alCambiarTexto(), [texto]);
 
   const estilo = useAnimatedStyle(() => ({ transform: [{ translateX: x.value }] }));
   return (

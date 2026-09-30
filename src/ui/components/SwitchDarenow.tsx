@@ -26,7 +26,7 @@ export function PistaSwitch({ activo }: { activo: boolean }) {
     pos.set(reducido
       ? withTiming(activo ? 1 : 0, { duration: CAMBIO_REDUCIDO_MS })
       : withSpring(activo ? 1 : 0, resortePlaca));
-  }, [activo, reducido]);
+  }, [activo, pos, reducido]);
 
   const pista = useAnimatedStyle(() => ({
     backgroundColor: interpolateColor(pos.value, [0, 1], [paleta.gomaBorde, paleta.placaAzul]),

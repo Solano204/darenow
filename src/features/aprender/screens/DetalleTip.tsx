@@ -6,7 +6,7 @@
  * cambia como se lee: una columna comoda, una linea de progreso y una marca de fin.
  */
 
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useEffectEvent, useMemo } from 'react';
 import { StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 import Animated, { useAnimatedScrollHandler, useSharedValue } from 'react-native-reanimated';
 import Ionicons from '@expo/vector-icons/Ionicons';
@@ -53,7 +53,8 @@ export default function DetalleTip({ route, navigation }: Props) {
 
   const t = getTip(idTip);
   const relacionados = useMemo(() => relacionadosVista(t?.relacionado ?? []), [t]);
-  useEffect(() => { if (t) marcarTipLeido(t.id); }, [t?.id]);
+  const alCambiarTId = useEffectEvent(() => { if (t) marcarTipLeido(t.id); });
+  useEffect(() => alCambiarTId(), [t?.id]);
   if (!t) return null;
 
   const foto = fuente('tip', t.id);

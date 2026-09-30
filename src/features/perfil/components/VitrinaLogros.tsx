@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useEffectEvent, useState } from 'react';
 import { StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 import { paleta, familia, haptico, MARGEN_PANTALLA } from '@/ui/theme';
 import type { Logro } from '@/data/catalog';
@@ -45,16 +45,18 @@ export function VitrinaLogros({ logros, ganados, total, activo }: {
   // Con movimiento reducido la barra ya esta llena; si no, se llena al terminar las medallas.
   const llena = reducido ? nGanados : llenaAnimada;
 
-  useEffect(() => {
+  const alCambiarActivo = useEffectEvent(() => {
     if (!activo || visiblesGanados === 0) return;
     haptico.toque();
-  }, [activo]);
+  });
+  useEffect(() => alCambiarActivo(), [activo]);
 
-  useEffect(() => {
+  const alCambiarActivo2 = useEffectEvent(() => {
     if (reducido || !activo) return;
     const id = setTimeout(() => setLlena(nGanados), visiblesGanados * ESCALONADO_MS + ESPERA_BARRA_MS);
     return () => clearTimeout(id);
-  }, [activo, reducido, nGanados]);
+  });
+  useEffect(() => alCambiarActivo2(), [activo, reducido, nGanados]);
 
   // Orden de aparicion de cada ganada (las pendientes no esperan).
   const rangoGanado = acumuladosPrevios(logros.map(l => (ganados.has(l.id) ? 1 : 0)));

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useEffectEvent, useState } from 'react';
 import { PixelRatio, StyleSheet, Text, View, type StyleProp, type TextStyle } from 'react-native';
 import Animated, { cancelAnimation, useAnimatedStyle, useSharedValue, withDelay, withSpring } from 'react-native-reanimated';
 import { resortePlaca } from '@/ui/theme';
@@ -88,12 +88,13 @@ function Mascara({ alto, activo, animar, espera, children }: {
   const estatico = reducido || !animar;
   const t = useSharedValue(estatico ? 1 : 0);
 
-  useEffect(() => {
+  const alCambiarEstatico = useEffectEvent(() => {
     if (estatico) { t.set(1); return; }
     if (!activo) { t.set(0); return; }
     t.set(withDelay(espera, withSpring(1, RESORTE_MASCARA)));
     return () => cancelAnimation(t);
-  }, [estatico, activo]);
+  });
+  useEffect(() => alCambiarEstatico(), [estatico, activo]);
 
   const sube = useAnimatedStyle(() => ({ transform: [{ translateY: (1 - t.value) * alto }] }));
 

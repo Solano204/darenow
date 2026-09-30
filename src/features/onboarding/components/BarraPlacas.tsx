@@ -39,7 +39,7 @@ export function BarraPlacas({ paso, total = PLACAS.length }: { paso: number; tot
       withTiming(1, { duration: 40 }, fin => { if (fin) runOnJS(clank)(); }),
       withSpring(0, resorteTap),
     )));
-  }, [paso, reducido]);
+  }, [paso, reducido, temblor]);
 
   const temblorVarilla = useAnimatedStyle(() => ({ transform: [{ translateY: temblor.value * TEMBLOR_PX }] }));
   const temblorHombroIzq = useAnimatedStyle(() => ({ transform: [{ translateY: temblor.value * TEMBLOR_PX }] }));
@@ -78,7 +78,7 @@ function Placa({ lado, k, color, presente, reducido, temblor }: {
     if (reducido) { t.set(presente ? 1 : 0); return; }
     const destino = presente ? 1 : 0;
     t.set(withSpring(destino, { ...resortePlaca, overshootClamping: true }));
-  }, [presente, reducido]);
+  }, [presente, reducido, t]);
 
   const estilo = useAnimatedStyle(() => ({
     opacity: Math.min(1, t.value * 4),

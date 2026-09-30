@@ -89,7 +89,7 @@ function FotoResalte({ id, ancho, activo }: { id: string; ancho: number; activo:
   useEffect(() => {
     if (!neutra || reducido || !activo) return;
     t.set(withTiming(1, { duration: CRUCE_MS, easing: easing.salida }));
-  }, [activo, reducido, neutra]);
+  }, [activo, reducido, neutra, t]);
 
   const estiloNeutra = useAnimatedStyle(() => ({ opacity: 1 - t.value }), [tick]);
   return (

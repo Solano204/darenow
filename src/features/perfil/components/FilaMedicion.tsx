@@ -80,7 +80,7 @@ export function FilaMedicion({ p, abierta, onAlternar, y, altoBarra, desplazarA,
 
   useEffect(() => {
     giro.set(reducido ? (abierta ? 1 : 0) : withSpring(abierta ? 1 : 0, resortePlaca));
-  }, [abierta, reducido]);
+  }, [abierta, giro, reducido]);
 
   const chevron = useAnimatedStyle(() => ({ transform: [{ rotate: `${90 * giro.value}deg` }] }), [tick]);
 

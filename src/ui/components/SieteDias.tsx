@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useEffectEvent, useMemo, useRef, useState } from 'react';
 import { StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 import { Canvas, Path, Skia } from '@shopify/react-native-skia';
 import { Easing, runOnJS, useDerivedValue, useSharedValue, withTiming } from 'react-native-reanimated';
@@ -68,7 +68,7 @@ export function SieteDias({ semana, activo, compacto }: {
   const tiempo = useSharedValue(reducido ? total : 0);
   const empezado = useRef(false);
 
-  useEffect(() => {
+  const alCambiarActivo = useEffectEvent(() => {
     if (reducido || empezado.current) { tiempo.set(total); return; }
     if (!activo) return;
     empezado.current = true;
@@ -77,7 +77,8 @@ export function SieteDias({ semana, activo, compacto }: {
     tiempo.set(withTiming(total, { duration: total, easing: Easing.linear }, terminado => {
       if (terminado && golpe) runOnJS(haptico.placa)();
     }));
-  }, [activo, reducido, total]);
+  });
+  useEffect(() => alCambiarActivo(), [activo, reducido, total]);
 
   const pisos = useMemo(() => {
     const p = Skia.Path.Make();

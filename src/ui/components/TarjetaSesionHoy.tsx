@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useEffectEvent, useMemo, useRef, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Animated, {
   Extrapolation, interpolate, useAnimatedScrollHandler, useAnimatedStyle, useSharedValue, withSpring,
@@ -74,12 +74,13 @@ export function TarjetaSesionHoy(p: TarjetaSesionHoyProps) {
   const ultimaVisible = Math.min(items.length, MINIATURAS_VISIBLES) - 1;
   const asentada = INICIO_MINIATURAS_MS + Math.max(0, ultimaVisible) * ESCALONADO_MINIATURA_MS;
 
-  useEffect(() => {
+  const alCambiarMontar = useEffectEvent(() => {
     barraCargadaEnEstaSesion = true;
     if (!animar || reducido) return;
     const golpe = setTimeout(haptico.placa, asentada + ASIENTO_MS);
     return () => clearTimeout(golpe);
-  }, []);
+  });
+  useEffect(() => alCambiarMontar(), []);
 
   const { y } = p;
   const alSubir = useAnimatedStyle(() => {
@@ -194,7 +195,7 @@ function SelloHuella({ clave }: { clave: number }) {
     if (reducido) return;
     t.set(0);
     t.set(withSpring(1, resortePlaca));
-  }, [clave, reducido]);
+  }, [clave, reducido, t]);
 
   const estilo = useAnimatedStyle(() => ({
     opacity: Math.min(1, t.value * 2.5),

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useEffectEvent, useState } from 'react';
 import { Alert, View, useWindowDimensions } from 'react-native';
 import type { ParamListBase } from '@react-navigation/native';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -77,7 +77,7 @@ export default function Reproductor({ route, navigation }: Props) {
   // verdad: si se esta continuando una sesion interrumpida, ya se estaba
   // entrenando, no hace falta el aviso. Al vencer, el aplauso de magnesia
   // cubre el paso a lo siguiente.
-  useEffect(() => {
+  const alCambiarListo = useEffectEvent(() => {
     if (!listo || restaurar) return;
     const id = setTimeout(() => {
       haptico.aplauso();
@@ -85,7 +85,8 @@ export default function Reproductor({ route, navigation }: Props) {
       setMostrarListo(false);
     }, DURACION_LISTO_MS);
     return () => clearTimeout(id);
-  }, [listo, restaurar]);
+  });
+  useEffect(() => alCambiarListo(), [listo, restaurar]);
 
   if (!listo) return <View style={{ flex: 1, backgroundColor: paleta.goma }} />;
 

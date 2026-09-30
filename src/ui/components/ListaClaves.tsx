@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useEffectEvent, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { paleta, familia } from '@/ui/theme';
 import { textoVisible } from '@/lib/presentacion';
@@ -25,11 +25,12 @@ function Clave({ texto, retraso, activo }: { texto: string; retraso: number; act
   const reducido = useReducedMotion();
   const [dibujada, setDibujada] = useState(reducido);
 
-  useEffect(() => {
+  const alCambiarActivo = useEffectEvent(() => {
     if (dibujada || !activo) return;
     const id = setTimeout(() => setDibujada(true), retraso);
     return () => clearTimeout(id);
-  }, [activo]);
+  });
+  useEffect(() => alCambiarActivo(), [activo]);
 
   return (
     <View style={s.fila} accessible accessibilityLabel={texto}>

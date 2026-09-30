@@ -25,7 +25,7 @@ export function TotalPegajoso({ minutos }: { minutos: number }) {
     previo.current = minutos;
     if (reducido) return;
     pulso.set(withSequence(withTiming(ESCALA_PULSO, { duration: 80 }), withSpring(1, resorteTap)));
-  }, [minutos, reducido]);
+  }, [minutos, pulso, reducido]);
 
   const estilo = useAnimatedStyle(() => ({ transform: [{ scale: pulso.value }] }), [tick]);
 

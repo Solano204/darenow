@@ -28,7 +28,7 @@ export function FilaRespiracion({ texto }: { texto: string }) {
     if (reducido) { cancelAnimation(ciclo); ciclo.set(0); return; }
     ciclo.set(withRepeat(withTiming(1, { duration: CICLO_MS, easing: Easing.linear }), -1, false));
     return () => cancelAnimation(ciclo);
-  }, [reducido]);
+  }, [ciclo, reducido]);
 
   const anillo = useAnimatedStyle(() => {
     const r = ciclo.value;

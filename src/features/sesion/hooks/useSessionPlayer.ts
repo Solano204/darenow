@@ -116,12 +116,13 @@ export function useSessionPlayer(
   // Ademas del respaldo por segundo plano, cada serie que se marca queda
   // guardada: si la app se cierra de golpe sin pasar por background,
   // "nada se pierde" sigue siendo cierto.
-  useEffect(() => {
+  const alCambiarEstadoHechasLength = useEffectEvent(() => {
     if (estado.hechas.length === 0 || estado.fase === 'fin') return;
     AsyncStorage.setItem(CLAVE_GUARDADO, JSON.stringify({
       items, estado, guardadoEn: Date.now(),
     } as SesionEnCurso)).catch(() => {});
-  }, [estado.hechas.length]);
+  });
+  useEffect(() => alCambiarEstadoHechasLength(), [estado.hechas.length]);
 
   const it = items[estado.indice];
 

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useEffectEvent } from 'react';
 import { StyleSheet, Text, View, type StyleProp, type ViewStyle } from 'react-native';
 import Animated, { cancelAnimation, useAnimatedStyle, useSharedValue, withDelay, withSpring } from 'react-native-reanimated';
 import { paleta, tinte, radio, familia, resortePlaca, haptico } from '@/ui/theme';
@@ -43,13 +43,14 @@ export function InsigniaEvidencia({ tipo, pequena, grande, estampar, estilo }: {
   const estatico = !estampar || reducido || estampar.animar === false;
   const t = useSharedValue(estatico ? 1 : 0);
 
-  useEffect(() => {
+  const alCambiarEstatico = useEffectEvent(() => {
     if (estatico) { t.set(1); return; }
     if (!estampar?.activo) { t.set(0); return; }
     t.set(withDelay(estampar.retraso, withSpring(1, resortePlaca)));
     const golpe = estampar.haptica === false ? undefined : setTimeout(haptico.sello, estampar.retraso + IMPACTO_MS);
     return () => { if (golpe) clearTimeout(golpe); cancelAnimation(t); };
-  }, [estatico, estampar?.activo]);
+  });
+  useEffect(() => alCambiarEstatico(), [estatico, estampar?.activo]);
 
   const escalaIni = estampar?.escala ?? ESCALA_INICIAL;
   const giroIni = estampar?.giro ?? 0;

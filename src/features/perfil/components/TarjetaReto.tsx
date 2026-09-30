@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useEffectEvent } from 'react';
 import { StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 import Animated, {
   cancelAnimation, interpolateColor, useAnimatedStyle, useSharedValue, withDelay, withTiming, type SharedValue,
@@ -44,12 +44,13 @@ export function TarjetaReto({ reto, progreso, indice, activo, onPress }: {
   const nombre = textoVisible(reto.name);
   const objetivo = textoVisible(reto.objetivo);
 
-  useEffect(() => {
+  const alCambiarActivo = useEffectEvent(() => {
     if (reducido) { llenado.set(1); return; }
     if (!activo) return;
     llenado.set(withDelay(indice * ESCALONADO_MS + ESPERA_LLENADO_MS, withTiming(1, { duration: LLENADO_MS, easing: easing.salida })));
     return () => cancelAnimation(llenado);
-  }, [activo, reducido]);
+  });
+  useEffect(() => alCambiarActivo(), [activo, reducido]);
 
   return (
     <Entrada activo={activo} retraso={indice * ESCALONADO_MS} y={16} escala={1} estilo={s.caja}>

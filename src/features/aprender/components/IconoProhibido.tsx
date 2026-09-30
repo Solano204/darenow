@@ -35,7 +35,7 @@ export function IconoProhibido({ activo, retraso = 0, tamano = 18, color = palet
     circulo.set(withDelay(retraso, withTiming(1, { duration: TRAZO_MS, easing: easing.salida })));
     diagonal.set(withDelay(retraso + TRAZO_MS, withTiming(1, { duration: TRAZO_MS, easing: easing.salida })));
     return () => { cancelAnimation(circulo); cancelAnimation(diagonal); };
-  }, [activo, reducido, retraso]);
+  }, [activo, circulo, diagonal, reducido, retraso]);
 
   if (rutas.circulo === null || rutas.diagonal === null) return null;
   return (

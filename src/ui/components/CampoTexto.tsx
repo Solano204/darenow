@@ -26,7 +26,7 @@ export function CampoTexto({ valor, onCambio, placeholder, etiqueta }: {
 
   useEffect(() => {
     aro.set(withTiming(foco ? 1 : 0, { duration: reducido ? 150 : FOCO_MS }));
-  }, [foco, reducido]);
+  }, [aro, foco, reducido]);
 
   const estiloAro = useAnimatedStyle(() => ({ opacity: aro.value }), [tick]);
 

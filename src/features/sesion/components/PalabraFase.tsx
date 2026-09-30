@@ -20,7 +20,7 @@ export function PalabraFase({ texto, visual }: { texto: string; visual: FaseVisu
     if (reducido) return;
     t.set(0);
     t.set(withSpring(1, resortePlaca));
-  }, [texto, reducido]);
+  }, [texto, reducido, t]);
 
   const estilo = useAnimatedStyle(() => ({
     opacity: Math.min(1, t.value * 3),

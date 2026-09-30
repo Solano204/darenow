@@ -10,7 +10,7 @@
  * El boton de Google solo se dibuja si hay Client ID configurado. Sin .env,
  * esta pantalla es simplemente "Empezar" y ya.
  */
-import React, { useEffect } from 'react';
+import React, { useEffect, useEffectEvent } from 'react';
 import { View, Text, StyleSheet, ScrollView, Linking, Pressable } from 'react-native';
 import Animated, {
   useAnimatedStyle, useSharedValue, withSequence, withTiming,
@@ -44,14 +44,14 @@ export default function Acceso({ onListo }: { onListo: () => void }) {
   const google = useGoogleSignIn();
   const { entrarConGoogle, entrarComoInvitado } = useCuenta();
 
-  useEffect(() => {
-    if (!google.perfil) return;
-    (async () => {
-      await entrarConGoogle(google.perfil!);
-      google.limpiar();
-      onListo();
-    })();
-  }, [google.perfil]);
+  // Responde al toque: al volver la hoja de Google con un perfil, entra (antes lo hacia un efecto).
+  const entrarConGoogleYSeguir = async () => {
+    const perfil = await google.iniciar();
+    if (!perfil) return;
+    await entrarConGoogle(perfil);
+    google.limpiar();
+    onListo();
+  };
 
   const seguirSinCuenta = async () => {
     await entrarComoInvitado();
@@ -98,7 +98,7 @@ export default function Acceso({ onListo }: { onListo: () => void }) {
                 texto="Continuar con Google"
                 textoOcupado="Abriendo Google..."
                 ocupado={google.cargando}
-                onPress={google.iniciar}
+                onPress={entrarConGoogleYSeguir}
               />
             )}
             {google.disponible ? (
@@ -142,14 +142,15 @@ function TextoError({ texto }: { texto: string }) {
   const reducido = useReducedMotion();
   const x = useSharedValue(0);
 
-  useEffect(() => {
+  const alCambiarTexto = useEffectEvent(() => {
     haptico.error();
     if (reducido) return;
     x.set(withSequence(
       withTiming(AMPLITUD_SACUDIDA, { duration: 40 }), withTiming(-AMPLITUD_SACUDIDA, { duration: 80 }),
       withTiming(AMPLITUD_SACUDIDA, { duration: 80 }), withTiming(0, { duration: 40 }),
     ));
-  }, [texto]);
+  });
+  useEffect(() => alCambiarTexto(), [texto]);
 
   const estilo = useAnimatedStyle(() => ({ transform: [{ translateX: x.value }] }));
   return (

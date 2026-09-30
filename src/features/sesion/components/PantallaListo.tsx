@@ -34,7 +34,7 @@ export function PantallaListo({ duracionMs }: { duracionMs: number }) {
       subtitulo.set(withTiming(0, { duration: reducido ? 150 : DISOLVER_MS }));
     }, Math.max(0, duracionMs - DISOLVER_MS));
     return () => clearTimeout(id);
-  }, [duracionMs, reducido]);
+  }, [duracionMs, reducido, subtitulo]);
 
   const estiloSubtitulo = useAnimatedStyle(() => ({ opacity: subtitulo.value }), [tick]);
 

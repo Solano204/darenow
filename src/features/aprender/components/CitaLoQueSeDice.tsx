@@ -21,7 +21,7 @@ export function CitaLoQueSeDice({ texto, activo }: { texto: string; activo: bool
     if (!activo) { t.set(0); return; }
     t.set(withSpring(1, resortePlaca));
     return () => cancelAnimation(t);
-  }, [reducido, activo]);
+  }, [reducido, activo, t]);
 
   const comillas = useAnimatedStyle(() => ({
     opacity: Math.min(1, t.value * 3),

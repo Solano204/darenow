@@ -21,7 +21,7 @@ export function useProgresoMarca(marcada: boolean): SharedValue<number> {
     t.set(withTiming(marcada ? 1 : 0, {
       duration: reducido ? CAMBIO_REDUCIDO_MS : marcada ? MARCAR_MS : DESMARCAR_MS, easing: easing.salida,
     }));
-  }, [marcada, reducido]);
+  }, [marcada, reducido, t]);
 
   return t;
 }

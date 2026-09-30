@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useEffectEvent } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withDelay, withTiming } from 'react-native-reanimated';
 import { paleta, easing } from '@/ui/theme';
@@ -26,10 +26,11 @@ export function ConectorRelacion({ tipo, activo }: { tipo: 'sinergico' | 'antago
   const tick = useTick();
   const t = useSharedValue(reducido ? 1 : 0);
 
-  useEffect(() => {
+  const alCambiarActivo = useEffectEvent(() => {
     if (reducido || !activo) return;
     t.set(withDelay(tipo === 'antagonista' ? ESPERA_TOPE_MS : 0, withTiming(1, { duration: DIBUJA_MS, easing: easing.salida })));
-  }, [activo, reducido]);
+  });
+  useEffect(() => alCambiarActivo(), [activo, reducido]);
 
   const dibuja = useAnimatedStyle(() => ({ transform: [{ scaleX: Math.max(0.001, t.value) }] }), [tick]);
   const aparece = useAnimatedStyle(() => ({ opacity: t.value }), [tick]);

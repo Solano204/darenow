@@ -57,13 +57,13 @@ export function BotonPlaca({ texto, onPress, deshabilitado, ocupado, textoOcupad
       duration: reducido ? 150 : LLENADO_MS,
       easing: deshabilitado ? easing.entrada : easing.salida,
     }));
-  }, [deshabilitado, reducido]);
+  }, [deshabilitado, llenado, reducido]);
 
   useEffect(() => {
     if (brillo === undefined || brilloHecho.current || ancho === 0 || reducido || deshabilitado) return;
     brilloHecho.current = true;
     barrido.set(withDelay(brillo, withTiming(1, { duration: BRILLO_MS, easing: easing.salida })));
-  }, [brillo, ancho, reducido, deshabilitado]);
+  }, [brillo, ancho, reducido, deshabilitado, barrido]);
 
   const cuerpo = useAnimatedStyle(() => ({
     transform: [{ scale: 1 - ESCALA_PRESIONADO * presion.value }],
@@ -142,7 +142,7 @@ function TextoRueda({ texto, ocupado, reducido, llenado }: {
     t.set(withTiming(1, { duration: reducido ? 150 : dur.medio, easing: easing.salida }, fin => {
       if (fin) runOnJS(setPrevio)(null);
     }));
-  }, [texto, reducido]);
+  }, [texto, reducido, t]);
 
   useEffect(() => {
     if (!ocupado) { cancelAnimation(pulso); pulso.set(withTiming(1, { duration: dur.rapido })); return; }
@@ -151,7 +151,7 @@ function TextoRueda({ texto, ocupado, reducido, llenado }: {
       -1,
     ));
     return () => cancelAnimation(pulso);
-  }, [ocupado]);
+  }, [ocupado, pulso]);
 
   const distancia = reducido ? 0 : alto;
   const entrante = useAnimatedStyle(() => ({

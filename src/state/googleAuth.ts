@@ -89,14 +89,16 @@ export function useGoogleSignIn() {
   const [perfil, setPerfil] = useState<PerfilGoogle | null>(null);
   const [error, setError] = useState<ErrorGoogle>(null);
 
-  const iniciar = async () => {
-    if (!google) { setError('servicios'); return; }
+  /** Abre la hoja de Google. Devuelve el perfil (tambien queda en `perfil`) o null si no se pudo. */
+  const iniciar = async (): Promise<PerfilGoogle | null> => {
+    if (!google) { setError('servicios'); return null; }
     setError(null);
     setCargando(true);
     const r = await intentarGoogle(google);
     if (r.perfil) setPerfil(r.perfil);
     if (r.error) setError(r.error);
     setCargando(false);
+    return r.perfil ?? null;
   };
 
   const limpiar = () => { setPerfil(null); setError(null); };

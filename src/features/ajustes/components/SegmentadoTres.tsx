@@ -35,7 +35,7 @@ export function SegmentadoTres({ opciones, etiquetas, indice, onCambio }: {
 
   useEffect(() => {
     pos.set(reducido ? withTiming(indice, { duration: CAMBIO_REDUCIDO_MS }) : withSpring(indice, resortePlaca));
-  }, [indice, reducido]);
+  }, [indice, pos, reducido]);
 
   const celda = ancho > 0 ? (ancho - 2 * (INSET + BORDE)) / 3 : 0;
   const ficha = useAnimatedStyle(() => ({

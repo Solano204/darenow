@@ -136,7 +136,7 @@ function PlacaSemana({ activa }: { activa: boolean }) {
 
   useEffect(() => {
     t.set(reducido ? (activa ? 1 : 0) : withSpring(activa ? 1 : 0, { ...resortePlaca, overshootClamping: true }));
-  }, [activa, reducido]);
+  }, [activa, reducido, t]);
 
   const relleno = useAnimatedStyle(() => ({ transform: [{ scaleY: t.value }] }), [tick]);
 

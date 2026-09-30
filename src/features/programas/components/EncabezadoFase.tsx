@@ -32,7 +32,7 @@ export function EncabezadoFase({ desde, hasta, foco, visto }: {
   useEffect(() => {
     if (reducido || !visto) return;
     sello.set(withSpring(1, resortePlaca));
-  }, [visto, reducido]);
+  }, [visto, reducido, sello]);
 
   const etiqueta = useAnimatedStyle(() => ({
     opacity: Math.min(1, sello.value * 3),

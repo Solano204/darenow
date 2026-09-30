@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useEffectEvent } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import Animated, {
   useAnimatedStyle, useSharedValue, withDelay, withSequence, withSpring, withTiming,
@@ -68,12 +68,13 @@ export function RelacionMuscular({ tipo, titulo, actual, items, activo, onTodos,
   const inclinacion = useSharedValue(0);
   const lineas = Math.max(2, ...items.map(r => lineasDeNombre(r.nombre)));
 
-  useEffect(() => {
+  const alCambiarActivo = useEffectEvent(() => {
     if (tipo !== 'antagonista' || reducido || !activo || items.length === 0) return;
     inclinacion.set(withDelay(LLEGADA_MS, withSequence(
       withTiming(INCLINACION_GRADOS, { duration: 80 }), withSpring(0, resorteTap),
     )));
-  }, [activo, reducido]);
+  });
+  useEffect(() => alCambiarActivo(), [activo, reducido]);
 
   const mini = useAnimatedStyle(() => ({ transform: [{ rotate: `${inclinacion.value}deg` }] }), [tick]);
 
@@ -119,7 +120,7 @@ function LlegaHaciaLaMini({ tipo, indice, activo, reducido, children }: {
   const tick = useTick();
   const p = useSharedValue(reducido ? 1 : 0);
 
-  useEffect(() => {
+  const alCambiarActivo2 = useEffectEvent(() => {
     if (reducido || !activo) return;
     const espera = indice * ESCALONADO_MS;
     p.set(tipo === 'sinergico'
@@ -128,7 +129,8 @@ function LlegaHaciaLaMini({ tipo, indice, activo, reducido, children }: {
         withTiming(1 + REBOTE_PX / DESDE_PX, { duration: LLEGADA_MS, easing: easing.salida }),
         withSpring(1, resortePlaca),
       )));
-  }, [activo, reducido]);
+  });
+  useEffect(() => alCambiarActivo2(), [activo, reducido]);
 
   const estilo = useAnimatedStyle(() => ({
     opacity: Math.min(1, p.value * 3), transform: [{ translateX: (1 - p.value) * DESDE_PX }],

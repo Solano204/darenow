@@ -41,7 +41,7 @@ function Regla({ valor }: { valor: number }) {
     if (ancho === 0) return;
     if (!colocada.current || reducido) { x.set(objetivo); colocada.current = true; return; }
     x.set(withSpring(objetivo, resortePlaca));
-  }, [objetivo, ancho, reducido]);
+  }, [objetivo, ancho, reducido, x]);
 
   const pista = useAnimatedStyle(() => ({ transform: [{ translateX: x.value }] }), [tick]);
 

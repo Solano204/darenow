@@ -9,7 +9,7 @@
  * y al final aparecen la ayuda y el boton con un unico brillo.
  */
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useEffectEvent } from 'react';
 import { View, Text, ScrollView, StyleSheet, useWindowDimensions } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withDelay, withTiming } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -53,12 +53,13 @@ export default function PlanListo({ perfil, avisos, onEmpezar, onCambiar }: Prop
   const escala = useSharedValue(reducido ? 1 : 1.06);
   const opacidad = useSharedValue(0);
 
-  useEffect(() => {
+  const alCambiarMontar = useEffectEvent(() => {
     magnesia.destello();
     if (reducido) { opacidad.set(withTiming(1, { duration: 150 })); return; }
     escala.set(withDelay(T_FOTO, withTiming(1, { duration: 1000, easing: easing.salida })));
     opacidad.set(withDelay(T_FOTO, withTiming(1, { duration: 400 })));
-  }, []);
+  });
+  useEffect(() => alCambiarMontar(), []);
 
   const estiloFoto = useAnimatedStyle(() => ({ opacity: opacidad.value }));
   const nombre = perfil.nombre;

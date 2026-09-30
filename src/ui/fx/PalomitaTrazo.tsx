@@ -33,7 +33,7 @@ export function PalomitaTrazo({ visible, tamano = 24, color = paleta.blanco }: {
     fin.set(withTiming(0, { duration: BORRAR_MS }, terminado => {
       if (terminado) runOnJS(setMontada)(false);
     }));
-  }, [visible, reducido]);
+  }, [visible, reducido, fin]);
 
   if (!montada || path === null) return null;
   return (

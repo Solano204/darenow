@@ -41,7 +41,7 @@ export function OpcionCuestionario({ texto, detalle, icono, activa, multiple, on
     relleno.set(reducido
       ? withTiming(activa ? 1 : 0, { duration: 150 })
       : withSpring(activa ? 1 : 0, { ...resortePlaca, overshootClamping: true }));
-  }, [activa, reducido]);
+  }, [activa, reducido, relleno, seleccion]);
 
   const fila = useAnimatedStyle(() => ({
     transform: [{ scale: 1 - ESCALA_HUNDIDO * presion.value }],

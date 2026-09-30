@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useEffectEvent, useRef } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Animated, {
   cancelAnimation, runOnJS, useAnimatedStyle, useSharedValue, withDelay, withSpring, withTiming,
@@ -61,7 +61,7 @@ function MedallaPendiente({ icono, retraso, activo }: { icono: string; retraso: 
     if (!activo) { t.set(0); return; }
     t.set(withDelay(retraso, withTiming(1, { duration: 300 })));
     return () => cancelAnimation(t);
-  }, [reducido, activo, retraso]);
+  }, [reducido, activo, retraso, t]);
 
   const estilo = useAnimatedStyle(() => ({ opacity: t.value }), [tick]);
   return (
@@ -86,13 +86,14 @@ function MedallaGanada({ icono, retraso, alAsentar, activo }: {
     alAsentar?.();
   };
 
-  useEffect(() => {
+  const alCambiarReducido = useEffectEvent(() => {
     if (reducido) { t.set(1); return; }
     if (!activo) { t.set(0); return; }
     t.set(withDelay(retraso, withSpring(1, resortePlaca, fin => { if (fin) runOnJS(asentar)(); })));
     brillo.set(withDelay(retraso + 350, withTiming(1, { duration: BRILLO_MS, easing: easing.salida })));
     return () => { cancelAnimation(t); cancelAnimation(brillo); };
-  }, [reducido, retraso, activo]);
+  });
+  useEffect(() => alCambiarReducido(), [reducido, retraso, activo]);
 
   const cae = useAnimatedStyle(() => ({
     opacity: Math.min(1, t.value * 4),

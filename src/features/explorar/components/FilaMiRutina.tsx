@@ -60,7 +60,7 @@ export function FilaMiRutina({ r, destacar, onPress, onEditar }: {
       withTiming(1, { duration: BRILLO_SUBE_MS }), withTiming(0, { duration: BRILLO_BAJA_MS }),
     )));
     return () => { cancelAnimation(entrada); cancelAnimation(brillo); };
-  }, [destacar, reducido]);
+  }, [brillo, destacar, entrada, reducido]);
 
   const caja = useAnimatedStyle(() => ({
     opacity: Math.min(1, entrada.value * 3),

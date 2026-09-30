@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useEffectEvent } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withDelay, withSequence, withTiming } from 'react-native-reanimated';
 import { paleta, easing } from '@/ui/theme';
@@ -40,7 +40,7 @@ export function FichaRender({ id, ancho, alto, radio = RADIO_FICHA, activo = tru
   const t = useSharedValue(neutra && !reducido ? 0 : 1);
   const brillo = useSharedValue(0);
 
-  useEffect(() => {
+  const alCambiarActivo = useEffectEvent(() => {
     if (!neutra || reducido || !activo) return;
     t.set(withDelay(retraso, withTiming(1, { duration: CRUCE_MS, easing: easing.salida })));
     if (pulso) {
@@ -48,7 +48,8 @@ export function FichaRender({ id, ancho, alto, radio = RADIO_FICHA, activo = tru
         withTiming(1, { duration: PULSO_SUBE_MS }), withTiming(0, { duration: PULSO_BAJA_MS }),
       )));
     }
-  }, [activo, reducido, neutra]);
+  });
+  useEffect(() => alCambiarActivo(), [activo, reducido, neutra]);
 
   const estiloNeutra = useAnimatedStyle(() => ({ opacity: 1 - t.value }), [tick]);
   const estiloBrillo = useAnimatedStyle(() => ({ opacity: OPACIDAD_PULSO * brillo.value }), [tick]);

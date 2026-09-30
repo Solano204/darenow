@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useEffectEvent } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Animated, { cancelAnimation, useAnimatedStyle, useSharedValue, withDelay, withSpring } from 'react-native-reanimated';
 import { paleta, resortePlaca, haptico } from '@/ui/theme';
@@ -70,12 +70,13 @@ function Placa({ i, lado, animar, retraso }: { i: number; lado: -1 | 1; animar: 
   const tick = useTick();
   const t = useSharedValue(1);
 
-  useEffect(() => {
+  const alCambiarAnimar = useEffectEvent(() => {
     if (!animar || reducido) return;
     t.set(0);
     t.set(withDelay(retraso + i * ESCALONADO_PLACA_MS, withSpring(1, resortePlaca)));
     return () => cancelAnimation(t);
-  }, [animar, reducido]);
+  });
+  useEffect(() => alCambiarAnimar(), [animar, reducido]);
 
   const estilo = useAnimatedStyle(() => ({
     opacity: Math.min(1, t.value * 3),

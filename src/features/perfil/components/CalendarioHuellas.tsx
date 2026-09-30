@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useEffectEvent, useMemo, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import Animated, {
   cancelAnimation, useAnimatedStyle, useSharedValue, withDelay, withSpring, withTiming,
@@ -208,12 +208,13 @@ function HuellaDia({ largo, animar, activo, retraso }: { largo: boolean; animar:
   const estatico = reducido || !animar;
   const t = useSharedValue(estatico ? 1 : 0);
 
-  useEffect(() => {
+  const alCambiarEstatico = useEffectEvent(() => {
     if (estatico) { t.set(1); return; }
     if (!activo) return;
     t.set(withDelay(retraso, withSpring(1, resortePlaca)));
     return () => cancelAnimation(t);
-  }, [estatico, activo]);
+  });
+  useEffect(() => alCambiarEstatico(), [estatico, activo]);
 
   const estilo = useAnimatedStyle(() => ({
     opacity: Math.min(1, t.value * 3),

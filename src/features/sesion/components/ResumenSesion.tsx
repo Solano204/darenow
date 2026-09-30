@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useEffectEvent, useState } from 'react';
 import { ScrollView, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 import Animated, { runOnJS, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -63,12 +63,13 @@ export function ResumenSesion(p: {
 
   const polvo = () => magnesia.mini(width / 2, height / 2);
 
-  useEffect(() => {
+  const alCambiarReducido = useEffectEvent(() => {
     if (reducido) return;
     contraccion.set(withTiming(0, { duration: CONTRACCION_MS, easing: easing.salida }, fin => {
       if (fin) runOnJS(polvo)();
     }));
-  }, [reducido]);
+  });
+  useEffect(() => alCambiarReducido(), [reducido]);
 
   const circulo = useAnimatedStyle(() => ({
     opacity: contraccion.value > 0 ? 0.9 : 0,

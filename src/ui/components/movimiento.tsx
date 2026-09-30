@@ -5,7 +5,7 @@
  * entrada escalonada, pulso de estado y numeros que cuentan.
  */
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useEffectEvent, useState } from 'react';
 import { View, Animated, Easing, type ViewStyle } from 'react-native';
 import { color, anim } from '@/ui/theme';
 
@@ -19,13 +19,14 @@ export function Aparece({ children, retraso = 0, estilo }: {
 }) {
   const reducido = useMovimientoReducido();
   const [v] = useState(() => new Animated.Value(0));
-  useEffect(() => {
+  const alCambiarReducido = useEffectEvent(() => {
     if (reducido) { v.setValue(1); return; }
     Animated.timing(v, {
       toValue: 1, duration: anim.normal, delay: retraso,
       easing: Easing.bezier(0.2, 0.7, 0.3, 1), useNativeDriver: true,
     }).start();
-  }, [reducido]);
+  });
+  useEffect(() => alCambiarReducido(), [reducido]);
   return (
     <Animated.View style={[
       estilo,
@@ -49,7 +50,7 @@ export function Pulso({ tamano = 8, tono = color.carbon }: { tamano?: number; to
       Animated.timing(v, { toValue: 1, duration: 900, easing: Easing.out(Easing.quad), useNativeDriver: true }),
       Animated.timing(v, { toValue: 0, duration: 900, easing: Easing.in(Easing.quad), useNativeDriver: true }),
     ])).start();
-  }, [reducido]);
+  }, [reducido, v]);
   return (
     <View style={{ width: tamano * 2.4, height: tamano * 2.4, alignItems: 'center', justifyContent: 'center' }}>
       {/* El halo es el loop; con movimiento reducido se queda solo el

@@ -6,7 +6,7 @@
  * lo unico que avanza es el contenido, con la coreografia de `TransicionPaso`.
  */
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useEffectEvent, useState } from 'react';
 import {
   View, Text, ScrollView, StyleSheet, KeyboardAvoidingView, Platform, Pressable, AccessibilityInfo,
 } from 'react-native';
@@ -61,12 +61,13 @@ function Cuestionario({ o, transicion }: { o: Cuestion; transicion: Transicion }
   const animarLista = primeraVez.debeAnimar(i);
   const pista = paso.campo === 'objetivo' ? PISTA_OBJETIVO : paso.campo === 'nombre' ? PISTA_NOMBRE : PISTAS[paso.tipo];
 
-  useEffect(() => {
+  const alCambiarI = useEffectEvent(() => {
     primeraVez.marcarVisto(i);
     transicion.reponer();
     if (i > 0) AccessibilityInfo.announceForAccessibility(`Paso ${i + 1} de ${pasos.length}. ${paso.pregunta}`);
     return () => primeraVez.soltar(i);
-  }, [i]);
+  });
+  useEffect(() => alCambiarI(), [i]);
 
   return (
     <View style={s.raiz}>

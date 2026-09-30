@@ -131,7 +131,7 @@ function PuntoOcupado() {
     );
     bucle.start();
     return () => bucle.stop();
-  }, [ancho]);
+  }, [ancho, v]);
   return (
     <View pointerEvents="none" style={StyleSheet.absoluteFill}
       onLayout={e => setAncho(e.nativeEvent.layout.width)}>
@@ -163,7 +163,7 @@ export function Chip({ texto, activo, onPress, pequeno, oscuro }: {
       duration: activo ? anim.rapida : anim.normal,
       useNativeDriver: false,   // color no admite native driver
     }).start();
-  }, [activo, reducido]);
+  }, [activo, reducido, v]);
 
   const cuerpo = (
     <Animated.View style={[

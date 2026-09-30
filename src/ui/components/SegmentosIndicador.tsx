@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useEffectEvent, useRef, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, useWindowDimensions, type LayoutChangeEvent } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring, withTiming } from 'react-native-reanimated';
 import { paleta, familia, resortePlaca, haptico } from '@/ui/theme';
@@ -39,7 +39,7 @@ export function SegmentosIndicador<T extends string>({ segmentos, activo, onCamb
     setMedidas(m => (m[id]?.x === x && m[id]?.ancho === ancho ? m : { ...m, [id]: { x, ancho } }));
   };
 
-  useEffect(() => {
+  const alCambiarActivo = useEffectEvent(() => {
     const m = medidas[activo];
     if (!m) return;
     const x = m.x + PADDING_X;
@@ -62,7 +62,8 @@ export function SegmentosIndicador<T extends string>({ segmentos, activo, onCamb
     const contenido = fin ? fin.x + fin.ancho + PADDING_X : width;
     const destino = Math.min(Math.max(0, m.x + m.ancho / 2 - width / 2), Math.max(0, contenido - width));
     scroll.current?.scrollTo({ x: destino, animated: animar && !reducido });
-  }, [activo, medidas, reducido, width]);
+  });
+  useEffect(() => alCambiarActivo(), [activo, medidas, reducido, width]);
 
   const indicador = useAnimatedStyle(() => ({
     width: iw.value, opacity: opacidad.value, transform: [{ translateX: ix.value }],

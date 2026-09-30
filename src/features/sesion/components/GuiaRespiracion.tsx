@@ -8,7 +8,7 @@ import { useTick } from '@/ui/hooks/useTick';
 export function GuiaRespiracion({ inhala, activo }: { inhala: boolean; activo: boolean }) {
   const t = useSharedValue(inhala ? 1 : 0);
   const tick = useTick();
-  useEffect(() => { t.set(withTiming(inhala ? 1 : 0, { duration: 500 })); }, [inhala]);
+  useEffect(() => { t.set(withTiming(inhala ? 1 : 0, { duration: 500 })); }, [inhala, t]);
   const uno = useAnimatedStyle(() => ({ opacity: activo ? t.value : 0 }), [activo, tick]);
   const otro = useAnimatedStyle(() => ({ opacity: activo ? 1 - t.value : 0 }), [activo, tick]);
   return (

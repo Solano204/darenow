@@ -129,7 +129,7 @@ function IconoFila({ nombre, color, ocupado }: { nombre: IconoAjuste; color: str
       withSequence(withTiming(OPACIDAD_PULSO, { duration: PULSO_MS }), withTiming(1, { duration: PULSO_MS })), -1,
     ));
     return () => cancelAnimation(opacidad);
-  }, [ocupado, reducido]);
+  }, [ocupado, opacidad, reducido]);
 
   const estilo = useAnimatedStyle(() => ({ opacity: opacidad.value }), [tick]);
   return (
@@ -147,7 +147,7 @@ export function ChevronGiratorio({ abierto }: { abierto: boolean }) {
 
   useEffect(() => {
     giro.set(withTiming(abierto ? 1 : 0, { duration: reducido ? 0 : GIRO_CHEVRON_MS }));
-  }, [abierto, reducido]);
+  }, [abierto, giro, reducido]);
 
   const estilo = useAnimatedStyle(() => ({ transform: [{ rotate: `${90 * giro.value}deg` }] }), [tick]);
   return (

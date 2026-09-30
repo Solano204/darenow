@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useEffectEvent, useRef, useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import Animated, {
   Extrapolation, interpolate, runOnJS, useAnimatedReaction, useAnimatedStyle, type SharedValue,
@@ -49,9 +49,10 @@ export function IndiceSecciones({ nombres, arriba, y, desplazarA, altoBarra, rel
     [arriba, linea],
   );
 
-  useEffect(() => {
+  const alCambiarActivo = useEffectEvent(() => {
     fila.current?.scrollTo({ x: Math.max(0, (xs.current[activo] ?? 0) - MARGEN_PANTALLA), animated: !reducido });
-  }, [activo]);
+  });
+  useEffect(() => alCambiarActivo(), [activo]);
 
   const ir = (indice: number) => {
     tocado.current = true;

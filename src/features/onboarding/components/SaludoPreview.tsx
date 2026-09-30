@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useEffectEvent, useMemo } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Animated, {
   cancelAnimation, useAnimatedStyle, useSharedValue, withRepeat, withSequence, withTiming,
@@ -48,10 +48,11 @@ function Letra({ c }: { c: string; pos: number }) {
   const reducido = useReducedMotion();
   const t = useSharedValue(reducido ? 1 : 0);
 
-  useEffect(() => {
+  const alCambiarMontar = useEffectEvent(() => {
     if (reducido) return;
     t.set(withTiming(1, { duration: ENTRADA_LETRA_MS }));
-  }, []);
+  });
+  useEffect(() => alCambiarMontar(), []);
 
   const estilo = useAnimatedStyle(() => ({
     opacity: t.value,
@@ -69,7 +70,7 @@ function Cursor() {
     if (reducido) return;
     t.set(withRepeat(withSequence(withTiming(0, { duration: PARPADEO_MS }), withTiming(1, { duration: PARPADEO_MS })), -1));
     return () => cancelAnimation(t);
-  }, [reducido]);
+  }, [reducido, t]);
 
   const estilo = useAnimatedStyle(() => ({ opacity: t.value }));
   return <Animated.Text style={[ESTILO_NOMBRE, estilo]}>_</Animated.Text>;

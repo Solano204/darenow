@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useEffectEvent } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Animated, {
   cancelAnimation, useAnimatedStyle, useSharedValue, withDelay, withSequence, withSpring, withTiming,
@@ -47,14 +47,15 @@ export function PlacaDato({
   const caida = useSharedValue(estatico ? 1 : 0);
   const golpe = useSharedValue(0);
 
-  useEffect(() => {
+  const alCambiarEstatico = useEffectEvent(() => {
     if (estatico) { caida.set(1); return; }
     if (!activo) return;
     caida.set(withDelay(retraso, withSpring(1, resortePlaca)));
     golpe.set(withDelay(retraso + IMPACTO_MS, withSequence(withTiming(1, { duration: 40 }), withSpring(0, resorteTap))));
     const impacto = haptica ? setTimeout(haptico.placa, retraso + IMPACTO_MS) : undefined;
     return () => { if (impacto) clearTimeout(impacto); cancelAnimation(caida); cancelAnimation(golpe); };
-  }, [estatico, activo]);
+  });
+  useEffect(() => alCambiarEstatico(), [estatico, activo]);
 
   const estilo = useAnimatedStyle(() => ({
     opacity: Math.min(1, caida.value * 3),

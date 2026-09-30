@@ -52,7 +52,7 @@ export function ChipFiltro({ texto, activo, onPress, icono, variante = 'objetivo
 
   useEffect(() => {
     t.set(withTiming(activo ? 1 : 0, { duration: reducido ? FUNDIDO_REDUCIDO_MS : RELLENO_MS, easing: easing.salida }));
-  }, [activo, reducido]);
+  }, [activo, reducido, t]);
 
   const alMedir = (e: LayoutChangeEvent) => {
     const { width, height } = e.nativeEvent.layout;

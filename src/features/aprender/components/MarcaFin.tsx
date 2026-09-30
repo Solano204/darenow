@@ -25,7 +25,7 @@ export function MarcaFin({ activo }: { activo: boolean }) {
     t.set(withSpring(1, resortePlaca));
     const golpe = setTimeout(haptico.toque, IMPACTO_MS);
     return () => { clearTimeout(golpe); cancelAnimation(t); };
-  }, [reducido, activo]);
+  }, [reducido, activo, t]);
 
   const estilo = useAnimatedStyle(() => ({
     opacity: Math.min(1, t.value * 3),

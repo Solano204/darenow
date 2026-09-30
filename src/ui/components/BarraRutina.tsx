@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useEffectEvent, useMemo, useRef, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Animated, {
   interpolateColor, LinearTransition, useAnimatedStyle, useSharedValue, withDelay, withSequence, withSpring,
@@ -115,14 +115,15 @@ export function BarraRutina({ ids, etiqueta, compacta, levantar = 0, silenciosa,
   const animar = ids !== idsDelMontaje;
   const carga = !!cargaInicial && !animar;
 
-  useEffect(() => {
+  const alCambiarMontar = useEffectEvent(() => {
     if (!cargaInicial || silenciosa || ids.length === 0) return;
     const n = Math.min(ids.length, MAX_PLACAS_POR_MANGA);
     const id = setTimeout(haptico.placa, reducido ? 0 : ESPERA_CARGA_MS + (n - 1) * ESCALONADO_CARGA_MS + ASENTAMIENTO_MS);
     return () => clearTimeout(id);
-  }, []);
+  });
+  useEffect(() => alCambiarMontar(), []);
 
-  useEffect(() => {
+  const alCambiarIdsLength = useEffectEvent(() => {
     const antes = previo.current;
     previo.current = ids.length;
     if (silenciosa || ids.length === antes) return;
@@ -132,12 +133,14 @@ export function BarraRutina({ ids, etiqueta, compacta, levantar = 0, silenciosa,
       vibracion.set(withDelay(ASENTAMIENTO_MS, withSequence(withTiming(1, { duration: 50 }), withTiming(0, { duration: 110 }))));
     }
     return () => clearTimeout(id);
-  }, [ids.length]);
+  });
+  useEffect(() => alCambiarIdsLength(), [ids.length]);
 
-  useEffect(() => {
+  const alCambiarLevantar = useEffectEvent(() => {
     if (!levantar || reducido) return;
     alzada.set(withSequence(withTiming(1, { duration: LEVANTE_SUBE_MS, easing: easing.salida }), withSpring(0, resortePlaca)));
-  }, [levantar]);
+  });
+  useEffect(() => alCambiarLevantar(), [levantar]);
 
   const cuerpo = useAnimatedStyle(() => ({
     transform: [{ translateY: vibracion.value - LEVANTE_PX * alzada.value }],
@@ -202,7 +205,7 @@ function Placa({ i, m, entrada, salida, desplazar }: {
 
   useEffect(() => {
     t.set(reducido ? i : withTiming(i, { duration: DESPLAZAMIENTO_MS, easing: easing.salida }));
-  }, [i, reducido]);
+  }, [i, reducido, t]);
 
   const estilo = useAnimatedStyle(() => ({
     height: Math.max(min, base - paso * t.value),

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useEffectEvent, useMemo } from 'react';
 import { Canvas, Group, Path, Skia } from '@shopify/react-native-skia';
 import { cancelAnimation, useSharedValue, withDelay, withTiming } from 'react-native-reanimated';
 import { paleta, easing } from '@/ui/theme';
@@ -32,12 +32,13 @@ export function IconoTrazo({ nombre, activo, animar = true, retraso = 0, tamano 
   const path = useMemo(() => Skia.Path.MakeFromSVGString(RUTAS[nombre]), [nombre]);
   const fin = useSharedValue(estatico ? 1 : 0);
 
-  useEffect(() => {
+  const alCambiarEstatico = useEffectEvent(() => {
     if (estatico) { fin.set(1); return; }
     if (!activo) { fin.set(0); return; }
     fin.set(withDelay(retraso, withTiming(1, { duration: DURACION_MS, easing: easing.salida })));
     return () => cancelAnimation(fin);
-  }, [estatico, activo]);
+  });
+  useEffect(() => alCambiarEstatico(), [estatico, activo]);
 
   if (path === null) return null;
   return (

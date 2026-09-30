@@ -5,7 +5,7 @@
  * solo hay presentacion. Cada lamina anima su entrada una sola vez.
  */
 
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useEffectEvent, useMemo, useState } from 'react';
 import { useTick } from '@/ui/hooks/useTick';
 import { View, Text, ScrollView, StyleSheet, Pressable, AccessibilityInfo, useWindowDimensions } from 'react-native';
 import Animated, {
@@ -69,15 +69,17 @@ export default function Presentacion({ onTerminar }: { onTerminar: () => void })
     return r.some(x => x !== null) ? r : undefined;
   }, [laminas]);
 
-  useEffect(() => {
+  const alCambiarI = useEffectEvent(() => {
     if (i > 0) AccessibilityInfo.announceForAccessibility(`Paso ${i + 1} de ${laminas.length}. ${laminas[i].titulo}`);
-  }, [i]);
+  });
+  useEffect(() => alCambiarI(), [i]);
 
-  useEffect(() => {
+  const alCambiarI2 = useEffectEvent(() => {
     progreso.set(withTiming(i, { duration: reducido ? FUNDIDO_REDUCIDO_MS : dur.lento, easing: easing.salida }));
     marcarVisto(i);
     return () => soltar(i);
-  }, [i, reducido]);
+  });
+  useEffect(() => alCambiarI2(), [i, reducido]);
 
   const ensancha = useMemo(() => LinearTransition.springify().damping(resortePlaca.damping)
     .stiffness(resortePlaca.stiffness).mass(resortePlaca.mass), []);

@@ -128,7 +128,7 @@ export function PerfilRutina({ tramos, resumen, y, zonas, compacto, onTramo }: {
     relleno.set(withDelay(RELLENO_RETRASO_MS, withTiming(1, { duration: DIBUJA_MS, easing: easing.salida })));
     punto.set(withDelay(PUNTO_RETRASO_MS, withTiming(1, { duration: PUNTO_MS })));
     return () => { cancelAnimation(fin); cancelAnimation(relleno); cancelAnimation(punto); };
-  }, [estatico, compacto, conPunto]);
+  }, [estatico, compacto, conPunto, fin, relleno, punto]);
 
   // Los worklets capturan solo estos arreglos de numeros, no `g` (que lleva las rutas de Skia).
   const { inicios, anchos, ys, paso } = g;

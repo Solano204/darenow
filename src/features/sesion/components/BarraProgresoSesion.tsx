@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useEffectEvent, useRef } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Animated, {
   Easing, useAnimatedStyle, useSharedValue, withSequence, withSpring, withTiming, type DerivedValue,
@@ -44,7 +44,7 @@ function Placa({ estado, fraccion, color }: { estado: EstadoPlaca; fraccion: num
   const previo = useRef(estado);
   const esActual = estado === 'actual';
 
-  useEffect(() => {
+  const alCambiarEstado = useEffectEvent(() => {
     const objetivo = estado === 'hecho' ? 1 : esActual ? fraccion : 0;
     if (reducido) lleno.set(objetivo);
     else lleno.set(esActual ? withTiming(objetivo, { duration: 1000, easing: Easing.linear }) : withTiming(objetivo, { duration: 220 }));
@@ -52,7 +52,8 @@ function Placa({ estado, fraccion, color }: { estado: EstadoPlaca; fraccion: num
       asiento.set(withSequence(withTiming(1, { duration: 60 }), withSpring(0, resortePlaca)));
     }
     previo.current = estado;
-  }, [estado, fraccion, reducido]);
+  });
+  useEffect(() => alCambiarEstado(), [estado, fraccion, reducido]);
 
   const caja = useAnimatedStyle(() => ({ transform: [{ scaleY: 1 + ASIENTO_ESCALA * asiento.value }] }), [tick]);
   const relleno = useAnimatedStyle(() => ({

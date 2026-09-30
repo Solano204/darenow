@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useEffectEvent, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Animated, {
   cancelAnimation, useAnimatedStyle, useSharedValue, withDelay, withSpring, withTiming,
@@ -58,12 +58,13 @@ export function Tachon({ linea, activo, estatico, duracion, espera }: {
 }) {
   const t = useSharedValue(estatico ? 1 : 0);
 
-  useEffect(() => {
+  const alCambiarEstatico = useEffectEvent(() => {
     if (estatico) { t.set(1); return; }
     if (!activo) { t.set(0); return; }
     t.set(withDelay(espera, withTiming(1, { duration: duracion, easing: easing.salida })));
     return () => cancelAnimation(t);
-  }, [estatico, activo]);
+  });
+  useEffect(() => alCambiarEstatico(), [estatico, activo]);
 
   const estilo = useAnimatedStyle(() => ({ transform: [{ scaleX: t.value }] }));
 
@@ -81,13 +82,14 @@ export function Tachon({ linea, activo, estatico, duracion, espera }: {
 function Sello({ activo, estatico, espera }: { activo: boolean; estatico: boolean; espera: number }) {
   const t = useSharedValue(estatico ? 1 : 0);
 
-  useEffect(() => {
+  const alCambiarEstatico2 = useEffectEvent(() => {
     if (estatico) { t.set(1); return; }
     if (!activo) { t.set(0); return; }
     t.set(withDelay(espera, withSpring(1, resortePlaca)));
     const golpe = setTimeout(haptico.sello, espera + IMPACTO_MS);
     return () => { clearTimeout(golpe); cancelAnimation(t); };
-  }, [estatico, activo]);
+  });
+  useEffect(() => alCambiarEstatico2(), [estatico, activo]);
 
   const estilo = useAnimatedStyle(() => ({
     opacity: Math.min(1, t.value * 3),

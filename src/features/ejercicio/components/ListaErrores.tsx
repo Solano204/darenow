@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useEffectEvent } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Animated, { cancelAnimation, useAnimatedStyle, useSharedValue, withDelay, withTiming } from 'react-native-reanimated';
 import { paleta, familia, easing } from '@/ui/theme';
@@ -43,12 +43,13 @@ function Trazo({ grados, retraso, activo }: { grados: number; retraso: number; a
   const tick = useTick();
   const t = useSharedValue(reducido ? 1 : 0);
 
-  useEffect(() => {
+  const alCambiarActivo = useEffectEvent(() => {
     if (reducido) { t.set(1); return; }
     if (!activo) return;
     t.set(withDelay(retraso, withTiming(1, { duration: TRAZO_MS, easing: easing.salida })));
     return () => cancelAnimation(t);
-  }, [activo, reducido]);
+  });
+  useEffect(() => alCambiarActivo(), [activo, reducido]);
 
   const estilo = useAnimatedStyle(() => ({
     transform: [{ rotate: `${grados}deg` }, { scaleX: t.value }],

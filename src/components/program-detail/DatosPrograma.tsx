@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { paleta, familia } from '@/ui/theme';
 import { nombreGoal } from '@/data/catalog';
-import { plural } from '@/utils/plural';
+import { plural } from '@/lib/plural';
 import { PlacaDato } from '@/ui/components/PlacaDato';
 import { ICONOS_OBJETIVO } from '@/ui/components/iconosObjetivo';
 

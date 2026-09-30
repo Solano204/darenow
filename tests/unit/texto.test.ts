@@ -1,12 +1,12 @@
 import { describe, expect, it } from '@jest/globals';
-import { plural } from '@/utils/plural';
+import { plural } from '@/lib/plural';
 import {
   capitalizar, textoVisible, textoDePregunta, comillasLatinas, textoDeEtiqueta, textoDeAfirmacion,
   textoDeZonas, textoDeEquipo,
-} from '@/utils/presentacion';
+} from '@/lib/presentacion';
 import {
   textoDeMotivo, textoDeEstadoSesion, textoDeFrecuencia, unidadDeMedicion, PROTOCOLOS_SIN_VALOR,
-} from '@/utils/textosVisibles';
+} from '@/lib/textosVisibles';
 import { nombreVisible } from '@/data/nombresVisibles';
 
 describe('plural', () => {

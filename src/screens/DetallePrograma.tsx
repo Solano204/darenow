@@ -32,9 +32,9 @@ import { MAX_PLACAS } from '@/ui/components/disposicionMapa';
 import { programaPorId, rutinaPorId } from '@/data/catalog';
 import { nombreVisible } from '@/data/nombresVisibles';
 import { fuente } from '@/media/registry';
-import { useEstado } from '@/store/store';
+import { useEstado } from '@/state/store';
 import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
-import { textoVisible } from '@/utils/presentacion';
+import { textoVisible } from '@/lib/presentacion';
 import {
   fasesDePrograma, faseDeSemana, minutosPorSemana, placasPorSemana, resumenDePlan,
 } from '@/utils/minutosPorSemana';

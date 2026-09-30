@@ -31,8 +31,8 @@ import { RejillaDetalles } from '@/components/exercise/RejillaDetalles';
 import { TarjetaAlternativa, ANCHO_ALTERNATIVA } from '@/components/exercise/TarjetaAlternativa';
 import { TituloSeccion } from '@/ui/components/TituloSeccion';
 import { porId, musculoPorId, familiaPorId, evidenciaDe, type Ejercicio } from '@/data/catalog';
-import { useEstado } from '@/store/store';
-import { textoVisible } from '@/utils/presentacion';
+import { useEstado } from '@/state/store';
+import { textoVisible } from '@/lib/presentacion';
 
 const ALTO_HERO_FRACCION = 0.46;
 const SEPARACION_SECCIONES = 40;

@@ -1,4 +1,4 @@
-import { plural } from './plural';
+import { plural } from '@/lib/plural';
 
 /**
  * Tramos del perfil de una rutina (solo vista). Reparte el ancho de la grafica segun

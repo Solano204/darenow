@@ -8,7 +8,7 @@
  * preparado -> trabajo -> [cambio_lado -> trabajo] -> descanso -> ... -> fin
  */
 
-import type { ItemSesion } from '@/engine/session';
+import type { ItemSesion } from '@/lib/engine/session';
 
 export type Fase = 'preparado' | 'trabajo' | 'cambio_lado' | 'descanso' | 'pausa' | 'fin';
 

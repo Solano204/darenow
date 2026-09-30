@@ -16,11 +16,11 @@ import { VitrinaLogros } from '@/components/profile/VitrinaLogros';
 import { TarjetaReto } from '@/components/profile/TarjetaReto';
 import { FilaHistorial } from '@/components/profile/FilaHistorial';
 import { FilaAjustes } from '@/components/profile/FilaAjustes';
-import { textoVisible } from '@/utils/presentacion';
-import type { TipoFavorito } from '@/utils/perfil';
+import { textoVisible } from '@/lib/presentacion';
+import type { TipoFavorito } from '@/lib/perfil';
 import {
   useEstado, estadisticas, ultimos7, minutosPorDia, diasEntrenados,
-} from '@/store/store';
+} from '@/state/store';
 import { LOGROS, RETOS, programaPorId, nombreGoal } from '@/data/catalog';
 
 /* ==================================================================== YO */

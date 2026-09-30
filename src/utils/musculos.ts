@@ -1,5 +1,5 @@
 import type { Ejercicio, Musculo } from '@/data/catalog';
-import { textoDeEtiqueta, textoVisible } from './presentacion';
+import { textoDeEtiqueta, textoVisible } from '@/lib/presentacion';
 
 /**
  * Ayudas de la ficha de musculo (solo vista). No cambian ningun dato ni su orden.

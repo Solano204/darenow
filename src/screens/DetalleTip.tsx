@@ -16,11 +16,11 @@ import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { paleta, familia, MARGEN_PANTALLA } from '@/ui/theme';
 import { fuente } from '@/media/registry';
 import { TIPS } from '@/data/catalog';
-import { useEstado } from '@/store/store';
-import { textoVisible } from '@/utils/presentacion';
+import { useEstado } from '@/state/store';
+import { textoVisible } from '@/lib/presentacion';
 import {
   RUTA_DE_RELACIONADO, iconoDeSala, nombreDeSala, relacionadosVista, textoDeLectura, tiempoDeLectura,
-} from '@/utils/aprender';
+} from '@/lib/aprender';
 import { GomaTexture } from '@/ui/fx/GomaTexture';
 import { BloqueRevela } from '@/ui/fx/BloqueRevela';
 import { TituloMascara } from '@/ui/fx/TituloMascara';

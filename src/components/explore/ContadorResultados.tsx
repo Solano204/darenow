@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { AccessibilityInfo, Platform, StyleSheet, Text, View } from 'react-native';
 import { paleta, familia } from '@/ui/theme';
-import { plural } from '@/utils/plural';
+import { plural } from '@/lib/plural';
 import { Odometro } from '@/ui/fx/Odometro';
 
 const ALTO_CONTADOR = 24;

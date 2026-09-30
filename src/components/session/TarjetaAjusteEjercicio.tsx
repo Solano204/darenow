@@ -3,7 +3,7 @@ import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import Animated, { runOnJS, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import { Ionicons } from '@expo/vector-icons';
 import { paleta, tipo, familia, AREA_TACTIL_MIN, resorteMagnesia, haptico } from '@/ui/theme';
-import type { ItemSesion } from '@/engine/session';
+import type { ItemSesion } from '@/lib/engine/session';
 import { nombreVisible } from '@/data/nombresVisibles';
 import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
 import { useTick } from '@/ui/hooks/useTick';

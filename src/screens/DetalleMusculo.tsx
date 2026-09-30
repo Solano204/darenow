@@ -22,8 +22,8 @@ import { TarjetaLoQueSuelePasar } from '@/ui/components/TarjetaLoQueSuelePasar';
 import { RelacionMuscular } from '@/components/muscles/RelacionMuscular';
 import { TituloEjercicios, SubgrupoEjercicios } from '@/components/muscles/ListaEjerciciosMusculo';
 import { EJERCICIOS, musculoPorId } from '@/data/catalog';
-import { useEstado } from '@/store/store';
-import { textoVisible } from '@/utils/presentacion';
+import { useEstado } from '@/state/store';
+import { textoVisible } from '@/lib/presentacion';
 import { ejerciciosDeMusculo, relacionados } from '@/utils/musculos';
 
 const FRACCION_HERO = 0.36;

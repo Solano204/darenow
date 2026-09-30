@@ -10,8 +10,8 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { StyleSheet, Text } from 'react-native';
 import { paleta, familia, MARGEN_PANTALLA } from '@/ui/theme';
-import { useEstado } from '@/store/store';
-import { agruparPorMes } from '@/utils/perfil';
+import { useEstado } from '@/state/store';
+import { agruparPorMes } from '@/lib/perfil';
 import { PantallaColapsable } from '@/ui/components/PantallaColapsable';
 import { RANGO_SCROLL, RECORRIDO_PX } from '@/ui/fx/HeaderColapsable';
 import { EncabezadoPegado } from '@/ui/components/EncabezadoPegado';

@@ -3,7 +3,7 @@
  * Ejecutar: esbuild --bundle --platform=node --format=cjs tests/player.test.ts | node
  */
 import { crearReducer, estadoInicial } from '@/session/playerMachine';
-import type { ItemSesion } from '@/engine/session';
+import type { ItemSesion } from '@/lib/engine/session';
 
 let ok = 0, fallos = 0;
 function comprobar(nombre: string, cond: boolean, detalle = '') {

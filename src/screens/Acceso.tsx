@@ -27,9 +27,9 @@ import { TituloMascara } from '@/ui/fx/TituloMascara';
 import { Entrada } from '@/ui/fx/Entrada';
 import { IconoTrazo, type NombreIcono } from '@/ui/fx/IconoTrazo';
 import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
-import { useGoogleSignIn, mensajeError } from '@/store/googleAuth';
-import { useCuenta } from '@/store/cuenta';
-import { URL_PRIVACIDAD, URL_TERMINOS } from '@/legal';
+import { useGoogleSignIn, mensajeError } from '@/state/googleAuth';
+import { useCuenta } from '@/state/cuenta';
+import { URL_PRIVACIDAD, URL_TERMINOS } from '@/lib/legal';
 
 const T_SUBTITULO = 200;
 const T_TARJETA = 350;

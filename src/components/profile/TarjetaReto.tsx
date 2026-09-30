@@ -5,8 +5,8 @@ import Animated, {
 } from 'react-native-reanimated';
 import { paleta, familia, easing, MARGEN_PANTALLA } from '@/ui/theme';
 import type { Reto } from '@/data/catalog';
-import { textoVisible } from '@/utils/presentacion';
-import { metaDeReto, progresoAcotado, type MetaReto } from '@/utils/perfil';
+import { textoVisible } from '@/lib/presentacion';
+import { metaDeReto, progresoAcotado, type MetaReto } from '@/lib/perfil';
 import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
 import { useTick } from '@/ui/hooks/useTick';
 import { Entrada } from '@/ui/fx/Entrada';

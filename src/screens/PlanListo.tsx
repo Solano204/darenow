@@ -25,7 +25,7 @@ import { Entrada } from '@/ui/fx/Entrada';
 import { useMagnesia } from '@/ui/fx/MagnesiaOverlay';
 import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
 import { fuente } from '@/media/registry';
-import type { PerfilUsuario } from '@/store/store';
+import type { PerfilUsuario } from '@/state/store';
 
 const FRACCION_FOTO = 0.38;
 const FOCO_FOTO = { x: 0.55, y: 0.3 };

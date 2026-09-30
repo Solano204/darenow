@@ -6,10 +6,10 @@ import Animated, {
 } from 'react-native-reanimated';
 import { Ionicons } from '@expo/vector-icons';
 import { paleta, familia, resortePlaca, haptico, MARGEN_PANTALLA } from '@/ui/theme';
-import { hoy } from '@/store/store';
-import { MESES } from '@/utils/fechas';
-import { celdasDelMes, diaDelCalendario, diasDelMes, type DiaDelCalendario } from '@/utils/perfil';
-import { plural } from '@/utils/plural';
+import { hoy } from '@/state/store';
+import { MESES } from '@/lib/fechas';
+import { celdasDelMes, diaDelCalendario, diasDelMes, type DiaDelCalendario } from '@/lib/perfil';
+import { plural } from '@/lib/plural';
 import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
 import { useTick } from '@/ui/hooks/useTick';
 import { Huella } from '@/ui/fx/Huella';

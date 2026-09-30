@@ -5,8 +5,8 @@
  */
 
 import { EJERCICIOS, EQUIPO, GOALS, ESTADISTICAS, nombreGoal } from '@/data/catalog';
-import { textoVisible } from '@/utils/presentacion';
-import { plural } from '@/utils/plural';
+import { textoVisible } from '@/lib/presentacion';
+import { plural } from '@/lib/plural';
 import {
   ESPACIOS, ETIQUETAS_ESPACIO, indiceDeEspacio, LESIONES, equipoElegible, contarMarcados,
 } from '@/utils/ajustes';

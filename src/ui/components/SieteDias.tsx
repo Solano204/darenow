@@ -3,10 +3,10 @@ import { StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 import { Canvas, Path, Skia } from '@shopify/react-native-skia';
 import { Easing, runOnJS, useDerivedValue, useSharedValue, withTiming } from 'react-native-reanimated';
 import { paleta, familia, haptico, MARGEN_PANTALLA } from '@/ui/theme';
-import { hoy } from '@/store/store';
+import { hoy } from '@/state/store';
 import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
-import { fechaLocal } from '@/utils/fechas';
-import { placasPorDia, resumenDeSemana, semanaEnCero, MAX_PLACAS_DIA } from '@/utils/perfil';
+import { fechaLocal } from '@/lib/fechas';
+import { placasPorDia, resumenDeSemana, semanaEnCero, MAX_PLACAS_DIA } from '@/lib/perfil';
 import { ALTO_MAPA, ALTO_PLACA, SEPARACION_PLACA, PASO_PLACA, geometriaMapa } from './disposicionMapa';
 
 const ALTO_COMPACTO = 64;

@@ -4,7 +4,7 @@ import Animated, {
   Easing, cancelAnimation, useAnimatedStyle, useSharedValue, withSpring, withTiming, type SharedValue,
 } from 'react-native-reanimated';
 import { paleta, resortePlaca } from '@/ui/theme';
-import type { VistaPreviaReto } from '@/utils/perfil';
+import type { VistaPreviaReto } from '@/lib/perfil';
 import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
 import { useTick } from '@/ui/hooks/useTick';
 import { Huella } from '@/ui/fx/Huella';

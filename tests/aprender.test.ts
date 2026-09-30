@@ -6,10 +6,10 @@
 
 import { TIPS, SALAS, MITOS, ERRORES, NUTRICION, GLOSARIO, FAQ } from '@/data/catalog';
 import { nombreVisible } from '@/data/nombresVisibles';
-import { textoDePregunta, comillasLatinas, textoDeEtiqueta } from '@/utils/presentacion';
+import { textoDePregunta, comillasLatinas, textoDeEtiqueta } from '@/lib/presentacion';
 import {
   tiempoDeLectura, textoDeLectura, nombreDeSala, iconoDeSala, relacionadosVista, agruparPorLetra, letraDe, partirInsignias,
-} from '@/utils/aprender';
+} from '@/lib/aprender';
 
 let ok = 0, fallos = 0;
 const c = (n: string, cond: boolean, d = '') => {

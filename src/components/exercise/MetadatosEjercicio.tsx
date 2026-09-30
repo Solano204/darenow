@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { paleta, familia } from '@/ui/theme';
 import { CATEGORIAS, type Ejercicio } from '@/data/catalog';
-import { capitalizar } from '@/utils/presentacion';
+import { capitalizar } from '@/lib/presentacion';
 import { NivelPlacas } from '@/ui/components/NivelPlacas';
 
 /**

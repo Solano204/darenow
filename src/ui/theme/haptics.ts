@@ -1,5 +1,5 @@
 import * as Haptics from 'expo-haptics';
-import { hapticosActivos } from '@/store/haptics';
+import { hapticosActivos } from '@/state/haptics';
 
 const SEGUNDO_GOLPE_MS = 90;
 

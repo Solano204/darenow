@@ -1,4 +1,4 @@
-import type { Favoritos } from '@/store/store';
+import type { Favoritos } from '@/state/store';
 import { plural } from './plural';
 import { MESES, diaCorto, esSesionLarga, fechaLarga } from './fechas';
 

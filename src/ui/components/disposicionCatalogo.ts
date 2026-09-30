@@ -1,5 +1,5 @@
 import type { Musculo } from '@/data/catalog';
-import { textoDeEtiqueta, textoVisible } from '@/utils/presentacion';
+import { textoDeEtiqueta, textoVisible } from '@/lib/presentacion';
 
 /**
  * La disposicion del catalogo de musculos (solo vista): las fichas en filas de tres, con un

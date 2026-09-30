@@ -5,10 +5,10 @@ import Animated, {
   type EntryExitAnimationFunction,
 } from 'react-native-reanimated';
 import { paleta, conAlfa, familia, easing, resortePlaca } from '@/ui/theme';
-import type { ItemPropio } from '@/store/store';
+import type { ItemPropio } from '@/state/store';
 import type { Ejercicio } from '@/data/catalog';
 import { nombreVisible } from '@/data/nombresVisibles';
-import { textoDeEquipo } from '@/utils/presentacion';
+import { textoDeEquipo } from '@/lib/presentacion';
 import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
 import { useTick } from '@/ui/hooks/useTick';
 import { TarjetaGoma } from '@/ui/components/TarjetaGoma';

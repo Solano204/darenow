@@ -5,9 +5,9 @@ import Animated, {
 } from 'react-native-reanimated';
 import { Ionicons } from '@expo/vector-icons';
 import { paleta, conAlfa, familia, resortePlaca, resorteTap, haptico } from '@/ui/theme';
-import { imagenRutina, type RutinaPropia } from '@/store/store';
-import { minutosPropios } from '@/engine/session';
-import { plural } from '@/utils/plural';
+import { imagenRutina, type RutinaPropia } from '@/state/store';
+import { minutosPropios } from '@/lib/engine/session';
+import { plural } from '@/lib/plural';
 import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
 import { useTick } from '@/ui/hooks/useTick';
 import { FotoOscura } from '@/ui/components/FotoOscura';

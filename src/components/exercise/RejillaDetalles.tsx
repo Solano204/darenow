@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { paleta, tipo, familia } from '@/ui/theme';
 import { nombreEquipo, type Ejercicio, type Familia } from '@/data/catalog';
-import { capitalizar, textoDeZonas, textoVisible } from '@/utils/presentacion';
+import { capitalizar, textoDeZonas, textoVisible } from '@/lib/presentacion';
 import { Entrada } from '@/ui/fx/Entrada';
 import { Odometro } from '@/ui/fx/Odometro';
 

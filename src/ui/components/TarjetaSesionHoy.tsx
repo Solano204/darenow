@@ -10,7 +10,7 @@ import {
 import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
 import { useTick } from '@/ui/hooks/useTick';
 import { nombreVisible } from '@/data/nombresVisibles';
-import type { Sesion } from '@/engine/session';
+import type { Sesion } from '@/lib/engine/session';
 import { TarjetaGoma } from './TarjetaGoma';
 import { BotonPlaca } from './BotonPlaca';
 import { BotonSecundario } from './BotonSecundario';

@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { paleta, familia } from '@/ui/theme';
-import { plural } from '@/utils/plural';
+import { plural } from '@/lib/plural';
 
 export const ALTO_ENCABEZADO = 32;
 export const LADO_NODO = 12;

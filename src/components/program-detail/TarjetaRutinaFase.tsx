@@ -3,7 +3,7 @@ import { StyleSheet, Text } from 'react-native';
 import { paleta, familia } from '@/ui/theme';
 import { rutinaPorId } from '@/data/catalog';
 import { nombreVisible } from '@/data/nombresVisibles';
-import { plural } from '@/utils/plural';
+import { plural } from '@/lib/plural';
 import { Presionable } from '@/ui/components/Presionable';
 import { FotoOscura } from '@/ui/components/FotoOscura';
 

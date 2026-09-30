@@ -6,10 +6,10 @@ import Animated, {
 import { Ionicons } from '@expo/vector-icons';
 import { paleta, familia, resortePlaca, haptico, MARGEN_PANTALLA } from '@/ui/theme';
 import type { Protocolo } from '@/data/catalog';
-import type { MedicionGuardada } from '@/store/store';
-import { textoVisible } from '@/utils/presentacion';
-import { plural } from '@/utils/plural';
-import { PROTOCOLOS_SIN_VALOR, textoDeFrecuencia } from '@/utils/textosVisibles';
+import type { MedicionGuardada } from '@/state/store';
+import { textoVisible } from '@/lib/presentacion';
+import { plural } from '@/lib/plural';
+import { PROTOCOLOS_SIN_VALOR, textoDeFrecuencia } from '@/lib/textosVisibles';
 import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
 import { useTick } from '@/ui/hooks/useTick';
 import { BotonCompacto } from '@/ui/components/BotonCompacto';

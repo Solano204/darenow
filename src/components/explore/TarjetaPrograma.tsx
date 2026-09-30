@@ -4,8 +4,8 @@ import Animated, { useAnimatedStyle, useDerivedValue, useSharedValue, withSpring
 import { paleta, familia, resortePlaca } from '@/ui/theme';
 import type { Programa } from '@/data/catalog';
 import { nombreVisible } from '@/data/nombresVisibles';
-import { textoVisible } from '@/utils/presentacion';
-import { plural } from '@/utils/plural';
+import { textoVisible } from '@/lib/presentacion';
+import { plural } from '@/lib/plural';
 import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
 import { useTick } from '@/ui/hooks/useTick';
 import { Presionable } from '@/ui/components/Presionable';

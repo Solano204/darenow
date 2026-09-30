@@ -12,8 +12,8 @@ import { BigShouldersDisplay_700Bold, BigShouldersDisplay_800ExtraBold } from '@
 import { Figtree_400Regular, Figtree_500Medium, Figtree_600SemiBold, Figtree_700Bold } from '@expo-google-fonts/figtree';
 
 import { color, colorSesion, peso } from '@/ui/theme';
-import { ProveedorEstado, useEstado, hoy } from '@/store/store';
-import { ProveedorCuenta, useCuenta } from '@/store/cuenta';
+import { ProveedorEstado, useEstado, hoy } from '@/state/store';
+import { ProveedorCuenta, useCuenta } from '@/state/cuenta';
 import { ProveedorAnuncios } from '@/ui/components/RelojAnuncios';
 import { ProveedorMagnesia } from '@/ui/fx/MagnesiaOverlay';
 import { Entrada } from '@/ui/fx/Entrada';

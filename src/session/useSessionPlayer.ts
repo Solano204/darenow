@@ -33,7 +33,7 @@
 import { useCallback, useEffect, useRef, useReducer } from 'react';
 import { AppState } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import type { ItemSesion } from '@/engine/session';
+import type { ItemSesion } from '@/lib/engine/session';
 import { crearReducer, estadoInicial, esUnilateral, avanzarReloj } from './playerMachine';
 import type { EstadoPlayer, Fase } from './playerMachine';
 import { prepararSonido, soltarSonido, activarSonido, reproducir } from '@/media/sonido';

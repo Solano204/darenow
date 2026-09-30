@@ -27,7 +27,7 @@ import { SaludoPreview } from '@/components/fx/SaludoPreview';
 import { TransicionPaso, useTransicionPaso } from '@/components/fx/TransicionPaso';
 import { useOnboarding, type TipoPaso } from '@/hooks/useOnboarding';
 import { useFirstView } from '@/hooks/useFirstView';
-import type { PerfilUsuario } from '@/store/store';
+import type { PerfilUsuario } from '@/state/store';
 import PlanListo from './PlanListo';
 
 type Cuestion = ReturnType<typeof useOnboarding>;

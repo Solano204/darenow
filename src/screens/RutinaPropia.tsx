@@ -22,8 +22,8 @@ import { PlantillaRutina } from '@/components/routine-detail/PlantillaRutina';
 import { MetadatosRutina } from '@/components/routine-detail/MetadatosRutina';
 import { BotonDuplicar } from '@/components/routine-detail/BotonDuplicar';
 import type { BloqueVista } from '@/components/routine-detail/RielBloques';
-import { useEstado, imagenRutina, type RutinaPropia as Propia } from '@/store/store';
-import { sesionDePropia, minutosPropios, revisarPropia } from '@/engine/session';
+import { useEstado, imagenRutina, type RutinaPropia as Propia } from '@/state/store';
+import { sesionDePropia, minutosPropios, revisarPropia } from '@/lib/engine/session';
 import { porId } from '@/data/catalog';
 import { fuente } from '@/media/registry';
 

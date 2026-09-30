@@ -11,10 +11,10 @@ import {
   useSessionPlayer, leerSesionGuardada, borrarSesionGuardada, type SesionEnCurso,
 } from '@/session/useSessionPlayer';
 import { esUnilateral } from '@/session/playerMachine';
-import { useEstado, hoy } from '@/store/store';
-import { useHapticosActivos } from '@/store/haptics';
-import { useVozActiva } from '@/store/voz';
-import type { Sesion, ItemSesion } from '@/engine/session';
+import { useEstado, hoy } from '@/state/store';
+import { useHapticosActivos } from '@/state/haptics';
+import { useVozActiva } from '@/state/voz';
+import type { Sesion, ItemSesion } from '@/lib/engine/session';
 import { prepararSonido, soltarSonido, reproducir } from '@/media/sonido';
 import { fuenteVoz, type TipoVoz } from '@/media/voz';
 import { useSinAnuncios } from '@/ui/components/RelojAnuncios';

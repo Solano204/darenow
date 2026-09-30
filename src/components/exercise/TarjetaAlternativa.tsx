@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { paleta, familia } from '@/ui/theme';
 import type { Ejercicio } from '@/data/catalog';
-import { textoVisible } from '@/utils/presentacion';
+import { textoVisible } from '@/lib/presentacion';
 import { Presionable } from '@/ui/components/Presionable';
 import { FotoOscura } from '@/ui/components/FotoOscura';
 import { NivelPlacas } from '@/ui/components/NivelPlacas';

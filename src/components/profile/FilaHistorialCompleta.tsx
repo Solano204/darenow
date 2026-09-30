@@ -3,12 +3,12 @@ import { Pressable, StyleSheet, Text, View, useWindowDimensions } from 'react-na
 import Animated, { interpolateColor, useAnimatedStyle, useSharedValue, type SharedValue } from 'react-native-reanimated';
 import { paleta, familia, MARGEN_PANTALLA } from '@/ui/theme';
 import { porId } from '@/data/catalog';
-import type { SesionGuardada } from '@/store/store';
-import { textoVisible } from '@/utils/presentacion';
-import { diaCorto } from '@/utils/fechas';
-import { filaDeHistorial, type MesDeHistorial } from '@/utils/perfil';
-import { plural } from '@/utils/plural';
-import { textoDeMotivo } from '@/utils/textosVisibles';
+import type { SesionGuardada } from '@/state/store';
+import { textoVisible } from '@/lib/presentacion';
+import { diaCorto } from '@/lib/fechas';
+import { filaDeHistorial, type MesDeHistorial } from '@/lib/perfil';
+import { plural } from '@/lib/plural';
+import { textoDeMotivo } from '@/lib/textosVisibles';
 import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
 import { useTick } from '@/ui/hooks/useTick';
 import { Entrada } from '@/ui/fx/Entrada';

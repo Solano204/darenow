@@ -4,7 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import type { SharedValue } from 'react-native-reanimated';
 import { paleta, familia } from '@/ui/theme';
 import type { Protocolo } from '@/data/catalog';
-import { textoVisible } from '@/utils/presentacion';
+import { textoVisible } from '@/lib/presentacion';
 import { NotaEntrenador } from '@/ui/components/NotaEntrenador';
 import { ListaClaves } from '@/ui/components/ListaClaves';
 import { PasosLineaTiempo } from '@/ui/components/PasosLineaTiempo';

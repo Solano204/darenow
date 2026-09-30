@@ -6,7 +6,7 @@
 
 import { MUSCULOS, EJERCICIOS, musculoPorId } from '@/data/catalog';
 import { nombreVisible } from '@/data/nombresVisibles';
-import { textoDeEtiqueta, textoVisible } from '@/utils/presentacion';
+import { textoDeEtiqueta, textoVisible } from '@/lib/presentacion';
 import { relacionados, ejerciciosDeMusculo } from '@/utils/musculos';
 import {
   COLUMNAS, ALTO_REGION, ladoFicha, lineasDeNombre, agruparPorGrupo, armarFilas, regionActiva,

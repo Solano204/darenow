@@ -7,7 +7,7 @@ import Animated, {
 import { paleta, familia, MARGEN_PANTALLA, easing, resortePlaca, haptico } from '@/ui/theme';
 import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
 import { useTick } from '@/ui/hooks/useTick';
-import { hoy } from '@/store/store';
+import { hoy } from '@/state/store';
 import { Huella } from '@/ui/fx/Huella';
 import { Entrada } from '@/ui/fx/Entrada';
 import { useMiniMagnesia } from '@/ui/fx/MiniMagnesia';

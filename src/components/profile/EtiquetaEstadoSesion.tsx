@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { paleta, familia } from '@/ui/theme';
-import { textoDeEstadoSesion } from '@/utils/textosVisibles';
+import { textoDeEstadoSesion } from '@/lib/textosVisibles';
 
 /**
  * El estado de una sesion del historial («Completa» o «Parcial») como una etiqueta neutra: fondo `gomaAlta`,

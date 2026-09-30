@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { EQUIPO, GOALS } from '@/data/catalog';
 import { derivar, type Rs } from '@/data/perfil';
-import type { PerfilUsuario } from '@/store/store';
-import { useCuenta } from '@/store/cuenta';
-import { useConsentimientoMedidas, pedirConsentimientoMedidas } from '@/store/consentimientoMedidas';
+import type { PerfilUsuario } from '@/state/store';
+import { useCuenta } from '@/state/cuenta';
+import { useConsentimientoMedidas, pedirConsentimientoMedidas } from '@/state/consentimientoMedidas';
 
 /** Campos de salud: nunca se rellenan solos con el valor por defecto al saltarse el paso, y piden consentimiento antes de guardar cualquier valor real. */
 const ES_MEDIDA = new Set(['alturaCm', 'pesoKg', 'pesoObjetivoKg']);

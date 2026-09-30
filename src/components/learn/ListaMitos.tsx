@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, type ListRenderItemInfo, type ViewToken } from 
 import Animated from 'react-native-reanimated';
 import { paleta, familia, MARGEN_PANTALLA } from '@/ui/theme';
 import type { Mito } from '@/data/catalog';
-import type { RelacionadoVista } from '@/utils/aprender';
+import type { RelacionadoVista } from '@/lib/aprender';
 import { NotaEntrenador } from '@/ui/components/NotaEntrenador';
 import { TextoVacio } from '@/ui/components/TextoVacio';
 import { PROPS_FIJAS, type PropsLista } from '@/ui/components/listaBase';

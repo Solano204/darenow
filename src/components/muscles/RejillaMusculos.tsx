@@ -3,7 +3,7 @@ import { StyleSheet, View, useWindowDimensions, type ListRenderItemInfo } from '
 import Animated, { type SharedValue } from 'react-native-reanimated';
 import { resorteMagnesia, MARGEN_PANTALLA } from '@/ui/theme';
 import type { Musculo } from '@/data/catalog';
-import { textoVisible } from '@/utils/presentacion';
+import { textoVisible } from '@/lib/presentacion';
 import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
 import { Entrada } from '@/ui/fx/Entrada';
 import { TextoVacio } from '@/ui/components/TextoVacio';

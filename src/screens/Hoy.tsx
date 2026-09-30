@@ -39,8 +39,8 @@ import {
   ANCHO_EJERCICIO_MINI, ALTO_EJERCICIO_MINI, LADO_MUSCULO, ANCHO_ARTICULO, ALTO_ARTICULO,
 } from '@/components/hoy/TarjetasHoy';
 import { EstadisticasHoy } from '@/components/hoy/EstadisticasHoy';
-import { useEstado, estadisticas, ultimos7, hoy, imagenRutina } from '@/store/store';
-import { armarSesion, sesionDeRutina, minutosPropios, type Perfil } from '@/engine/session';
+import { useEstado, estadisticas, ultimos7, hoy, imagenRutina } from '@/state/store';
+import { armarSesion, sesionDeRutina, minutosPropios, type Perfil } from '@/lib/engine/session';
 import {
   RUTINAS, PROGRAMAS, EJERCICIOS, MUSCULOS, TIPS, programaPorId, nombreGoal,
 } from '@/data/catalog';

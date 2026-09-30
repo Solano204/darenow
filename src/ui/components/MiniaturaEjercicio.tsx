@@ -7,7 +7,7 @@ import { useTick } from '@/ui/hooks/useTick';
 import { nombreVisible } from '@/data/nombresVisibles';
 import { FotoOscura } from './FotoOscura';
 import { Entrada } from '@/ui/fx/Entrada';
-import type { ItemSesion } from '@/engine/session';
+import type { ItemSesion } from '@/lib/engine/session';
 
 const LADO_MINIATURA = 112;
 const LADO_MINIATURA_ANCHA = 128;

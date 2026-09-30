@@ -4,7 +4,7 @@ import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-na
 import { Ionicons } from '@expo/vector-icons';
 import { paleta, familia, resorteTap } from '@/ui/theme';
 import { evidenciaDe, type Ejercicio } from '@/data/catalog';
-import { textoDeEquipo, textoVisible } from '@/utils/presentacion';
+import { textoDeEquipo, textoVisible } from '@/lib/presentacion';
 import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
 import { useTick } from '@/ui/hooks/useTick';
 import { FotoOscura } from './FotoOscura';

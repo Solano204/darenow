@@ -36,14 +36,14 @@ import { BotonPlaca } from '@/ui/components/BotonPlaca';
 import { GomaTexture } from '@/ui/fx/GomaTexture';
 import { useMagnesia } from '@/ui/fx/MagnesiaOverlay';
 import Foto from '@/ui/components/Foto';
-import { useEstado, type RutinaPropia, type ItemPropio } from '@/store/store';
+import { useEstado, type RutinaPropia, type ItemPropio } from '@/state/store';
 import {
   itemPropioPorDefecto, minutosPropios, revisarPropia,
-} from '@/engine/session';
+} from '@/lib/engine/session';
 import {
   EJERCICIOS, porId, GOALS, CATEGORIAS, nombreEquipo, type Ejercicio,
 } from '@/data/catalog';
-import { plural } from '@/utils/plural';
+import { plural } from '@/lib/plural';
 import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
 import { useTick } from '@/ui/hooks/useTick';
 import { ChipFiltro } from '@/ui/components/ChipFiltro';

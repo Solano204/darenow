@@ -1,5 +1,5 @@
 import { describe, expect, it } from '@jest/globals';
-import { fechaLocal, fechaLarga, diaCorto, esSesionLarga } from '@/utils/fechas';
+import { fechaLocal, fechaLarga, diaCorto, esSesionLarga } from '@/lib/fechas';
 import { etiquetaDeTramo, estimarTramos, resumenDeTramos, PISO_TRAMO } from '@/utils/estimarTramos';
 import {
   parsearRango, fasesDePrograma, faseDeSemana, minutosPorSemana, placasPorSemana, textoDeRango, palabrasDeRango, resumenDePlan,
@@ -7,7 +7,7 @@ import {
 import {
   placasPorDia, semanaEnCero, fechaDeDia, celdasDelMes, diaDelCalendario, diasDelMes, etiquetasDeEstadisticas,
   totalFavoritos, mezclarFavoritos, progresoAcotado, vistaPreviaDeReto, agruparPorMes, filaDeHistorial,
-} from '@/utils/perfil';
+} from '@/lib/perfil';
 import { indiceDeEspacio, equipoElegible, contarMarcados } from '@/utils/ajustes';
 
 describe('fechas', () => {

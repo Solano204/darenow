@@ -5,7 +5,7 @@
 import {
   itemPropioPorDefecto, minutosPropios, revisarPropia, sesionDePropia,
   type RutinaPropia, type Perfil,
-} from '@/engine/session';
+} from '@/lib/engine/session';
 import { porId, EJERCICIOS } from '@/data/catalog';
 
 let ok = 0, fallos = 0;

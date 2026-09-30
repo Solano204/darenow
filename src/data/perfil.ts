@@ -9,7 +9,7 @@
  * que no medimos. Hay pruebas que fallan si alguien intenta anadirlo.
  */
 
-import type { PerfilUsuario } from '@/store/store';
+import type { PerfilUsuario } from '@/state/store';
 
 export type Rs = Record<string, unknown>;
 

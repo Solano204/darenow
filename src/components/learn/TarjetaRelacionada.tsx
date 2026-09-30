@@ -2,7 +2,7 @@ import React from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { paleta, familia, MARGEN_PANTALLA } from '@/ui/theme';
-import type { RelacionadoVista, TipoRelacionado } from '@/utils/aprender';
+import type { RelacionadoVista, TipoRelacionado } from '@/lib/aprender';
 import { Presionable } from '@/ui/components/Presionable';
 import { FotoOscura } from '@/ui/components/FotoOscura';
 import { TituloBloque } from './TituloBloque';

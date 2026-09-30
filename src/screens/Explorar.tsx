@@ -28,7 +28,7 @@ import { MuroCategoria, Intersticial } from '@/ui/components/Anuncio';
 import {
   EJERCICIOS, RUTINAS, PROGRAMAS, MUSCULOS, CATEGORIAS, GOALS,
 } from '@/data/catalog';
-import { useEstado } from '@/store/store';
+import { useEstado } from '@/state/store';
 import { BuscadorVivo } from '@/ui/components/BuscadorVivo';
 import { SegmentosIndicador } from '@/ui/components/SegmentosIndicador';
 import { ChipFiltro } from '@/ui/components/ChipFiltro';

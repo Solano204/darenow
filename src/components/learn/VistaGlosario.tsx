@@ -2,8 +2,8 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { StyleSheet, Text, View, useWindowDimensions, type LayoutChangeEvent } from 'react-native';
 import Animated, { type SharedValue } from 'react-native-reanimated';
 import { paleta, familia } from '@/ui/theme';
-import { textoVisible } from '@/utils/presentacion';
-import { agruparPorLetra, textoDeLectura, type Termino } from '@/utils/aprender';
+import { textoVisible } from '@/lib/presentacion';
+import { agruparPorLetra, textoDeLectura, type Termino } from '@/lib/aprender';
 import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
 import { useHuecoAbajo } from '@/ui/components';
 import { TextoVacio } from '@/ui/components/TextoVacio';

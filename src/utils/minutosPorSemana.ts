@@ -1,4 +1,4 @@
-import { plural } from './plural';
+import { plural } from '@/lib/plural';
 
 /**
  * El plan de un programa en el tiempo (solo vista). Un programa son semanas agrupadas en

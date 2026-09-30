@@ -25,9 +25,9 @@ import type { BloqueVista } from '@/components/routine-detail/RielBloques';
 import { porId, rutinaPorId, type BloqueRutina } from '@/data/catalog';
 import { nombreVisible } from '@/data/nombresVisibles';
 import { fuente } from '@/media/registry';
-import { useEstado } from '@/store/store';
-import { sesionDeRutina, itemPropioPorDefecto } from '@/engine/session';
-import { textoVisible } from '@/utils/presentacion';
+import { useEstado } from '@/state/store';
+import { sesionDeRutina, itemPropioPorDefecto } from '@/lib/engine/session';
+import { textoVisible } from '@/lib/presentacion';
 
 const FRACCION_NOTA_PARA_ACTIVAR = 0.4;
 

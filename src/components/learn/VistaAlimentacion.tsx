@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import Animated, { type SharedValue } from 'react-native-reanimated';
 import { paleta, familia } from '@/ui/theme';
 import { NUTRICION } from '@/data/catalog';
-import { textoDeLectura } from '@/utils/aprender';
+import { textoDeLectura } from '@/lib/aprender';
 import { BloqueRevela } from '@/ui/fx/BloqueRevela';
 import { Entrada } from '@/ui/fx/Entrada';
 import { IconoProhibido } from '@/components/fx/IconoProhibido';

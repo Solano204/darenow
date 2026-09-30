@@ -7,8 +7,8 @@ import {
   CATEGORIAS, evidenciaDe, type Ejercicio, type Musculo, type Tip,
 } from '@/data/catalog';
 import { nombreVisible } from '@/data/nombresVisibles';
-import { textoVisible } from '@/utils/presentacion';
-import { iconoDeSala, nombreDeSala } from '@/utils/aprender';
+import { textoVisible } from '@/lib/presentacion';
+import { iconoDeSala, nombreDeSala } from '@/lib/aprender';
 import { Presionable } from '@/ui/components/Presionable';
 import { FotoOscura } from '@/ui/components/FotoOscura';
 import { NivelPlacas } from '@/ui/components/NivelPlacas';

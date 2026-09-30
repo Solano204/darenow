@@ -4,7 +4,7 @@ import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-na
 import { paleta, familia, easing } from '@/ui/theme';
 import { fuente } from '@/media/registry';
 import type { Musculo } from '@/data/catalog';
-import { textoVisible } from '@/utils/presentacion';
+import { textoVisible } from '@/lib/presentacion';
 import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
 import { useTick } from '@/ui/hooks/useTick';
 import { Presionable } from '@/ui/components/Presionable';

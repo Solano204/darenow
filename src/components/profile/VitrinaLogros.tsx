@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 import { paleta, familia, haptico, MARGEN_PANTALLA } from '@/ui/theme';
 import type { Logro } from '@/data/catalog';
-import { textoVisible } from '@/utils/presentacion';
+import { textoVisible } from '@/lib/presentacion';
 import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
 import { NotaEntrenador } from '@/ui/components/NotaEntrenador';
 import { PlacaMedalla } from '@/ui/components/PlacaMedalla';

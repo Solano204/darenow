@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { paleta, familia, resorteMagnesia } from '@/ui/theme';
 import type { Evidencia } from '@/data/catalog';
-import { textoDeAfirmacion, textoVisible } from '@/utils/presentacion';
+import { textoDeAfirmacion, textoVisible } from '@/lib/presentacion';
 import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
 import { TarjetaGoma } from '@/ui/components/TarjetaGoma';
 import { InsigniaEvidencia } from '@/ui/components/InsigniaEvidencia';

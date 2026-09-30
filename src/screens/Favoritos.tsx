@@ -12,7 +12,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { color, tipo, esp } from '@/ui/theme';
 import { Seccion, Boton, useHuecoAbajo } from '@/ui/components';
 import Carrusel from '@/components/Carrusel';
-import { useEstado, imagenRutina } from '@/store/store';
+import { useEstado, imagenRutina } from '@/state/store';
 import {
   porId, musculoPorId, rutinaPorId, programaPorId, TIPS, salaPorId,
 } from '@/data/catalog';

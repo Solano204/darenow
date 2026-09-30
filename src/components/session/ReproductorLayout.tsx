@@ -11,7 +11,7 @@ import {
   paleta, familia, esp, ALTO_BOTON, MARGEN_PANTALLA, radio, easing, resortePlaca, resorteTap, haptico,
   COLOR_FASE, ORDEN_FASE, PALABRA_FASE, faseVisual, type FaseId,
 } from '@/ui/theme';
-import type { ItemSesion } from '@/engine/session';
+import type { ItemSesion } from '@/lib/engine/session';
 import { PREPARACION_S, esUnilateral, type EstadoPlayer } from '@/session/playerMachine';
 import { nombreVisible } from '@/data/nombresVisibles';
 import { useReducedMotion } from '@/ui/hooks/useReducedMotion';

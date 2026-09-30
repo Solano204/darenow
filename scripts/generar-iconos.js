@@ -22,7 +22,7 @@
  *      bounding box), que es lo que de verdad se ve "centrado" en formas
  *      asimetricas como una flecha.
  *
- * El azul de abajo debe coincidir con color.acento en src/theme/colors.ts (no se
+ * El azul de abajo debe coincidir con color.acento en src/ui/theme/colors.ts (no se
  * importa el archivo porque este script corre fuera del bundle de
  * TypeScript). El fondo real de la app (color.fondo, #F7F4EF) no se usa
  * aqui: solo hace falta en app.json, para el backgroundColor del splash.

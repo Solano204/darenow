@@ -1,7 +1,7 @@
 /**
  * FORJA · lint:color
  *
- * Falla si aparece un color hex o rgba(...) fuera de src/theme. Todo color
+ * Falla si aparece un color hex o rgba(...) fuera de src/ui/theme. Todo color
  * vive en un token; si hace falta uno nuevo, se añade ahi, no se repite el
  * literal en la pantalla que lo necesita.
  */
@@ -10,7 +10,7 @@ const fs = require('fs');
 const path = require('path');
 
 const RAIZ = path.join(__dirname, '..', 'src');
-const EXCLUIDO = path.join(RAIZ, 'theme');
+const EXCLUIDO = path.join(RAIZ, 'ui', 'theme');
 const EXTENSIONES = new Set(['.ts', '.tsx']);
 const PATRON = /#[0-9A-Fa-f]{3,8}\b|rgba?\(/g;
 
@@ -39,7 +39,7 @@ for (const archivo of archivos(RAIZ)) {
 }
 
 if (hallazgos) {
-  console.log(`\n${hallazgos} color(es) fuera de src/theme. Muevelos a un token.\n`);
+  console.log(`\n${hallazgos} color(es) fuera de src/ui/theme. Muevelos a un token.\n`);
   process.exit(1);
 }
-console.log('lint:color OK — ningun color fuera de src/theme');
+console.log('lint:color OK — ningun color fuera de src/ui/theme');

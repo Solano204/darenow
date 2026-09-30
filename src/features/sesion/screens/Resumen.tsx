@@ -6,9 +6,9 @@ import { useEstado } from '@/state/store';
 import { useSinAnuncios } from '@/ui/components/RelojAnuncios';
 import { logroPorId } from '@/data/catalog';
 import { nombreVisible } from '@/data/nombresVisibles';
-import type { EstadoPlayer, SerieHecha } from '@/session/playerMachine';
+import type { EstadoPlayer, SerieHecha } from '@/features/sesion/utils/playerMachine';
 import type { ItemSesion } from '@/lib/engine/session';
-import { ResumenSesion } from '@/components/session/ResumenSesion';
+import { ResumenSesion } from '@/features/sesion/components/ResumenSesion';
 
 /**
  * Resumen.

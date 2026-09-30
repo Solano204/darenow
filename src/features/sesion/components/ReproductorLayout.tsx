@@ -12,7 +12,7 @@ import {
   COLOR_FASE, ORDEN_FASE, PALABRA_FASE, faseVisual, type FaseId,
 } from '@/ui/theme';
 import type { ItemSesion } from '@/lib/engine/session';
-import { PREPARACION_S, esUnilateral, type EstadoPlayer } from '@/session/playerMachine';
+import { PREPARACION_S, esUnilateral, type EstadoPlayer } from '@/features/sesion/utils/playerMachine';
 import { nombreVisible } from '@/data/nombresVisibles';
 import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
 import { useTick } from '@/ui/hooks/useTick';

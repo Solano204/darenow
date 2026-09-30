@@ -6,7 +6,7 @@ import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
 import { useTick } from '@/ui/hooks/useTick';
 import { GomaTexture } from '@/ui/fx/GomaTexture';
 import { Entrada } from '@/ui/fx/Entrada';
-import { TextoDeParticulas } from '@/components/fx/TextoDeParticulas';
+import { TextoDeParticulas } from './TextoDeParticulas';
 
 const TAMANO_TITULO = 72;
 const CENTRO_Y = 0.46;

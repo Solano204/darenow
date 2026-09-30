@@ -9,8 +9,8 @@ import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { paleta, haptico, PALABRA_FASE } from '@/ui/theme';
 import {
   useSessionPlayer, leerSesionGuardada, borrarSesionGuardada, type SesionEnCurso,
-} from '@/session/useSessionPlayer';
-import { esUnilateral } from '@/session/playerMachine';
+} from '@/features/sesion/hooks/useSessionPlayer';
+import { esUnilateral } from '@/features/sesion/utils/playerMachine';
 import { useEstado, hoy } from '@/state/store';
 import { useHapticosActivos } from '@/state/haptics';
 import { useVozActiva } from '@/state/voz';
@@ -19,10 +19,10 @@ import { prepararSonido, soltarSonido, reproducir } from '@/media/sonido';
 import { fuenteVoz, type TipoVoz } from '@/media/voz';
 import { useSinAnuncios } from '@/ui/components/RelojAnuncios';
 import { useMagnesia } from '@/ui/fx/MagnesiaOverlay';
-import { PantallaListo } from '@/components/session/PantallaListo';
-import { EditorAntesDeEmpezar } from '@/components/session/EditorAntesDeEmpezar';
-import { ReproductorLayout } from '@/components/session/ReproductorLayout';
-import { HojaSalida } from '@/components/session/HojaSalida';
+import { PantallaListo } from '@/features/sesion/components/PantallaListo';
+import { EditorAntesDeEmpezar } from '@/features/sesion/components/EditorAntesDeEmpezar';
+import { ReproductorLayout } from '@/features/sesion/components/ReproductorLayout';
+import { HojaSalida } from '@/features/sesion/components/HojaSalida';
 
 /**
  * Reproductor.

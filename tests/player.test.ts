@@ -2,7 +2,7 @@
  * Pruebas de la maquina del reproductor.
  * Ejecutar: esbuild --bundle --platform=node --format=cjs tests/player.test.ts | node
  */
-import { crearReducer, estadoInicial } from '@/session/playerMachine';
+import { crearReducer, estadoInicial } from '@/features/sesion/utils/playerMachine';
 import type { ItemSesion } from '@/lib/engine/session';
 
 let ok = 0, fallos = 0;

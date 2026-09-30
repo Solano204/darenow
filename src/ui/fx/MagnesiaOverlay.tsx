@@ -1,12 +1,12 @@
-import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import { InteractionManager, StyleSheet, View, useWindowDimensions } from 'react-native';
+import React, { createContext, useCallback, useContext, useMemo, useRef, useState } from 'react';
+import { StyleSheet, View, useWindowDimensions } from 'react-native';
 import { Canvas, Points, Rect } from '@shopify/react-native-skia';
 import {
-  Easing, cancelAnimation, useDerivedValue, useSharedValue, withTiming, type SharedValue,
+  Easing, cancelAnimation, runOnJS, useAnimatedReaction, useDerivedValue, useSharedValue, withTiming, type SharedValue,
 } from 'react-native-reanimated';
 import { paleta, polvo } from '@/ui/theme';
 import { useReducedMotion } from '@/ui/hooks/useReducedMotion';
-import { useSplashOculto } from '@/ui/hooks/useSplash';
+import { aparcar, crearPuntos, type Punto } from './particulas';
 
 const VELO_SUBE_MS = 60;
 const VELO_FIJO_MS = 180;
@@ -73,6 +73,9 @@ function sortear(m: Motor): number[] {
   return p;
 }
 
+/** Tras la ultima nube, el lienzo se queda montado este rato por si llega otra enseguida. */
+const LIENZO_OCIOSO_MS = 1500;
+
 /**
  * Overlay global del aplauso de magnesia. Vive en la raiz, por encima del
  * navegador, para que la nube siga a la vista durante la transicion. Una nube
@@ -81,21 +84,31 @@ function sortear(m: Motor): number[] {
  * 180 ms y se disipa sobre la siguiente. Con movimiento reducido es solo un
  * fundido de 300 ms. `mini` reutiliza el motor a escala pequena y `destello`
  * es solo el velo.
+ *
+ * R6: el `Canvas` a pantalla completa solo existe mientras hay una nube en el
+ * aire (y un momento despues); el resto del tiempo no hay capa de Skia sobre la
+ * app (H-10). Las particulas viven en pools creados una vez y reusados entre
+ * aplausos. Disparar no espera a nada: la navegacion sigue en el mismo toque.
  */
 export function ProveedorMagnesia({ children }: { children: React.ReactNode }) {
   const { width, height } = useWindowDimensions();
   const reducido = useReducedMotion();
 
-  // El Canvas de Skia a pantalla completa no hace falta para pintar la primera pantalla: se monta
-  // cuando esta ya se ve (splash oculto) y terminaron sus animaciones de entrada
-  // (runAfterInteractions), mucho antes del primer aplauso.
-  const splashOculto = useSplashOculto();
-  const [lienzoListo, setLienzoListo] = useState(false);
-  useEffect(() => {
-    if (!splashOculto) return;
-    const tarea = InteractionManager.runAfterInteractions(() => setLienzoListo(true));
-    return () => tarea.cancel();
-  }, [splashOculto]);
+  // El lienzo se monta al disparar y se desmonta cuando no queda ninguna nube en el aire.
+  const [lienzo, setLienzo] = useState(false);
+  const enVuelo = useRef(0);
+  const apagado = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  const despegar = useCallback(() => {
+    enVuelo.current += 1;
+    clearTimeout(apagado.current);
+    setLienzo(true);
+  }, []);
+  const aterrizar = useCallback(() => {
+    enVuelo.current = Math.max(0, enVuelo.current - 1);
+    if (enVuelo.current > 0) return;
+    clearTimeout(apagado.current);
+    apagado.current = setTimeout(() => setLienzo(false), LIENZO_OCIOSO_MS);
+  }, []);
 
   const t = useSharedValue(1);
   const origen = useSharedValue({ x: 0, y: 0 });
@@ -107,25 +120,32 @@ export function ProveedorMagnesia({ children }: { children: React.ReactNode }) {
   const paramsMini = useSharedValue<number[]>([]);
 
   const lanzar = useCallback((x: number, y: number, velo: boolean) => {
+    despegar();
     params.set(sortear(NUBE));
     origen.set({ x, y });
     soloVelo.set(velo || reducido ? 1 : 0);
     cancelAnimation(t);
     t.set(0);
-    t.set(withTiming(1, { duration: velo || reducido ? REDUCIDO_MS : NUBE.duracionMs, easing: Easing.linear }));
-  }, [reducido, params, origen, soloVelo, t]);
+    // Al terminar (o al cortarla otra nube) avisa una vez: un evento, no un cuadro.
+    t.set(withTiming(1, { duration: velo || reducido ? REDUCIDO_MS : NUBE.duracionMs, easing: Easing.linear }, () => {
+      runOnJS(aterrizar)();
+    }));
+  }, [reducido, params, origen, soloVelo, t, despegar, aterrizar]);
 
   const aplaudir = useCallback((x: number, y: number) => lanzar(x, y, false), [lanzar]);
   const destello = useCallback(() => lanzar(0, 0, true), [lanzar]);
 
   const mini = useCallback((x: number, y: number, particulas?: number) => {
     if (reducido) return;
+    despegar();
     paramsMini.set(sortear(particulas === undefined ? MINI : { ...MINI, particulas }));
     origenMini.set({ x, y });
     cancelAnimation(tMini);
     tMini.set(0);
-    tMini.set(withTiming(1, { duration: MINI.duracionMs, easing: Easing.linear }));
-  }, [reducido, paramsMini, origenMini, tMini]);
+    tMini.set(withTiming(1, { duration: MINI.duracionMs, easing: Easing.linear }, () => {
+      runOnJS(aterrizar)();
+    }));
+  }, [reducido, paramsMini, origenMini, tMini, despegar, aterrizar]);
 
   const opacidadVelo = useDerivedValue(() => {
     if (soloVelo.value === 1) {
@@ -145,7 +165,7 @@ export function ProveedorMagnesia({ children }: { children: React.ReactNode }) {
     <Contexto.Provider value={api}>
       <View style={s.raiz}>
         {children}
-        {lienzoListo && (
+        {lienzo && (
           <View style={StyleSheet.absoluteFill} pointerEvents="none" accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
             <Canvas style={{ width, height }} pointerEvents="none">
               <Rect x={0} y={0} width={width} height={height} color={polvo.velo} opacity={opacidadVelo} />
@@ -174,20 +194,27 @@ function Nube({ motor, grupo, t, origen, params, soloVelo }: {
   const { desde, hasta, base, opacidad } = grupo;
   const { duracionMs, frenadoS, elevacionPxS, crecimiento } = motor;
 
-  const puntos = useDerivedValue(() => {
-    const salida: { x: number; y: number }[] = [];
-    if (soloVelo !== undefined && soloVelo.value === 1) return salida;
-    const seg = t.value * (duracionMs / 1000);
-    const p = params.value;
-    const o = origen.value;
-    for (let i = desde; i < hasta; i++) {
-      const a = p[i * 2];
-      const v = p[i * 2 + 1];
-      if (v === undefined) break;
-      const d = v * frenadoS * (1 - Math.exp(-seg / frenadoS));
-      salida.push({ x: o.x + Math.cos(a) * d, y: o.y + Math.sin(a) * d - elevacionPxS * seg });
-    }
-    return salida;
+  // Un pool por grupo, creado una vez: cada cuadro mueve las mismas particulas.
+  const puntos = useSharedValue<Punto[]>(crearPuntos(hasta - desde));
+  useAnimatedReaction(() => t.value, valor => {
+    puntos.modify(pool => {
+      'worklet';
+      if (soloVelo !== undefined && soloVelo.value === 1) { aparcar(pool, 0); return pool; }
+      const seg = valor * (duracionMs / 1000);
+      const p = params.value;
+      const o = origen.value;
+      let k = 0;
+      for (let i = desde; i < hasta; i++, k++) {
+        const a = p[i * 2];
+        const v = p[i * 2 + 1];
+        if (v === undefined) break;
+        const d = v * frenadoS * (1 - Math.exp(-seg / frenadoS));
+        pool[k].x = o.x + Math.cos(a) * d;
+        pool[k].y = o.y + Math.sin(a) * d - elevacionPxS * seg;
+      }
+      aparcar(pool, k);
+      return pool;
+    }, true);
   });
   const grosor = useDerivedValue(() => base * (1 + crecimiento * t.value));
   const alfa = useDerivedValue(() => opacidad * Math.pow(1 - t.value, 1.5));
